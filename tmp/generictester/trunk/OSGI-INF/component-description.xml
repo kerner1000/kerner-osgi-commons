@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <component name="genericTester">
 	<implementation class="de.mpg.mpizkoeln.kerner.anna.generictester.Activator"/>
-	<property name="event.topics" value="*"/>
+	<property name="event.topics" value="de/mpg/mpizkoeln/kerner/anna/datachangedservice/*"/>
 	<service>
 		<provide interface="org.osgi.service.event.EventHandler"/>
 	</service>
