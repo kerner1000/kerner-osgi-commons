@@ -25,7 +25,7 @@ public class DataChangedServiceImpl implements DataChangedService {
     protected void activate(ComponentContext componentContext){
         LOG = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
         LOG.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, this.getClass().getSimpleName() + " activated.", null);
-        dataChanged();
+        //dataChanged();
     }
 
     protected void deactivate(ComponentContext componentContext){
@@ -36,8 +36,8 @@ public class DataChangedServiceImpl implements DataChangedService {
     public void dataChanged() {
         Dictionary<String, String> properties = new Hashtable<String, String>();
         properties.put("hans", "peter");
-        Event event = new Event("de/mpg/mpizkoeln/kerner/anna/datachangedservice/DataChangedServiceImpl", properties);
+        Event event = new Event(this.getClass().getName().replace(".", "/"), properties);
         eventAdmin.postEvent(event);
-        //System.err.println(eventAdmin + " " + event);
+        //System.err.println(this.getClass().getName());
     }
 }
