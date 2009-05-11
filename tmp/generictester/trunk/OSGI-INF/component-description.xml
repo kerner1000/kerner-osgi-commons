@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="genericTester">
+	<implementation class="de.mpg.mpizkoeln.kerner.anna.generictester.Activator"/>
+	<property name="event.topics" value="*"/>
+	<service>
+		<provide interface="org.osgi.service.event.EventHandler"/>
+	</service>
+</component>
