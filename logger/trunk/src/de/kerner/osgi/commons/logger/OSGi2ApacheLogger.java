@@ -2,6 +2,7 @@ package de.kerner.osgi.commons.logger;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.osgi.framework.Bundle;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
@@ -23,7 +24,7 @@ public class OSGi2ApacheLogger implements LogListener {
 
     protected void activate(ComponentContext componentContext) {
         logReaderService.addLogListener(this);
-        String s = "Dropbox/log.properties";
+        String s = "/home/alex/Dropbox/log.properties";
         PropertyConfigurator.configure(s);
     }
 
@@ -35,24 +36,25 @@ public class OSGi2ApacheLogger implements LogListener {
         String message = entry.getMessage();
         Throwable throwable = entry.getException();
         int level = entry.getLevel();
-        doTheLog(level, message, throwable);        
+        Bundle bundle = entry.getBundle();
+        doTheLog(level, bundle, message, throwable);        
     }
     
-    private void doTheLog(int level, String message, Throwable t) {
+    private void doTheLog(int level, Bundle bundle, String message, Throwable t) {
         switch (level) {
         case LogService.LOG_DEBUG:
-            LOGGER.debug(message, t);
+            LOGGER.debug("[" + bundle.getBundleId() + "]: " + message, t);
             break;
         case LogService.LOG_INFO:
-            LOGGER.info(message, t);
+            LOGGER.debug("[" + bundle.getBundleId() + "]: " + message, t);
             break;
         case LogService.LOG_WARNING:
-            LOGGER.warn(message, t);
+            LOGGER.debug("[" + bundle.getBundleId() + "]: " + message, t);
             break;
         case LogService.LOG_ERROR:
-            LOGGER.error(message, t);
+            LOGGER.debug("[" + bundle.getBundleId() + "]: " + message, t);
         default:
-            System.err.println("Unknown Log message: " + level + " " + message + " " + t);
+            System.err.println("Unknown Log message: " + level + " " + bundle + ": " + message + " " + t);
         }
     }
 }
