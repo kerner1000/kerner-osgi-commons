@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Service Plug-in
+Bundle-SymbolicName: de.mpg.mpizkoeln.kerner.anna.annaservice
+Bundle-Version: 1.0.0
+Service-Component: OSGI-INF/component-description.xml
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: de.kerner.osgi.commons.util,
+ org.osgi.framework;version="1.4.0",
+ org.osgi.service.component,
+ org.osgi.util.tracker
+Export-Package: de.mpg.mpizkoeln.kerner.anna.annaservice,
+ de.mpg.mpizkoeln.kerner.anna.core
