@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Service Plug-in
 Bundle-SymbolicName: de.mpg.mpizkoeln.kerner.anna.annaservice
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.1
 Service-Component: OSGI-INF/component-description.xml
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: de.kerner.osgi.commons.util,
