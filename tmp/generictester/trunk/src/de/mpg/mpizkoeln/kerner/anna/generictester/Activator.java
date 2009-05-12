@@ -1,28 +1,15 @@
 package de.mpg.mpizkoeln.kerner.anna.generictester;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
+import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
+import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
 
-import de.mpg.mpizkoeln.kerner.anna.datachangedservice.DataChangedEvent;
-import de.mpg.mpizkoeln.kerner.anna.datachangedservice.DataChangedListener;
+public class Activator extends AbstractStep {
 
-public class Activator implements BundleActivator {
-    
-    private final DataChangedListener listener = new DataChangedListener(){
-        public void dataChanged(DataChangedEvent event) {
-          System.err.println("Data has changed. " + event);
-        }  
-    };
-
-    public void start(BundleContext context) throws Exception {
-        context.registerService(DataChangedListener.class.getName(),
-                listener, null);
+    @Override
+    public boolean checkRequirements(DataObject data) {
+        //System.err.println(data.getProperties().getProperty(DataObject.INIT_SEQ_SET, DataObject.INIT_SEQ_SET));
+        return Boolean.parseBoolean(data.getProperties().getProperty(DataObject.INIT_SEQ_SET));
     }
 
-    public void stop(BundleContext context) throws Exception {
-        
-    }
-
-    
-
+   
 }
