@@ -1,40 +1,46 @@
 package de.mpg.mpizkoeln.kerner.anna.core;
 
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.service.component.ComponentContext;
 
 import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService;
 
-public abstract class AbstractStep implements BundleActivator {
+public abstract class AbstractStep {
 
     protected static ToOSGiLogServiceLogger LOGGER = null;
-    private ServiceTracker tracker = null;
+    private AnnaService annaService = null;
     
     public final static void main(String[] args) {
        
     }
     
-    public void start(BundleContext context) throws Exception {
-        LOGGER = new ToOSGiLogServiceLogger(context);
-        tracker = new ServiceTracker(context, AnnaService.class.getName(), null);
-        tracker.open();
-        register(context);
+    protected void setAnnaService(AnnaService annaService){
+        this.annaService = annaService;
+        //System.err.println("pfft");
     }
-
-    public void stop(BundleContext context) throws Exception {
-        tracker.close();
-        LOGGER.disable(context);
+    
+    protected void unsetAnnaService(AnnaService annaService){
+        this.annaService = null;
+    }
+    
+    protected void activate(ComponentContext componentContext) {
+        //System.err.println("pfft");
+        LOGGER = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
+        register(componentContext.getBundleContext());
+    }
+    
+    protected void deactivate(ComponentContext componentContext) {
+        
+        // TODO: must unregister this step on stepservice
+        LOGGER.disable(componentContext.getBundleContext());
     }
     
     private void register(BundleContext context){
-       AnnaService service =  (AnnaService) tracker.getService();
-       if(service == null){
-           LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.WARN, "cannot fetch service", null);
+       if(annaService == null){
+           LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.ERROR, "service not set", null);
        } else {
-           LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "got service reference, registering.", null);
-           service.registerStep(this);
+           annaService.registerStep(this);
        }
     }
 
