@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<component name="annaService">
+	<implementation class="de.mpg.mpizkoeln.kerner.anna.annaservice.impl.AnnaServiceImpl"/>
+	<service>
+		<provide interface="de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService"/>
+	</service>
+</component>
