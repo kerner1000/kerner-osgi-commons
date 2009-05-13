@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="genericTester">
+	<implementation class="de.mpg.mpizkoeln.kerner.anna.generictester.StepTester"/>
+    <reference name="annaService" 
+		interface="de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService"
+		bind="setAnnaService"
+		unbind="unsetAnnaService"
+		/>
+</component>
