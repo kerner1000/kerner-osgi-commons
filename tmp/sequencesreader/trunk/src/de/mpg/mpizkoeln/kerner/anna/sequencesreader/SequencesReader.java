@@ -9,8 +9,8 @@ public class SequencesReader extends AbstractStep {
 
     @Override
     public boolean checkRequirements(DataObject data) {
-        //Properties properties = getStepProperties();
-        //System.err.println(properties);
+        Properties properties = getStepProperties();
+        System.err.println(properties);
         return false;
     }
 
