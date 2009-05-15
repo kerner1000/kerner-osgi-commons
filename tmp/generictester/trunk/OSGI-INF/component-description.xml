@@ -6,4 +6,5 @@
 		bind="setAnnaService"
 		unbind="unsetAnnaService"
 		/>
+		<property name="run.env" value="lsf"/>
 </component>

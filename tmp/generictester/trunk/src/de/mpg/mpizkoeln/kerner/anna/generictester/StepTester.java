@@ -7,7 +7,7 @@ public class StepTester extends AbstractStep {
 
     @Override
     public boolean checkRequirements(DataObject data) {
-        System.err.println(data.getProperties().getProperty(DataObject.INIT_SEQ_SET, DataObject.INIT_SEQ_SET));
+        System.out.println(getStepProperties());
         return Boolean.parseBoolean(data.getProperties().getProperty(DataObject.INIT_SEQ_SET));
     }
 
