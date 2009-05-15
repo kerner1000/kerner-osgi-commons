@@ -3,7 +3,6 @@ package de.mpg.mpizkoeln.kerner.anna.core;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.Map.Entry;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
@@ -23,7 +22,7 @@ public abstract class AbstractStep {
     
     protected void setAnnaService(AnnaService annaService){
         this.annaService = annaService;
-        System.err.println(this + "got service, ID:" + annaService);
+        //System.err.println(this + "got service, ID:" + annaService);
     }
     
     protected void unsetAnnaService(AnnaService annaService){
@@ -33,11 +32,12 @@ public abstract class AbstractStep {
     protected void activate(ComponentContext componentContext) {
         this.componentContext = componentContext;
         LOGGER = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
+        LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "Step has been activated. Going to register to Service.", null);
         register(componentContext.getBundleContext());
     }
     
     protected void deactivate(ComponentContext componentContext) {
-        
+        LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "Step has been deactivated. Going to unregister from Service.", null);
         // TODO: must unregister this step on stepservice
         LOGGER.disable(componentContext.getBundleContext());
         this.componentContext = null;
@@ -47,7 +47,6 @@ public abstract class AbstractStep {
     public Properties getStepProperties(){
         Properties properties = new Properties();
         Dictionary<String, String> dict = componentContext.getProperties();
-        //System.out.println("## " + dict + " ##");
         Enumeration<String> e = dict.elements();
         while(e.hasMoreElements()){
             String key = e.nextElement();

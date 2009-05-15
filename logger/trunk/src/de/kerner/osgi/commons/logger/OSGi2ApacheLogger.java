@@ -54,7 +54,7 @@ public class OSGi2ApacheLogger implements LogListener {
         case LogService.LOG_ERROR:
             LOGGER.debug("[" + bundle.getBundleId() + "]: " + message, t);
         default:
-            System.err.println("Unknown Log message: " + level + " " + bundle + ": " + message + " " + t);
+            System.err.println("Unknown Log message:\n" + level + " " + bundle + ": " + message + " " + t);
         }
     }
 }

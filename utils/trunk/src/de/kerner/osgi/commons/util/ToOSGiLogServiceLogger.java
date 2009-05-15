@@ -33,7 +33,7 @@ public class ToOSGiLogServiceLogger {
     }
 
     public void log(Object o, LEVEL level, String message, Throwable t) {
-        final String cannotLogString = "Could not log message " + level + " " + message + " " + t;
+        final String cannotLogString = "could not deliver log message:\n " + message + " " + t;
         if(disabled){
             cannotLog(cannotLogString);
             return;
