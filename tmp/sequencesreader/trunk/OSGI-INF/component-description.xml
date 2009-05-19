@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
-<component name="genericTester">
-	<implementation class="de.mpg.mpizkoeln.kerner.anna.generictester.StepTester"/>
+<component name="sequencesReader">
+	<implementation class="de.mpg.mpizkoeln.kerner.anna.sequencesreader.SequencesReader"/>
     <reference name="annaService" 
 		interface="de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService"
 		bind="setAnnaService"
 		unbind="unsetAnnaService"
 		/>
 		<property name="run.env" value="lsf"/>
+		<property name="input.file" value="/home/alex/Dropbox/ref.fasta"/>
 </component>

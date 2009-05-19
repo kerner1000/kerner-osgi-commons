@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,17 +21,14 @@ import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
 
 public class AnnaServiceImpl implements AnnaService {
 
-    private static ToOSGiLogServiceLogger LOGGER = null;
-    private final Collection<StepController> controller = new ArrayList<StepController>();
-    private final ExecutorService controllerExecutor = Executors.newCachedThreadPool();
+    static ToOSGiLogServiceLogger LOGGER = null;
     private final DataObject data = new DataObject();
-
+    private final ExecutorService exe = Executors.newCachedThreadPool();
+    
     public synchronized void registerStep(AbstractStep step) {
-        StepController sc = new StepController(step, data);
-        controller.add(sc);
-        controllerExecutor.submit(sc);
+        StepController controller = new StepController(step, data);
+        exe.submit(controller);
         LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "registered step " + step, null);
-
     }
 
     protected void activate(ComponentContext componentContext) {

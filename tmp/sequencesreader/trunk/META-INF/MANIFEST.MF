@@ -5,7 +5,8 @@ Bundle-SymbolicName: de.mpg.mpizkoeln.kerner.anna.sequencesreader
 Bundle-Version: 1.0.0
 Service-Component: OSGI-INF/component-description.xml
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Import-Package: de.mpg.mpizkoeln.kerner.anna.core,
+Import-Package: de.kerner.osgi.commons.util,
+ de.mpg.mpizkoeln.kerner.anna.core,
  org.osgi.framework;version="1.4.0",
  org.osgi.service.component;version="1.0.0",
  org.osgi.service.event;version="1.1.0",
