@@ -3,7 +3,7 @@ package de.mpg.mpizkoeln.kerner.anna.sequencesreader;
 import java.io.File;
 import java.util.Properties;
 
-import kerner.commons.file.LazyStringReader;
+import de.kerner.commons.file.LazyStringReader;
 import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
 import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
@@ -28,7 +28,7 @@ public class SequencesReader extends AbstractStep {
         File file = new File(properties.getProperty(INPUT_FILE_KEY));
         LazyStringReader reader = new LazyStringReader(file);
         //System.out.println(reader.getString());
-        Collection<FASTASequence>
+        //Collection<FASTASequence>
         return null;
     }
 }
