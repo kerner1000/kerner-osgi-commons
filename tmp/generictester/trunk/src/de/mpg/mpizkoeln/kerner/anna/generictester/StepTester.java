@@ -7,8 +7,14 @@ public class StepTester extends AbstractStep {
 
     @Override
     public boolean checkRequirements(DataObject data) {
-        System.out.println(getStepProperties());
+        //System.out.println(getStepProperties());
         return Boolean.parseBoolean(data.getProperties().getProperty(DataObject.INIT_SEQ_SET));
+    }
+
+    @Override
+    public DataObject run(DataObject data) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     

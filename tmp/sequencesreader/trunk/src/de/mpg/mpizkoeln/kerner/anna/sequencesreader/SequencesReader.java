@@ -1,14 +1,12 @@
 package de.mpg.mpizkoeln.kerner.anna.sequencesreader;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
+import kerner.commons.file.LazyStringReader;
+import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
 import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
-
-import de.kerner.commons.file.LazyStringReader;
-import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 
 public class SequencesReader extends AbstractStep {
 
@@ -27,7 +25,10 @@ public class SequencesReader extends AbstractStep {
     public DataObject run(DataObject data) throws Exception {
         AbstractStep.LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG,
                 "We have been activated. Going to do our thing ", null);
-        System.out.println(new LazyStringReader(new File(properties.getProperty(INPUT_FILE_KEY))).getString());
+        File file = new File(properties.getProperty(INPUT_FILE_KEY));
+        LazyStringReader reader = new LazyStringReader(file);
+        //System.out.println(reader.getString());
+        Collection<FASTASequence>
         return null;
     }
 }
