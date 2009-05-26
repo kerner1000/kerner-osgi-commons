@@ -4,14 +4,14 @@ import java.util.concurrent.Callable;
 
 import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
+import de.mpg.mpizkoeln.kerner.anna.core.DataBean;
 
 class StepController implements Callable<Void> {
 
     private final AbstractStep step;
-    private volatile DataObject data;
+    private volatile DataBean data;
 
-    StepController(AbstractStep step, DataObject data) {
+    StepController(AbstractStep step, DataBean data) {
         this.step = step;
         this.data = data;
     }

@@ -17,12 +17,12 @@ import org.osgi.service.component.ComponentContext;
 import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
+import de.mpg.mpizkoeln.kerner.anna.core.DataBean;
 
 public class AnnaServiceImpl implements AnnaService {
 
     static ToOSGiLogServiceLogger LOGGER = null;
-    private final DataObject data = new DataObject();
+    private final DataBean data = new DataBean();
     private final ExecutorService exe = Executors.newCachedThreadPool();
     
     public synchronized void registerStep(AbstractStep step) {

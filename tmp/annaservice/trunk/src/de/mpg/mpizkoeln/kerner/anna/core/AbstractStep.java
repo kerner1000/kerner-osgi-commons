@@ -70,7 +70,7 @@ public abstract class AbstractStep {
         }
     }
     
-    public abstract boolean checkRequirements(DataObject data);
+    public abstract boolean checkRequirements(DataBean data);
 
-    public abstract DataObject run(DataObject data) throws Exception;
+    public abstract DataBean run(DataBean data) throws Exception;
 }

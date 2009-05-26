@@ -24,7 +24,7 @@ public class OSGi2ApacheLogger implements LogListener {
 
     protected void activate(ComponentContext componentContext) {
         logReaderService.addLogListener(this);
-        String s = "/home/alex/Dropbox/log.properties";
+        String s = "/home/pcb/kerner/Dropbox/log.properties";
         PropertyConfigurator.configure(s);
     }
 

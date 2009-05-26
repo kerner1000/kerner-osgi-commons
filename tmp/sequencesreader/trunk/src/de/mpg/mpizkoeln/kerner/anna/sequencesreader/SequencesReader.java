@@ -12,7 +12,7 @@ import org.bioutils.fasta.FASTASequence;
 import de.kerner.commons.file.LazyStringReader;
 import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpizkoeln.kerner.anna.core.DataObject;
+import de.mpg.mpizkoeln.kerner.anna.core.DataBean;
 
 public class SequencesReader extends AbstractStep {
 
@@ -20,15 +20,14 @@ public class SequencesReader extends AbstractStep {
     private Properties properties = null;
 
     @Override
-    public boolean checkRequirements(DataObject data) {
+    public boolean checkRequirements(DataBean data) {
         properties = getStepProperties();
-        AbstractStep.LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG,
-                "Properties: " + properties, null);
+        AbstractStep.LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "Properties: " + properties, null);
         return new File(properties.getProperty(INPUT_FILE_KEY)).canRead();
     }
 
     @Override
-    public DataObject run(DataObject data) throws Exception {
+    public DataBean run(DataBean data) throws Exception {
         AbstractStep.LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG,
                 "We have been activated. Going to do our thing ", null);
         File file = new File(properties.getProperty(INPUT_FILE_KEY));
