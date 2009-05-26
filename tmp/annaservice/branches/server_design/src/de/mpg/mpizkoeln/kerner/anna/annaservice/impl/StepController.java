@@ -20,7 +20,7 @@ class StepController implements Callable<Void> {
         //System.err.println("Rewuirements: " + step.checkRequirements(data));
         //System.err.println("Interruppted: " + Thread.currentThread().isInterrupted());
         while (!step.checkRequirements(data)) {
-            AnnaServiceImpl.LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "Requirements for step " + step + " not satisfied. Putting it to spleep.", null);
+            AnnaServiceImpl.LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "Requirements for step " + step + " not satisfied. Putting it to sleep.", null);
             Thread.currentThread().wait();
         }
         if(Thread.currentThread().isInterrupted()){
