@@ -37,7 +37,7 @@ public class SequencesReader extends AbstractStep {
 		return data;
 	}
 
-	private void readGTF(DataBean data) throws IOException {
+	private void readFASTA(DataBean data) throws IOException {
 		
 		File file = new File(getStepProperties().getProperty(INPUT_FILE_FASTA));
 		AbstractStep.LOGGER.debug("Reading FASTA-File from " + file);
@@ -53,7 +53,7 @@ public class SequencesReader extends AbstractStep {
 
 	}
 
-	private void readFASTA(DataBean data) throws IOException,
+	private void readGTF(DataBean data) throws IOException,
 			GTFFormatErrorException {
 		try{
 		File file = new File(getStepProperties().getProperty(INPUT_FILE_GTF));
