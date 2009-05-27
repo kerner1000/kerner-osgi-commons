@@ -8,7 +8,7 @@ import de.mpg.mpizkoeln.kerner.anna.core.DataBean;
 class StepController implements Callable<Void> {
 
     private final AbstractStep step;
-    private volatile DataBean data;
+    private final DataBean data;
 
     StepController(AbstractStep step, DataBean data) {
         this.step = step;
@@ -16,7 +16,7 @@ class StepController implements Callable<Void> {
     }
 
     public Void call() throws Exception {
-        while (!step.checkRequirements(data)) {
+    	while (!step.checkRequirements(data)) {
             AnnaServiceImpl.LOGGER.debug("Requirements for step " + step + " not satisfied. Putting it to sleep.");
             Thread.currentThread().wait();
         }
@@ -25,11 +25,21 @@ class StepController implements Callable<Void> {
             return null;
         }
         AnnaServiceImpl.LOGGER.debug("Activating step " + step);
-        // TODO Lock data file
-        data = step.run(data);
-        // TODO Unlock data file
+        
+        if(step.getEnvironment().equals(AbstractStep.Environment.LOCAL)){
+        	// call "call()" directly, so that this method will run in current thread.
+        	new LocalStepExecutor(step, data).call();
+        } else if (step.getEnvironment().equals(AbstractStep.Environment.LSF)) {
+        	// call "call()" directly, so that this method will run in current thread.
+        	new RemoteStepExecutor(step, data).call();
+        } else 
+        	throw new RuntimeException("Cannot be");
+        
+        System.out.println(data.getValidatedFASTASeqs());
+       
         AnnaServiceImpl.LOGGER.debug("Step " + step + " finished, notifying others");
-        Thread.currentThread().notifyAll();
+        Thread.currentThread().notifyAll();       
         return null;
     }
+   
 }

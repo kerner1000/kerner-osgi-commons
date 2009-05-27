@@ -11,18 +11,48 @@ import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService;
 
 public abstract class AbstractStep {
+	
+	public enum Environment {
+		LOCAL, LSF
+	}
 
-    protected static ToOSGiLogServiceLogger LOGGER = null;
+	private final static String ENV_KEY ="run.env";
+	private final static String ENV_VALUE_LSF ="lsf";
+	private final static String ENV_VALUE_LOCAL ="local";
+	public static ToOSGiLogServiceLogger LOGGER = null;
     private AnnaService annaService = null;
     private ComponentContext componentContext = null;
 
     public final static void main(String[] args) {
 
     }
+    
+    public Environment getEnvironment(){
+    	String s = getStepProperties().getProperty(ENV_KEY);
+    	if(s.equalsIgnoreCase(ENV_VALUE_LOCAL))
+    		return Environment.LOCAL;
+    	else if (s.equalsIgnoreCase(ENV_VALUE_LSF))
+    		return Environment.LSF;
+    	else
+    		throw new RuntimeException("Dont know Environment " + s + " for step " + this);
+    }
+    
+    // TODO: maybe leave objects just as they are instead of calling
+    // object.toString()
+    public Properties getStepProperties() {
+        Properties properties = new Properties();
+        Dictionary<?, ?> dict = componentContext.getProperties();
+        Enumeration<?> e = dict.keys();
+        while (e.hasMoreElements()) {
+            Object key = e.nextElement();
+            Object value = dict.get(key);
+            properties.setProperty(key.toString(), value.toString());
+        }
+        return properties;
+    }
 
     protected void setAnnaService(AnnaService annaService) {
         this.annaService = annaService;
-        // System.err.println(this + "got service, ID:" + annaService);
     }
 
     protected void unsetAnnaService(AnnaService annaService) {
@@ -43,20 +73,6 @@ public abstract class AbstractStep {
         this.componentContext = null;
     }
 
-    // TODO: maybe leave objects just as they are instead of calling
-    // object.toString()
-    public Properties getStepProperties() {
-        Properties properties = new Properties();
-        Dictionary<?, ?> dict = componentContext.getProperties();
-        Enumeration<?> e = dict.keys();
-        while (e.hasMoreElements()) {
-            Object key = e.nextElement();
-            Object value = dict.get(key);
-            properties.setProperty(key.toString(), value.toString());
-        }
-        return properties;
-    }
-
     private void register(BundleContext context) {
         if (annaService == null) {
             LOGGER.debug("service not set");
@@ -67,5 +83,5 @@ public abstract class AbstractStep {
     
     public abstract boolean checkRequirements(DataBean data);
 
-    public abstract DataBean run(DataBean data) throws Exception;
+    public abstract void run(DataBean data) throws Exception;
 }
