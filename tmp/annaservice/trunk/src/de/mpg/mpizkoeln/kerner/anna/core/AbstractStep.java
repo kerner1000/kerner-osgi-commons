@@ -32,14 +32,12 @@ public abstract class AbstractStep {
     protected void activate(ComponentContext componentContext) {
         this.componentContext = componentContext;
         LOGGER = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
-        LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG,
-                "Step has been activated. Going to register to Service.", null);
+        LOGGER.debug("Step has been activated. Going to register to Service.");
         register(componentContext.getBundleContext());
     }
 
     protected void deactivate(ComponentContext componentContext) {
-        LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG,
-                "Step has been deactivated. Going to unregister from Service.", null);
+        LOGGER.debug("Step has been deactivated. Going to unregister from Service.");
         // TODO: must unregister this step on stepservice
         LOGGER.disable(componentContext.getBundleContext());
         this.componentContext = null;
@@ -51,12 +49,9 @@ public abstract class AbstractStep {
         Properties properties = new Properties();
         Dictionary<?, ?> dict = componentContext.getProperties();
         Enumeration<?> e = dict.keys();
-        // System.err.println(e);
         while (e.hasMoreElements()) {
             Object key = e.nextElement();
-            // System.err.println(key);
             Object value = dict.get(key);
-            // System.err.println(value);
             properties.setProperty(key.toString(), value.toString());
         }
         return properties;
@@ -64,7 +59,7 @@ public abstract class AbstractStep {
 
     private void register(BundleContext context) {
         if (annaService == null) {
-            LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.ERROR, "service not set", null);
+            LOGGER.debug("service not set");
         } else {
             annaService.registerStep(this);
         }

@@ -1,14 +1,5 @@
 package de.mpg.mpizkoeln.kerner.anna.annaservice.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,7 +19,7 @@ public class AnnaServiceImpl implements AnnaService {
     public synchronized void registerStep(AbstractStep step) {
         StepController controller = new StepController(step, data);
         exe.submit(controller);
-        LOGGER.log(this, ToOSGiLogServiceLogger.LEVEL.DEBUG, "registered step " + step, null);
+        LOGGER.debug("registered step " + step);
     }
 
     protected void activate(ComponentContext componentContext) {
