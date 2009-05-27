@@ -11,3 +11,5 @@ Import-Package: de.kerner.osgi.commons.util,
  org.osgi.util.tracker
 Export-Package: de.mpg.mpizkoeln.kerner.anna.annaservice,
  de.mpg.mpizkoeln.kerner.anna.core
+Bundle-ClassPath: lib/bioutils-0.0.1.jar,
+ .

@@ -7,5 +7,6 @@
 		unbind="unsetAnnaService"
 		/>
 		<property name="run.env" value="lsf"/>
-		<property name="input.file" value="/home/pcb/kerner/Dropbox/ref.fasta"/>
+		<property name="input.file.fasta" value="/home/pcb/kerner/Dropbox/ref.fasta"/>
+		<property name="input.file.gtf" value="/home/pcb/kerner/Dropbox/ref.gtf"/>
 </component>

@@ -28,6 +28,7 @@ class StepController implements Callable<Void> {
         // TODO Lock data file
         data = step.run(data);
         // TODO Unlock data file
+        AnnaServiceImpl.LOGGER.debug("Step " + step + " finished, notifying others");
         Thread.currentThread().notifyAll();
         return null;
     }
