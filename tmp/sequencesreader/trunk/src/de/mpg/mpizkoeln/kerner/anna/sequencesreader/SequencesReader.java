@@ -29,12 +29,11 @@ public class SequencesReader extends AbstractStep {
 	}
 
 	@Override
-	public DataBean run(DataBean data) throws Exception {
+	public void run(DataBean data) throws Exception {
 		AbstractStep.LOGGER
 				.debug("We have been activated. Going to do our thing");
 		readFASTA(data);
 		readGTF(data);
-		return data;
 	}
 
 	private void readFASTA(DataBean data) throws IOException {
