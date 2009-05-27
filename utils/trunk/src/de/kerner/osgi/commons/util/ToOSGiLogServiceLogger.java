@@ -6,7 +6,7 @@ import org.osgi.util.tracker.ServiceTracker;
 
 public class ToOSGiLogServiceLogger {
 
-    public static enum LEVEL {
+    private static enum LEVEL {
         INFO, DEBUG, WARN, ERROR
     }
 
@@ -32,28 +32,34 @@ public class ToOSGiLogServiceLogger {
         this.disabled = true;
     }
 
-    public void log(Object o, LEVEL level, String message, Throwable t) {
-        final String cannotLogString = "could not deliver log message:\n " + message + " " + t;
+    public void debug(Object o){
+    	log(LEVEL.DEBUG, o, null);
+    }
+    
+    public void debug(Object o, Throwable t){
+    	log(LEVEL.DEBUG, o, t);
+    }
+    
+    private void log(LEVEL level, Object o, Throwable t) {
+        final String cannotLogString = "could not deliver log message:\n " + o;
         if(disabled){
             cannotLog(cannotLogString);
             return;
         }
-            
         LogService logservice = (LogService) logServiceTracker.getService();
         if (logservice != null) {
             switch (level) {
                 case DEBUG:
-                    logservice.log(LogService.LOG_DEBUG, message, t);
+                    logservice.log(LogService.LOG_DEBUG, o.toString(), t);
                     break;
                 case ERROR:
-                    logservice.log(LogService.LOG_ERROR, message, t);
+                    logservice.log(LogService.LOG_ERROR, o.toString(), t);
                 case INFO:
-                    logservice.log(LogService.LOG_INFO, message, t);
+                    logservice.log(LogService.LOG_INFO, o.toString(), t);
                 case WARN:
-                    logservice.log(LogService.LOG_WARNING, message, t);
+                    logservice.log(LogService.LOG_WARNING, o.toString(), t);
                 default:
-                    logservice.log(LogService.LOG_INFO, message, t);
-                    break;
+                    throw new RuntimeException("cannot be!");
             }
         } else {
             cannotLog(cannotLogString);
