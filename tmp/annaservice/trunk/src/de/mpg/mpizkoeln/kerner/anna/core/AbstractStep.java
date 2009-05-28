@@ -68,12 +68,20 @@ public abstract class AbstractStep {
 
     protected void deactivate(ComponentContext componentContext) {
         LOGGER.debug("Step has been deactivated. Going to unregister from Service.");
-        // TODO: must unregister this step on stepservice
+        unregister(componentContext.getBundleContext());
         LOGGER.disable(componentContext.getBundleContext());
         this.componentContext = null;
     }
 
-    private void register(BundleContext context) {
+    private void unregister(BundleContext bundleContext) {
+    	if (annaService == null) {
+            LOGGER.debug("service not set");
+        } else {
+            annaService.unregisterStep(this);
+        }
+	}
+
+	private void register(BundleContext context) {
         if (annaService == null) {
             LOGGER.debug("service not set");
         } else {
@@ -81,7 +89,7 @@ public abstract class AbstractStep {
         }
     }
     
-    public abstract boolean checkRequirements(DataBean data);
+    public abstract boolean checkRequirements();
 
-    public abstract void run(DataBean data) throws Exception;
+    public abstract void run() throws Exception;
 }

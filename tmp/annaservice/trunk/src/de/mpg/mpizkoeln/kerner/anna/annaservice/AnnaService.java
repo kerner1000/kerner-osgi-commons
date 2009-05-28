@@ -5,5 +5,7 @@ import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
 public interface AnnaService {
 
     public void registerStep(AbstractStep step);
+
+	public void unregisterStep(AbstractStep abstractStep);
     
 }

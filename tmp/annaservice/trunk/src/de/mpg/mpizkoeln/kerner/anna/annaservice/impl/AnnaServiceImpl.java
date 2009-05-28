@@ -8,19 +8,21 @@ import org.osgi.service.component.ComponentContext;
 import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
 import de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpizkoeln.kerner.anna.core.DataBean;
 
 public class AnnaServiceImpl implements AnnaService {
 
     static ToOSGiLogServiceLogger LOGGER = null;
-    private final DataBean data = new DataBean();
     private final ExecutorService exe = Executors.newCachedThreadPool();
     
     public synchronized void registerStep(AbstractStep step) {
-        StepController controller = new StepController(step, data);
+        StepController controller = new StepController(step);
         exe.submit(controller);
         LOGGER.debug("registered step " + step);
     }
+    
+    public synchronized void unregisterStep(AbstractStep abstractStep) {
+		// TODO Auto-generated method stub
+	}
 
     protected void activate(ComponentContext componentContext) {
         LOGGER = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
