@@ -91,7 +91,7 @@ public class DataBeanProxy {
 				data.setValidatedFASTASeqs(sequences);
 			}
 		};
-		exe.submit(new Hans(m)).get();
+		//exe.submit(new Hans(m)).get();
 	}
 
 	public static synchronized void setValidatedGTFs(final ArrayList<GTFElement> elements) throws Exception {
