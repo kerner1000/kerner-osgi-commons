@@ -2,6 +2,7 @@ package de.mpg.mpizkoeln.kerner.anna.sequencesreader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.bioutils.fasta.FASTAFile;
@@ -21,7 +22,7 @@ public class SequencesReader extends AbstractStep {
 
 	@Override
 	public boolean checkRequirements() {
-		AbstractStep.LOGGER.debug("Properties: " + getStepProperties());
+		AbstractStep.LOGGER.debug(this, "Properties: " + getStepProperties());
 		return new File(getStepProperties().getProperty(INPUT_FILE_FASTA))
 				.canRead()
 				&& new File(getStepProperties().getProperty(INPUT_FILE_GTF))
@@ -31,21 +32,21 @@ public class SequencesReader extends AbstractStep {
 	@Override
 	public void run() throws Exception {
 		AbstractStep.LOGGER
-				.debug("We have been activated. Going to do our thing");
+				.debug(this, "We have been activated. Going to do our thing");
 		readFASTA();
-		//readGTF();
+		readGTF();
 	}
 
 	private void readFASTA() throws Exception {
 		try {
 		File file = new File(getStepProperties().getProperty(INPUT_FILE_FASTA));
-		AbstractStep.LOGGER.debug("Reading FASTA-File from " + file);
+		AbstractStep.LOGGER.debug(this, "Reading FASTA-File from " + file);
 		LazyStringReader reader = new LazyStringReader(file);
-		AbstractStep.LOGGER.debug("Done reading FASTA-File from " + file);
+		AbstractStep.LOGGER.debug(this, "Done reading FASTA-File from " + file);
 		FASTAFile fastaFile = new FASTAFile(reader.getString());
-		final Collection<FASTASequence> sequences = fastaFile.getSequences();
+		final ArrayList<FASTASequence> sequences = fastaFile.getSequences();
 		DataBeanProxy.setValidatedFASTASeqs(sequences);
-		AbstractStep.LOGGER.debug("Updated DataBean");
+		AbstractStep.LOGGER.debug(this, "Updated DataBean");
 		}catch(Throwable t){
 			t.printStackTrace();
 		}
@@ -55,13 +56,13 @@ public class SequencesReader extends AbstractStep {
 		try {
 			File file = new File(getStepProperties()
 					.getProperty(INPUT_FILE_GTF));
-			AbstractStep.LOGGER.debug("Reading GTF-File from " + file);
+			AbstractStep.LOGGER.debug(this, "Reading GTF-File from " + file);
 			LazyStringReader reader = new LazyStringReader(file);
-			AbstractStep.LOGGER.debug("Done reading GTF-File from " + file);
+			AbstractStep.LOGGER.debug(this, "Done reading GTF-File from " + file);
 			GTFFile gtfFile = new GTFFile(reader.getString());
-			Collection<GTFElement> elements = gtfFile.getElements();
+			ArrayList<GTFElement> elements = gtfFile.getElements();
 			DataBeanProxy.setValidatedGTFs(elements);
-			AbstractStep.LOGGER.debug("Updated DataBean");
+			AbstractStep.LOGGER.debug(this, "Updated DataBean");
 
 		} catch (Throwable t) {
 			t.printStackTrace();

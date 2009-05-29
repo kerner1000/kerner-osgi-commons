@@ -9,7 +9,9 @@ public class ToOSGiLogServiceLogger {
     private static enum LEVEL {
         INFO, DEBUG, WARN, ERROR
     }
-
+    
+    private final static String THROWER_PREFIX = "from: ";
+    private final static String THROWER_POSTFIX = " ";
     private ServiceTracker logServiceTracker = null;
     private boolean disabled = false;
 
@@ -32,12 +34,12 @@ public class ToOSGiLogServiceLogger {
         this.disabled = true;
     }
 
-    public void debug(Object o){
-    	log(LEVEL.DEBUG, o, null);
+    public void debug(Object cause, Object o){
+    	log(LEVEL.DEBUG, THROWER_PREFIX + cause.getClass().getSimpleName() + THROWER_POSTFIX + o, null);
     }
     
-    public void debug(Object o, Throwable t){
-    	log(LEVEL.DEBUG, o, t);
+    public void debug(Object cause, Object o, Throwable t){
+    	log(LEVEL.DEBUG, THROWER_PREFIX + cause + THROWER_POSTFIX + o, t);
     }
     
     private void log(LEVEL level, Object o, Throwable t) {

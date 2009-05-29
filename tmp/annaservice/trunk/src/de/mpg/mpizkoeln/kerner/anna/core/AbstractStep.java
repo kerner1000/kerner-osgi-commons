@@ -62,12 +62,12 @@ public abstract class AbstractStep {
     protected void activate(ComponentContext componentContext) {
         this.componentContext = componentContext;
         LOGGER = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
-        LOGGER.debug("Step has been activated. Going to register to Service.");
+        LOGGER.debug(this, "Step has been activated. Going to register to Service.");
         register(componentContext.getBundleContext());
     }
 
     protected void deactivate(ComponentContext componentContext) {
-        LOGGER.debug("Step has been deactivated. Going to unregister from Service.");
+        LOGGER.debug(this, "Step has been deactivated. Going to unregister from Service.");
         unregister(componentContext.getBundleContext());
         LOGGER.disable(componentContext.getBundleContext());
         this.componentContext = null;
@@ -75,7 +75,7 @@ public abstract class AbstractStep {
 
     private void unregister(BundleContext bundleContext) {
     	if (annaService == null) {
-            LOGGER.debug("service not set");
+            LOGGER.debug(this, "service not set");
         } else {
             annaService.unregisterStep(this);
         }
@@ -83,7 +83,7 @@ public abstract class AbstractStep {
 
 	private void register(BundleContext context) {
         if (annaService == null) {
-            LOGGER.debug("service not set");
+            LOGGER.debug(this, "service not set");
         } else {
             annaService.registerStep(this);
         }

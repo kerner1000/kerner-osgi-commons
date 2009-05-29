@@ -11,13 +11,13 @@ import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
 
 public class AnnaServiceImpl implements AnnaService {
 
-    static ToOSGiLogServiceLogger LOGGER = null;
+    public static ToOSGiLogServiceLogger LOGGER = null;
     private final ExecutorService exe = Executors.newCachedThreadPool();
     
     public synchronized void registerStep(AbstractStep step) {
         StepController controller = new StepController(step);
         exe.submit(controller);
-        LOGGER.debug("registered step " + step);
+        LOGGER.debug(this, "registered step " + step);
     }
     
     public synchronized void unregisterStep(AbstractStep abstractStep) {

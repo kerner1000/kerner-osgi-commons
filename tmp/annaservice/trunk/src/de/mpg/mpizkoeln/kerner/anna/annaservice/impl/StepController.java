@@ -18,7 +18,7 @@ class StepController implements Callable<Void> {
 	private void waitForReqs() throws InterruptedException {
 		synchronized (step) {
 			while (!step.checkRequirements()) {
-				AnnaServiceImpl.LOGGER.debug("Requirements for step " + step
+				AnnaServiceImpl.LOGGER.debug(this, "Requirements for step " + step
 						+ " not satisfied. Putting it to sleep.");
 				this.wait();
 			}
@@ -26,7 +26,7 @@ class StepController implements Callable<Void> {
 	}
 
 	private void activate() throws Exception {
-		AnnaServiceImpl.LOGGER.debug("Activating step " + step);
+		AnnaServiceImpl.LOGGER.debug(this, "Activating step " + step);
 		if (step.getEnvironment().equals(AbstractStep.Environment.LOCAL)) {
 			// call "call()" directly, so that this method will run in
 			// current thread.
@@ -43,12 +43,12 @@ class StepController implements Callable<Void> {
 		try {
 			waitForReqs();
 			activate();
-			AnnaServiceImpl.LOGGER.debug("Step " + step + " finished");
+			AnnaServiceImpl.LOGGER.debug(this, "Step " + step + " finished");
 		} catch (InterruptedException e) {
-			AnnaServiceImpl.LOGGER.debug("Step " + step
+			AnnaServiceImpl.LOGGER.debug(this, "Step " + step
 					+ " has been interrupted");
 		} finally {
-			AnnaServiceImpl.LOGGER.debug("Step " + step
+			AnnaServiceImpl.LOGGER.debug(this, "Step " + step
 					+ " is done, notifying others");
 			this.notifyAll();
 		}
