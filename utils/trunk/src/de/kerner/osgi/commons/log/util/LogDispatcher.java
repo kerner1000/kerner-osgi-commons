@@ -1,21 +1,21 @@
-package de.kerner.osgi.commons.util;
+package de.kerner.osgi.commons.log.util;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
-public class ToOSGiLogServiceLogger {
+public class LogDispatcher {
 
     private static enum LEVEL {
         INFO, DEBUG, WARN, ERROR
     }
     
-    private final static String THROWER_PREFIX = "from: ";
+    private final static String THROWER_PREFIX = " ";
     private final static String THROWER_POSTFIX = " ";
     private ServiceTracker logServiceTracker = null;
     private boolean disabled = false;
 
-    public ToOSGiLogServiceLogger(BundleContext context) {
+    public LogDispatcher(BundleContext context) {
         logServiceTracker =
                 new ServiceTracker(context, org.osgi.service.log.LogService.class.getName(), null);
         logServiceTracker.open();

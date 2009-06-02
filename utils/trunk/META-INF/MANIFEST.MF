@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Util Plug-in
-Bundle-SymbolicName: de.kerner.osgi.commons.util
+Bundle-Name: Log Util Plug-in
+Bundle-SymbolicName: de.kerner.osgi.commons.log.util
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework,
  org.osgi.service.log,
  org.osgi.util.tracker
-Export-Package: de.kerner.osgi.commons.util
+Export-Package: de.kerner.osgi.commons.log.util
