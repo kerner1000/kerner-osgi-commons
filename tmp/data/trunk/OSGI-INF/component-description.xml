@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="data">
+	<implementation class="de.mpg.mpizkoeln.kerner.anna.data.DataBeanProxyImpl"/>
+	<service>
+		<provide interface="de.mpg.mpizkoeln.kerner.anna.data.DataBeanProxy"/>
+	</service>
+	<property name="file" value="/home/pcb/kerner/Dropbox/data.xml"/>
+</component>

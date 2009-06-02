@@ -5,13 +5,13 @@ import java.util.concurrent.Executors;
 
 import org.osgi.service.component.ComponentContext;
 
-import de.kerner.osgi.commons.util.ToOSGiLogServiceLogger;
+import de.kerner.osgi.commons.log.util.LogDispatcher;
 import de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService;
 import de.mpg.mpizkoeln.kerner.anna.core.AbstractStep;
 
 public class AnnaServiceImpl implements AnnaService {
 
-    public static ToOSGiLogServiceLogger LOGGER = null;
+    public static LogDispatcher LOGGER = null;
     private final ExecutorService exe = Executors.newCachedThreadPool();
     
     public synchronized void registerStep(AbstractStep step) {
@@ -25,7 +25,7 @@ public class AnnaServiceImpl implements AnnaService {
 	}
 
     protected void activate(ComponentContext componentContext) {
-        LOGGER = new ToOSGiLogServiceLogger(componentContext.getBundleContext());
+        LOGGER = new LogDispatcher(componentContext.getBundleContext());
     }
 
     protected void deactivate(ComponentContext componentContext) {

@@ -6,6 +6,11 @@
 		bind="setAnnaService"
 		unbind="unsetAnnaService"
 		/>
+		<reference name="dataBeanProxy" 
+		interface="de.mpg.mpizkoeln.anna.data.DataBeanProxy"
+		bind="setDataBeanProxy"
+		unbind="unsetDataBeanProxy"
+		/>
 		<property name="run.env" value="local"/>
 		<property name="input.file.fasta" value="/home/pcb/kerner/Dropbox/ref2.fasta"/>
 		<property name="input.file.gtf" value="/home/pcb/kerner/Dropbox/ref2.gtf"/>
