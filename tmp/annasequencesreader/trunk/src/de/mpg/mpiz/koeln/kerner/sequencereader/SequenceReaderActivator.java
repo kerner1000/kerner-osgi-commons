@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.bioutils.LazySequence;
 import org.bioutils.fasta.FASTAFile;
 import org.bioutils.fasta.FASTASequence;
+import org.bioutils.fasta.FASTASequenceImpl;
 import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
@@ -32,12 +34,16 @@ public class SequenceReaderActivator extends AbstractStep {
 	}
 
 	private void doGtf(DataProxy data) throws IOException, GTFFormatErrorException, DataBeanAccessException {
-		AbstractStep.LOGGER.debug(this, "reading GTF file " + fasta);
-		GTFFile gtfFile = new GTFFile(gtf);
-		ArrayList<GTFElement> el = gtfFile.getElements();
-		AbstractStep.LOGGER.debug(this, "done reading gtf, updating data");
-		data.setVerifiedGenesGtf(el);
-		AbstractStep.LOGGER.debug(this, "gtf data updated: " + data);
+		try{
+			AbstractStep.LOGGER.debug(this, "reading GTF file " + gtf);
+			GTFFile gtfFile = new GTFFile(gtf);
+			ArrayList<GTFElement> elements = gtfFile.getElements();
+			AbstractStep.LOGGER.debug(this, "done reading gtf, updating data");
+			data.setVerifiedGenesGtf(elements);
+			AbstractStep.LOGGER.debug(this, "gtf data updated: " + data);
+			}catch(Throwable t){
+				t.printStackTrace();
+			}
 		
 	}
 
