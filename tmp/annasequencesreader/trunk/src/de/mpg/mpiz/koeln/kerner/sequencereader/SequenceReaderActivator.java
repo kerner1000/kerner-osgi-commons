@@ -1,7 +1,7 @@
 package de.mpg.mpiz.koeln.kerner.sequencereader;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.core.DataBean;
+import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
 
 public class SequenceReaderActivator extends AbstractStep {
 
