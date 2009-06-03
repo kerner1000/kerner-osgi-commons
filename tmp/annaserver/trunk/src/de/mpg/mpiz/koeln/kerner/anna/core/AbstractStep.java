@@ -6,13 +6,13 @@ import org.osgi.util.tracker.ServiceTracker;
 
 import de.kerner.osgi.commons.log.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
+import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
 
-public abstract class AbstractStep implements BundleActivator {
+public abstract class AbstractStep implements BundleActivator{
 
 	private final static int TIMEOUT = 4000;
-	private static LogDispatcher LOGGER = null;
+	protected static LogDispatcher LOGGER = null;
 	private BundleContext context = null;
 
 	public static final void main(String[] args) {
@@ -58,7 +58,7 @@ public abstract class AbstractStep implements BundleActivator {
 		}
 	}
 
-	public final DataBean getDataBean() throws InterruptedException {
+	public final DataProxy getDataProxy() throws InterruptedException, DataBeanAccessException {
 		ServiceTracker tracker = new ServiceTracker(context, DataProxy.class
 				.getName(), null);
 		if (tracker == null)
@@ -69,11 +69,11 @@ public abstract class AbstractStep implements BundleActivator {
 		if (proxy == null)
 			throw new RuntimeException("Service null");
 		LOGGER.debug(this, "... got DataProxy " + proxy + ", registering");
-		return proxy.getDataBean();
+		return proxy;
 	}
 
-	public abstract boolean checkRequirements(DataBean data);
+	public abstract boolean checkRequirements(DataProxy data);
 
-	public abstract void run(DataBean data);
+	public abstract void run(DataProxy data) throws Exception;
 
 }

@@ -3,7 +3,8 @@ package de.mpg.mpiz.koeln.kerner.anna.server;
 import java.util.concurrent.Callable;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
+import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
 
 class StepController implements Callable<Boolean> {
 
@@ -21,16 +22,16 @@ class StepController implements Callable<Boolean> {
 		return true;
 	}
 
-	private void run() throws InterruptedException {
+	private void run() throws Exception {
 		synchronized (step) {
 			ServerActivator.LOGGER.debug(this, "running step " + step);
-			step.run(getDataBean());
+			step.run(getDataProxy());
 		}
 	}
 
-	private void waitForReq() throws InterruptedException {
+	private void waitForReq() throws InterruptedException, DataBeanAccessException {
 		synchronized (step) {
-			while (!step.checkRequirements(getDataBean())) {
+			while (!step.checkRequirements(getDataProxy())) {
 				ServerActivator.LOGGER.debug(this, "requirements for step "
 						+ step + " not satisfied, putting it to sleep");
 				this.wait();
@@ -38,9 +39,9 @@ class StepController implements Callable<Boolean> {
 		}
 	}
 
-	private DataBean getDataBean() throws InterruptedException {
+	private DataProxy getDataProxy() throws InterruptedException, DataBeanAccessException {
 		synchronized (step) {
-			return step.getDataBean();
+			return step.getDataProxy();
 		}
 	}
 }
