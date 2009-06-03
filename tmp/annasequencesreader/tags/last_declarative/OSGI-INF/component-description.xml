@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<component name="sequencesReader">
+	<implementation class="de.mpg.mpizkoeln.kerner.anna.sequencesreader.SequencesReader"/>
+    <reference name="annaService" 
+		interface="de.mpg.mpizkoeln.kerner.anna.annaservice.AnnaService"
+		bind="setAnnaService"
+		unbind="unsetAnnaService"
+		/>
+		<reference name="dataBeanProxy" 
+		interface="de.mpg.mpizkoeln.anna.data.DataBeanProxy"
+		bind="setDataBeanProxy"
+		unbind="unsetDataBeanProxy"
+		/>
+		<property name="run.env" value="local"/>
+		<property name="input.file.fasta" value="/home/pcb/kerner/Dropbox/ref2.fasta"/>
+		<property name="input.file.gtf" value="/home/pcb/kerner/Dropbox/ref2.gtf"/>
+</component>
