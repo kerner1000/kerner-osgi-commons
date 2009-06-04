@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import de.kerner.osgi.commons.log.dispatcher.LogDispatcher;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 
 public class ServerActivator implements BundleActivator {
 	

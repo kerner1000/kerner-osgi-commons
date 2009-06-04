@@ -4,7 +4,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kerner.osgi.commons.log.dispatcher.LogDispatcher;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
