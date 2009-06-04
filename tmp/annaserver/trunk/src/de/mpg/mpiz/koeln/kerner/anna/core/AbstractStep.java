@@ -9,9 +9,9 @@ import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
 
-public abstract class AbstractStep implements BundleActivator{
+public abstract class AbstractStep implements BundleActivator {
 
-	private final static int TIMEOUT = 4000;
+	private final static int TIMEOUT = 2000;
 	protected static LogDispatcher LOGGER = null;
 	private BundleContext context = null;
 
@@ -24,38 +24,33 @@ public abstract class AbstractStep implements BundleActivator{
 		try {
 			this.context = context;
 			LOGGER = new LogDispatcher(context);
-			ServiceTracker tracker = new ServiceTracker(context, Server.class
-					.getName(), null);
-			if (tracker == null)
-				throw new RuntimeException("ServiceTracker null");
-			tracker.open();
-			LOGGER.debug(this, "getting Server...");
-			Server server = (Server) tracker.waitForService(TIMEOUT);
-			if (server == null)
-				throw new RuntimeException("Service null");
-
-			LOGGER.debug(this, "... got Server " + server + ", registering");
-			server.registerStep(this);
-
+			registerToServer(getServer(context));
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
-
+	
+	private Server getServer(BundleContext context) throws InterruptedException{
+		ServiceTracker tracker = new ServiceTracker(context, Server.class
+				.getName(), null);
+		if (tracker == null)
+			throw new RuntimeException("ServiceTracker null");
+		tracker.open();
+		LOGGER.debug(this, "getting Server...");
+		Server server = (Server) tracker.waitForService(TIMEOUT);
+		if (server == null)
+			throw new RuntimeException("Service null");
+		LOGGER.debug(this, "... got Server " + server);
+		return server;
+	}
+	
+	private void registerToServer(Server server){
+		LOGGER.debug(this, "registering to Server " + server);
+		server.registerStep(this);
+	}
+	
 	public final void stop(BundleContext context) throws Exception {
-		try {
-			ServiceTracker tracker = new ServiceTracker(context, Server.class
-					.getName(), null);
-			if (tracker == null)
-				throw new RuntimeException("ServiceTracker null");
-			tracker.open();
-			Server server = (Server) tracker.waitForService(TIMEOUT);
-			if (server == null)
-				throw new RuntimeException("Service null");
-			server.unregisterStep(this);
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
+		// TODO Auto-generated method stub
 	}
 
 	public final DataProxy getDataProxy() throws InterruptedException, DataBeanAccessException {
@@ -68,7 +63,7 @@ public abstract class AbstractStep implements BundleActivator{
 		DataProxy proxy = (DataProxy) tracker.waitForService(TIMEOUT);
 		if (proxy == null)
 			throw new RuntimeException("Service null");
-		LOGGER.debug(this, "... got DataProxy " + proxy + ", registering");
+		LOGGER.debug(this, "... got DataProxy " + proxy);
 		return proxy;
 	}
 

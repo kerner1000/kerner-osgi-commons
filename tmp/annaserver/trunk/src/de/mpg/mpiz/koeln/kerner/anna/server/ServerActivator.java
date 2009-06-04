@@ -7,8 +7,6 @@ import org.osgi.framework.BundleContext;
 
 import de.kerner.osgi.commons.log.dispatcher.LogDispatcher;
 
-
-
 public class ServerActivator implements BundleActivator {
 	
 	public static LogDispatcher LOGGER = null;
@@ -27,11 +25,7 @@ public class ServerActivator implements BundleActivator {
 	}
 	
 	public void stop(BundleContext context) throws Exception {
-		try{
-		LOGGER.debug(this, "deactivated");
-		}catch(Throwable t){
-			t.printStackTrace();
-		}
+		// TODO method stub
 	}
 
 }

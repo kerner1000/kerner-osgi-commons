@@ -34,7 +34,7 @@ class StepController implements Callable<Boolean> {
 			while (!step.checkRequirements(getDataProxy())) {
 				ServerActivator.LOGGER.debug(this, "requirements for step "
 						+ step + " not satisfied, putting it to sleep");
-				this.wait();
+				Thread.currentThread().wait();
 			}
 		}
 	}

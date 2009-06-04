@@ -14,11 +14,11 @@ public class ServerImpl implements Server {
 		StepController controller = new StepController(step);
         exe.submit(controller);
         ServerActivator.LOGGER.debug(this, "registered step " + step);
-
 	}
 
 	public synchronized void unregisterStep(AbstractStep step) {
 		ServerActivator.LOGGER.debug(this, "unregistering step " + step);
+		// TODO method stub
 		
 	}
 
