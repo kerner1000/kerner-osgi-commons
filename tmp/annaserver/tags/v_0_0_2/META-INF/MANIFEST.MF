@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Server Plug-in
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server
+Bundle-Version: 0.0.2
+Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.server.ServerActivator
+Import-Package: de.kerner.osgi.commons.log.dispatcher,
+ de.mpg.mpiz.koeln.kerner.dataproxy,
+ org.osgi.framework;version="1.3.0",
+ org.osgi.util.tracker;version="1.3.1"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: de.mpg.mpiz.koeln.kerner.anna.core
