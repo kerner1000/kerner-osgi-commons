@@ -1,5 +1,8 @@
 package de.mpg.mpiz.koeln.kerner.anna.core;
 
+import java.io.File;
+import java.util.Properties;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -11,9 +14,26 @@ import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
 
 public abstract class AbstractStep implements BundleActivator {
 
+	public final static String KEY_ENV = "env";
+	public final static String VALUE_ENV_LOCAL = "env.local";
+	public final static String VALUE_ENV_LSF = "env.lsf";
 	private final static int TIMEOUT = 2000;
 	protected static LogDispatcher LOGGER = null;
 	private BundleContext context = null;
+	private final Properties defaultProperties;
+	private final Properties properties;
+	
+	public AbstractStep(){
+		defaultProperties = initDefaults();
+		properties = new Properties(defaultProperties);
+	}
+	
+	private Properties initDefaults() {
+		Properties pro = new Properties();
+		pro.setProperty(KEY_ENV, VALUE_ENV_LOCAL);
+		return pro;
+	}
+
 
 	public static final void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -65,6 +85,10 @@ public abstract class AbstractStep implements BundleActivator {
 			throw new RuntimeException("Service null");
 		LOGGER.debug(this, "... got DataProxy " + proxy);
 		return proxy;
+	}
+	
+	public Properties getStepProperties(){
+		return properties;
 	}
 
 	public abstract boolean checkRequirements(DataProxy data);

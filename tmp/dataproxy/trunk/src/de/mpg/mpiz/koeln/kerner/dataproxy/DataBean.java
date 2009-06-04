@@ -1,5 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.dataproxy;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,14 +14,15 @@ import de.kerner.commons.file.FileUtils;
 class DataBean implements Serializable {
 
 	private static final long serialVersionUID = 2776955959983685805L;
-	private ArrayList<FASTASequence> sequences = new ArrayList<FASTASequence>();
-	private ArrayList<GTFElement> elements = new ArrayList<GTFElement>();
+	private ArrayList<FASTASequence> sequences = null;
+	private ArrayList<GTFElement> elements = null;
 
 	@SuppressWarnings("unchecked")
-	void addVerifiedGenesFasta(ArrayList<FASTASequence> sequences) {
+	void setVerifiedGenesFasta(ArrayList<? extends FASTASequence> sequences) {
 		if (sequences == null)
 			throw new NullPointerException();
 		try {
+			this.sequences = new ArrayList<FASTASequence>();
 			this.sequences.addAll(Utils.deepCopy(ArrayList.class, sequences));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -29,10 +31,11 @@ class DataBean implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	void addVerifiedGenesGtf(ArrayList<GTFElement> el) {
+	void setVerifiedGenesGtf(ArrayList<? extends GTFElement> el) {
 		if (el == null)
 			throw new NullPointerException();
 		try {
+			this.elements = new ArrayList<GTFElement>();
 			this.elements.addAll(Utils.deepCopy(ArrayList.class, el));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -40,12 +43,34 @@ class DataBean implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	ArrayList<? extends FASTASequence> getVerifiedGenesFasta() {
-		return new ArrayList<FASTASequence>(sequences);
+		ArrayList<FASTASequence> list = null;
+		try {
+			list = new ArrayList<FASTASequence>(Utils.deepCopy(ArrayList.class, sequences));
+		} catch (IOException e) {
+			e.printStackTrace();
+			list = sequences;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			list = sequences;
+		}
+		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	ArrayList<? extends GTFElement> getVerifiedGenesGtf() {
-		return new ArrayList<GTFElement>(elements);
+		ArrayList<GTFElement> list = null;
+		try {
+			list = new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class, elements));
+		} catch (IOException e) {
+			e.printStackTrace();
+			list = elements;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			list = elements;
+		}
+		return list;
 	}
 
 	public String toString() {
@@ -55,9 +80,6 @@ class DataBean implements Serializable {
 		sb.append("FASTAs:");
 		sb.append(FileUtils.NEW_LINE);
 		if (sequences.size() != 0) {
-			System.err.println(sequences.getClass());
-			System.err.println("++"+sequences.get(0)+"++");
-			System.err.println(sequences.get(0).getClass());
 			for (FASTASequence seq : sequences) {
 				sb.append(seq);
 				// sb.append(Utils.NEW_LINE);
@@ -80,7 +102,7 @@ class DataBean implements Serializable {
 				new LazySequence("affe"));
 		ArrayList<FASTASequence> list = new ArrayList<FASTASequence>();
 		list.add(seq);
-		data.addVerifiedGenesFasta(list);
+		data.setVerifiedGenesFasta(list);
 		// FileUtils.objectToXML(data, file);
 		// System.out.println(FileUtils.XMLToObject(DataBean.class, file));
 		System.out.println(data);

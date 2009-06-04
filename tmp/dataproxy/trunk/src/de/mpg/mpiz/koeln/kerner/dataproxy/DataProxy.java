@@ -7,7 +7,7 @@ import org.bioutils.gtf.GTFElement;
 
 public interface DataProxy {
 
-	void setVerifiedGenesGtf(ArrayList<? extends GTFElement> el) throws DataBeanAccessException;
+	void setVerifiedGenesGtf(ArrayList<? extends GTFElement> elements) throws DataBeanAccessException;
 
 	void setVerifiedGenesFasta(ArrayList<? extends FASTASequence> sequences) throws DataBeanAccessException;
 

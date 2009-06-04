@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bioutils.LazySequence;
 import org.bioutils.fasta.FASTAFile;
 import org.bioutils.fasta.FASTASequence;
-import org.bioutils.fasta.FASTASequenceImpl;
 import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
@@ -40,7 +38,7 @@ public class SequenceReaderActivator extends AbstractStep {
 			ArrayList<GTFElement> elements = gtfFile.getElements();
 			AbstractStep.LOGGER.debug(this, "done reading gtf, updating data");
 			data.setVerifiedGenesGtf(elements);
-			AbstractStep.LOGGER.debug(this, "gtf data updated: " + data);
+			AbstractStep.LOGGER.debug(this, "gtf data updated: " + data.getVerifiedGenesGtf());
 			}catch(Throwable t){
 				t.printStackTrace();
 			}
@@ -54,7 +52,7 @@ public class SequenceReaderActivator extends AbstractStep {
 		ArrayList<FASTASequence> sequences = fastaFile.getSequences();
 		AbstractStep.LOGGER.debug(this, "done reading fasta, updating data");
 		data.setVerifiedGenesFasta(sequences);
-		AbstractStep.LOGGER.debug(this, "fasta data updated: " + data);
+		AbstractStep.LOGGER.debug(this, "fasta data updated: " + data.getVerifiedGenesFasta());
 		}catch(Throwable t){
 			t.printStackTrace();
 		}
