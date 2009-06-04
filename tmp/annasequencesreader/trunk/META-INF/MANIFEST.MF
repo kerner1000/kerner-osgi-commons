@@ -5,8 +5,8 @@ Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.sequencereader
 Bundle-Version: 0.0.2
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.sequencereader.SequenceReaderActivator
 Import-Package: de.kerner.osgi.commons.logger.dispatcher,
- de.mpg.mpiz.koeln.kerner.anna.core,
- de.mpg.mpiz.koeln.kerner.dataproxy,
+ de.mpg.mpiz.koeln.kerner.anna.core;version="0.0.2",
+ de.mpg.mpiz.koeln.kerner.dataproxy;version="0.0.1",
  org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: lib/bioutils-0.0.1.jar,
