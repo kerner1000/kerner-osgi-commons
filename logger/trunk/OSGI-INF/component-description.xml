@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<component name="oSGi2ApacheLogger">
-	<implementation class="de.kerner.osgi.commons.logger.OSGi2ApacheLogger"/>
-	<reference name="logReaderService" 
-		interface="org.osgi.service.log.LogReaderService"
-		bind="setLogReaderService"
-		unbind="unsetLogReaderService"
-		/>
-</component>
