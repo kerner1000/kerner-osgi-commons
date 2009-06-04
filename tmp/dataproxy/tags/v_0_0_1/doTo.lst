@@ -1,0 +1,2 @@
+give DataProxyImpl serialization stragegy
+remove deep copy from databean
