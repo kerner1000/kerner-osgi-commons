@@ -1,8 +1,10 @@
 package de.mpg.mpiz.koeln.kerner.anna.core;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Properties;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -43,6 +45,10 @@ public abstract class AbstractStep implements BundleActivator {
 	public final void start(BundleContext context) throws Exception {
 		try {
 			this.context = context;
+			Bundle bundle = context.getBundle();
+			
+			   
+
 			LOGGER = new LogDispatcher(context);
 			registerToServer(getServer(context));
 		} catch (Throwable t) {
