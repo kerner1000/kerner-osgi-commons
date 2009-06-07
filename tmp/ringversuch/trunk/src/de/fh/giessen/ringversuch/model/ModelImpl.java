@@ -10,7 +10,7 @@ public class ModelImpl implements Model {
 
 	public static void main(String args[]){
 		
-		SettingsManager settings = SettingsManager.INSTANCE;
+		SettingsManagerImpl settings = SettingsManagerImpl.INSTANCE;
 		File file0 = new File("C:\\Dokumente und Einstellungen\\Renate\\Desktop\\Ergebnisse_RV_DIN38407-41\\L01_RV_DIN38407-41.xls");
 		File file1 = new File("C:\\Dokumente und Einstellungen\\Renate\\Desktop\\Ergebnisse_RV_DIN38407-41\\L05_RV_DIN38407-41.xls");
 		Collection<File> files = new ArrayList<File>();

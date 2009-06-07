@@ -22,7 +22,7 @@ class Core {
 
 	private final static char REPLACEMENT = '_';
 
-	static Labor readLaborFile(final File file, final SettingsManager settings) throws FileNotFoundException, IOException{
+	static Labor readLaborFile(final File file, final SettingsManagerImpl settings) throws FileNotFoundException, IOException{
 		final POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
 	    final HSSFWorkbook wb = new HSSFWorkbook(fs);
 	    final int no = wb.getNumberOfSheets();
@@ -35,7 +35,7 @@ class Core {
 	    return null;
 	}
 	
-	private static Probe getProbeFromSheet(final HSSFSheet sheet, final SettingsManager settings){
+	private static Probe getProbeFromSheet(final HSSFSheet sheet, final SettingsManagerImpl settings){
 		final int rowIndex = settings.getProbeRowIndex();
 		final HSSFRow row = sheet.getRow(rowIndex);
 		HSSFCell cell = row.getCell(cellnum);
