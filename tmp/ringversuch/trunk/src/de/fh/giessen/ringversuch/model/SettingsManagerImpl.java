@@ -19,9 +19,9 @@ public class SettingsManagerImpl implements SettingsManager {
 	private int laborNoColumn = -1;
 	private final static String PROBE_NO_ROW = "probe.no.row";
 	private int probeNoRow = -1;
-	private final static String PROBE_NO_COLUMN = "labor.no.column";
+	private final static String PROBE_NO_COLUMN = "probe.no.column";
 	private int probeNoCOlumn = -1;
-	private final static String PROBE_VALUE = "probe.value";
+	private final static String PROBE_VALUE = "probe.ident";
 	private String probeValue = null;
 	private final static String SHEET_NO = "sheet.no";
 	private int sheetNo = -1;
@@ -41,8 +41,10 @@ public class SettingsManagerImpl implements SettingsManager {
 	public static final SettingsManagerImpl INSTANCE = new SettingsManagerImpl();
 
 	private SettingsManagerImpl() {
+		
 	}
 
+	@Override
 	public synchronized void loadSettings(final File file) throws IOException,
 			InvalidSettingsException {
 		final FileInputStream in = new FileInputStream(file);
@@ -63,7 +65,6 @@ public class SettingsManagerImpl implements SettingsManager {
 		setValuesStartColumn(currentSettings.getProperty(VALUES_START_COLUMN));
 		setValuesEndRow(currentSettings.getProperty(VALUES_END_ROW));
 		setValuesEndColumn(currentSettings.getProperty(VALUES_END_COLUMN));
-
 	}
 
 	private void setValuesEndColumn(String string)
@@ -167,7 +168,12 @@ public class SettingsManagerImpl implements SettingsManager {
 	private void setLaborNoRow(final String string)
 			throws InvalidSettingsException {
 		int i = -1;
+		try{
 		i = Integer.parseInt(string);
+		}catch(NumberFormatException e){
+			throw new InvalidSettingsException(
+					"Row of labor identifier invalid for value " + string);
+		}
 		if (i > 0)
 			laborNoRow = i - 1;
 		else
@@ -237,7 +243,43 @@ public class SettingsManagerImpl implements SettingsManager {
 		}
 	}
 
+	@Override
 	public int getProbeRowIndex() {
 		return probeNoRow;
+	}
+
+	@Override
+	public int getProbeCellNum() {
+		return probeNoCOlumn;
+	}
+
+	@Override
+	public int getLaborCellNum() {
+		return laborNoColumn;
+	}
+
+	@Override
+	public int getLaborRowIndex() {
+		return laborNoRow;
+	}
+
+	@Override
+	public int getValuesStartColumn() {
+		return valuesStartColumn;
+	}
+
+	@Override
+	public int getValuesStartRow() {
+		return valuesStartRow;
+	}
+
+	@Override
+	public int getValuesEndColumn() {
+		return valuesEndColumn;
+	}
+
+	@Override
+	public int getValuesEndRow() {
+		return valuesEndRow;
 	}
 }

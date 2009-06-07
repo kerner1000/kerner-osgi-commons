@@ -5,10 +5,10 @@ import java.util.Collection;
 class ProbeImpl implements Probe {
 	
 	private final String ident;
-	private final Collection<Substance> substances;
+	private final Collection<Analyse> substances;
 	private final String laborIdent;
 	
-	ProbeImpl(String laborIdent, String ident, Collection<Substance> substances){
+	ProbeImpl(String laborIdent, String ident, Collection<Analyse> substances){
 		this.laborIdent = laborIdent;
 		this.ident = ident;
 		this.substances = substances;
@@ -25,7 +25,7 @@ class ProbeImpl implements Probe {
 	}
 
 	@Override
-	public Collection<Substance> getSubstances() {
+	public Collection<Analyse> getSubstances() {
 		return substances;
 	}
 

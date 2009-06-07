@@ -4,25 +4,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import Exceptions.ProbeNoNotFoundException;
-
 class Core {
 	
 	private Core(){}
 
 	private final static char REPLACEMENT = '_';
+	private final static Logger LOGGER = Logger.getLogger(Core.class);
 
-	static Labor readLaborFile(final File file, final SettingsManagerImpl settings) throws FileNotFoundException, IOException{
+	static Labor readLaborFile(final File file, final SettingsManager settings) throws FileNotFoundException, IOException{
 		final POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
 	    final HSSFWorkbook wb = new HSSFWorkbook(fs);
 	    final int no = wb.getNumberOfSheets();
@@ -35,12 +36,45 @@ class Core {
 	    return null;
 	}
 	
-	private static Probe getProbeFromSheet(final HSSFSheet sheet, final SettingsManagerImpl settings){
+	private static Probe getProbeFromSheet(final HSSFSheet sheet, final SettingsManager settings){
 		final int rowIndex = settings.getProbeRowIndex();
 		final HSSFRow row = sheet.getRow(rowIndex);
-		HSSFCell cell = row.getCell(cellnum);
-		String probe = cell.toString();
-		
+		final HSSFCell cell = row.getCell(settings.getProbeCellNum());
+		final String probe = cell.toString();
+		final String labor = getLaborFromSheet(sheet, settings);
+		System.out.println("ProbeNo Zelle: " + probe);
+		System.out.println("LaborNo Zelle: " + labor);
+		final Collection<Analyse> analyses = getAnalysesFromSheet(sheet, settings);
+		return null;
+	}
+
+	private static Collection<Analyse> getAnalysesFromSheet(
+			final HSSFSheet sheet, final SettingsManager settings) {
+		final int startRow = settings.getValuesStartRow();
+		final int startColumn = settings.getValuesStartColumn();
+		final int endRow = settings.getValuesEndRow();
+		final int endColumn = settings.getValuesEndColumn();
+		final Collection<Analyse> analyses = new ArrayList<Analyse>();
+		HSSFRow currentRow = null;
+		HSSFCell currentCell = null;
+		for(int i = startRow; i<endRow; i++){
+			for(int j = startColumn; j<endColumn;j++){
+				// select cell at i, j
+				currentRow = sheet.getRow(i);
+				currentCell = currentRow.getCell(j);
+				System.out.print(currentCell.toString() + ", ");
+			}
+			System.out.println();
+		}
+		return null;
+	}
+
+	private static String getLaborFromSheet(final HSSFSheet sheet,
+			final SettingsManager settings) {
+		final int rowIndex = settings.getLaborRowIndex();
+		final HSSFRow row = sheet.getRow(rowIndex);
+		final HSSFCell cell = row.getCell(settings.getLaborCellNum());
+		return cell.toString();
 	}
 
 	/**
