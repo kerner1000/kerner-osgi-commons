@@ -75,7 +75,7 @@ public class Read implements ReadWritePOI {
 	private HashMap<String, ArrayList<Double>> labval;
 
 	// are we debugging?
-	private final boolean debug = true;
+	private final boolean debug = false;
 
 	public Read(RingversuchGUI gui) {
 		this.gui = gui;

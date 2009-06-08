@@ -6,6 +6,7 @@ interface Probe {
 	
 	String getIdentifier();
 	String getLaborIdent();
-	Collection<Analyse> getSubstances();
+	Collection<Analyse> getAnalyses();
+	Collection<String> getCommonSubstanceKeys();
 
 }

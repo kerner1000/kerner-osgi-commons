@@ -249,12 +249,12 @@ public class SettingsManagerImpl implements SettingsManager {
 	}
 
 	@Override
-	public int getProbeCellNum() {
+	public int getProbeColumnIndex() {
 		return probeNoCOlumn;
 	}
 
 	@Override
-	public int getLaborCellNum() {
+	public int getLaborColumnIndex() {
 		return laborNoColumn;
 	}
 
@@ -264,22 +264,32 @@ public class SettingsManagerImpl implements SettingsManager {
 	}
 
 	@Override
-	public int getValuesStartColumn() {
+	public int getValuesStartColumnIndex() {
 		return valuesStartColumn;
 	}
 
 	@Override
-	public int getValuesStartRow() {
+	public int getValuesStartRowIndex() {
 		return valuesStartRow;
 	}
 
 	@Override
-	public int getValuesEndColumn() {
+	public int getValuesEndColumnIndex() {
 		return valuesEndColumn;
 	}
 
 	@Override
-	public int getValuesEndRow() {
+	public int getValuesEndRowIndex() {
 		return valuesEndRow;
+	}
+
+	@Override
+	public int getSubstancesColumnIndex() {
+		return substancesColumn;
+	}
+
+	@Override
+	public String getProbeIdent() {
+		return probeValue;
 	}
 }

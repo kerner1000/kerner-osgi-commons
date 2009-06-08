@@ -7,20 +7,24 @@ public interface SettingsManager {
 
 	int getProbeRowIndex();
 
-	int getProbeCellNum();
+	int getProbeColumnIndex();
 
 	void loadSettings(File file) throws IOException, InvalidSettingsException;
 
 	int getLaborRowIndex();
 
-	int getLaborCellNum();
+	int getLaborColumnIndex();
 
-	int getValuesStartRow();
+	int getValuesStartRowIndex();
 
-	int getValuesStartColumn();
+	int getValuesStartColumnIndex();
 
-	int getValuesEndRow();
+	int getValuesEndRowIndex();
 
-	int getValuesEndColumn();
+	int getValuesEndColumnIndex();
+
+	int getSubstancesColumnIndex();
+
+	String getProbeIdent();
 
 }

@@ -6,5 +6,6 @@ interface Analyse {
 
 	String getIdentifier();
 	Collection<Substance> getSubstances();
-	
+	Collection<String> getSubstancesKeys();
+	String getValueForSubstance(String substanceIdent);
 }
