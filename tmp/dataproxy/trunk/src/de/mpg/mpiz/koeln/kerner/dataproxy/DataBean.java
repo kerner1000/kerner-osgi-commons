@@ -17,60 +17,68 @@ class DataBean implements Serializable {
 	private ArrayList<FASTASequence> sequences = null;
 	private ArrayList<GTFElement> elements = null;
 
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	void setVerifiedGenesFasta(ArrayList<? extends FASTASequence> sequences) {
 		if (sequences == null)
 			throw new NullPointerException();
-		try {
+		//try {
 			this.sequences = new ArrayList<FASTASequence>();
-			this.sequences.addAll(Utils.deepCopy(ArrayList.class, sequences));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//this.sequences.addAll(Utils.deepCopy(ArrayList.class, sequences));
+		//} catch (Exception e) {
+		//	// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}
+			
+			this.sequences.addAll(sequences);
 	}
 
 	@SuppressWarnings("unchecked")
 	void setVerifiedGenesGtf(ArrayList<? extends GTFElement> el) {
 		if (el == null)
 			throw new NullPointerException();
-		try {
+//		try {
 			this.elements = new ArrayList<GTFElement>();
-			this.elements.addAll(Utils.deepCopy(ArrayList.class, el));
-		} catch (Exception e) {
+//			this.elements.addAll(Utils.deepCopy(ArrayList.class, el));
+//		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//			e.printStackTrace();
+//		}
+			
+			this.elements.addAll(el);
 	}
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	ArrayList<? extends FASTASequence> getVerifiedGenesFasta() {
-		ArrayList<FASTASequence> list = null;
-		try {
-			list = new ArrayList<FASTASequence>(Utils.deepCopy(ArrayList.class, sequences));
-		} catch (IOException e) {
-			e.printStackTrace();
-			list = sequences;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			list = sequences;
-		}
-		return list;
+//		ArrayList<FASTASequence> list = null;
+//		try {
+//			list = new ArrayList<FASTASequence>(Utils.deepCopy(ArrayList.class, sequences));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			list = sequences;
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//			list = sequences;
+//		}
+//		return list;
+		
+		return new ArrayList<FASTASequence>(sequences);
 	}
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	ArrayList<? extends GTFElement> getVerifiedGenesGtf() {
-		ArrayList<GTFElement> list = null;
-		try {
-			list = new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class, elements));
-		} catch (IOException e) {
-			e.printStackTrace();
-			list = elements;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			list = elements;
-		}
-		return list;
+//		ArrayList<GTFElement> list = null;
+//		try {
+//			list = new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class, elements));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			list = elements;
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//			list = elements;
+//		}
+//		return list;
+		
+		return new ArrayList<GTFElement>(elements);
 	}
 
 	public String toString() {
