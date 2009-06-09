@@ -1,6 +1,7 @@
 package de.kerner.osgi.commons.logger.dispatcher;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.service.log.LogReaderService;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -13,17 +14,26 @@ public class LogDispatcher {
 	private final static String THROWER_PREFIX = " ";
 	private final static String THROWER_POSTFIX = " ";
 	private final static int TIMEOUT = 1000;
-	private ServiceTracker logServiceTracker = null;
+	private ServiceTracker tracker = null;
 	
+	private boolean getTracker(BundleContext context) {
+		// everything good, we do not need to do anything
+		if (tracker != null)
+			return true;
+
+		tracker = new ServiceTracker(context,
+				org.osgi.service.log.LogService.class.getName(), null);
+		if (tracker == null)
+			return false;
+		return true;
+	}
 
 	public LogDispatcher(BundleContext context) {
-		System.err.println(this + " created");
-		logServiceTracker = new ServiceTracker(context,
-				org.osgi.service.log.LogService.class.getName(), null);
-		if(logServiceTracker == null)
-			throw new RuntimeException("ServiceTracker null");
-		logServiceTracker.open();
-		debug(this, "logging ready");
+		if(getTracker(context)){
+		tracker.open();
+		} else {
+			System.err.println("could not get ServiceTracker for " + org.osgi.service.log.LogService.class.getName());
+		}
 	}
 
 	public void debug(Object cause, Object message) {
@@ -46,7 +56,7 @@ public class LogDispatcher {
 	private void log(LEVEL level, Object o, Throwable t) {
 		final String cannotLogString = "could not deliver log message:\n " + o;
 		try {
-			LogService logservice = (LogService) logServiceTracker
+			LogService logservice = (LogService) tracker
 					.waitForService(TIMEOUT);
 			if (logservice != null) {
 				switch (level) {

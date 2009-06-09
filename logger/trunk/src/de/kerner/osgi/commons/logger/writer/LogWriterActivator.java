@@ -1,52 +1,90 @@
 package de.kerner.osgi.commons.logger.writer;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.log.LogReaderService;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-
 public class LogWriterActivator implements BundleActivator {
 
+	private static final String LOG_PROPERTIES = "/home/pcb/kerner/Dropbox/log.properties";
 	private final static int TIMEOUT = 4000;
+	private final static Logger LOGGER = Logger
+			.getLogger(LogWriterActivator.class);
+	private ServiceTracker tracker = null;
+	private LogReaderService logReaderService = null;
+
+	public LogWriterActivator() {
+		PropertyConfigurator.configure(LOG_PROPERTIES);
+	}
 
 	public void start(BundleContext context) throws Exception {
+		// TODO remove try catch
 		try {
-			System.err.println(this + " activated");
 			registerListener(context);
-			LogDispatcher logger = new LogDispatcher(context);
-			logger.debug(this, "logging ready");
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
 
 	public void stop(BundleContext context) throws Exception {
+		// TODO remove try catch
 		try {
-			System.err.println(this + " deactivated");
+			if (tracker != null) {
+				tracker.close();
+				tracker = null;
+			}
+
+			if (logReaderService != null) {
+				logReaderService = null;
+			}
+			LOGGER.debug("stoped");
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
 
-	private void registerListener(BundleContext context) throws Exception {
-		ServiceTracker tracker = new ServiceTracker(context,
-				LogReaderService.class.getName(), null);
+	private boolean getTracker(BundleContext context) {
+		// everything good, we do not need to do anything
+		if (tracker != null)
+			return true;
+
+		tracker = new ServiceTracker(context,
+				org.osgi.service.log.LogReaderService.class.getName(), null);
 		if (tracker == null)
-			throw new RuntimeException("ServiceTracker null");
-		tracker.open();
-		System.err.println(this + " waiting for " + LogReaderService.class + "...");
-		LogReaderService logReaderService = (LogReaderService) tracker
-				.waitForService(TIMEOUT);
-		System.err.println(this + " got " + LogReaderService.class + ": "
-				+ logReaderService);
-		if (logReaderService == null)
-			throw new RuntimeException("Service null");
-		logReaderService.addLogListener(new LogWriter());
-		//tracker.close();
-		//tracker = null;
-		//logReaderService = null;
+			return false;
+		return true;
 	}
 
+	private void registerListener(BundleContext context) throws Exception {
+		if (getTracker(context)) {
+			tracker.open();
+			if (getService(tracker)) {
+				LOGGER.error("got Service, registering listener");
+				logReaderService.addLogListener(new LogWriter());
+			} else {
+				LOGGER.error("could not get "
+						+ LogReaderService.class.getName());
+			}
+		} else {
+			LOGGER.error("Could not get ServiceTracker for "
+					+ LogReaderService.class.getName());
+		}
+	}
+
+	private boolean getService(ServiceTracker tracker)
+			throws InterruptedException {
+		// everything good, we do not need to do anything
+		if (logReaderService != null)
+			return true;
+
+		LOGGER.debug("waiting for " + LogReaderService.class);
+		logReaderService = (LogReaderService) tracker
+				.waitForService(TIMEOUT);
+		if (logReaderService == null)
+			return false;
+		return true;
+	}
 }

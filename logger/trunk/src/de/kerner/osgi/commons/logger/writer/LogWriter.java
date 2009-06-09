@@ -1,7 +1,6 @@
 package de.kerner.osgi.commons.logger.writer;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
@@ -10,12 +9,6 @@ import org.osgi.service.log.LogService;
 class LogWriter implements LogListener {
 
 	private static Logger LOGGER = Logger.getLogger(LogWriter.class);
-	private static String LOG_PROPERTIES = "/home/pcb/kerner/Dropbox/log.properties";
-	
-	LogWriter(){
-		System.err.println(this + " created");
-		PropertyConfigurator.configure(LOG_PROPERTIES);
-	}
 	
 	public void logged(LogEntry entry) {
 		String message = entry.getMessage();
