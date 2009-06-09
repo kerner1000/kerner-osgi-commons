@@ -2,13 +2,10 @@ package de.mpg.mpiz.koeln.kerner.dataproxy;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
-
-import de.kerner.commons.file.FileUtils;
 
 class DataProxyImpl implements DataProxy {
 
