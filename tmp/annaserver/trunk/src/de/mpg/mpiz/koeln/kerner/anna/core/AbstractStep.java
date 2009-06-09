@@ -24,6 +24,8 @@ public abstract class AbstractStep implements BundleActivator {
 	private BundleContext context = null;
 	private final Properties defaultProperties;
 	private final Properties properties;
+	private AbstractStep instance = null;
+	private DataProxy data = null;
 	
 	public AbstractStep(){
 		defaultProperties = initDefaults();
@@ -38,8 +40,16 @@ public abstract class AbstractStep implements BundleActivator {
 
 
 	public static final void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 
+	}
+	
+	public void setDataProxy(DataProxy data){
+		this.data = data;
+	}
+	
+	public void setInstance(AbstractStep step){
+		this.instance = step;
 	}
 
 	public final void start(BundleContext context) throws Exception {

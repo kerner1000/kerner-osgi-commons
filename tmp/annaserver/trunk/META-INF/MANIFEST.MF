@@ -4,12 +4,12 @@ Bundle-Name: Server Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server
 Bundle-Version: 0.0.2
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.server.ServerActivator
-Import-Package: de.kerner.commons.other,
- de.kerner.osgi.commons.logger.dispatcher,
+Import-Package: de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.kerner.anna.core;version="0.0.2",
  de.mpg.mpiz.koeln.kerner.dataproxy;version="0.0.1",
  org.osgi.framework,
  org.osgi.util.tracker
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.mpg.mpiz.koeln.kerner.anna.core;version="0.0.2"
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/kerner-commons-0.0.1.jar

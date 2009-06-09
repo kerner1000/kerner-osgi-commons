@@ -13,8 +13,8 @@ public class ServerActivator implements BundleActivator {
 	
 	@SuppressWarnings("unchecked")
 	public void start(BundleContext context) throws Exception {
+		// TODO remove try catch
 		try{
-		System.err.println(this + " activated");
 		LOGGER = new LogDispatcher(context);
 		Server service = new ServerImpl();
 		context.registerService(Server.class.getName(), service, new Hashtable());
