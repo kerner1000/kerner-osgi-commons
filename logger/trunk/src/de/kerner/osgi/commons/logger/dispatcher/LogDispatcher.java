@@ -1,7 +1,6 @@
 package de.kerner.osgi.commons.logger.dispatcher;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.service.log.LogReaderService;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 

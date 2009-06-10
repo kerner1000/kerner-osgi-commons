@@ -15,7 +15,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	
 	protected void waitForReq() throws InterruptedException, DataBeanAccessException {
 		synchronized (step) {
-			while (!step.checkRequirements(step.getDataProxy())) {
+			while (!step.checkRequirements()) {
 				ServerActivator.LOGGER.debug(this, "requirements for step "
 						+ step + " not satisfied, putting it to sleep");
 				Thread.currentThread().wait();

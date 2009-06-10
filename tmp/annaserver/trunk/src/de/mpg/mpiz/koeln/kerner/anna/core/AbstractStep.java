@@ -1,10 +1,7 @@
 package de.mpg.mpiz.koeln.kerner.anna.core;
 
-import java.io.File;
-import java.net.URL;
 import java.util.Properties;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -15,50 +12,23 @@ import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
 
 public abstract class AbstractStep implements BundleActivator {
-
+	
 	public final static String KEY_ENV = "env";
 	public final static String VALUE_ENV_LOCAL = "env.local";
 	public final static String VALUE_ENV_LSF = "env.lsf";
 	private final static int TIMEOUT = 2000;
 	protected static LogDispatcher LOGGER = null;
 	private BundleContext context = null;
-	private final Properties defaultProperties;
 	private final Properties properties;
-	private AbstractStep instance = null;
-	private DataProxy data = null;
 	
 	public AbstractStep(){
-		defaultProperties = initDefaults();
+		final Properties defaultProperties = initDefaults();
 		properties = new Properties(defaultProperties);
-	}
-	
-	private Properties initDefaults() {
-		Properties pro = new Properties();
-		pro.setProperty(KEY_ENV, VALUE_ENV_LOCAL);
-		return pro;
-	}
-
-
-	public static final void main(String[] args) {
-		
-
-	}
-	
-	public void setDataProxy(DataProxy data){
-		this.data = data;
-	}
-	
-	public void setInstance(AbstractStep step){
-		this.instance = step;
 	}
 
 	public final void start(BundleContext context) throws Exception {
 		try {
 			this.context = context;
-			Bundle bundle = context.getBundle();
-			
-			   
-
 			LOGGER = new LogDispatcher(context);
 			registerToServer(getServer(context));
 		} catch (Throwable t) {
@@ -89,7 +59,7 @@ public abstract class AbstractStep implements BundleActivator {
 		// TODO Auto-generated method stub
 	}
 
-	public final DataProxy getDataProxy() throws InterruptedException, DataBeanAccessException {
+	protected final DataProxy getDataProxy() throws InterruptedException, DataBeanAccessException {
 		ServiceTracker tracker = new ServiceTracker(context, DataProxy.class
 				.getName(), null);
 		if (tracker == null)
@@ -106,9 +76,15 @@ public abstract class AbstractStep implements BundleActivator {
 	public Properties getStepProperties(){
 		return properties;
 	}
+	
+	private Properties initDefaults() {
+		Properties pro = new Properties();
+		pro.setProperty(KEY_ENV, VALUE_ENV_LOCAL);
+		return pro;
+	}
+	
+	public abstract boolean checkRequirements();
 
-	public abstract boolean checkRequirements(DataProxy data);
-
-	public abstract void run(DataProxy data) throws Exception;
+	public abstract void run() throws Exception;
 
 }

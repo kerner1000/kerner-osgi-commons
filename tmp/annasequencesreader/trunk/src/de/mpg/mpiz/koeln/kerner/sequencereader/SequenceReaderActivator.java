@@ -20,15 +20,15 @@ public class SequenceReaderActivator extends AbstractStep {
 	private final File gtf = new File("/home/pcb/kerner/Dropbox/ref2.gtf");
 	
 	@Override
-	public boolean checkRequirements(DataProxy data) {
+	public boolean checkRequirements() {
 		AbstractStep.LOGGER.debug(this, "no requirements needed");
 		return true;
 	}
 
 	@Override
-	public void run(DataProxy data) throws Exception {
-		doFasta(data);
-		doGtf(data);
+	public void run() throws Exception {
+		doFasta(getDataProxy());
+		doGtf(getDataProxy());
 	}
 
 	private void doGtf(DataProxy data) throws IOException, GTFFormatErrorException, DataBeanAccessException {

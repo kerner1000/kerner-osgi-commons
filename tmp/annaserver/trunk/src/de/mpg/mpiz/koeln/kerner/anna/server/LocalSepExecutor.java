@@ -19,7 +19,7 @@ class LocalSepExecutor extends AbstractStepExecutor {
 	private void run() throws Exception {
 		synchronized (step) {
 			ServerActivator.LOGGER.debug(this, "running step " + step);
-			step.run(step.getDataProxy());
+			step.run();
 		}
 	}
 }
