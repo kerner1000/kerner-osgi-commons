@@ -8,10 +8,15 @@ import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
 public class ServerImpl implements Server {
 	
 	 private final ExecutorService exe = Executors.newFixedThreadPool(5);
+	 private final ServerActivator serverActivator;
 	
+	ServerImpl(ServerActivator serverActivator) {
+		this.serverActivator = serverActivator;
+	}
+
 	public synchronized void registerStep(AbstractStep step) {
 		ServerActivator.LOGGER.debug(this, "registering step " + step);
-		StepController controller = new StepController(step);
+		StepController controller = new StepController(step, serverActivator);
         exe.submit(controller);
         ServerActivator.LOGGER.debug(this, "registered step " + step);
 	}

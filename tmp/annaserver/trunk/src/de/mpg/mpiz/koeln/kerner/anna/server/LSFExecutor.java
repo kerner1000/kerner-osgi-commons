@@ -9,47 +9,61 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.kerner.commons.file.LazyStringReader;
 import de.kerner.commons.other.CommandStringBuilder;
+import de.kerner.commons.zip.ZipUtils;
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.utils.AnnaUtils;
 
 class LSFExecutor extends AbstractStepExecutor {
 
 	private final static File JAR_FILE = new File("/home/pcb/kerner/Desktop/"
 			+ "aeffchen" + ".jar");
-	private final static File SER_FILE_PATH = new File("/home/pcb/kerner/Desktop/");
+	private final static File SER_FILE_PATH = new File(
+			"/home/pcb/kerner/Desktop/");
+	private final File fileName = new File(SER_FILE_PATH, "number.ser");
 
-	private static List<String> getCommandList() {
+	private List<String> getCommandList() {
 		final CommandStringBuilder b = new CommandStringBuilder("bsub");
 		b.addFlagCommand("-K");
 		b.addValueCommand("-m", "pcbcomputenodes");
+		b.addValueCommand("-eo", "/home/pcb/kerner/Desktop/java.err");
+		b.addValueCommand("-oo", "/home/pcb/kerner/Desktop/java.out");
 		b.addValueCommand("java", "-jar");
 		b.addFlagCommand(JAR_FILE.getAbsolutePath());
+		b.addFlagCommand(fileName.getAbsolutePath());
 		return b.getCommandList();
 	}
 
-	LSFExecutor(AbstractStep step) {
-		super(step);
-		final Class<? extends AbstractStep> clazz = step.getClass();
-		// JarBuilder.buildJar(clazz, JAR_FILE);
+	LSFExecutor(AbstractStep step, ServerActivator serverActivator) {
+		super(step, serverActivator);
 		try {
-			final File result = new File(clazz.getProtectionDomain()
-					.getCodeSource().getLocation().toURI().getPath());
-			System.out.println("location of class file:" + result);
-			final File ser = new File(SER_FILE_PATH, "number.ser");
-			objectToFile(step, ser);
-			System.out.println(fileToObject(clazz, ser));
+			
+		final Class<? extends AbstractStep> clazz = step.getClass();
+		final File jarFile = new File(clazz.getProtectionDomain()
+				.getCodeSource().getLocation().toURI().getPath());
+		final List<File> list = new ArrayList<File>(){
+			{
+				add(new File("/home/pcb/kerner/Desktop/pipelinetest/plugins/de.mpg.mpiz.koeln.kerner.anna.server_0.0.2.jar"));
+			}
+		};
+		AnnaUtils.ConvertBundleToRunnableJar(jarFile, JAR_FILE, list);
+		ServerActivator.LOGGER.debug(this, "creating serialized databean " + fileName);
+		objectToFile(super.serverActivator.getDataProxy().getDataBean(), fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public Boolean call() throws Exception {
-		final ProcessBuilder builder = new ProcessBuilder(getCommandList());
+		final List<String> list = getCommandList();
+		final ProcessBuilder builder = new ProcessBuilder(list);
 		final Process p = builder.start();
-		ServerActivator.LOGGER.debug(this, "process created:" + p);
+		ServerActivator.LOGGER
+				.debug(this, "process created:" + p + ", " + list);
 		final InputStream is = p.getInputStream();
 		final InputStream os = p.getErrorStream();
 		final LazyStringReader out = new LazyStringReader(is);
@@ -77,8 +91,8 @@ class LSFExecutor extends AbstractStepExecutor {
 		fos.close();
 	}
 
-	private static <V> V fileToObject(Class<V> c, File file) throws IOException,
-			ClassNotFoundException {
+	private static <V> V fileToObject(Class<V> c, File file)
+			throws IOException, ClassNotFoundException {
 		if (c == null || file == null)
 			throw new NullPointerException(c + " + " + file
 					+ " must not be null");

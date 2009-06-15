@@ -8,15 +8,15 @@ class StepController implements Callable<Boolean> {
 
 	private final AbstractStepExecutor exe;
 
-	StepController(AbstractStep step) {
+	StepController(AbstractStep step, ServerActivator serverActivator) {
 		boolean lsf = checkIfLSF(step);
 		if(lsf){
 			ServerActivator.LOGGER.debug(this, "step " + step + " wants to run on LSF");
-			exe = new LSFExecutor(step);
+			exe = new LSFExecutor(step, serverActivator);
 		}
 		else {
 			ServerActivator.LOGGER.debug(this, "running step " + step + " locally");
-			exe = new LocalSepExecutor(step);
+			exe = new LocalSepExecutor(step, serverActivator);
 		}
 	}
 

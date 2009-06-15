@@ -12,31 +12,30 @@ import de.kerner.commons.file.FileUtils;
 public class DataBean implements Serializable {
 
 	private static final long serialVersionUID = 2776955959983685805L;
-	private ArrayList<FASTASequence> sequences = null;
-	private ArrayList<GTFElement> elements = null;
+	private ArrayList<FASTASequence> sequences = new ArrayList<FASTASequence>();
+	private ArrayList<GTFElement> elements = new ArrayList<GTFElement>();
 
-	void setVerifiedGenesFasta(ArrayList<? extends FASTASequence> sequences)
+	public synchronized void setVerifiedGenesFasta(ArrayList<? extends FASTASequence> sequences)
 			throws Exception {
 		if (sequences == null)
 			throw new NullPointerException();
 		this.sequences.addAll(Utils.deepCopy(ArrayList.class, sequences));
 	}
 
-	void setVerifiedGenesGtf(ArrayList<? extends GTFElement> el)
+	public synchronized void setVerifiedGenesGtf(ArrayList<? extends GTFElement> el)
 			throws Exception {
 		if (el == null)
 			throw new NullPointerException();
 		this.elements.addAll(Utils.deepCopy(ArrayList.class, el));
 	}
 
-	ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
+	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
 			throws Exception {
 		return new ArrayList<FASTASequence>(Utils.deepCopy(ArrayList.class,
 				sequences));
-
 	}
 
-	ArrayList<? extends GTFElement> getVerifiedGenesGtf() throws Exception {
+	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf() throws Exception {
 		return new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class, elements));
 	}
 

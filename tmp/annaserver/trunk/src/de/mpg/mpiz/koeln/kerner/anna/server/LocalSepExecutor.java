@@ -3,9 +3,9 @@ package de.mpg.mpiz.koeln.kerner.anna.server;
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
 
 class LocalSepExecutor extends AbstractStepExecutor {
-
-	LocalSepExecutor(AbstractStep step) {
-		super(step);
+	
+	LocalSepExecutor(AbstractStep step, ServerActivator serverActivator) {
+		super(step, serverActivator);
 	}
 
 	public Boolean call() throws Exception {
@@ -19,7 +19,7 @@ class LocalSepExecutor extends AbstractStepExecutor {
 	private void run() throws Exception {
 		synchronized (step) {
 			ServerActivator.LOGGER.debug(this, "running step " + step);
-			step.run();
+			step.run(super.serverActivator.getDataProxy().getDataBean());
 		}
 	}
 }

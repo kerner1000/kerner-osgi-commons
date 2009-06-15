@@ -11,8 +11,8 @@ import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataProxy;
 
 public class SequenceReaderActivator extends AbstractStep {
 	
@@ -20,39 +20,39 @@ public class SequenceReaderActivator extends AbstractStep {
 	private final File gtf = new File("/home/pcb/kerner/Dropbox/ref2.gtf");
 	
 	@Override
-	public boolean checkRequirements() {
-		AbstractStep.LOGGER.debug(this, "no requirements needed");
+	public boolean checkRequirements(DataBean dataBean) {
+		System.out.println("no requirements needed");
 		return true;
 	}
 
 	@Override
-	public void run() throws Exception {
-		doFasta(getDataProxy());
-		doGtf(getDataProxy());
+	public void run(DataBean dataBean) throws Exception {
+		doFasta(dataBean);
+		doGtf(dataBean);
 	}
 
-	private void doGtf(DataProxy data) throws IOException, GTFFormatErrorException, DataBeanAccessException {
+	private void doGtf(DataBean data) throws IOException, GTFFormatErrorException, DataBeanAccessException {
 		try{
-			AbstractStep.LOGGER.debug(this, "reading GTF file " + gtf);
+			System.out.println("reading GTF file " + gtf);
 			GTFFile gtfFile = new GTFFile(gtf);
 			ArrayList<GTFElement> elements = gtfFile.getElements();
-			AbstractStep.LOGGER.debug(this, "done reading gtf, updating data");
+			System.out.println("done reading gtf, updating data");
 			data.setVerifiedGenesGtf(elements);
-			AbstractStep.LOGGER.debug(this, "gtf data updated: " + data.getVerifiedGenesGtf());
+			System.out.println("gtf data updated: " + data.getVerifiedGenesGtf());
 			}catch(Throwable t){
 				t.printStackTrace();
 			}
 		
 	}
 
-	private void doFasta(DataProxy data) throws IOException, DataBeanAccessException {
+	private void doFasta(DataBean data) throws IOException, DataBeanAccessException {
 		try{
-		AbstractStep.LOGGER.debug(this, "reading FASTA file " + fasta);
+		System.out.println("reading FASTA file " + fasta);
 		FASTAFile fastaFile = new FASTAFile(fasta);
 		ArrayList<FASTASequence> sequences = fastaFile.getSequences();
-		AbstractStep.LOGGER.debug(this, "done reading fasta, updating data");
+		System.out.println("done reading fasta, updating data");
 		data.setVerifiedGenesFasta(sequences);
-		AbstractStep.LOGGER.debug(this, "fasta data updated: " + data.getVerifiedGenesFasta());
+		System.out.println("fasta data updated: " + data.getVerifiedGenesFasta());
 		}catch(Throwable t){
 			t.printStackTrace();
 		}
