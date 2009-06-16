@@ -16,7 +16,6 @@ class LocalSepExecutor extends AbstractStepExecutor {
 		System.out.println(this + ": step " + step + " done");
 		synchronized (provider) {
 			provider.notifyAll();
-			//notifyAll();
 		}
 		return true;
 	}
