@@ -15,49 +15,71 @@ import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
 
 public class SequenceReaderActivator extends AbstractStep {
-	
-	private final File fasta = new File("/home/pcb/kerner/Dropbox/ref2.fasta");
-	private final File gtf = new File("/home/pcb/kerner/Dropbox/ref2.gtf");
-	
+
+	private final static String FASTA_KEY = "fasta";
+	private final static String GTF_KEY = "gtf";
+	private final static String DEFAULT_FASTA_PATH = "/home/pcb/kerner/Dropbox/ref2.fasta";
+	private final static String DEFAULT_GTF_PATH = "/home/pcb/kerner/Dropbox/ref2.gtf";
+	// TODO to external properties
+	private final File fasta;
+	private final File gtf;
+
+	public SequenceReaderActivator() {
+		final String fastaPath = super.getStepProperties().getProperty(
+				FASTA_KEY, DEFAULT_FASTA_PATH);
+		System.out.println(this + ": got path for FASTA: " + fastaPath);
+		final String gtfPath = super.getStepProperties().getProperty(GTF_KEY,
+				DEFAULT_GTF_PATH);
+		System.out.println(this + ": got path for GTF: " + gtfPath);
+		fasta = new File(fastaPath);
+		gtf = new File(gtfPath);
+	}
+
 	@Override
 	public boolean checkRequirements(DataBean dataBean) {
-		System.out.println("no requirements needed");
+		System.out.println(this + ": no requirements needed");
 		return true;
 	}
 
 	@Override
-	public void run(DataBean dataBean) throws Exception {
-		doFasta(dataBean);
-		doGtf(dataBean);
+	public DataBean run(DataBean dataBean) throws Exception {
+		DataBean data = doFasta(dataBean);
+		data = doGtf(dataBean);
+		return data;
 	}
 
-	private void doGtf(DataBean data) throws IOException, GTFFormatErrorException, DataBeanAccessException {
-		try{
-			System.out.println("reading GTF file " + gtf);
-			GTFFile gtfFile = new GTFFile(gtf);
-			ArrayList<GTFElement> elements = gtfFile.getElements();
-			System.out.println("done reading gtf, updating data");
+	private DataBean doGtf(DataBean data) throws IOException,
+			GTFFormatErrorException, DataBeanAccessException {
+		// TODO remove try catch
+		try {
+			System.out.println(this + ": reading GTF file " + gtf);
+			final GTFFile gtfFile = new GTFFile(gtf);
+			final ArrayList<GTFElement> elements = gtfFile.getElements();
+			System.out.println(this + ": done reading gtf, updating data");
 			data.setVerifiedGenesGtf(elements);
-			System.out.println("gtf data updated: " + data.getVerifiedGenesGtf());
-			}catch(Throwable t){
-				t.printStackTrace();
-			}
-		
-	}
-
-	private void doFasta(DataBean data) throws IOException, DataBeanAccessException {
-		try{
-		System.out.println("reading FASTA file " + fasta);
-		FASTAFile fastaFile = new FASTAFile(fasta);
-		ArrayList<FASTASequence> sequences = fastaFile.getSequences();
-		System.out.println("done reading fasta, updating data");
-		data.setVerifiedGenesFasta(sequences);
-		System.out.println("fasta data updated: " + data.getVerifiedGenesFasta());
-		}catch(Throwable t){
+			System.out.println(this + ": gtf data updated: "
+					+ data.getVerifiedGenesGtf());
+		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+		return data;
 	}
 
-	
+	private DataBean doFasta(DataBean data) throws IOException,
+			DataBeanAccessException {
+		// TODO remove try catch
+		try {
+			System.out.println(this + ": reading FASTA file " + fasta);
+			final FASTAFile fastaFile = new FASTAFile(fasta);
+			final ArrayList<FASTASequence> sequences = fastaFile.getSequences();
+			System.out.println(this + ": done reading fasta, updating data");
+			data.setVerifiedGenesFasta(sequences);
+			System.out.println(this + ": fasta data updated: "
+					+ data.getVerifiedGenesFasta());
 
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		return data;
+	}
 }

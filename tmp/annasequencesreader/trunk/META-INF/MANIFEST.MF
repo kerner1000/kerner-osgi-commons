@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Sequencereader Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.sequencereader
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.3
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.sequencereader.SequenceReaderActivator
 Import-Package: de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.kerner.anna.core,
