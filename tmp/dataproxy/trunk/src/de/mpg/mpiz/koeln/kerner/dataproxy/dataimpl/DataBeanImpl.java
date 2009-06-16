@@ -1,15 +1,16 @@
-package de.mpg.mpiz.koeln.kerner.dataproxy;
+package de.mpg.mpiz.koeln.kerner.dataproxy.dataimpl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
 
+import de.kerner.commons.Utils;
 import de.kerner.commons.file.FileUtils;
+import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBean;
 
 @SuppressWarnings("unchecked")
-public class DataBean implements Serializable {
+public class DataBeanImpl implements DataBean {
 
 	private static final long serialVersionUID = 2776955959983685805L;
 	private ArrayList<FASTASequence> sequences = new ArrayList<FASTASequence>();

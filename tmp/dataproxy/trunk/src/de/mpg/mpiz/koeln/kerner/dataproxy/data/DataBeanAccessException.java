@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.kerner.dataproxy;
+package de.mpg.mpiz.koeln.kerner.dataproxy.data;
 
 public class DataBeanAccessException extends Exception {
 
