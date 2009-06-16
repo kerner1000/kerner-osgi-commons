@@ -1,7 +1,5 @@
 package de.mpg.mpiz.koeln.kerner.anna.core;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
@@ -9,9 +7,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.anna.utils.AnnaUtils;
 import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
 
 public abstract class AbstractStep implements BundleActivator {
@@ -20,7 +16,7 @@ public abstract class AbstractStep implements BundleActivator {
 	public final static String VALUE_ENV_LOCAL = "env.local";
 	public final static String VALUE_ENV_LSF = "env.lsf";
 	private final static int TIMEOUT = 2000;
-	private static LogDispatcher LOGGER = null;
+//	private static LogDispatcher LOGGER = null;
 	private final Properties properties;
 	// TODO obsolete
 	public Bundle bundle;
@@ -31,9 +27,10 @@ public abstract class AbstractStep implements BundleActivator {
 	}
 
 	public final void start(BundleContext context) throws Exception {
+		// TODO remove try catch
 		try {
 			this.bundle = context.getBundle();
-			LOGGER = new LogDispatcher(context);
+//			LOGGER = new LogDispatcher(context);
 			registerToServer(getServer(context));
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -46,16 +43,16 @@ public abstract class AbstractStep implements BundleActivator {
 		if (tracker == null)
 			throw new RuntimeException("ServiceTracker null");
 		tracker.open();
-		LOGGER.debug(this, "getting Server...");
+		System.out.println(this + ": getting Server...");
 		Server server = (Server) tracker.waitForService(TIMEOUT);
 		if (server == null)
 			throw new RuntimeException("Service null");
-		LOGGER.debug(this, "... got Server " + server);
+		System.out.println(this + ": ... got Server " + server);
 		return server;
 	}
 
 	private void registerToServer(Server server) {
-		LOGGER.debug(this, "registering to Server " + server);
+		System.out.println(this + ": registering to Server " + server);
 		server.registerStep(this);
 	}
 
@@ -75,22 +72,6 @@ public abstract class AbstractStep implements BundleActivator {
 
 	public abstract boolean checkRequirements(DataBean data);
 
-	public abstract void run(DataBean data) throws Exception;
-
-	public static final void main(String[] args) {
-		final String path = args[0];
-		final File file = new File(path);
-		try {
-			final DataBean data = AnnaUtils
-					.fileToObject(DataBean.class, file);
-			System.err.println("!!!--"+data+"---!!!");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	public abstract DataBean run(DataBean data) throws Exception;
 
 }
