@@ -1,5 +1,9 @@
 package de.mpg.mpiz.koeln.kerner.anna.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
@@ -12,6 +16,7 @@ import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
 
 public abstract class AbstractStep implements BundleActivator {
 
+	private final static File PROPERTIES_FILE = new File("step.properties");
 	public final static String KEY_ENV = "env";
 	public final static String VALUE_ENV_LOCAL = "env.local";
 	public final static String VALUE_ENV_LSF = "env.lsf";
@@ -22,8 +27,22 @@ public abstract class AbstractStep implements BundleActivator {
 	public Bundle bundle;
 	
 	public AbstractStep() {
+		properties = getPropertes();
+	}
+
+	private Properties getPropertes() {
 		final Properties defaultProperties = initDefaults();
-		properties = new Properties(defaultProperties);
+		final Properties pro = new Properties(defaultProperties);
+		try {
+			System.out.println(this + ": trying to load settings from " + PROPERTIES_FILE);
+			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
+			pro.load(fi);
+		} catch (FileNotFoundException e) {
+			System.out.println(this + ": could not load settings from " + PROPERTIES_FILE + ", using defaults");
+		} catch (IOException e) {
+			System.out.println(this + ": could not load settings from " + PROPERTIES_FILE + ", using defaults");
+		}
+		return new Properties(defaultProperties);
 	}
 
 	public final void start(BundleContext context) throws Exception {
