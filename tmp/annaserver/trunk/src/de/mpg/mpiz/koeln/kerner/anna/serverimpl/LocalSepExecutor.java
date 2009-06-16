@@ -1,6 +1,7 @@
 package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBeanProvider;
 
 class LocalSepExecutor extends AbstractStepExecutor {
@@ -13,14 +14,19 @@ class LocalSepExecutor extends AbstractStepExecutor {
 		waitForReq();
 		run();
 		System.out.println(this + ": step " + step + " done");
-		notifyAll();
+		System.err.println("---" + provider + "---");
+		provider.notifyAll();
 		return true;
 	}
 	
 	private void run() throws Exception {
-		synchronized (step) {
 			System.out.println(this + ": running step " + step);
-			step.run(super.provider.getDataProxy().getDataBean());
-		}
+			final DataBean data = step.run(super.provider.getDataProxy().getDataBean());
+			System.out.println(this + ": step " + step + " finished, updateing data");
+			super.provider.getDataProxy().updateDataBean(data);
+	}
+	
+	public String toString(){
+		return this.getClass().getSimpleName();
 	}
 }

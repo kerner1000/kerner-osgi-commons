@@ -16,15 +16,15 @@ public class DataBeanImpl implements DataBean {
 	private ArrayList<FASTASequence> sequences = new ArrayList<FASTASequence>();
 	private ArrayList<GTFElement> elements = new ArrayList<GTFElement>();
 
-	public synchronized void setVerifiedGenesFasta(ArrayList<? extends FASTASequence> sequences)
-			throws Exception {
+	public synchronized void setVerifiedGenesFasta(
+			ArrayList<? extends FASTASequence> sequences) throws Exception {
 		if (sequences == null)
 			throw new NullPointerException();
 		this.sequences.addAll(Utils.deepCopy(ArrayList.class, sequences));
 	}
 
-	public synchronized void setVerifiedGenesGtf(ArrayList<? extends GTFElement> el)
-			throws Exception {
+	public synchronized void setVerifiedGenesGtf(
+			ArrayList<? extends GTFElement> el) throws Exception {
 		if (el == null)
 			throw new NullPointerException();
 		this.elements.addAll(Utils.deepCopy(ArrayList.class, el));
@@ -36,8 +36,10 @@ public class DataBeanImpl implements DataBean {
 				sequences));
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf() throws Exception {
-		return new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class, elements));
+	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf()
+			throws Exception {
+		return new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class,
+				elements));
 	}
 
 	public String toString() {

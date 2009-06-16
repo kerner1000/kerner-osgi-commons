@@ -17,13 +17,16 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	}
 	
 	protected void waitForReq() throws InterruptedException, DataBeanAccessException {
-		synchronized (step) {
+		System.err.println("---" + provider + "---");
+		synchronized (provider) {
+			System.err.println("---" + provider + "---");
 			while (!step.checkRequirements(provider.getDataProxy().getDataBean())) {
 				System.out.println(this + ": requirements for step "
 						+ step + " not satisfied, putting it to sleep");
-				Thread.currentThread().wait();
+				provider.wait();
 			}
 			System.out.println(this + ": requirements satisfied");
+			System.err.println("---" + provider + "---");
 		}
 	}
 }
