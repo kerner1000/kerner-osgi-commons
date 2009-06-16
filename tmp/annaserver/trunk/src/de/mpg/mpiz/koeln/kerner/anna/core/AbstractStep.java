@@ -11,45 +11,55 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
+import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
+import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBean;
 
 public abstract class AbstractStep implements BundleActivator {
 
-	private final static File PROPERTIES_FILE = new File("step.properties");
-	public final static String KEY_ENV = "env";
-	public final static String VALUE_ENV_LOCAL = "env.local";
-	public final static String VALUE_ENV_LSF = "env.lsf";
+	// TODO must run in this directory
+	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
+			"plugins" + File.separatorChar + "configuration"
+					+ File.separatorChar + "step.properties");
+	// public final static String KEY_ENV = "env";
+	// public final static String VALUE_ENV_LOCAL = "env.local";
+	// public final static String VALUE_ENV_LSF = "env.lsf";
 	private final static int TIMEOUT = 2000;
-//	private static LogDispatcher LOGGER = null;
+	// private static LogDispatcher LOGGER = null;
 	private final Properties properties;
 	// TODO obsolete
 	public Bundle bundle;
-	
+
 	public AbstractStep() {
 		properties = getPropertes();
+		System.out.println(this + ": loaded properties: " + properties);
 	}
 
 	private Properties getPropertes() {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);
 		try {
-			System.out.println(this + ": trying to load settings from " + PROPERTIES_FILE);
+			System.out.println(this + ": loading settings from "
+					+ PROPERTIES_FILE);
 			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
 		} catch (FileNotFoundException e) {
-			System.out.println(this + ": could not load settings from " + PROPERTIES_FILE + ", using defaults");
+			e.printStackTrace();
+			System.out.println(this + ": could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
 		} catch (IOException e) {
-			System.out.println(this + ": could not load settings from " + PROPERTIES_FILE + ", using defaults");
+			e.printStackTrace();
+			System.out.println(this + ": could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
 		}
-		return new Properties(defaultProperties);
+		return pro;
 	}
 
 	public final void start(BundleContext context) throws Exception {
 		// TODO remove try catch
 		try {
 			this.bundle = context.getBundle();
-//			LOGGER = new LogDispatcher(context);
+			// LOGGER = new LogDispatcher(context);
 			registerToServer(getServer(context));
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -85,7 +95,7 @@ public abstract class AbstractStep implements BundleActivator {
 
 	private Properties initDefaults() {
 		Properties pro = new Properties();
-		pro.setProperty(KEY_ENV, VALUE_ENV_LOCAL);
+		// pro.setProperty(KEY_ENV, VALUE_ENV_LOCAL);
 		return pro;
 	}
 

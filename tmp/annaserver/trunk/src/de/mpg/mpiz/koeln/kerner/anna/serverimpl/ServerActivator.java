@@ -6,9 +6,9 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanProvider;
+import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBeanProvider;
 
-class ServerActivator implements BundleActivator {
+public class ServerActivator implements BundleActivator {
 	
 	//public static LogDispatcher LOGGER = null;
 	
@@ -19,7 +19,7 @@ class ServerActivator implements BundleActivator {
 		//LOGGER = new LogDispatcher(context);
 		Server service = new ServerImpl(new DataBeanProvider(context));
 		context.registerService(Server.class.getName(), service, new Hashtable());
-		System.out.println("Server activated");
+		System.out.println(this + ": Server activated");
 		}catch(Throwable t){
 			t.printStackTrace();
 		}

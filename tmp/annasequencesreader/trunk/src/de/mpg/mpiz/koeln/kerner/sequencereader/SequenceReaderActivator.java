@@ -11,8 +11,8 @@ import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataBean;
-import de.mpg.mpiz.koeln.kerner.dataproxy.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBean;
 
 public class SequenceReaderActivator extends AbstractStep {
 

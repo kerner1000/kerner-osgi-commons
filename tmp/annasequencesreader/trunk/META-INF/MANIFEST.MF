@@ -4,9 +4,9 @@ Bundle-Name: Sequencereader Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.sequencereader
 Bundle-Version: 0.0.3
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.sequencereader.SequenceReaderActivator
-Import-Package: de.kerner.osgi.commons.logger.dispatcher,
- de.mpg.mpiz.koeln.kerner.anna.core,
+Import-Package: de.mpg.mpiz.koeln.kerner.anna.core,
  de.mpg.mpiz.koeln.kerner.dataproxy;version="0.0.1",
+ de.mpg.mpiz.koeln.kerner.dataproxy.data,
  org.bioutils.fasta,
  org.bioutils.gtf,
  org.osgi.framework;version="1.3.0"
