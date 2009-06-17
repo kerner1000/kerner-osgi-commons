@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Utils Plug-in
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.utils
+Bundle-Version: 0.0.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: org.osgi.framework;version="1.4.0"
+Export-Package: de.kerner.commons.file,
+ de.kerner.commons,
+ de.kerner.commons.zip,
+ de.mpg.mpiz.koeln.kerner.anna.utils,
+ org.bioutils,
+ org.bioutils.fasta,
+ org.bioutils.gtf
+Bundle-ClassPath: lib/bioutils-0.0.1.jar,
+ lib/kerner-commons-0.0.1.jar,
+ .,
+ lib/log4j-1.2.15.jar
