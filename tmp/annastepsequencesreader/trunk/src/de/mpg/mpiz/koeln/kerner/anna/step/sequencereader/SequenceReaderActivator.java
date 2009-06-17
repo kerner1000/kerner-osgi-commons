@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.kerner.sequencereader;
+package de.mpg.mpiz.koeln.kerner.anna.step.sequencereader;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBeanAccessException;
-import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
 public class SequenceReaderActivator extends AbstractStep {
 

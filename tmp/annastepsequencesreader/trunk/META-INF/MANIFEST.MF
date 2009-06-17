@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Sequencereader Plug-in
-Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.sequencereader
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.sequencereader
 Bundle-Version: 0.0.3
-Bundle-Activator: de.mpg.mpiz.koeln.kerner.sequencereader.SequenceReaderActivator
+Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.sequencereader.SequenceReaderActivator
 Import-Package: de.mpg.mpiz.koeln.kerner.anna.core,
- de.mpg.mpiz.koeln.kerner.dataproxy;version="0.0.1",
- de.mpg.mpiz.koeln.kerner.dataproxy.data,
+ de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
+ de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data,
  org.bioutils.fasta,
  org.bioutils.gtf,
  org.osgi.framework;version="1.3.0"
