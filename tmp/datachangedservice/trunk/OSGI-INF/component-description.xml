@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<component name="dataChangedService">
-	<implementation class="de.mpg.mpizkoeln.kerner.anna.datachangedservice.DataChangedServiceImpl"/>
-	<reference name="eventAdmin" 
-		interface="org.osgi.service.event.EventAdmin"
-		bind="setEventAdmin"
-		unbind="unsetEventAdmin"
-		/>
-</component>
