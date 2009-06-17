@@ -1,17 +1,5 @@
 package de.mpg.mpiz.koeln.kerner.anna.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
-import java.util.zip.ZipException;
-
-import org.apache.log4j.Logger;
-
-import de.kerner.commons.file.FileUtils;
-
 public class AnnaUtils {
 
 	private final static String ACTIVATOR_KEY = "Bundle-Activator";
@@ -23,6 +11,9 @@ public class AnnaUtils {
 
 	}
 
+	
+	
+	/**
 	public static void ConvertBundleToRunnableJar(final File bundleFile,
 			final File jarFile, final List<File> dependencies)
 			throws IOException {
@@ -54,5 +45,7 @@ public class AnnaUtils {
 			throws IOException, ClassNotFoundException {
 		return FileUtils.fileToObject(class1, file);
 	}
+
+*/
 
 }
