@@ -13,7 +13,7 @@ import org.osgi.util.tracker.ServiceTracker;
 
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 public abstract class AbstractStep implements BundleActivator {
 

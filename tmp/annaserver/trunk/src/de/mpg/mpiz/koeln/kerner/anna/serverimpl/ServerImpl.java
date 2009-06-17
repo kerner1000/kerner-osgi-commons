@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.dataproxy.data.DataBeanProvider;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanProvider;
 
 public class ServerImpl implements Server {
 
