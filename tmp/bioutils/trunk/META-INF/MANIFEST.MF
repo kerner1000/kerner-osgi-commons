@@ -14,3 +14,7 @@ Export-Package: org.bioutils,
  org.bioutils.blast.utils,
  org.bioutils.fasta,
  org.bioutils.gtf
+Import-Package: de.kerner.commons,
+ de.kerner.commons.file,
+ de.kerner.commons.xml,
+ de.kerner.commons.zip

@@ -1,12 +1,17 @@
 package de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
 
-import de.kerner.commons.Utils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
@@ -22,25 +27,25 @@ public class DataBeanImpl implements DataBean {
 			ArrayList<? extends FASTASequence> sequences) throws Exception {
 		if (sequences == null)
 			throw new NullPointerException();
-		this.sequences.addAll(Utils.deepCopy(ArrayList.class, sequences));
+		this.sequences.addAll(deepCopy(ArrayList.class, sequences));
 	}
 
 	public synchronized void setVerifiedGenesGtf(
 			ArrayList<? extends GTFElement> el) throws Exception {
 		if (el == null)
 			throw new NullPointerException();
-		this.elements.addAll(Utils.deepCopy(ArrayList.class, el));
+		this.elements.addAll(deepCopy(ArrayList.class, el));
 	}
 
 	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
 			throws Exception {
-		return new ArrayList<FASTASequence>(Utils.deepCopy(ArrayList.class,
+		return new ArrayList<FASTASequence>(deepCopy(ArrayList.class,
 				sequences));
 	}
 
 	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf()
 			throws Exception {
-		return new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class,
+		return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
 				elements));
 	}
 	
@@ -73,5 +78,25 @@ public class DataBeanImpl implements DataBean {
 		return sb.toString();
 	}
 
+	/**
+	 * "STOLEN" from kerner commons, du to class loader issues
+	 * @param <V>
+	 * @param c
+	 * @param s
+	 * @return
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public static <V> V deepCopy(Class<V> c, Serializable s) throws IOException, ClassNotFoundException{
+        if(c == null || s == null)
+                throw new NullPointerException();
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        new ObjectOutputStream(bs).writeObject(s);
+        ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
+        V v = c.cast(new ObjectInputStream(bi).readObject());
+        bs.close();
+        bi.close();
+        return v;
+}
 	
 }
