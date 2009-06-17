@@ -54,7 +54,7 @@ public class SequenceReaderActivator extends AbstractStep {
 		try {
 			System.out.println(this + ": reading GTF file " + gtf);
 			final GTFFile gtfFile = new GTFFile(gtf);
-			final ArrayList<GTFElement> elements = gtfFile.getElements();
+			final ArrayList<? extends GTFElement> elements = gtfFile.getElements();
 			System.out.println(this + ": done reading gtf");
 			data.setVerifiedGenesGtf(elements);
 		} catch (Throwable t) {
@@ -69,7 +69,7 @@ public class SequenceReaderActivator extends AbstractStep {
 		try {
 			System.out.println(this + ": reading FASTA file " + fasta);
 			final FASTAFile fastaFile = new FASTAFile(fasta);
-			final ArrayList<FASTASequence> sequences = fastaFile.getSequences();
+			final ArrayList<? extends FASTASequence> sequences = fastaFile.getSequences();
 			System.out.println(this + ": done reading fasta");
 			data.setVerifiedGenesFasta(sequences);
 

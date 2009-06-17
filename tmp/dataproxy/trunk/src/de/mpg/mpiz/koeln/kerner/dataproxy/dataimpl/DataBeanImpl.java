@@ -1,5 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.dataproxy.dataimpl;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.bioutils.fasta.FASTASequence;
@@ -15,6 +16,7 @@ public class DataBeanImpl implements DataBean {
 	private static final long serialVersionUID = 2776955959983685805L;
 	private ArrayList<FASTASequence> sequences = new ArrayList<FASTASequence>();
 	private ArrayList<GTFElement> elements = new ArrayList<GTFElement>();
+	private File conradTrainingFile = null;
 
 	public synchronized void setVerifiedGenesFasta(
 			ArrayList<? extends FASTASequence> sequences) throws Exception {
@@ -41,6 +43,14 @@ public class DataBeanImpl implements DataBean {
 		return new ArrayList<GTFElement>(Utils.deepCopy(ArrayList.class,
 				elements));
 	}
+	
+	public synchronized File getConradTrainingFile() {
+		return new File(conradTrainingFile.getAbsolutePath());
+	}
+
+	public synchronized void setConradTrainingFile(File file) {
+			this.conradTrainingFile = new File(file.getAbsolutePath());	
+	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -62,4 +72,6 @@ public class DataBeanImpl implements DataBean {
 			}
 		return sb.toString();
 	}
+
+	
 }
