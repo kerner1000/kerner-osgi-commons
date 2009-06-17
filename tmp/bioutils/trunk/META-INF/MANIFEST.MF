@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bioutils Plug-in
-Bundle-SymbolicName: org.bioutils
+Bundle-SymbolicName: de.bioutils
 Bundle-Version: 0.0.1
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: lib/bioutils-0.0.1.jar,
