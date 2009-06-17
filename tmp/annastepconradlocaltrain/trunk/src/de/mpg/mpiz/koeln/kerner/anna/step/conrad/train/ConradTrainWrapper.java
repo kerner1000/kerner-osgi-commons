@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.kerner.anna.step.conrad.local.train;
+package de.mpg.mpiz.koeln.kerner.anna.step.conrad.train;
 
 import java.io.File;
 import java.io.IOException;
