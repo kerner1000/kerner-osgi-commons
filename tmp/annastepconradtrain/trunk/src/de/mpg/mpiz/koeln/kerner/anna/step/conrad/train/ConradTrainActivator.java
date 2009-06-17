@@ -11,8 +11,27 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 public class ConradTrainActivator extends AbstractStep {
 
-	public ConradTrainActivator() {
+	private final static String RUN_KEY = "run";
+	private final static String RUN_VALUE_LOCAL = "local";
+	private final static String RUN_VALUE_LSF = "lsf";
+	private final static String DEFAULT_RUN_VALUE = RUN_VALUE_LOCAL;
+	private final AbstractRunState state;
 
+	public ConradTrainActivator() {
+		final String runValue = super.getStepProperties().getProperty(RUN_KEY,
+				DEFAULT_RUN_VALUE);
+		System.out.println(this + ": got running env: " + runValue);
+		if (runValue.equalsIgnoreCase(RUN_VALUE_LSF)) {
+			state = new RunStateLSF();
+			System.out.println(this + ": going to run on LSF");
+		} else if (runValue.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
+			state = new RunStateLocal();
+			System.out.println(this + ": going to run locally");
+		} else {
+			state = new RunStateLocal();
+			System.out.println(this + ": unrecognized running env \""
+					+ "\", going to run locally");
+		}
 	}
 
 	@Override
@@ -36,20 +55,21 @@ public class ConradTrainActivator extends AbstractStep {
 				.getVerifiedGenesFasta();
 		final ArrayList<? extends GTFElement> elements = data
 				.getVerifiedGenesGtf();
-		System.out.println(this + " going to run, creating wrapper");
-		final ConradTrainWrapper wrapper = new ConradTrainWrapper(fastas, elements);
-		final boolean b = wrapper.run();
-		if(b == false){
-			System.out.println(this + " training not sucessfull, cannot update data");
+		final boolean b = state.run(fastas, elements);
+		if (b == false) {
+			System.out.println(this
+					+ " training not sucessfull, cannot update data");
 		} else {
-			final File trainingFile = wrapper.getResult();
-			System.out.println(this + " training sucessfull, created training file " + trainingFile);
+			final File trainingFile = state.getResult();
+			System.out.println(this
+					+ " training sucessfull, created training file "
+					+ trainingFile);
 			data.setConradTrainingFile(trainingFile);
 		}
 		return data;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.getClass().getSimpleName();
 	}
 
