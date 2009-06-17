@@ -72,11 +72,11 @@ public abstract class AbstractStep implements BundleActivator {
 		if (tracker == null)
 			throw new RuntimeException("ServiceTracker null");
 		tracker.open();
-		System.out.println(this + ": getting Server...");
+		System.out.print(this + ": getting Server...");
 		Server server = (Server) tracker.waitForService(TIMEOUT);
 		if (server == null)
 			throw new RuntimeException("Service null");
-		System.out.println(this + ": ... got Server " + server);
+		System.out.println(this + ": got Server " + server);
 		return server;
 	}
 

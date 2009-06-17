@@ -11,27 +11,82 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 public class ConradTrainActivator extends AbstractStep {
 
-	private final static String RUN_KEY = "run";
+	private final static String PROPERTIES_KEY_PREFIX = "anna.step.conrad.train.";
+	private final static String CONRAD_DIR_KEY = PROPERTIES_KEY_PREFIX
+			+ "conradWorkingDir";
+	private final static String WORKING_DIR_KEY = PROPERTIES_KEY_PREFIX
+			+ "workingDir";
+	private final static String TRAINING_FILE_NAME_KEY = PROPERTIES_KEY_PREFIX
+			+ "trainingFileName";
+	private final static String RUN_KEY = PROPERTIES_KEY_PREFIX + "run";
 	private final static String RUN_VALUE_LOCAL = "local";
 	private final static String RUN_VALUE_LSF = "lsf";
 	private final static String DEFAULT_RUN_VALUE = RUN_VALUE_LOCAL;
-	private final AbstractRunState state;
+	
+	// TODO make final again
+	private AbstractRunState state;
 
 	public ConradTrainActivator() {
-		final String runValue = super.getStepProperties().getProperty(RUN_KEY,
-				DEFAULT_RUN_VALUE);
-		System.out.println(this + ": got running env: " + runValue);
-		if (runValue.equalsIgnoreCase(RUN_VALUE_LSF)) {
-			state = new RunStateLSF();
-			System.out.println(this + ": going to run on LSF");
-		} else if (runValue.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
-			state = new RunStateLocal();
-			System.out.println(this + ": going to run locally");
-		} else {
-			state = new RunStateLocal();
-			System.out.println(this + ": unrecognized running env \""
-					+ "\", going to run locally");
+		// TODO remove try catch
+		try {
+			final String conradWorkingDir = super.getStepProperties()
+					.getProperty(CONRAD_DIR_KEY);
+			final File conradWorkingDirFile = new File(conradWorkingDir);
+			System.out.println(this + ": got conrad working dir: "
+					+ conradWorkingDirFile.getAbsolutePath());
+			if (!conradWorkingDirFile.exists()
+					|| !conradWorkingDirFile.canRead()) {
+				System.out.println(this + ": cannot access conrad working dir");
+				throw new RuntimeException("cannot access conrad working dir");
+			}
+
+			final String workingDirString = super.getStepProperties()
+			.getProperty(WORKING_DIR_KEY);
+			System.out.println(this + ": got working dir: " + workingDirString);
+			final File workingDir = new File(workingDirString);
+			if (!checkWorkingDir(workingDir)) {
+				System.out.println(this + ": cannot access step working dir");
+				throw new RuntimeException("cannot access step working dir");
+			}
+
+			final String trainingFileName = super.getStepProperties()
+					.getProperty(TRAINING_FILE_NAME_KEY);
+			System.out.println(this + ": got training file name: "
+					+ trainingFileName);
+
+			final String runValue = super.getStepProperties().getProperty(
+					RUN_KEY, DEFAULT_RUN_VALUE);
+			System.out.println(this + ": got running env: " + runValue);
+			if (runValue.equalsIgnoreCase(RUN_VALUE_LSF)) {
+				state = new RunStateLSF(workingDir, conradWorkingDirFile,
+						trainingFileName);
+				System.out.println(this + ": going to run on LSF");
+			} else if (runValue.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
+				state = new RunStateLocal(workingDir, conradWorkingDirFile,
+						trainingFileName);
+				System.out.println(this + ": going to run locally");
+			} else {
+				state = new RunStateLocal(workingDir, conradWorkingDirFile,
+						trainingFileName);
+				System.out.println(this + ": unrecognized running env \""
+						+ "\", going to run locally");
+			}
+
+		} catch (Throwable t) {
+			t.printStackTrace();
+
 		}
+
+	}
+
+	private boolean checkWorkingDir(final File workingDir) {
+		if (!workingDir.exists()) {
+			System.out.println(this + ": " + workingDir
+					+ " does not exist, creating");
+			final boolean b = workingDir.mkdirs();
+			return b;
+		}
+		return workingDir.canWrite();
 	}
 
 	@Override

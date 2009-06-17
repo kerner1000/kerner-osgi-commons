@@ -28,5 +28,9 @@ public class DataProxyActivator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		// TODO method stub
 	}
+	
+	public String toString(){
+		return this.getClass().getSimpleName();
+	}
 
 }

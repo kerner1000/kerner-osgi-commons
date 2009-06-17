@@ -10,6 +10,10 @@ import de.kerner.commons.CommandStringBuilder;
 
 class RunStateLSF extends AbstractRunState {
 	
+	RunStateLSF(File workingDir, File conradWorkingDir, String trainingFileName) {
+		super(workingDir, conradWorkingDir, trainingFileName);
+	}
+
 	private final static String BSUB_EXE = "bsub";
 	
 	@Override
@@ -20,8 +24,8 @@ class RunStateLSF extends AbstractRunState {
 		builder.addFlagCommand(CONRAD_EXE);
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
-		builder.addFlagCommand(WORKING_DIR.getAbsolutePath());
-		final File trainingFile = new File(WORKING_DIR, TRAINING_FILE_NAME);
+		builder.addFlagCommand(workingDir.getAbsolutePath());
+		final File trainingFile = new File(workingDir, trainingFileName);
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

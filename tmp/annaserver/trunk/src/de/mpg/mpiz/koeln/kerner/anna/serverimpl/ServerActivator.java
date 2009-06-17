@@ -19,7 +19,7 @@ public class ServerActivator implements BundleActivator {
 		//LOGGER = new LogDispatcher(context);
 		Server service = new ServerImpl(new DataBeanProvider(context));
 		context.registerService(Server.class.getName(), service, new Hashtable());
-		System.out.println(this + ": Server activated");
+		System.out.println(this + ": activated");
 		}catch(Throwable t){
 			t.printStackTrace();
 		}
@@ -27,5 +27,9 @@ public class ServerActivator implements BundleActivator {
 	
 	public void stop(BundleContext context) throws Exception {
 		// TODO method stub
+	}
+	
+	public String toString(){
+		return this.getClass().getSimpleName();
 	}
 }

@@ -7,13 +7,18 @@ import de.kerner.commons.CommandStringBuilder;
 
 class RunStateLocal extends AbstractRunState {
 
+	RunStateLocal(File workingDir, File conradWorkingDir,
+			String trainingFileName) {
+		super(workingDir, conradWorkingDir, trainingFileName);
+	}
+
 	@Override
 	List<String> getCommandList() {
-		final CommandStringBuilder builder = new CommandStringBuilder(new File(CONRAD_DIR,CONRAD_EXE).getAbsolutePath());
+		final CommandStringBuilder builder = new CommandStringBuilder(new File(conradWorkingDir,CONRAD_EXE).getAbsolutePath());
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
-		builder.addFlagCommand(WORKING_DIR.getAbsolutePath());
-		final File trainingFile = new File(WORKING_DIR, TRAINING_FILE_NAME);
+		builder.addFlagCommand(workingDir.getAbsolutePath());
+		final File trainingFile = new File(workingDir, trainingFileName);
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

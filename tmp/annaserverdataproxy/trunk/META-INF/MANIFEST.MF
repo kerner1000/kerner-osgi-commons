@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Dataproxy Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server.dataproxy
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.3
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyActivator
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,

@@ -17,17 +17,20 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl.DataBeanImpl;
 
 public class DataProxyImpl implements DataProxy {
 
-	private final static File FILE = new File("/home/pcb/kerner/Desktop/contradTmpDir2/",
-			"dataBean.ser");
+	private final File file;
+
+	public DataProxyImpl() throws IOException {
+		file = new File("/home/pcb/kerner/Desktop/dataBean.ser");
+		file.deleteOnExit();
+	}
 
 	public DataBean getDataBean() throws DataBeanAccessException {
 		DataBean data = null;
-		synchronized (FILE) {
-			if (FILE.exists()) {
+		synchronized (file) {
+			if (file.exists()) {
 				try {
-					System.out.println(this + ": " + FILE + " exists, reading");
-					data = fileToObject(
-							DataBean.class, FILE);
+					System.out.println(this + ": " + file + " exists, reading");
+					data = fileToObject(DataBean.class, file);
 				} catch (IOException e) {
 					// TODO put to log
 					e.printStackTrace();
@@ -38,7 +41,7 @@ public class DataProxyImpl implements DataProxy {
 					throw new DataBeanAccessException(e);
 				}
 			} else {
-				System.out.println(this + ": " + FILE
+				System.out.println(this + ": " + file
 						+ " does not exist, returning new one");
 				data = new DataBeanImpl();
 			}
@@ -52,7 +55,7 @@ public class DataProxyImpl implements DataProxy {
 		// TODO current implementation just overrides existing data bean. that
 		// is not so
 		// good...
-		synchronized (FILE) {
+		synchronized (file) {
 			try {
 				writeDataBean(dataBean);
 			} catch (IOException e) {
@@ -62,13 +65,17 @@ public class DataProxyImpl implements DataProxy {
 	}
 
 	private void writeDataBean(DataBean data) throws IOException {
-		System.out.println(this + ": writing DataBean" + " to " + FILE);
-		de.kerner.commons.file.FileUtils.objectToFile(data, FILE);
-		System.out.println(this + ": writing DataBean succesfull");
+		// TODO remove try catch
+		try {
+			System.out.println(this + ": writing DataBean" + " to " + file);
+			de.kerner.commons.file.FileUtils.objectToFile(data, file);
+			System.out.println(this + ": writing DataBean succesfull");
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
-	static void objectToFile(Serializable s, File file)
-			throws IOException {
+	static void objectToFile(Serializable s, File file) throws IOException {
 		if (s == null || file == null)
 			throw new NullPointerException(s + " + " + file
 					+ " must not be null");
@@ -77,6 +84,10 @@ public class DataProxyImpl implements DataProxy {
 		outStream.writeObject(s);
 		outStream.close();
 		fos.close();
+	}
+
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 
 	static <V> V fileToObject(Class<V> c, File file) throws IOException,

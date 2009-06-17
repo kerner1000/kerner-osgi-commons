@@ -20,12 +20,16 @@ public class DataBeanProvider {
 		if (tracker == null)
 			throw new RuntimeException("ServiceTracker null");
 		tracker.open();
-		System.out.println("getting DataProxy...");
+		System.out.print("getting DataProxy...");
 		DataProxy proxy = (DataProxy) tracker.waitForService(TIMEOUT);
 		if (proxy == null)
 			throw new RuntimeException("Service null");
-		System.out.println("... got DataProxy " + proxy);
+		System.out.println(" got DataProxy " + proxy);
 		return proxy;
+	}
+	
+	public String toString(){
+		return this.getClass().getSimpleName();
 	}
 
 }

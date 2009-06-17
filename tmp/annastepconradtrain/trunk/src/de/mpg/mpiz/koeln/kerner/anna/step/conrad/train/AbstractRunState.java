@@ -13,24 +13,22 @@ import org.bioutils.gtf.GTFFile;
 import de.kerner.commons.file.FileUtils;
 
 abstract class AbstractRunState {
-
-	protected final static File CONRAD_DIR = new File(
-			"/opt/share/local/users/kerner/conrad/conradV1");
-	protected final static File WORKING_DIR = new File(
-			"/home/pcb/kerner/Desktop/contradTmpDir2/");
-	protected final static String TRAINING_FILE_NAME = "trainingFile.bin";
+	
 	protected final static String FASTA_FILE_NAME = "ref.fasta";
 	protected final static String GTF_FILE_NAME = "ref.gtf";
 	protected final static String CONRAD_EXE = "bin/conrad.sh";
 	private File result = null;
+	protected final File workingDir, conradWorkingDir;
+	protected final String trainingFileName;
+	
+	AbstractRunState(File workingDir, File conradWorkingDir, String trainingFileName){
+		this.conradWorkingDir = conradWorkingDir;
+		this.workingDir = workingDir;
+		this.trainingFileName = trainingFileName;
+	}
 
 	boolean run(ArrayList<? extends FASTASequence> fastas,
 			ArrayList<? extends GTFElement> elements) throws Exception {
-		if (!checkWorkingDir()) {
-			System.out.println(this
-					+ ": cannot create or write to working dir " + WORKING_DIR);
-			return false;
-		}
 		if (!writeDataToDir(fastas, elements)) {
 			return false;
 		}
@@ -42,7 +40,7 @@ abstract class AbstractRunState {
 		final ProcessBuilder processBuilder = new ProcessBuilder(conradCmdList);
 		System.out.println(this + " creating process "
 				+ processBuilder.command());
-		processBuilder.directory(CONRAD_DIR);
+		processBuilder.directory(conradWorkingDir);
 		System.out.println(this + " working dir of process: "
 				+ processBuilder.directory());
 		processBuilder.redirectErrorStream(true);
@@ -56,7 +54,7 @@ abstract class AbstractRunState {
 					+ " exited with exit code " + exit);
 			if (exit != 0)
 				return false;
-			final File result = new File(CONRAD_DIR, TRAINING_FILE_NAME);
+			final File result = new File(workingDir, trainingFileName);
 			this.result = result;
 			return true;
 		} catch (IOException e) {
@@ -76,9 +74,9 @@ abstract class AbstractRunState {
 			ArrayList<? extends GTFElement> elements) {
 		final FASTAFile fastaFile = new FASTAFile(fastas);
 		fastaFile.setLineLength(60);
-		final File file = new File(WORKING_DIR, FASTA_FILE_NAME);
+		final File file = new File(workingDir, FASTA_FILE_NAME);
 		final GTFFile gtfFile = new GTFFile(elements);
-		final File file2 = new File(WORKING_DIR, GTF_FILE_NAME);
+		final File file2 = new File(workingDir, GTF_FILE_NAME);
 		try {
 			System.out.println(this + " writing fastas to " + file);
 			fastaFile.writeToFile(file);
@@ -90,16 +88,6 @@ abstract class AbstractRunState {
 					+ ", " + file2);
 			return false;
 		}
-	}
-
-	private boolean checkWorkingDir() {
-		if (!WORKING_DIR.exists()) {
-			System.out.println(this + ": " + WORKING_DIR
-					+ " does not exist, creating");
-			final boolean b = WORKING_DIR.mkdirs();
-			return b;
-		}
-		return WORKING_DIR.canWrite();
 	}
 
 	File getResult() {

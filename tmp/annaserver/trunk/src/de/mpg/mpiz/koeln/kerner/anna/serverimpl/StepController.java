@@ -10,7 +10,7 @@ class StepController implements Callable<Boolean> {
 	private final AbstractStepExecutor exe;
 
 	StepController(AbstractStep step, DataBeanProvider provider) {
-		System.out.println(this + ": running step " + step + " locally");
+		System.out.println(this + ": running step " + step);
 		exe = new LocalSepExecutor(step, provider);
 	}
 
