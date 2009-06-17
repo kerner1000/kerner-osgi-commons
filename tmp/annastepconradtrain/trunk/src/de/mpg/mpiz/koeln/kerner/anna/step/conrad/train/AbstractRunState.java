@@ -17,7 +17,7 @@ abstract class AbstractRunState {
 	protected final static File CONRAD_DIR = new File(
 			"/opt/share/local/users/kerner/conrad/conradV1");
 	protected final static File WORKING_DIR = new File(
-			"/home/pcb/kerner/Desktop/contradTmpDir/");
+			"/home/pcb/kerner/Desktop/contradTmpDir2/");
 	protected final static String TRAINING_FILE_NAME = "trainingFile.bin";
 	protected final static String FASTA_FILE_NAME = "ref.fasta";
 	protected final static String GTF_FILE_NAME = "ref.gtf";

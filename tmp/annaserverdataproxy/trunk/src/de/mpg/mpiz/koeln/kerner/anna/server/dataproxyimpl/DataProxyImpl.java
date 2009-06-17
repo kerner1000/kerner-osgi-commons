@@ -17,7 +17,7 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl.DataBeanImpl;
 
 public class DataProxyImpl implements DataProxy {
 
-	private final static File FILE = new File("/home/pcb/kerner/Desktop/",
+	private final static File FILE = new File("/home/pcb/kerner/Desktop/contradTmpDir2/",
 			"dataBean.ser");
 
 	public DataBean getDataBean() throws DataBeanAccessException {
