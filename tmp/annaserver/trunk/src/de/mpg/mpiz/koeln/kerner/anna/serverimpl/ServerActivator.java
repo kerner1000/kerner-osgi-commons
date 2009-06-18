@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import de.mpg.mpiz.koeln.kerner.anna.core.DataBeanProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
 public class ServerActivator implements BundleActivator {
@@ -17,7 +16,7 @@ public class ServerActivator implements BundleActivator {
 		// TODO remove try catch
 		try{
 		//LOGGER = new LogDispatcher(context);
-		Server service = new ServerImpl(new DataBeanProvider(context));
+		Server service = new ServerImpl();
 		context.registerService(Server.class.getName(), service, new Hashtable());
 		System.out.println(this + ": activated");
 		}catch(Throwable t){

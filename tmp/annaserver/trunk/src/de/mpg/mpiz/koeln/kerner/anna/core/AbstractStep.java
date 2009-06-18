@@ -9,7 +9,6 @@ import java.util.Properties;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
@@ -24,7 +23,6 @@ public abstract class AbstractStep implements BundleActivator {
 	// public final static String KEY_ENV = "env";
 	// public final static String VALUE_ENV_LOCAL = "env.local";
 	// public final static String VALUE_ENV_LSF = "env.lsf";
-	private final static int TIMEOUT = 2000;
 	// private static LogDispatcher LOGGER = null;
 	private final Properties properties;
 	// TODO obsolete
@@ -60,12 +58,13 @@ public abstract class AbstractStep implements BundleActivator {
 		try {
 			this.bundle = context.getBundle();
 			// LOGGER = new LogDispatcher(context);
-			registerToServer(getServer(context));
+			registerToServer(new ServerProvider(context).getService());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
 
+	/**
 	private Server getServer(BundleContext context) throws InterruptedException {
 		ServiceTracker tracker = new ServiceTracker(context, Server.class
 				.getName(), null);
@@ -79,6 +78,7 @@ public abstract class AbstractStep implements BundleActivator {
 		System.out.println(this + ": got Server " + server);
 		return server;
 	}
+	*/
 
 	private void registerToServer(Server server) {
 		System.out.println(this + ": registering to Server " + server);

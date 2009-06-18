@@ -10,14 +10,11 @@ import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.core.DataBeanProvider;
+import de.mpg.mpiz.koeln.kerner.anna.core.DataProxyProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
 public class ServerImpl implements Server {
 
-	private final static String PROPERTIES_KEY_PREFIX = "anna.server.";
-	private final static String WORKING_DIR_KEY = PROPERTIES_KEY_PREFIX+"workingdir";
-//	private final static String WORKING_DIR_VALUE = "/home/pcb/kerner/Desktop/annaWorkingDir/";
 	// TODO must run in this directory
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"plugins" + File.separatorChar + "configuration"
@@ -26,16 +23,16 @@ public class ServerImpl implements Server {
 	private final static int NUM_THREADS = 5;
 	private final ExecutorService exe = Executors
 			.newFixedThreadPool(NUM_THREADS);
-	private final DataBeanProvider provider;
+	private final DataProxyProvider provider;
 
-	ServerImpl(DataBeanProvider provider) {
-		this.provider = provider;
+	ServerImpl() {
 		properties = getPropertes();
 		System.out.println(this + ": loaded properties: " + properties);
 		final File workingDir = new File(properties.getProperty(WORKING_DIR_KEY));
 		if(checkWorkingDir(workingDir)){
 			//
 		}
+		this.provider = new DataProxyProvider(this);
 	}
 	
 	private boolean checkWorkingDir(final File workingDir) {
@@ -76,7 +73,7 @@ public class ServerImpl implements Server {
 
 	public synchronized void registerStep(AbstractStep step) {
 		System.out.println(this + ": registering step " + step);
-		StepController controller = new StepController(step, provider);
+		StepController controller = new StepController(step, this);
 		exe.submit(controller);
 		System.out.println(this + ": registered step " + step);
 	}
@@ -89,6 +86,10 @@ public class ServerImpl implements Server {
 
 	public Properties getServerProperties() {
 		return new Properties(properties);
+	}
+
+	public DataProxyProvider getDataProxyProvider() {
+		return provider;
 	}
 
 }
