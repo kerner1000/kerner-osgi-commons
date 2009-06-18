@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Anna-Core Plug-in
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.core
+Bundle-Version: 0.0.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: de.kerner.commons.file,
+ org.osgi.framework
+Export-Package: de.mpg.mpiz.koeln.kerner.anna.core
