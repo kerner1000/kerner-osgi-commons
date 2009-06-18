@@ -11,6 +11,7 @@ import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
@@ -42,10 +43,18 @@ public class SequenceReaderActivator extends AbstractStep {
 	}
 
 	@Override
-	public DataBean run(DataBean dataBean) throws Exception {
-		DataBean data = doFasta(dataBean);
-		data = doGtf(dataBean);
-		return data;
+	public DataBean run(DataBean dataBean) throws StepExecutionException {
+		try{
+		dataBean = doFasta(dataBean);
+		dataBean = doGtf(dataBean);
+		}catch(DataBeanAccessException e){
+			throw new StepExecutionException(e);
+		} catch (IOException e) {
+			throw new StepExecutionException(e);
+		} catch (GTFFormatErrorException e) {
+			throw new StepExecutionException(e);
+		}
+		return dataBean;
 	}
 
 	private DataBean doGtf(DataBean data) throws IOException,

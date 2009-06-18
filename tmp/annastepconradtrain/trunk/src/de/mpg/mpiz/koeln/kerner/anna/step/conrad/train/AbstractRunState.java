@@ -11,6 +11,7 @@ import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 
 import de.kerner.commons.file.FileUtils;
+import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 
 abstract class AbstractRunState {
 	
@@ -28,7 +29,7 @@ abstract class AbstractRunState {
 	}
 
 	boolean run(ArrayList<? extends FASTASequence> fastas,
-			ArrayList<? extends GTFElement> elements) throws Exception {
+			ArrayList<? extends GTFElement> elements) throws StepExecutionException {
 		if (!writeDataToDir(fastas, elements)) {
 			return false;
 		}

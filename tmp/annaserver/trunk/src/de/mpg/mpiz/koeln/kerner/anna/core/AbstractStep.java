@@ -101,6 +101,6 @@ public abstract class AbstractStep implements BundleActivator {
 
 	public abstract boolean checkRequirements(DataBean data);
 
-	public abstract DataBean run(DataBean data) throws Exception;
+	public abstract DataBean run(DataBean data) throws StepExecutionException;
 
 }

@@ -24,7 +24,7 @@ public abstract class AbstractServiceProvider<S> {
 		final S proxy = getServiceClass().cast(tracker.waitForService(TIMEOUT));
 		if (proxy == null)
 			throw new RuntimeException("Service null");
-		System.out.println(" got DataProxy " + proxy);
+		System.out.println(this + ": got DataProxy " + proxy);
 		return proxy;
 	}
 
