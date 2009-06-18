@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Server Plug-in
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server
+Bundle-Version: 0.1.0
+Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator
+Import-Package: de.kerner.commons,
+ de.kerner.commons.file,
+ org.bioutils,
+ org.bioutils.fasta,
+ org.bioutils.gtf,
+ org.osgi.framework,
+ org.osgi.util.tracker
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .
+Export-Package: de.mpg.mpiz.koeln.kerner.anna.core,
+ de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
+ de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data
