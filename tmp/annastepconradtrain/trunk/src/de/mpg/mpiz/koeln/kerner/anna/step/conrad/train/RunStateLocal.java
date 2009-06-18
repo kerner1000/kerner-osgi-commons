@@ -18,7 +18,6 @@ class RunStateLocal extends AbstractRunState {
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
 		builder.addFlagCommand(workingDir.getAbsolutePath());
-		final File trainingFile = new File(workingDir, trainingFileName);
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

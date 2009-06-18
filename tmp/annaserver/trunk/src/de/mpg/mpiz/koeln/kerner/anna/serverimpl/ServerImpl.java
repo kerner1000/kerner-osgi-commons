@@ -9,9 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
-import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.core.DataProxyProvider;
+import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyProvider;
 
 public class ServerImpl implements Server {
 
@@ -90,6 +90,10 @@ public class ServerImpl implements Server {
 
 	public DataProxyProvider getDataProxyProvider() {
 		return provider;
+	}
+	
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 
 }

@@ -1,8 +1,7 @@
-package de.mpg.mpiz.koeln.kerner.anna.core;
+package de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyImpl;
 
 public class DataProxyProvider {
 	

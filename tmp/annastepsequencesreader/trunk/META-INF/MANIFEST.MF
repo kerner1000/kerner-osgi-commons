@@ -5,6 +5,7 @@ Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.sequencereader
 Bundle-Version: 0.0.3
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.sequencereader.SequenceReaderActivator
 Import-Package: de.mpg.mpiz.koeln.kerner.anna.core,
+ de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data,
  org.bioutils.fasta,

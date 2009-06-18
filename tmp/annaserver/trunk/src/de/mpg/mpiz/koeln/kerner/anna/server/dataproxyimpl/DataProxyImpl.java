@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.StreamCorruptedException;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
@@ -23,7 +24,6 @@ public class DataProxyImpl implements DataProxy {
 	public DataProxyImpl(Server server) {
 		file = new File(new File(server.getServerProperties().getProperty(
 				Server.WORKING_DIR_KEY)), "dataBean.ser");
-		file.deleteOnExit();
 		printProperties();
 	}
 
@@ -40,6 +40,10 @@ public class DataProxyImpl implements DataProxy {
 				try {
 					System.out.println(this + ": " + file + " exists, reading");
 					data = fileToObject(DataBean.class, file);
+					
+				} catch (StreamCorruptedException e) {
+					System.out.println(this + ": " + file + " corrupt, returning new one");
+					data = new DataBeanImpl();
 				} catch (IOException e) {
 					// TODO put to log
 					e.printStackTrace();

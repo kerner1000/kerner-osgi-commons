@@ -10,8 +10,8 @@ import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
-import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
@@ -90,5 +90,14 @@ public class SequenceReaderActivator extends AbstractStep {
 	
 	public String toString(){
 		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public boolean needToRun(DataBean data) throws StepExecutionException {
+		try {
+			return (data.getVerifiedGenesFasta() != null && data.getVerifiedGenesGtf() != null);
+		} catch (DataBeanAccessException e) {
+			throw new StepExecutionException(e);
+		}
 	}
 }

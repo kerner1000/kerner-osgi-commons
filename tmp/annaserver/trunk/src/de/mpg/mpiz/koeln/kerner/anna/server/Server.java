@@ -2,8 +2,8 @@ package de.mpg.mpiz.koeln.kerner.anna.server;
 
 import java.util.Properties;
 
-import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.core.DataProxyProvider;
+import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyProvider;
 
 public interface Server {
 

@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.kerner.anna.core;
+package de.mpg.mpiz.koeln.kerner.anna.other;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,9 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
+import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
+import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 public abstract class AbstractStep implements BundleActivator {
@@ -30,7 +32,6 @@ public abstract class AbstractStep implements BundleActivator {
 
 	public AbstractStep() {
 		properties = getPropertes();
-		System.out.println(this + ": loaded properties: " + properties);
 	}
 
 	private Properties getPropertes() {
@@ -99,7 +100,9 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
-	public abstract boolean checkRequirements(DataBean data);
+	public abstract boolean checkRequirements(DataBean data)throws StepExecutionException;
+	
+	public abstract boolean needToRun(DataBean data) throws StepExecutionException;
 
 	public abstract DataBean run(DataBean data) throws StepExecutionException;
 

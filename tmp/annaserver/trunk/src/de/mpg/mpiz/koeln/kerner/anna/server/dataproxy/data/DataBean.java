@@ -10,17 +10,17 @@ import org.bioutils.gtf.GTFElement;
 public interface DataBean extends Serializable {
 
 	public void setVerifiedGenesFasta(
-			ArrayList<? extends FASTASequence> sequences) throws Exception;
+			ArrayList<? extends FASTASequence> sequences) throws DataBeanAccessException;
 	
 	public ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
-	throws Exception;
+	throws DataBeanAccessException;;
 
-	public ArrayList<? extends GTFElement> getVerifiedGenesGtf() throws Exception;
+	public ArrayList<? extends GTFElement> getVerifiedGenesGtf() throws DataBeanAccessException;;
 	
-	public void setVerifiedGenesGtf(ArrayList<? extends GTFElement> elements) throws Exception;
+	public void setVerifiedGenesGtf(ArrayList<? extends GTFElement> elements) throws DataBeanAccessException;;
 	
-	public File getConradTrainingFile();
+	public File getConradTrainingFile() throws DataBeanAccessException;;
 	
-	public void setConradTrainingFile(File file);
+	public void setConradTrainingFile(File file) throws DataBeanAccessException;;
 
 }

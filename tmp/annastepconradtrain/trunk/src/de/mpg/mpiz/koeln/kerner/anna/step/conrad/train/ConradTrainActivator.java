@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
 
-import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 public class ConradTrainActivator extends AbstractStep {
@@ -95,17 +95,14 @@ public class ConradTrainActivator extends AbstractStep {
 	}
 
 	@Override
-	public boolean checkRequirements(DataBean data) {
+	public boolean checkRequirements(DataBean data) throws StepExecutionException {
 		try {
 			return (data.getVerifiedGenesFasta() != null
 					&& data.getVerifiedGenesFasta().size() != 0
 					&& data.getVerifiedGenesGtf() != null && data
 					.getVerifiedGenesGtf().size() != 0);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(this + " could not access data ");
-			return false;
+			throw new StepExecutionException(e);
 		}
 	}
 
@@ -135,6 +132,11 @@ public class ConradTrainActivator extends AbstractStep {
 
 	public String toString() {
 		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public boolean needToRun(DataBean data) throws StepExecutionException {
+		return true;
 	}
 
 }

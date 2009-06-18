@@ -1,8 +1,8 @@
-package de.mpg.mpiz.koeln.kerner.anna.core;
+package de.mpg.mpiz.koeln.kerner.anna.server;
 
 import org.osgi.framework.BundleContext;
 
-import de.mpg.mpiz.koeln.kerner.anna.server.Server;
+import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 
 public class ServerProvider extends AbstractServiceProvider<Server>{
 

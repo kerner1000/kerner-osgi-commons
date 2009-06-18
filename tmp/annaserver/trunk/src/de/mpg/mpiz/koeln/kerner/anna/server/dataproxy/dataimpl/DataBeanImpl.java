@@ -14,6 +14,7 @@ import org.bioutils.gtf.GTFElement;
 
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
 @SuppressWarnings("unchecked")
 public class DataBeanImpl implements DataBean {
@@ -24,29 +25,53 @@ public class DataBeanImpl implements DataBean {
 	private File conradTrainingFile = null;
 
 	public synchronized void setVerifiedGenesFasta(
-			ArrayList<? extends FASTASequence> sequences) throws Exception {
+			ArrayList<? extends FASTASequence> sequences) throws DataBeanAccessException {
 		if (sequences == null)
 			throw new NullPointerException();
-		this.sequences.addAll(deepCopy(ArrayList.class, sequences));
+		try {
+			this.sequences.addAll(deepCopy(ArrayList.class, sequences));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
 	}
 
 	public synchronized void setVerifiedGenesGtf(
-			ArrayList<? extends GTFElement> el) throws Exception {
+			ArrayList<? extends GTFElement> el) throws DataBeanAccessException {
 		if (el == null)
 			throw new NullPointerException();
-		this.elements.addAll(deepCopy(ArrayList.class, el));
+		try {
+			this.elements.addAll(deepCopy(ArrayList.class, el));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
 	}
 
-	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
-			throws Exception {
-		return new ArrayList<FASTASequence>(deepCopy(ArrayList.class,
-				sequences));
+	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta() throws DataBeanAccessException
+			{
+		try {
+			return new ArrayList<FASTASequence>(deepCopy(ArrayList.class,
+					sequences));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf()
-			throws Exception {
-		return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
-				elements));
+	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf() throws DataBeanAccessException
+			{
+		try {
+			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+					elements));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
 	}
 	
 	public synchronized File getConradTrainingFile() {
