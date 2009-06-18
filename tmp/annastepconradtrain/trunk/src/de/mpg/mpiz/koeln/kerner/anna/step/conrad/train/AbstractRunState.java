@@ -29,8 +29,8 @@ abstract class AbstractRunState {
 		this.workingDir = workingDir;
 		this.trainingFileName = trainingFileName;
 		trainingFile = new File(workingDir, trainingFileName);
-		gtfFile = new File(workingDir, FASTA_FILE_NAME);
-		fastaFile = new File(workingDir, GTF_FILE_NAME);
+		fastaFile = new File(workingDir, FASTA_FILE_NAME);
+		gtfFile = new File(workingDir, GTF_FILE_NAME);
 	}
 
 	boolean run(ArrayList<? extends FASTASequence> fastas,
