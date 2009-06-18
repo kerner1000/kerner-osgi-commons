@@ -5,8 +5,8 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import de.mpg.mpiz.koeln.kerner.anna.core.DataBeanProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanProvider;
 
 public class ServerActivator implements BundleActivator {
 	

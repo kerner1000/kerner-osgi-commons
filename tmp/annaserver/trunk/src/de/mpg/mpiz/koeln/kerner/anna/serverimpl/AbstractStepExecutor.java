@@ -3,8 +3,8 @@ package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 import java.util.concurrent.Callable;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.core.DataBeanProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanProvider;
 
 abstract class AbstractStepExecutor implements Callable<Boolean> {
 	

@@ -1,9 +1,10 @@
-package de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data;
+package de.mpg.mpiz.koeln.kerner.anna.core;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
 
 public class DataBeanProvider {

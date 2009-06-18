@@ -1,10 +1,11 @@
-package de.mpg.mpiz.koeln.kerner.anna.server.dataproxy;
+package de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl;
 
 import java.util.Hashtable;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyImpl;
 
 public class DataProxyActivator implements BundleActivator {

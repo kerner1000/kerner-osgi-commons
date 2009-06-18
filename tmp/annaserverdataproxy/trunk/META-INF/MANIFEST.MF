@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Dataproxy Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server.dataproxy
 Bundle-Version: 0.0.3
-Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyActivator
+Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl.DataProxyActivator
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
  org.bioutils,
