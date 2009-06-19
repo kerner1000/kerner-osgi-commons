@@ -1,10 +1,13 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict;
 
 import java.io.File;
+import java.util.ArrayList;
+
+import org.bioutils.gtf.GTFElement;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessListener;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
@@ -82,17 +85,22 @@ public class StepConradPredict extends AbstractStep {
 
 	@Override
 	public boolean needToRun(DataBean data) throws StepExecutionException {
+		
+		
 		// TODO size may be zero, if nothing was found
 		try {
-			return (data.getPredictedGenesGtf() == null || data
-					.getPredictedGenesGtf().size() == 0);
+			final ArrayList<? extends GTFElement> list = data.getPredictedGenesGtf();
+//			System.out.println("++++++++++++++++++++++++++++++++");
+//			System.out.println(this + ":PredictedGenesGTF="+list);
+//			System.out.println("++++++++++++++++++++++++++++++++");
+			return (list == null || list.size() == 0);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}
 	}
 
 	@Override
-	public DataBean run(DataBean data, StepProcessListener listener) throws StepExecutionException {
+	public DataBean run(DataBean data, StepProcessObserver listener) throws StepExecutionException {
 		try {
 			final File trainingFile = data.getConradTrainingFile();
 			if (runEnv.equalsIgnoreCase(RUN_VALUE_LSF)) {

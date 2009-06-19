@@ -18,7 +18,7 @@ public class LogWriterActivator implements BundleActivator {
 				LogReaderService logReaderService = (LogReaderService) tracker
 				.getService();
 				if(logReaderService == null){
-					System.err.println("could not get LogReaderService, no logging available.");
+					System.err.println(this + ": could not get LogReaderService, no logging available.");
 					return;
 				}
 				registerListener(logReaderService);

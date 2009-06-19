@@ -8,7 +8,7 @@ import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep.State;
 
 /**
  * @Threadsave
- *
+ * 
  */
 public class StepStateMonitorImpl implements StepStateMonitor {
 
@@ -17,36 +17,42 @@ public class StepStateMonitorImpl implements StepStateMonitor {
 	public StepStateMonitorImpl() {
 
 	}
-	
+
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
-	
+
 	private void printStepStates(AbstractStep step) {
+		System.out.println("++++++++++++++++++++++++");
 		System.out.println(this + ": current step states:");
-		boolean changed = false;
 		for (AbstractStep s : stepStates.keySet()) {
+			System.out.print("\t" + s + ":state=" + stepStates.get(s)
+					+ "\tsuccess=" + s.getSuccess());
 			if (step.equals(s)) {
-				changed = true;
+				System.out.print("\t(changed)");
 			}
-			System.out.print("\t" + s + ":state=" + stepStates.get(s) + "\tchanged=" +changed+"\tsuccess="+ s.getSuccess());
 			System.out.println();
 		}
+		System.out.println("++++++++++++++++++++++++");
 	}
-	
-	private void checkConsistity(AbstractStep step, AbstractStep.State expectedCurrentState, AbstractStep.State newState){
+
+	private void checkConsistity(AbstractStep step,
+			AbstractStep.State expectedCurrentState, AbstractStep.State newState) {
 		AbstractStep.State state = stepStates.get(step);
-		if(state == null){
+		if (state == null) {
 			state = AbstractStep.State.LOOSE;
-			System.out.println(this + ": step " + step + " new, assuming state " + state);
+			System.out.println(this + ": step " + step
+					+ " new, assuming state " + state);
 		}
 		if (!state.equals(expectedCurrentState)) {
 			System.out.println(this
-					+ ": warning, inconsistent step state mapping for step " + step + "\n\t step state changed from " + stepStates.get(step) + " to " + newState);
+					+ ": warning, inconsistent step state mapping for step "
+					+ step + "\n\t step state changed from "
+					+ stepStates.get(step) + " to " + newState);
 		}
 	}
-	
-	private void changeStepState(AbstractStep step, AbstractStep.State newState){
+
+	private void changeStepState(AbstractStep step, AbstractStep.State newState) {
 		stepStates.put(step, newState);
 		printStepStates(step);
 	}
@@ -78,7 +84,7 @@ public class StepStateMonitorImpl implements StepStateMonitor {
 		final AbstractStep.State expectedCurrentState = AbstractStep.State.REGISTERED;
 		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
-		
+
 	}
 
 	public void stepWaitForReq(AbstractStep step) {
@@ -87,6 +93,5 @@ public class StepStateMonitorImpl implements StepStateMonitor {
 		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
-	
-	
+
 }

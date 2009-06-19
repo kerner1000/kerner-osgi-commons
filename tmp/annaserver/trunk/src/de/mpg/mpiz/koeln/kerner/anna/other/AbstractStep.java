@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
@@ -31,15 +31,10 @@ public abstract class AbstractStep implements BundleActivator {
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"plugins" + File.separatorChar + "configuration"
 					+ File.separatorChar + "step.properties");
-	// public final static String KEY_ENV = "env";
-	// public final static String VALUE_ENV_LOCAL = "env.local";
-	// public final static String VALUE_ENV_LSF = "env.lsf";
-	// private static LogDispatcher LOGGER = null;
 	private final Properties properties;
 	private State state = State.LOOSE;
-	// TODO obsolete
-	public Bundle bundle;
 	private boolean success = false;
+	private LogDispatcherImpl logger = null;
 
 	public AbstractStep() {
 		properties = getPropertes();
@@ -65,18 +60,16 @@ public abstract class AbstractStep implements BundleActivator {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);
 		try {
-			System.out.println(this + ": loading settings from "
+			info(this, "loading settings from "
 					+ PROPERTIES_FILE);
 			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.out.println(this + ": could not load settings from "
-					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
+			warn(this ,"could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults", e);
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(this + ": could not load settings from "
-					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
+			warn(this, "could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults", e);
 		}
 		return pro;
 	}
@@ -85,29 +78,12 @@ public abstract class AbstractStep implements BundleActivator {
 	 * should only be called by the OSGi framework
 	 */
 	public final void start(BundleContext context) throws Exception {
-		// TODO remove try catch
-		try {
-			this.bundle = context.getBundle();
-			// LOGGER = new LogDispatcher(context);
+			this.logger = new LogDispatcherImpl(context);
 			registerToServer(new ServerProvider(context).getService());
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
 	}
 
-	/**
-	 * private Server getServer(BundleContext context) throws
-	 * InterruptedException { ServiceTracker tracker = new
-	 * ServiceTracker(context, Server.class .getName(), null); if (tracker ==
-	 * null) throw new RuntimeException("ServiceTracker null"); tracker.open();
-	 * System.out.print(this + ": getting Server..."); Server server = (Server)
-	 * tracker.waitForService(TIMEOUT); if (server == null) throw new
-	 * RuntimeException("Service null"); System.out.println(this +
-	 * ": got Server " + server); return server; }
-	 */
-
 	private synchronized void registerToServer(Server server) {
-		System.out.println(this + ": registering to Server " + server);
+		info(this, "registering to Server " + server);
 		server.registerStep(this);
 	}
 
@@ -124,7 +100,6 @@ public abstract class AbstractStep implements BundleActivator {
 
 	private Properties initDefaults() {
 		Properties pro = new Properties();
-		// pro.setProperty(KEY_ENV, VALUE_ENV_LOCAL);
 		return pro;
 	}
 
@@ -137,7 +112,39 @@ public abstract class AbstractStep implements BundleActivator {
 	public DataBean run(DataBean data)throws StepExecutionException{
 		return run(data, null);
 	}
+	
+	public void info(Object cause, Object message){
+		logger.info(cause, message);
+	}
 
-	public abstract DataBean run(DataBean data, StepProcessListener listener) throws StepExecutionException;
+	public void info(Object cause, Object message, Throwable t){
+		logger.info(cause, message, t);
+	}
+	
+	public void debug(Object cause, Object message){
+		logger.debug(cause, message);
+	}
+
+	public void debug(Object cause, Object message, Throwable t){
+		logger.debug(cause, message, t);
+	}
+	
+	public void error(Object cause, Object message){
+		logger.error(cause, message);
+	}
+
+	public void warn(Object cause, Object message, Throwable t){
+		logger.warn(cause, message, t);
+	}
+
+	public void warn(Object cause, Object message){
+		logger.warn(cause, message);
+	}
+
+	public void error(Object cause, Object message, Throwable t){
+		logger.error(cause, message, t);
+	}
+
+	public abstract DataBean run(DataBean data, StepProcessObserver listener) throws StepExecutionException;
 
 }

@@ -1,9 +1,14 @@
 package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
@@ -12,6 +17,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 
 	protected final AbstractStep step;
 	protected final Server server;
+//	private final ScheduledExecutorService exe = Executors.newSingleThreadScheduledExecutor();
 
 	AbstractStepExecutor(AbstractStep step, Server server) {
 		this.step = step;
@@ -58,8 +64,9 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 		try{
 			server.getStepStatemonitor().stepStarted(step);
 		System.out.println(this + ": running step " + step);
+		final StepProcessObserver listener = new StepProgressObserverImpl();
 		final DataBean data = step.run(server.getDataProxyProvider()
-				.getDataProxy().getDataBean());
+				.getDataProxy().getDataBean(), listener);
 		System.out.println(this + ": step " + step
 				+ " finished, updateing data");
 		server.getDataProxyProvider().getDataProxy().updateDataBean(data);

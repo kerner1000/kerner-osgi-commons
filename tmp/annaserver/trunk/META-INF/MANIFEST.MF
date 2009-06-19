@@ -6,6 +6,7 @@ Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
+ de.kerner.osgi.commons.logger.dispatcher,
  de.kerner.osgi.commons.utils,
  de.mpg.mpiz.koeln.kerner.anna.core,
  org.bioutils,

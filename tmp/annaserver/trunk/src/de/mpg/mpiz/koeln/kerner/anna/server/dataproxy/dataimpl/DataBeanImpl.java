@@ -19,7 +19,7 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessExcepti
 /**
  * 
  * @Threadsave
- *
+ * 
  */
 @SuppressWarnings("unchecked")
 public class DataBeanImpl implements DataBean {
@@ -30,13 +30,17 @@ public class DataBeanImpl implements DataBean {
 	private ArrayList<GTFElement> predictedGenesGTFs = new ArrayList<GTFElement>();
 	private File conradTrainingFile = null;
 
-	public synchronized void setVerifiedGenesFasta(
+	public synchronized void setVerifiedGenesFasta (
 			ArrayList<? extends FASTASequence> sequences)
 			throws DataBeanAccessException {
 		if (sequences == null)
 			throw new NullPointerException();
+		if (sequences.size() == 0)
+			return;
 		try {
-			this.verifiedGenesFastas.addAll(deepCopy(ArrayList.class, sequences));
+			this.verifiedGenesFastas.clear();
+			this.verifiedGenesFastas
+					.addAll(deepCopy(ArrayList.class, sequences));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
 		} catch (ClassNotFoundException e) {
@@ -44,11 +48,14 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized void setVerifiedGenesGtf(
+	public synchronized void setVerifiedGenesGtf (
 			ArrayList<? extends GTFElement> el) throws DataBeanAccessException {
 		if (el == null)
 			throw new NullPointerException();
+		if (el.size() == 0)
+			return;
 		try {
+			this.verifiedGenesGTFs.clear();
 			this.verifiedGenesGTFs.addAll(deepCopy(ArrayList.class, el));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -72,8 +79,8 @@ public class DataBeanImpl implements DataBean {
 	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<GTFElement>(
-					deepCopy(ArrayList.class, verifiedGenesGTFs));
+			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+					verifiedGenesGTFs));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
 		} catch (ClassNotFoundException e) {
@@ -82,20 +89,24 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized File getConradTrainingFile() {
-		if(conradTrainingFile == null)
+		if (conradTrainingFile == null)
 			return null;
 		return new File(conradTrainingFile.getAbsolutePath());
 	}
 
-	public synchronized void setConradTrainingFile(File file) {
+	public synchronized void setConradTrainingFile(File file)
+			throws DataBeanAccessException {
+		if (file == null || !file.exists() || !file.canRead())
+			throw new DataBeanAccessException("conrad training file invalid ("
+					+ file + ")");
 		this.conradTrainingFile = new File(file.getAbsolutePath());
 	}
 
 	public synchronized ArrayList<? extends GTFElement> getPredictedGenesGtf()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<GTFElement>(
-					deepCopy(ArrayList.class, predictedGenesGTFs));
+			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+					predictedGenesGTFs));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
 		} catch (ClassNotFoundException e) {
@@ -103,11 +114,15 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized void setPredictedGenesGtf(ArrayList<? extends GTFElement> elements)
+	public synchronized void setPredictedGenesGtf(
+			ArrayList<? extends GTFElement> elements)
 			throws DataBeanAccessException {
 		if (elements == null)
 			throw new NullPointerException();
+		if (elements.size() == 0)
+			return;
 		try {
+			elements.clear();
 			this.predictedGenesGTFs.addAll(deepCopy(ArrayList.class, elements));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -148,8 +163,8 @@ public class DataBeanImpl implements DataBean {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	static <V> V deepCopy(Class<V> c, Serializable s)
-			throws IOException, ClassNotFoundException {
+	static <V> V deepCopy(Class<V> c, Serializable s) throws IOException,
+			ClassNotFoundException {
 		if (c == null || s == null)
 			throw new NullPointerException();
 		ByteArrayOutputStream bs = new ByteArrayOutputStream();

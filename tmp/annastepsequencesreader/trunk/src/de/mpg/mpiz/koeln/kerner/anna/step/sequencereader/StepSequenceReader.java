@@ -12,7 +12,7 @@ import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessListener;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
@@ -39,15 +39,20 @@ public class StepSequenceReader extends AbstractStep {
 
 	@Override
 	public boolean checkRequirements(DataBean dataBean) {
+		super.info(this, "no requirements needed");
 		System.out.println(this + ": no requirements needed");
 		return true;
 	}
 
 	@Override
-	public DataBean run(DataBean dataBean, StepProcessListener listener) throws StepExecutionException {
+	public DataBean run(DataBean dataBean, StepProcessObserver observer) throws StepExecutionException {
+		observer.setProgress(0, 100);
 		try{
+			observer.setProgress(30, 100);
 		dataBean = doFasta(dataBean);
+		observer.setProgress(60, 100);
 		dataBean = doGtf(dataBean);
+		observer.setProgress(100, 100);
 		setSuccess(true);
 		}catch(Throwable t){
 			t.printStackTrace();

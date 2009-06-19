@@ -8,7 +8,7 @@ import org.bioutils.gtf.GTFElement;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessListener;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
@@ -97,19 +97,27 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	@Override
-	public boolean checkRequirements(DataBean data) throws StepExecutionException {
+	public boolean checkRequirements(DataBean data)
+			throws StepExecutionException {
 		try {
-			return (data.getVerifiedGenesFasta() != null
-					&& data.getVerifiedGenesFasta().size() != 0
-					&& data.getVerifiedGenesGtf() != null && data
-					.getVerifiedGenesGtf().size() != 0);
+			final ArrayList<? extends FASTASequence> fastas = data
+					.getVerifiedGenesFasta();
+			final ArrayList<? extends GTFElement> elements = data
+					.getVerifiedGenesGtf();
+//			System.out.println("++++++++++++++++++++++");
+//			System.out.println(this + ":checkRequirements: fastas=" + fastas);
+//			System.out.println(this + ":checkRequirements: elements=" + elements);
+//			System.out.println("++++++++++++++++++++++");
+			return (fastas != null && fastas.size() != 0 && elements != null && elements
+					.size() != 0);
 		} catch (Exception e) {
 			throw new StepExecutionException(e);
 		}
 	}
 
 	@Override
-	public DataBean run(DataBean data, StepProcessListener listener) throws StepExecutionException {
+	public DataBean run(DataBean data, StepProcessObserver listener)
+			throws StepExecutionException {
 		try {
 			final ArrayList<? extends FASTASequence> fastas = data
 					.getVerifiedGenesFasta();
@@ -139,17 +147,17 @@ public class StepConradTrain extends AbstractStep {
 
 	@Override
 	public boolean needToRun(DataBean data) throws StepExecutionException {
-//		/**
-		
+		// /**
+
 		try {
 			return (data.getConradTrainingFile() == null);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}
-		
-//		*/
-		
-//		return true;
+
+		// */
+
+		// return true;
 	}
 
 }
