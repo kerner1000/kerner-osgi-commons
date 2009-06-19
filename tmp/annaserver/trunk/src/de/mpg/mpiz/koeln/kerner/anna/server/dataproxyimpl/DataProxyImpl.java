@@ -44,11 +44,13 @@ public class DataProxyImpl implements DataProxy {
 				} catch (EOFException e) {
 					System.out.println(this + ": " + file
 							+ " corrupt, returning new one");
+					file.delete();
 					data = new DataBeanImpl();
 
 				} catch (StreamCorruptedException e) {
 					System.out.println(this + ": " + file
 							+ " corrupt, returning new one");
+					file.delete();
 					data = new DataBeanImpl();
 				} catch (IOException e) {
 					// TODO put to log

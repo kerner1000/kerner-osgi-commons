@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Conrad-Predict Plug-in
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict
+Bundle-Version: 0.0.1
+Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict.StepConradPredict
+Import-Package: de.kerner.commons,
+ de.mpg.mpiz.koeln.kerner.anna.core,
+ de.mpg.mpiz.koeln.kerner.anna.other,
+ de.mpg.mpiz.koeln.kerner.anna.step.conrad.common,
+ org.bioutils.gtf,
+ org.osgi.framework;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: de.mpg.mpiz.koeln.kerner.anna.server

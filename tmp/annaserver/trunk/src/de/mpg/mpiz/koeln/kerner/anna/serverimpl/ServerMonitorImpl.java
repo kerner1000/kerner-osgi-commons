@@ -28,7 +28,7 @@ public class ServerMonitorImpl implements ServerMonitor {
 		for (AbstractStep s : stepStates.keySet()) {
 			System.out.print("\t" + s + "=" + stepStates.get(s) + "\t" + s.getSuccess());
 			if (step.equals(s)) {
-				System.out.print(" (changed)");
+				System.out.print("\t(changed)");
 			}
 			System.out.println();
 		}
