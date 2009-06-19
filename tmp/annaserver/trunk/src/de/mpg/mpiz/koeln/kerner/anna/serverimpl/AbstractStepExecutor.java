@@ -20,7 +20,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	
 	protected boolean checkNeedToRun() throws StepExecutionException{
 			try {
-				server.getServermonitor().stepChecksNeedToRun(step);
+				server.getStepStatemonitor().stepChecksNeedToRun(step);
 				return step.needToRun(server.getDataProxyProvider()
 						.getDataProxy().getDataBean());
 			} catch (StepExecutionException e) {
@@ -33,7 +33,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	protected void waitForReq() throws StepExecutionException {
 		synchronized (server) {
 			try {
-				server.getServermonitor().stepWaitForReq(step);
+				server.getStepStatemonitor().stepWaitForReq(step);
 				while (!step.checkRequirements(server.getDataProxyProvider()
 						.getDataProxy().getDataBean())) {
 					System.out.println(this + ": requirements for step " + step
@@ -56,14 +56,14 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	protected void run() throws StepExecutionException {
 		// TODO remove try catch
 		try{
-			server.getServermonitor().stepStarted(step);
+			server.getStepStatemonitor().stepStarted(step);
 		System.out.println(this + ": running step " + step);
 		final DataBean data = step.run(server.getDataProxyProvider()
 				.getDataProxy().getDataBean());
 		System.out.println(this + ": step " + step
 				+ " finished, updateing data");
 		server.getDataProxyProvider().getDataProxy().updateDataBean(data);
-		server.getServermonitor().stepFinished(step);
+		server.getStepStatemonitor().stepFinished(step);
 		}catch(Throwable t){
 			t.printStackTrace();
 		}

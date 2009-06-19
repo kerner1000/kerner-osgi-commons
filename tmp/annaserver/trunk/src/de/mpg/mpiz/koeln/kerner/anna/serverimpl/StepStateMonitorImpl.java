@@ -10,12 +10,11 @@ import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep.State;
  * @Threadsave
  *
  */
-public class ServerMonitorImpl implements ServerMonitor {
+public class StepStateMonitorImpl implements StepStateMonitor {
 
 	private final Map<AbstractStep, AbstractStep.State> stepStates = new ConcurrentHashMap<AbstractStep, AbstractStep.State>();
-//	private final Map<AbstractStep, Boolean> stepSuccess = new ConcurrentHashMap<AbstractStep, Boolean>();
 
-	public ServerMonitorImpl() {
+	public StepStateMonitorImpl() {
 
 	}
 	
@@ -25,11 +24,12 @@ public class ServerMonitorImpl implements ServerMonitor {
 	
 	private void printStepStates(AbstractStep step) {
 		System.out.println(this + ": current step states:");
+		boolean changed = false;
 		for (AbstractStep s : stepStates.keySet()) {
-			System.out.print("\t" + s + "=" + stepStates.get(s) + "\t" + s.getSuccess());
 			if (step.equals(s)) {
-				System.out.print("\t(changed)");
+				changed = true;
 			}
+			System.out.print("\t" + s + ":state=" + stepStates.get(s) + "\tchanged=" +changed+"\tsuccess="+ s.getSuccess());
 			System.out.println();
 		}
 	}

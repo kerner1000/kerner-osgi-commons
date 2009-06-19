@@ -133,7 +133,11 @@ public abstract class AbstractStep implements BundleActivator {
 
 	public abstract boolean needToRun(DataBean data)
 			throws StepExecutionException;
+	
+	public DataBean run(DataBean data)throws StepExecutionException{
+		return run(data, null);
+	}
 
-	public abstract DataBean run(DataBean data) throws StepExecutionException;
+	public abstract DataBean run(DataBean data, StepProcessListener listener) throws StepExecutionException;
 
 }

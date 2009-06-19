@@ -8,6 +8,7 @@ import org.bioutils.gtf.GTFElement;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessListener;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
@@ -108,7 +109,7 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	@Override
-	public DataBean run(DataBean data) throws StepExecutionException {
+	public DataBean run(DataBean data, StepProcessListener listener) throws StepExecutionException {
 		try {
 			final ArrayList<? extends FASTASequence> fastas = data
 					.getVerifiedGenesFasta();

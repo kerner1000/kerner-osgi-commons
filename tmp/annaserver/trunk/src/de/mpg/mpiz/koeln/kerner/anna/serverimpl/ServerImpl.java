@@ -28,7 +28,7 @@ public class ServerImpl implements Server {
 	// Executors.newFixedThreadPool(NUM_THREADS);
 	private final ExecutorService exe = Executors.newCachedThreadPool();
 	private final DataProxyProvider provider;
-	private final ServerMonitor monitor;
+	private final StepStateMonitor monitor;
 
 	ServerImpl() {
 		properties = getPropertes();
@@ -39,7 +39,7 @@ public class ServerImpl implements Server {
 			//
 		}
 		this.provider = new DataProxyProvider(this);
-		this.monitor = new ServerMonitorImpl();
+		this.monitor = new StepStateMonitorImpl();
 	}
 
 	private boolean checkWorkingDir(final File workingDir) {
@@ -96,7 +96,7 @@ public class ServerImpl implements Server {
 
 	}
 	
-	public ServerMonitor getServermonitor(){
+	public StepStateMonitor getStepStatemonitor(){
 		return monitor;
 	}
 

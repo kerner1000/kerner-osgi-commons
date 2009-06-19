@@ -12,6 +12,7 @@ import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessListener;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
@@ -43,7 +44,7 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public DataBean run(DataBean dataBean) throws StepExecutionException {
+	public DataBean run(DataBean dataBean, StepProcessListener listener) throws StepExecutionException {
 		try{
 		dataBean = doFasta(dataBean);
 		dataBean = doGtf(dataBean);
