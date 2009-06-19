@@ -26,7 +26,6 @@ public class StepSequenceReader extends AbstractStep {
 	// TODO to external properties
 	private final File fasta;
 	private final File gtf;
-	private LogDispatcher logger = null;
 
 	public StepSequenceReader() {
 		final String fastaPath = super.getStepProperties().getProperty(
@@ -41,8 +40,8 @@ public class StepSequenceReader extends AbstractStep {
 
 	@Override
 	public boolean checkRequirements(DataBean dataBean) {
-		logger.info(this, "no requirements needed");
 		System.out.println(this + ": no requirements needed");
+//		throw new NullPointerException("raff");
 		return true;
 	}
 
