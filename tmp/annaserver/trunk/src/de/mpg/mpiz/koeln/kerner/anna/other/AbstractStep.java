@@ -34,7 +34,6 @@ public abstract class AbstractStep implements BundleActivator {
 	private final Properties properties;
 	private State state = State.LOOSE;
 	private boolean success = false;
-	private LogDispatcherImpl logger = null;
 
 	public AbstractStep() {
 		properties = getPropertes();
@@ -60,16 +59,16 @@ public abstract class AbstractStep implements BundleActivator {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);
 		try {
-			info(this, "loading settings from "
+			System.out.println(this + ": loading settings from "
 					+ PROPERTIES_FILE);
 			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
 		} catch (FileNotFoundException e) {
-			warn(this ,"could not load settings from "
-					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults", e);
+			System.out.println(this + ": could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
 		} catch (IOException e) {
-			warn(this, "could not load settings from "
-					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults", e);
+			System.out.println(this + ": could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
 		}
 		return pro;
 	}
@@ -77,20 +76,19 @@ public abstract class AbstractStep implements BundleActivator {
 	/**
 	 * should only be called by the OSGi framework
 	 */
-	public final void start(BundleContext context) throws Exception {
-			this.logger = new LogDispatcherImpl(context);
+	public void start(BundleContext context) throws Exception {
 			registerToServer(new ServerProvider(context).getService());
 	}
 
 	private synchronized void registerToServer(Server server) {
-		info(this, "registering to Server " + server);
+		System.out.println(this + ": registering to Server " + server);
 		server.registerStep(this);
 	}
 
 	/**
 	 * should only be called by OSGi framework
 	 */
-	public final void stop(BundleContext context) throws Exception {
+	public void stop(BundleContext context) throws Exception {
 		// TODO Auto-generated method stub
 	}
 
@@ -111,38 +109,6 @@ public abstract class AbstractStep implements BundleActivator {
 	
 	public DataBean run(DataBean data)throws StepExecutionException{
 		return run(data, null);
-	}
-	
-	public void info(Object cause, Object message){
-		logger.info(cause, message);
-	}
-
-	public void info(Object cause, Object message, Throwable t){
-		logger.info(cause, message, t);
-	}
-	
-	public void debug(Object cause, Object message){
-		logger.debug(cause, message);
-	}
-
-	public void debug(Object cause, Object message, Throwable t){
-		logger.debug(cause, message, t);
-	}
-	
-	public void error(Object cause, Object message){
-		logger.error(cause, message);
-	}
-
-	public void warn(Object cause, Object message, Throwable t){
-		logger.warn(cause, message, t);
-	}
-
-	public void warn(Object cause, Object message){
-		logger.warn(cause, message);
-	}
-
-	public void error(Object cause, Object message, Throwable t){
-		logger.error(cause, message, t);
 	}
 
 	public abstract DataBean run(DataBean data, StepProcessObserver listener) throws StepExecutionException;

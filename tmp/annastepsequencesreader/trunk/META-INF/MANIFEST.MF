@@ -4,7 +4,8 @@ Bundle-Name: Sequencereader Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.sequencereader
 Bundle-Version: 0.0.3
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.sequencereader.StepSequenceReader
-Import-Package: de.mpg.mpiz.koeln.kerner.anna.core,
+Import-Package: de.kerner.osgi.commons.logger.dispatcher,
+ de.mpg.mpiz.koeln.kerner.anna.core,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data,

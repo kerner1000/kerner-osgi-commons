@@ -10,6 +10,7 @@ import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
@@ -25,6 +26,7 @@ public class StepSequenceReader extends AbstractStep {
 	// TODO to external properties
 	private final File fasta;
 	private final File gtf;
+	private LogDispatcher logger = null;
 
 	public StepSequenceReader() {
 		final String fastaPath = super.getStepProperties().getProperty(
@@ -39,7 +41,7 @@ public class StepSequenceReader extends AbstractStep {
 
 	@Override
 	public boolean checkRequirements(DataBean dataBean) {
-		super.info(this, "no requirements needed");
+		logger.info(this, "no requirements needed");
 		System.out.println(this + ": no requirements needed");
 		return true;
 	}

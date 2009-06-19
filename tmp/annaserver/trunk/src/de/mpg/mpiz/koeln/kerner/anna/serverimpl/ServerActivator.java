@@ -6,6 +6,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
 public class ServerActivator implements BundleActivator {
@@ -14,15 +15,10 @@ public class ServerActivator implements BundleActivator {
 	
 	@SuppressWarnings("unchecked")
 	public void start(BundleContext context) throws Exception {
-		// TODO remove try catch
-		try{
-		//LOGGER = new LogDispatcher(context);
+		LOGGER = new LogDispatcherImpl(context);
 		Server service = new ServerImpl();
 		context.registerService(Server.class.getName(), service, new Hashtable());
-		System.out.println(this + ": activated");
-		}catch(Throwable t){
-			t.printStackTrace();
-		}
+		LOGGER.debug(this, "activated");
 	}
 	
 	public void stop(BundleContext context) throws Exception {
