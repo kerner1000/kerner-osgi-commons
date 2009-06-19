@@ -16,7 +16,16 @@ import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
+/**
+ * 
+ * @threadsave
+ *
+ */
 public abstract class AbstractStep implements BundleActivator {
+
+	public enum State {
+		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING, DONE
+	}
 
 	// TODO must run in this directory
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
@@ -27,14 +36,32 @@ public abstract class AbstractStep implements BundleActivator {
 	// public final static String VALUE_ENV_LSF = "env.lsf";
 	// private static LogDispatcher LOGGER = null;
 	private final Properties properties;
+	private State state = State.LOOSE;
 	// TODO obsolete
 	public Bundle bundle;
+	private boolean success = false;
 
 	public AbstractStep() {
 		properties = getPropertes();
 	}
 
-	private Properties getPropertes() {
+	protected final synchronized State getState() {
+		return state;
+	}
+
+	public final synchronized boolean getSuccess() {
+		return success;
+	}
+
+	public final synchronized void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	protected final synchronized void setState(State state) {
+		this.state = state;
+	}
+
+	private synchronized Properties getPropertes() {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);
 		try {
@@ -54,6 +81,9 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
+	/**
+	 * should only be called by the OSGi framework
+	 */
 	public final void start(BundleContext context) throws Exception {
 		// TODO remove try catch
 		try {
@@ -66,31 +96,29 @@ public abstract class AbstractStep implements BundleActivator {
 	}
 
 	/**
-	private Server getServer(BundleContext context) throws InterruptedException {
-		ServiceTracker tracker = new ServiceTracker(context, Server.class
-				.getName(), null);
-		if (tracker == null)
-			throw new RuntimeException("ServiceTracker null");
-		tracker.open();
-		System.out.print(this + ": getting Server...");
-		Server server = (Server) tracker.waitForService(TIMEOUT);
-		if (server == null)
-			throw new RuntimeException("Service null");
-		System.out.println(this + ": got Server " + server);
-		return server;
-	}
-	*/
+	 * private Server getServer(BundleContext context) throws
+	 * InterruptedException { ServiceTracker tracker = new
+	 * ServiceTracker(context, Server.class .getName(), null); if (tracker ==
+	 * null) throw new RuntimeException("ServiceTracker null"); tracker.open();
+	 * System.out.print(this + ": getting Server..."); Server server = (Server)
+	 * tracker.waitForService(TIMEOUT); if (server == null) throw new
+	 * RuntimeException("Service null"); System.out.println(this +
+	 * ": got Server " + server); return server; }
+	 */
 
-	private void registerToServer(Server server) {
+	private synchronized void registerToServer(Server server) {
 		System.out.println(this + ": registering to Server " + server);
 		server.registerStep(this);
 	}
 
+	/**
+	 * should only be called by OSGi framework
+	 */
 	public final void stop(BundleContext context) throws Exception {
 		// TODO Auto-generated method stub
 	}
 
-	public Properties getStepProperties() {
+	public synchronized Properties getStepProperties() {
 		return properties;
 	}
 
@@ -100,9 +128,11 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
-	public abstract boolean checkRequirements(DataBean data)throws StepExecutionException;
-	
-	public abstract boolean needToRun(DataBean data) throws StepExecutionException;
+	public abstract boolean checkRequirements(DataBean data)
+			throws StepExecutionException;
+
+	public abstract boolean needToRun(DataBean data)
+			throws StepExecutionException;
 
 	public abstract DataBean run(DataBean data) throws StepExecutionException;
 

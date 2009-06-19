@@ -4,8 +4,9 @@ import java.io.File;
 import java.util.List;
 
 import de.kerner.commons.CommandStringBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
-class RunStateLocal extends AbstractRunState {
+class RunStateLocal extends AbstractRunStateTraining {
 
 	RunStateLocal(File workingDir, File conradWorkingDir,
 			String trainingFileName) {
@@ -13,11 +14,12 @@ class RunStateLocal extends AbstractRunState {
 	}
 
 	@Override
+	protected
 	List<String> getCommandList() {
-		final CommandStringBuilder builder = new CommandStringBuilder(new File(conradWorkingDir,CONRAD_EXE).getAbsolutePath());
+		final CommandStringBuilder builder = new CommandStringBuilder(new File(conradWorkingDir,ConradConstants.CONRAD_EXE).getAbsolutePath());
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
-		builder.addFlagCommand(workingDir.getAbsolutePath());
+		builder.addFlagCommand(stepWorkingDir.getAbsolutePath());
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

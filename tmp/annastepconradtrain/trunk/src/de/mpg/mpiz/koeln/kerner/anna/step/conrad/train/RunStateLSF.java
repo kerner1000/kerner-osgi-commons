@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.kerner.commons.CommandStringBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
-class RunStateLSF extends AbstractRunState {
+class RunStateLSF extends AbstractRunStateTraining {
 	
 	private final static String BSUB_EXE = "bsub";
 	private final File LSFout, LSFerr;
@@ -20,14 +21,15 @@ class RunStateLSF extends AbstractRunState {
 	}
 	
 	@Override
+	protected
 	List<String> getCommandList() {
 		final CommandStringBuilder builder = new CommandStringBuilder(BSUB_EXE);
 		builder.addAllFlagCommands(getBsubFlagCommandStrings());
 		builder.addAllValueCommands(getBsubValueCommandStrings());
-		builder.addFlagCommand(CONRAD_EXE);
+		builder.addFlagCommand(ConradConstants.CONRAD_EXE);
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
-		builder.addFlagCommand(workingDir.getAbsolutePath());
+		builder.addFlagCommand(stepWorkingDir.getAbsolutePath());
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

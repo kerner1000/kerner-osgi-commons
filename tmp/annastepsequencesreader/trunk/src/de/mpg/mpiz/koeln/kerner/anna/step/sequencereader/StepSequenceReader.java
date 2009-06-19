@@ -15,7 +15,7 @@ import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
-public class SequenceReaderActivator extends AbstractStep {
+public class StepSequenceReader extends AbstractStep {
 
 	private final static String FASTA_KEY = "fasta";
 	private final static String GTF_KEY = "gtf";
@@ -25,7 +25,7 @@ public class SequenceReaderActivator extends AbstractStep {
 	private final File fasta;
 	private final File gtf;
 
-	public SequenceReaderActivator() {
+	public StepSequenceReader() {
 		final String fastaPath = super.getStepProperties().getProperty(
 				FASTA_KEY, DEFAULT_FASTA_PATH);
 		System.out.println(this + ": got path for FASTA: " + fastaPath);
@@ -47,12 +47,9 @@ public class SequenceReaderActivator extends AbstractStep {
 		try{
 		dataBean = doFasta(dataBean);
 		dataBean = doGtf(dataBean);
-		}catch(DataBeanAccessException e){
-			throw new StepExecutionException(e);
-		} catch (IOException e) {
-			throw new StepExecutionException(e);
-		} catch (GTFFormatErrorException e) {
-			throw new StepExecutionException(e);
+		setSuccess(true);
+		}catch(Throwable t){
+			t.printStackTrace();
 		}
 		return dataBean;
 	}

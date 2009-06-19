@@ -1,5 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -40,9 +41,14 @@ public class DataProxyImpl implements DataProxy {
 				try {
 					System.out.println(this + ": " + file + " exists, reading");
 					data = fileToObject(DataBean.class, file);
-					
+				} catch (EOFException e) {
+					System.out.println(this + ": " + file
+							+ " corrupt, returning new one");
+					data = new DataBeanImpl();
+
 				} catch (StreamCorruptedException e) {
-					System.out.println(this + ": " + file + " corrupt, returning new one");
+					System.out.println(this + ": " + file
+							+ " corrupt, returning new one");
 					data = new DataBeanImpl();
 				} catch (IOException e) {
 					// TODO put to log

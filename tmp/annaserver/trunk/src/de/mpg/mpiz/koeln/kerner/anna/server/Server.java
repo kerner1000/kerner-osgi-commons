@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyProvider;
+import de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerMonitor;
 
 public interface Server {
 
@@ -13,5 +14,6 @@ public interface Server {
 	public void unregisterStep(AbstractStep step);
 	public Properties getServerProperties();
 	public DataProxyProvider getDataProxyProvider();
+	public ServerMonitor getServermonitor();
 	
 }

@@ -10,11 +10,15 @@ class StepController implements Callable<Boolean> {
 	private final AbstractStepExecutor exe;
 
 	StepController(AbstractStep step, Server server) {
-		System.out.println(this + ": running step " + step);
 		exe = new LocalSepExecutor(step, server);
+	}
+	
+	public String toString() {
+		return this.getClass().getSimpleName() + ":" + exe.getClass().getSimpleName();
 	}
 
 	public Boolean call() throws Exception {
+		System.out.println(this + ": stepexecutor activated " + exe);
 		// call "call()" directly to run in same thread
 		exe.call();
 		return true;

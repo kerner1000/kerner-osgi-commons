@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
@@ -21,20 +24,24 @@ public class ServerImpl implements Server {
 					+ File.separatorChar + "server.properties");
 	private final Properties properties;
 	private final static int NUM_THREADS = 5;
-	private final ExecutorService exe = Executors
-			.newFixedThreadPool(NUM_THREADS);
+	// private final ExecutorService exe =
+	// Executors.newFixedThreadPool(NUM_THREADS);
+	private final ExecutorService exe = Executors.newCachedThreadPool();
 	private final DataProxyProvider provider;
+	private final ServerMonitor monitor;
 
 	ServerImpl() {
 		properties = getPropertes();
 		System.out.println(this + ": loaded properties: " + properties);
-		final File workingDir = new File(properties.getProperty(WORKING_DIR_KEY));
-		if(checkWorkingDir(workingDir)){
+		final File workingDir = new File(properties
+				.getProperty(WORKING_DIR_KEY));
+		if (checkWorkingDir(workingDir)) {
 			//
 		}
 		this.provider = new DataProxyProvider(this);
+		this.monitor = new ServerMonitorImpl();
 	}
-	
+
 	private boolean checkWorkingDir(final File workingDir) {
 		if (!workingDir.exists()) {
 			System.out.println(this + ": " + workingDir
@@ -64,24 +71,33 @@ public class ServerImpl implements Server {
 		}
 		return pro;
 	}
-	
+
 	private Properties initDefaults() {
 		Properties pro = new Properties();
-//		pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
+		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
 		return pro;
 	}
 
 	public synchronized void registerStep(AbstractStep step) {
-		System.out.println(this + ": registering step " + step);
-		StepController controller = new StepController(step, this);
-		exe.submit(controller);
-		System.out.println(this + ": registered step " + step);
+		// TODO remove try catch
+		try {
+			monitor.stepRegistered(step);
+			StepController controller = new StepController(step, this);
+			exe.submit(controller);
+			System.out.println(this + ": registered step " + step);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	public synchronized void unregisterStep(AbstractStep step) {
 		System.out.println(this + ": unregistering step " + step);
 		// TODO method stub
 
+	}
+	
+	public ServerMonitor getServermonitor(){
+		return monitor;
 	}
 
 	public Properties getServerProperties() {
@@ -91,7 +107,7 @@ public class ServerImpl implements Server {
 	public DataProxyProvider getDataProxyProvider() {
 		return provider;
 	}
-	
+
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}

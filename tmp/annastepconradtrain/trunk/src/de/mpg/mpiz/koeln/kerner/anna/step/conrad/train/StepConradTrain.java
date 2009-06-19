@@ -9,12 +9,13 @@ import org.bioutils.gtf.GTFElement;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
-public class ConradTrainActivator extends AbstractStep {
+public class StepConradTrain extends AbstractStep {
 
-	private final static String PROPERTIES_KEY_PREFIX = "anna.step.conrad.train.";
-	private final static String CONRAD_DIR_KEY = PROPERTIES_KEY_PREFIX
-			+ "conradWorkingDir";
+	private final static String PROPERTIES_KEY_PREFIX = ConradConstants.PROPERTIES_KEY_PREFIX
+			+ "train.";
 	private final static String WORKING_DIR_KEY = PROPERTIES_KEY_PREFIX
 			+ "workingDir";
 	private final static String TRAINING_FILE_NAME_KEY = PROPERTIES_KEY_PREFIX
@@ -25,11 +26,11 @@ public class ConradTrainActivator extends AbstractStep {
 	private final static String DEFAULT_RUN_VALUE = RUN_VALUE_LOCAL;
 
 	// TODO make final again
-	private AbstractRunState state;
+	private AbstractRunStateTraining state;
 	private File conradWorkingDir, stepWorkingDir;
 	private String trainingFileName, runEnv;
 
-	public ConradTrainActivator() {
+	public StepConradTrain() {
 		// TODO remove try catch
 		try {
 			assignProperties();
@@ -43,7 +44,7 @@ public class ConradTrainActivator extends AbstractStep {
 
 	private void assignProperties() {
 		conradWorkingDir = new File(super.getStepProperties().getProperty(
-				CONRAD_DIR_KEY));
+				ConradConstants.CONRAD_DIR_KEY));
 		stepWorkingDir = new File(super.getStepProperties().getProperty(
 				WORKING_DIR_KEY));
 		trainingFileName = super.getStepProperties().getProperty(
@@ -123,6 +124,7 @@ public class ConradTrainActivator extends AbstractStep {
 						+ " training sucessfull, created training file "
 						+ trainingFile);
 				data.setConradTrainingFile(trainingFile);
+				setSuccess(true);
 			}
 		} catch (Exception e) {
 			throw new StepExecutionException(e);
@@ -136,7 +138,17 @@ public class ConradTrainActivator extends AbstractStep {
 
 	@Override
 	public boolean needToRun(DataBean data) throws StepExecutionException {
-		return true;
+//		/**
+		
+		try {
+			return (data.getConradTrainingFile() == null);
+		} catch (DataBeanAccessException e) {
+			throw new StepExecutionException(e);
+		}
+		
+//		*/
+		
+//		return true;
 	}
 
 }
