@@ -202,29 +202,67 @@ class Core {
 		return sb.toString();
 	}
 
-	public static void writeOutSubstance(final OutSubstance s, final File file) throws IOException {
+	public static void writeOutSubstance(final OutSubstance s, final File file)
+			throws IOException {
 		LOGGER.debug("writing file " + file);
+		System.out.println("writing file " + file);
 		final HSSFWorkbook wb = new HSSFWorkbook();
 		final HSSFSheet sheet = wb.createSheet();
-		
+
 		int currentRow = 5;
-		for(OutSubstanceEntry entry : s.getEntries()){
+		for (OutSubstanceEntry entry : s.getEntries()) {
+			writeProbeNr(entry.getIdent(), sheet);
+			writeHeaderRow(sheet, entry.getValues().size());
+			
+			final HSSFRow valueRow = sheet.createRow(currentRow);
+			System.out.println(s);
 			int currentColumn = 3;
-			for(String value : entry.getValues()){
-				LOGGER.debug("writing " + value + " to " + currentRow + " " + currentColumn);
-				final HSSFRow valueRow = sheet.createRow(currentRow);
+			for (String value : entry.getValues()) {
+				LOGGER.debug("writing " + value + " to " + currentRow + " "
+						+ currentColumn);
+				System.out.println("writing " + value + " to " + currentRow
+						+ " " + currentColumn);
 				final HSSFCell valueCell = valueRow.createCell(currentColumn);
 				valueCell.setCellValue(new HSSFRichTextString(value));
 				currentColumn++;
 			}
+			System.out.println();
 			currentRow++;
 		}
-		
+
 		FileOutputStream fs = new FileOutputStream(file);
 		wb.write(fs);
+		// fs.flush();
 		fs.close();
 
 	}
 
-	
+	// TODO eliminate hardcoding
+	private static void writeHeaderRow(HSSFSheet sheet,int length) {
+		final HSSFRow row = sheet.createRow(HEADER_ROW);
+		final HSSFCell c0 = row.createCell(0);
+		c0.setCellValue(new HSSFRichTextString("Substanz"));
+		final HSSFCell c1 = row.createCell(1);
+		c1.setCellValue(new HSSFRichTextString("Lname"));
+		
+		for(int i= 3; i<3+length;i++){
+			final HSSFCell cell = row.createCell(i);
+			cell.setCellValue(new HSSFRichTextString(Integer.toString(i-2)));
+		}
+		
+	}
+
+	private static void writeProbeNr(String ident, HSSFSheet sheet) {
+		final HSSFRow row = sheet.createRow(PROBE_IDENT_ROW);
+		final HSSFCell cell = row.createCell(PROBE_IDENT_COL);
+		cell.setCellValue(new HSSFRichTextString(new StringBuilder().append(
+				PROBE_IDENT_PREFIX).append(ident).append(PROBE_IDENT_POSTFIX)
+				.toString()));
+	}
+
+	private final static int PROBE_IDENT_ROW = 2;
+	private final static int PROBE_IDENT_COL = 0;
+	private final static String PROBE_IDENT_PREFIX = "Probe Nr.: ";
+	private final static String PROBE_IDENT_POSTFIX = "";
+	private final static int HEADER_ROW = PROBE_IDENT_ROW + 2;
 }

@@ -41,14 +41,27 @@ import de.fh.giessen.ringversuch.controller.Controller;
 
 public class ViewImpl implements View {
 
+	private static final String NEW_LINE = System.getProperty("line.separator");
+	private final static String MENU_TITLE = "Menu";
+	private final static String MENU_ABOUT = "About";
+	private final static String MENU_SETTINGS = "Settings";
+	private final static String BUTTON_START = "Start";
+	private final static String BUTTON_SELECT = "Select files";
+	private final static String BUTTON_SAVE = "Save in...";
+	private final static String BUTTON_CANCEL = "Cancel";
+	private final static String FILES_TITLE = "Files";
+	private final static String LOG_TITLE = "Log";
+	private final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
+	
 	private final class MyPanel extends JPanel {
-
+		
 		private final class MyListener implements ActionListener {
 			private final Component component;
 			private final Controller controller;
 
 			MyListener(Component component, Controller controller) {
 				this.component = component;
+				this.controller = controller;
 			}
 
 			@Override
@@ -60,7 +73,7 @@ public class ViewImpl implements View {
 						files.clear();
 						File[] inputFiles = fileChooserinputFiles.getSelectedFiles();
 						for (File f : inputFiles) {
-							areaFiles.append(f.getName() + "\n");
+							areaFiles.append(f.getName() + NEW_LINE);
 							files.add(f);
 						}
 						inputFilesSelected = true;
@@ -74,7 +87,7 @@ public class ViewImpl implements View {
 				else if (e.getSource() == buttonSave) {
 					final int returnVal = fileChooseroutDir.showSaveDialog(component);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						controller.setOutFile(fileChooseroutDir.getSelectedFile())
+						controller.setOutFile(fileChooseroutDir.getSelectedFile());
 						outputDirSelected = true;
 						if (inputFilesSelectedOutputDirSelected())
 							setInputFilesSelectedOutputDirSelected();
@@ -96,33 +109,27 @@ public class ViewImpl implements View {
 			}
 		}
 
-		private final static String MENU_TITLE = "Menu";
-		private final static String MENU_ABOUT = "About";
-		private final static String MENU_SETTINGS = "Settings";
-		private final static String BUTTON_START = "Start";
-		private final static String BUTTON_SELECT = "Select files";
-		private final static String BUTTON_SAVE = "Save in...";
-		private final static String BUTTON_CANCEL = "Cancel";
-		private final static String FILES_TITLE = "Files";
-		private final static String LOG_TITLE = "Log";
-		private final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
-		private final ActionListener myListener = new MyListener(this);
+		private static final long serialVersionUID = 5815887454332977224L;
+		private final ActionListener myListener;
 		private final Collection<File> files = new Vector<File>();
 		private final JTextArea areaFiles = new JTextArea();
-		private final JFileChooser fileChooserinputFiles,
-				fileChooseroutDir = new JFileChooser();
+		private final JFileChooser fileChooserinputFiles  = new JFileChooser();
+		private final JFileChooser 		fileChooseroutDir = new JFileChooser();
 		private final JButton buttonStart = new JButton(BUTTON_START);
 		private final JMenu menu = new JMenu(MENU_TITLE);
 		private final JMenuItem menuAbout = new JMenuItem(MENU_ABOUT);
 		private final JMenuItem menuSettings = new JMenuItem(MENU_SETTINGS);
 		private final JProgressBar progressBar = new JProgressBar(0, 100);
-		private JButton buttonSelect, buttonSave, buttonCancel;
+		private final JButton buttonSelect = new JButton(BUTTON_SELECT);
+		private final JButton buttonSave = new JButton(BUTTON_SAVE);
+		private final JButton buttonCancel = new JButton(BUTTON_CANCEL);
 		private boolean inputFilesSelected = false;
 		private boolean outputDirSelected = false;
 		private int progress = 0;
-
-		MyPanel() {
+		
+		MyPanel(Controller controller) {
 			init();
+			this.myListener = new MyListener(this, controller);
 		}
 
 		private void init() {
@@ -271,87 +278,45 @@ public class ViewImpl implements View {
 			else
 				return false;
 		}
+		
+		private void showSettingsView() {
+			// TODO Auto-generated method stub
+			
+		}
 
 	}
 
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 
-	private ViewImpl() {
-		
+	public ViewImpl(final Controller  controller) {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				final JFrame frame = new JFrame(GUIPrefs.NAME + " " + GUIPrefs.VERSION);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				// Create and set up the content pane.
+				final MyPanel panel = new MyPanel(controller);
 
-		
+				// content panes must be opaque
+				panel.setOpaque(true);
+				frame.setContentPane(panel);
 
-		
-
-
-	}
-	
-	public static void createAndShowMainView(){
-		
-	}
-
-	
-
-	private void createGUISettings() {
-		frameSettings = new JFrame("Settings");
-		frameSettings.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
-		panelSettings = new GUISettings(settings, this, frameSettings);
-
-		panelSettings.setOpaque(true);
-		frameSettings.setContentPane(panelSettings);
-
-		frameSettings.pack();
-		frameSettings.setResizable(false);
-
-	}
-
-	private FileInputStream loadSettings() throws FileNotFoundException,
-			ArrayIndexOutOfBoundsException {
-
-		class Filter implements FilenameFilter {
-			public boolean accept(File f, String s) {
-				return s.toLowerCase().endsWith(".ini");
+				// Display the window.
+				frame.pack();
+				frame.setMinimumSize(new Dimension(400, 200));
+				frame.setVisible(true);
 			}
-		}
-
-		Filter filter = new Filter();
-		File pfad = new File(System.getProperty("user.dir"));
-		String[] dateien = pfad.list(filter);
-
-		areaLog.append("Loaded settings from " + pfad + File.separator
-				+ dateien[0] + "\n");
-
-		return new FileInputStream(dateien[0]);
+		});
 	}
 
-	private Properties createDefaultSettings() {
-
-		/**
-		 * Create and laod default properties
-		 */
-		Properties defaultsettings = new Properties();
-		defaultsettings.setProperty("LABOR_NO_ROW", "e.g. 1");
-		defaultsettings.setProperty("LABOR_NO_COLUMN", "e.g. A");
-		defaultsettings.setProperty("PROBE_NO_ROW", "e.g. 1");
-		defaultsettings.setProperty("PROBE_NO_COLUMN", "e.g. A");
-		defaultsettings.setProperty("PROBE_USE", "e.g. 1");
-		defaultsettings.setProperty("SHEET_NO", "e.g. 1");
-		defaultsettings.setProperty("SUBSTANCES_COLUMN", "e.g. A");
-		defaultsettings.setProperty("MAIN_START_ROW", "e.g. 1");
-		defaultsettings.setProperty("MAIN_START_COLUMN", "e.g A");
-		defaultsettings.setProperty("MAIN_END_ROW", "e.g. 1");
-		defaultsettings.setProperty("MAIN_END_COLUMN", "e.g A");
-
-		/**
-		 * Versuche Einstellungen vom letzen Mal zu laden. Falls das scheitert,
-		 * wird die Gui mit unbrauchbaren Einstellungen / default Einstellungen
-		 * (Tipps zur Eingabe) geladen.
-		 */
-		/**
-		 * create application properties with default
-		 */
-		return new Properties(defaultsettings);
+	@Override
+	public void appendLog(String message, boolean isError) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public void setOnline() {
+		// TODO Auto-generated method stub
+		
+	}
 }

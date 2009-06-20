@@ -8,9 +8,17 @@ import java.util.Collection;
 
 import org.apache.log4j.PropertyConfigurator;
 
+import de.fh.giessen.ringversuch.controller.Controller;
+import de.fh.giessen.ringversuch.controller.ControllerImpl;
+
 public class ModelImpl implements Model {
 
-	private static String LOG_PROPERTIES = "/home/pcb/kerner/Dropbox/log.properties";
+	private static String LOG_PROPERTIES = "C:\\Users\\juli\\log.properties";
+	private final Controller controller;
+
+	public ModelImpl(ControllerImpl controller) {
+		this.controller = controller;
+	}
 
 	public static void main(String args[]) {
 		try {
@@ -22,10 +30,10 @@ public class ModelImpl implements Model {
 					"settings.ini");
 			settings.loadSettings(file);
 			File file0 = new File(
-					"/home/pcb/kerner/Desktop/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls");
+					"C:\\Users\\juli\\Ergebnisse_RV_DIN38407-41\\L01_RV_DIN38407-41.xls");
 			File file1 = new File(
-					"/home/pcb/kerner/Desktop/Ergebnisse_RV_DIN38407-41/L05_RV_DIN38407-41.xls");
-			File outFile = new File("/home/pcb/kerner/Desktop/ringversuch2/");
+					"C:\\Users\\juli\\Ergebnisse_RV_DIN38407-41\\L05_RV_DIN38407-41.xls");
+			File outFile = new File("C:\\Users\\juli\\ringversuch\\");
 			Collection<File> files = new ArrayList<File>();
 			files.add(file0);
 			files.add(file1);
