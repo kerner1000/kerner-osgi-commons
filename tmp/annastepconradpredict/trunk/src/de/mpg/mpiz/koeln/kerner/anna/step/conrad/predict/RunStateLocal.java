@@ -19,7 +19,7 @@ class RunStateLocal extends AbstractRunStatePredicting {
 		builder.addFlagCommand("predict");
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		builder.addFlagCommand(stepWorkingDir.getAbsolutePath());
-		builder.addFlagCommand("predict");
+		builder.addFlagCommand(resultFile.getAbsolutePath());
 		return builder.getCommandList();
 	}
 	

@@ -101,6 +101,7 @@ public class StepConradPredict extends AbstractStep {
 
 	@Override
 	public DataBean run(DataBean data, StepProcessObserver listener) throws StepExecutionException {
+		// TODO try catch
 		try {
 			final File trainingFile = data.getConradTrainingFile();
 			if (runEnv.equalsIgnoreCase(RUN_VALUE_LSF)) {
@@ -120,17 +121,17 @@ public class StepConradPredict extends AbstractStep {
 			final boolean b = state.run(trainingFile);
 			if(b){
 				System.out.println(this
-						+ " predicting sucessfull, created predicting file "
-						+ trainingFile);
+						+ " predicting sucessfull");
 				data.setPredictedGenesGtf(state.getResult());
-				setSuccess(true);
+				setSuccess(true);				
 			} else {
 				System.out.println(this
 						+ " predicting not sucessfull, cannot update data");
 			}
 			return data;
-		} catch (DataBeanAccessException e) {
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			t.printStackTrace();
+			throw new StepExecutionException(t);
 		}
 	}
 
