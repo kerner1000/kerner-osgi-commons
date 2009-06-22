@@ -12,8 +12,7 @@ class LocalSepExecutor extends AbstractStepExecutor {
 	public Boolean call() throws Exception {
 		final boolean b = checkNeedToRun();
 		if (b) {
-			System.out.println(this + ": step " + step
-					+ " needs to run");
+			System.out.println(this + ": step " + step + " needs to run");
 			waitForReq();
 			run();
 			synchronized (server) {
@@ -21,13 +20,17 @@ class LocalSepExecutor extends AbstractStepExecutor {
 			}
 		} else {
 			System.out.println(this + ": step " + step
-					+ " does not need to run");
+					+ " does not need to run, skipping");
+			step.setSkipped(true);
+			step.setSuccess(true);
+			server.getStepStateObserver().stepFinished(step);
 		}
 		System.out.println(this + ": step " + step + " done");
 		return true;
 	}
 
 	public String toString() {
-		return this.getClass().getSimpleName() + ":" + step.getClass().getSimpleName();
+		return this.getClass().getSimpleName() + ":"
+				+ step.getClass().getSimpleName();
 	}
 }

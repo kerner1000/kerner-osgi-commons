@@ -18,7 +18,7 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessExcepti
 
 /**
  * 
- * @Threadsave
+ * @ThreadSave
  * 
  */
 @SuppressWarnings("unchecked")
@@ -30,7 +30,7 @@ public class DataBeanImpl implements DataBean {
 	private ArrayList<GTFElement> predictedGenesGTFs = new ArrayList<GTFElement>();
 	private File conradTrainingFile = null;
 
-	public synchronized void setVerifiedGenesFasta (
+	public synchronized void setVerifiedGenesFasta(
 			ArrayList<? extends FASTASequence> sequences)
 			throws DataBeanAccessException {
 		if (sequences == null)
@@ -48,7 +48,7 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized void setVerifiedGenesGtf (
+	public synchronized void setVerifiedGenesGtf(
 			ArrayList<? extends GTFElement> el) throws DataBeanAccessException {
 		if (el == null)
 			throw new NullPointerException();
@@ -122,7 +122,7 @@ public class DataBeanImpl implements DataBean {
 		if (elements.size() == 0)
 			return;
 		try {
-			elements.clear();
+			this.predictedGenesGTFs.clear();
 			this.predictedGenesGTFs.addAll(deepCopy(ArrayList.class, elements));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);

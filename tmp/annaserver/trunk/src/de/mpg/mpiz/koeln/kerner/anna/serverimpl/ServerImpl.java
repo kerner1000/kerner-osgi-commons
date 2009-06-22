@@ -16,6 +16,11 @@ import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyProvider;
 
+/**
+ * 
+ * @ThreadSave
+ * 
+ */
 public class ServerImpl implements Server {
 
 	// TODO must run in this directory
@@ -28,7 +33,7 @@ public class ServerImpl implements Server {
 	// Executors.newFixedThreadPool(NUM_THREADS);
 	private final ExecutorService exe = Executors.newCachedThreadPool();
 	private final DataProxyProvider provider;
-	private final StepStateMonitor monitor;
+	private final StepStateObserver monitor;
 
 	ServerImpl() {
 		properties = getPropertes();
@@ -39,7 +44,7 @@ public class ServerImpl implements Server {
 			//
 		}
 		this.provider = new DataProxyProvider(this);
-		this.monitor = new StepStateMonitorImpl();
+		this.monitor = new StepStateObserverImpl();
 	}
 
 	private boolean checkWorkingDir(final File workingDir) {
@@ -60,6 +65,7 @@ public class ServerImpl implements Server {
 					+ PROPERTIES_FILE);
 			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
+			fi.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println(this + ": could not load settings from "
@@ -95,16 +101,16 @@ public class ServerImpl implements Server {
 		// TODO method stub
 
 	}
-	
-	public StepStateMonitor getStepStatemonitor(){
+
+	public synchronized StepStateObserver getStepStateObserver() {
 		return monitor;
 	}
 
-	public Properties getServerProperties() {
+	public synchronized Properties getServerProperties() {
 		return new Properties(properties);
 	}
 
-	public DataProxyProvider getDataProxyProvider() {
+	public synchronized DataProxyProvider getDataProxyProvider() {
 		return provider;
 	}
 

@@ -10,11 +10,11 @@ import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep.State;
  * @Threadsave
  * 
  */
-public class StepStateMonitorImpl implements StepStateMonitor {
+public class StepStateObserverImpl implements StepStateObserver {
 
 	private final Map<AbstractStep, AbstractStep.State> stepStates = new ConcurrentHashMap<AbstractStep, AbstractStep.State>();
 
-	public StepStateMonitorImpl() {
+	public StepStateObserverImpl() {
 
 	}
 
@@ -22,13 +22,21 @@ public class StepStateMonitorImpl implements StepStateMonitor {
 		return this.getClass().getSimpleName();
 	}
 
-	private void printStepStates(AbstractStep step) {
+	private void printStepStates(AbstractStep lastChangedStep) {
 		System.out.println("++++++++++++++++++++++++");
 		System.out.println(this + ": current step states:");
 		for (AbstractStep s : stepStates.keySet()) {
-			System.out.print("\t" + s + ":state=" + stepStates.get(s)
-					+ "\tsuccess=" + s.getSuccess());
-			if (step.equals(s)) {
+			final String s1 = s.toString();
+			final String s2 = "state=" + stepStates.get(s);
+			final String s3 = "skipped=" + s.wasSkipped();
+			String s4 = "success=" + s.getSuccess();
+			if(s.getSuccess() == false)
+				s4 = s4  + "/unknown";
+			System.out.printf("\t%-22s\t%-22s\t%-10s\t%-10s", s1, s2, s3 ,s4);
+//			System.out.print("\t" + s + "\t:state=" + stepStates.get(s)
+//					+ "\tskipped=" + s.wasSkipped() + "\tsuccess="
+//					+ s.getSuccess());
+			if (lastChangedStep.equals(s)) {
 				System.out.print("\t(changed)");
 			}
 			System.out.println();
@@ -45,10 +53,12 @@ public class StepStateMonitorImpl implements StepStateMonitor {
 					+ " new, assuming state " + state);
 		}
 		if (!state.equals(expectedCurrentState)) {
-			System.out.println(this
-					+ ": warning, inconsistent step state mapping for step "
-					+ step + "\n\t step state changed from "
-					+ stepStates.get(step) + " to " + newState);
+			// ignore inconsistency due to skipping of step
+			
+//			System.out.println(this
+//					+ ": warning, inconsistent step state mapping for step "
+//					+ step + "\n\t step state changed from "
+//					+ stepStates.get(step) + " to " + newState);
 		}
 	}
 

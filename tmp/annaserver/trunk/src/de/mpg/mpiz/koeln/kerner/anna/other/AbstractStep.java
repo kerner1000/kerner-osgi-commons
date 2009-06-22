@@ -19,7 +19,7 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 /**
  * 
  * @threadsave
- *
+ * 
  */
 public abstract class AbstractStep implements BundleActivator {
 
@@ -34,6 +34,7 @@ public abstract class AbstractStep implements BundleActivator {
 	private final Properties properties;
 	private State state = State.LOOSE;
 	private boolean success = false;
+	private boolean skipped = false;
 
 	public AbstractStep() {
 		properties = getPropertes();
@@ -51,6 +52,14 @@ public abstract class AbstractStep implements BundleActivator {
 		this.success = success;
 	}
 
+	public final synchronized boolean wasSkipped() {
+		return skipped;
+	}
+
+	public final synchronized void setSkipped(boolean skipped) {
+		this.skipped = skipped;
+	}
+
 	protected final synchronized void setState(State state) {
 		this.state = state;
 	}
@@ -63,6 +72,7 @@ public abstract class AbstractStep implements BundleActivator {
 					+ PROPERTIES_FILE);
 			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
 			pro.load(fi);
+			fi.close();
 		} catch (FileNotFoundException e) {
 			System.out.println(this + ": could not load settings from "
 					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
@@ -77,7 +87,7 @@ public abstract class AbstractStep implements BundleActivator {
 	 * should only be called by the OSGi framework
 	 */
 	public void start(BundleContext context) throws Exception {
-			registerToServer(new ServerProvider(context).getService());
+		registerToServer(new ServerProvider(context).getService());
 	}
 
 	private synchronized void registerToServer(Server server) {
@@ -106,11 +116,12 @@ public abstract class AbstractStep implements BundleActivator {
 
 	public abstract boolean needToRun(DataBean data)
 			throws StepExecutionException;
-	
-	public DataBean run(DataBean data)throws StepExecutionException{
+
+	public DataBean run(DataBean data) throws StepExecutionException {
 		return run(data, null);
 	}
 
-	public abstract DataBean run(DataBean data, StepProcessObserver listener) throws StepExecutionException;
+	public abstract DataBean run(DataBean data, StepProcessObserver listener)
+			throws StepExecutionException;
 
 }

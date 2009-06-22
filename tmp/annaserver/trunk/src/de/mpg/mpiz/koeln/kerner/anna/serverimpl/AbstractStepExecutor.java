@@ -13,29 +13,31 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 
 	protected final AbstractStep step;
 	protected final Server server;
-//	private final ScheduledExecutorService exe = Executors.newSingleThreadScheduledExecutor();
+
+	// private final ScheduledExecutorService exe =
+	// Executors.newSingleThreadScheduledExecutor();
 
 	AbstractStepExecutor(AbstractStep step, Server server) {
 		this.step = step;
 		this.server = server;
 	}
-	
-	protected boolean checkNeedToRun() throws StepExecutionException{
-			try {
-				server.getStepStatemonitor().stepChecksNeedToRun(step);
-				return step.needToRun(server.getDataProxyProvider()
-						.getDataProxy().getDataBean());
-			} catch (StepExecutionException e) {
-				throw new StepExecutionException(e);
-			} catch (DataBeanAccessException e) {
-				throw new StepExecutionException(e);
-			}
+
+	protected boolean checkNeedToRun() throws StepExecutionException {
+		try {
+			server.getStepStateObserver().stepChecksNeedToRun(step);
+			return step.needToRun(server.getDataProxyProvider().getDataProxy()
+					.getDataBean());
+		} catch (StepExecutionException e) {
+			throw new StepExecutionException(e);
+		} catch (DataBeanAccessException e) {
+			throw new StepExecutionException(e);
+		}
 	}
 
 	protected void waitForReq() throws StepExecutionException {
 		synchronized (server) {
 			try {
-				server.getStepStatemonitor().stepWaitForReq(step);
+				server.getStepStateObserver().stepWaitForReq(step);
 				while (!step.checkRequirements(server.getDataProxyProvider()
 						.getDataProxy().getDataBean())) {
 					System.out.println(this + ": requirements for step " + step
@@ -51,23 +53,23 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 			}
 		}
 		synchronized (server) {
-		server.notifyAll();
+			server.notifyAll();
 		}
 	}
-	
+
 	protected void run() throws StepExecutionException {
 		// TODO remove try catch
-		try{
-			server.getStepStatemonitor().stepStarted(step);
-		System.out.println(this + ": running step " + step);
-		final StepProcessObserver listener = new StepProgressObserverImpl();
-		final DataBean data = step.run(server.getDataProxyProvider()
-				.getDataProxy().getDataBean(), listener);
-		System.out.println(this + ": step " + step
-				+ " finished, updateing data");
-		server.getDataProxyProvider().getDataProxy().updateDataBean(data);
-		server.getStepStatemonitor().stepFinished(step);
-		}catch(Throwable t){
+		try {
+			server.getStepStateObserver().stepStarted(step);
+			System.out.println(this + ": running step " + step);
+			final StepProcessObserver listener = new StepProgressObserverImpl();
+			final DataBean data = step.run(server.getDataProxyProvider()
+					.getDataProxy().getDataBean(), listener);
+			System.out.println(this + ": step " + step
+					+ " finished, updateing data");
+			server.getDataProxyProvider().getDataProxy().updateDataBean(data);
+			server.getStepStateObserver().stepFinished(step);
+		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
