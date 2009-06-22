@@ -99,6 +99,7 @@ public class StepConradTrain extends AbstractStep {
 	@Override
 	public boolean checkRequirements(DataBean data)
 			throws StepExecutionException {
+		// TODO try catch
 		try {
 			final ArrayList<? extends FASTASequence> fastas = data
 					.getVerifiedGenesFasta();
@@ -110,8 +111,9 @@ public class StepConradTrain extends AbstractStep {
 //			System.out.println("++++++++++++++++++++++");
 			return (fastas != null && fastas.size() != 0 && elements != null && elements
 					.size() != 0);
-		} catch (Exception e) {
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			t.printStackTrace();
+			throw new StepExecutionException(t);
 		}
 	}
 

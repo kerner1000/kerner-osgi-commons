@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Conrad-Train Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.conrad.train
-Bundle-Version: 0.0.2
+Bundle-Version: 0.0.3
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.conrad.train.StepConradTrain
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
