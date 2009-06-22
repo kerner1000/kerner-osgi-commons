@@ -82,10 +82,13 @@ public class LogDispatcherImpl implements LogDispatcher {
 			break;
 		case ERROR:
 			logservice.log(LogService.LOG_ERROR, o.toString(), t);
+			break;
 		case INFO:
 			logservice.log(LogService.LOG_INFO, o.toString(), t);
+			break;
 		case WARN:
 			logservice.log(LogService.LOG_WARNING, o.toString(), t);
+			break;
 		default:
 			throw new RuntimeException("cannot be!");
 		}
