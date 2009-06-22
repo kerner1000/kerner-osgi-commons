@@ -99,7 +99,7 @@ public class StepSequenceReader extends AbstractStep {
 	@Override
 	public boolean needToRun(DataBean data) throws StepExecutionException {
 		try {
-			return (data.getVerifiedGenesFasta() != null && data.getVerifiedGenesGtf() != null);
+			return (data.getVerifiedGenesFasta() == null && data.getVerifiedGenesGtf() == null);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}
