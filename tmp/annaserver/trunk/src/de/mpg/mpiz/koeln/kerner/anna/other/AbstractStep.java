@@ -10,7 +10,6 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
@@ -18,7 +17,7 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 /**
  * 
- * @threadsave
+ * @ThreadSave
  * 
  */
 public abstract class AbstractStep implements BundleActivator {
@@ -88,6 +87,11 @@ public abstract class AbstractStep implements BundleActivator {
 	 */
 	public void start(BundleContext context) throws Exception {
 		registerToServer(new ServerProvider(context).getService());
+		init(context);
+	}
+	
+	protected void init(BundleContext context){
+		// Do nothing by default
 	}
 
 	private synchronized void registerToServer(Server server) {
