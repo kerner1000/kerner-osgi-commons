@@ -41,21 +41,22 @@ public class StepSequenceReader extends AbstractStep {
 	@Override
 	public boolean checkRequirements(DataBean dataBean) {
 		System.out.println(this + ": no requirements needed");
-//		throw new NullPointerException("raff");
+		// throw new NullPointerException("raff");
 		return true;
 	}
 
 	@Override
-	public DataBean run(DataBean dataBean, StepProcessObserver observer) throws StepExecutionException {
+	public DataBean run(DataBean dataBean, StepProcessObserver observer)
+			throws StepExecutionException {
 		observer.setProgress(0, 100);
-		try{
+		try {
 			observer.setProgress(30, 100);
-		dataBean = doFasta(dataBean);
-		observer.setProgress(60, 100);
-		dataBean = doGtf(dataBean);
-		observer.setProgress(100, 100);
-		setSuccess(true);
-		}catch(Throwable t){
+			dataBean = doFasta(dataBean);
+			observer.setProgress(60, 100);
+			dataBean = doGtf(dataBean);
+			observer.setProgress(100, 100);
+			setSuccess(true);
+		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 		return dataBean;
@@ -67,7 +68,8 @@ public class StepSequenceReader extends AbstractStep {
 		try {
 			System.out.println(this + ": reading GTF file " + gtf);
 			final GTFFile gtfFile = new GTFFile(gtf);
-			final ArrayList<? extends GTFElement> elements = gtfFile.getElements();
+			final ArrayList<? extends GTFElement> elements = gtfFile
+					.getElements();
 			System.out.println(this + ": done reading gtf");
 			data.setVerifiedGenesGtf(elements);
 		} catch (Throwable t) {
@@ -82,7 +84,8 @@ public class StepSequenceReader extends AbstractStep {
 		try {
 			System.out.println(this + ": reading FASTA file " + fasta);
 			final FASTAFile fastaFile = new FASTAFile(fasta);
-			final ArrayList<? extends FASTASequence> sequences = fastaFile.getSequences();
+			final ArrayList<? extends FASTASequence> sequences = fastaFile
+					.getSequences();
 			System.out.println(this + ": done reading fasta");
 			data.setVerifiedGenesFasta(sequences);
 
@@ -91,15 +94,21 @@ public class StepSequenceReader extends AbstractStep {
 		}
 		return data;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.getClass().getSimpleName();
 	}
 
 	@Override
 	public boolean needToRun(DataBean data) throws StepExecutionException {
 		try {
-			return (data.getVerifiedGenesFasta() == null && data.getVerifiedGenesGtf() == null);
+			// TODO size == 0 not optimal
+			final ArrayList<? extends FASTASequence> list1 = data
+					.getVerifiedGenesFasta();
+			final ArrayList<? extends GTFElement> list2 = data
+					.getVerifiedGenesGtf();
+			return (list1 == null || list1.size() == 0 || list2 == null || list2
+					.size() == 0);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}
