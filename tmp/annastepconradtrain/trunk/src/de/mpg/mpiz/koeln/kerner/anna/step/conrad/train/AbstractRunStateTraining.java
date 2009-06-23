@@ -10,74 +10,67 @@ import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.AbstractRunState;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
-abstract class AbstractRunStateTraining extends AbstractRunState {
+abstract class AbstractRunStateTraining extends AbstractStepProcessBuilder {
 
-	private File result = null;
+	private File resultFile;
 	protected final File trainingFile, gtfFile, fastaFile;
-	protected final String trainingFileName;
 
-	AbstractRunStateTraining(File stepWorkingDir, File conradWorkingDir,
-			String trainingFileName) {
-		super(stepWorkingDir, conradWorkingDir);
-		this.trainingFileName = trainingFileName;
-		trainingFile = new File(stepWorkingDir, trainingFileName);
-		fastaFile = new File(stepWorkingDir, ConradConstants.FASTA_FILE_NAME);
-		gtfFile = new File(stepWorkingDir, ConradConstants.GTF_FILE_NAME);
+	AbstractRunStateTraining(File conradWorkingDir, File workingDir,
+			File trainingFile) {
+		super(conradWorkingDir, workingDir);
+		this.trainingFile = trainingFile;
+		fastaFile = new File(workingDir, StepConradTrain.PROPERTIES_KEY_PREFIX
+				+ ConradConstants.FASTA_FILE_NAME);
+		gtfFile = new File(workingDir, StepConradTrain.PROPERTIES_KEY_PREFIX
+				+ ConradConstants.GTF_FILE_NAME);
 	}
 
 	boolean run(ArrayList<? extends FASTASequence> fastas,
 			ArrayList<? extends GTFElement> elements)
 			throws StepExecutionException {
-		if (filesAlreadyThere()) {
-			System.out.println(this
-					+ " all files already there, no need to run");
-			assignResult();
-			return true;
-		}
 		if (!writeDataToDir(fastas, elements)) {
 			return false;
 		}
 		final boolean b = createAndStartProcess();
-		if (b) {
-			assignResult();
-		}
-		return b;
-	}
-	
-	private void assignResult(){
-		final File result = new File(stepWorkingDir, trainingFileName);
-		this.result = result;
+		if (b)
+			return assignResult();
+		return false;
 	}
 
-	private boolean filesAlreadyThere() {
-		return (gtfFile.exists() && gtfFile.canRead() && fastaFile.exists()
-				&& fastaFile.canRead() && trainingFile.exists() && trainingFile
-				.canRead());
+	private boolean assignResult() {
+		final File result = new File(workingDir, trainingFile.getName());
+		if (!result.exists() || !result.canRead()) {
+			logger
+					.warn(this,
+							"process execution was sucessfull, but training file is not accessible");
+			return false;
+		}
+		this.resultFile = result;
+		return true;
 	}
 
 	private boolean writeDataToDir(ArrayList<? extends FASTASequence> fastas,
-			ArrayList<? extends GTFElement> elements) {
+			ArrayList<? extends GTFElement> elements) throws StepExecutionException {
 		final FASTAFile fastaFile = new FASTAFile(fastas);
 		final GTFFile gtfFile = new GTFFile(elements);
 		fastaFile.setLineLength(60);
 		try {
-			System.out.println(this + " writing fastas to " + this.fastaFile);
+			logger.debug(this, "writing fastas to " + this.fastaFile);
 			fastaFile.writeToFile(this.fastaFile);
-			System.out.println(this + " writing gtf to " + this.gtfFile);
+			logger.debug(this, "writing gtf to " + this.gtfFile);
 			gtfFile.writeToFile(this.gtfFile);
 			return true;
 		} catch (IOException e) {
-			System.out.println(this + ": error while creating files: "
-					+ this.fastaFile + ", " + this.gtfFile);
-			return false;
+			logger.error(this, e.toString(), e);
+			throw new StepExecutionException(e);
 		}
 	}
 
 	File getResult() {
-		return result;
+		return resultFile;
 	}
 
 }

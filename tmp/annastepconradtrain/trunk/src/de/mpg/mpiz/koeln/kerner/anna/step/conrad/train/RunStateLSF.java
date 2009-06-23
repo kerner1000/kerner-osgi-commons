@@ -14,8 +14,8 @@ class RunStateLSF extends AbstractRunStateTraining {
 	private final static String BSUB_EXE = "bsub";
 	private final File LSFout, LSFerr;
 	
-	RunStateLSF(File workingDir, File conradWorkingDir, String trainingFileName) {
-		super(workingDir, conradWorkingDir, trainingFileName);
+	RunStateLSF(File workingDir, File conradWorkingDir, File trainingFile) {
+		super(conradWorkingDir, workingDir, trainingFile);
 		LSFout = new File(workingDir, "lsf-%J-%I.out");
 		LSFerr = new File(workingDir, "lsf-%J-%I.err");
 	}
@@ -29,7 +29,7 @@ class RunStateLSF extends AbstractRunStateTraining {
 		builder.addFlagCommand(ConradConstants.CONRAD_EXE);
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
-		builder.addFlagCommand(stepWorkingDir.getAbsolutePath());
+		builder.addFlagCommand(workingDir.getAbsolutePath());
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

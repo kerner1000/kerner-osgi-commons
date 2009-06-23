@@ -5,7 +5,10 @@ import java.util.ArrayList;
 
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
+import org.osgi.framework.BundleContext;
 
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
@@ -15,7 +18,7 @@ import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 public class StepConradTrain extends AbstractStep {
 
-	private final static String PROPERTIES_KEY_PREFIX = ConradConstants.PROPERTIES_KEY_PREFIX
+	final static String PROPERTIES_KEY_PREFIX = ConradConstants.PROPERTIES_KEY_PREFIX
 			+ "train.";
 	private final static String WORKING_DIR_KEY = PROPERTIES_KEY_PREFIX
 			+ "workingDir";
@@ -26,21 +29,23 @@ public class StepConradTrain extends AbstractStep {
 	private final static String RUN_VALUE_LSF = "lsf";
 	private final static String DEFAULT_RUN_VALUE = RUN_VALUE_LOCAL;
 
-	// TODO make final again
 	private AbstractRunStateTraining state;
 	private File conradWorkingDir, stepWorkingDir;
-	private String trainingFileName, runEnv;
+	private File trainingFile;
+	private String runEnv;
+	private LogDispatcher logger;
 
 	public StepConradTrain() {
-		// TODO remove try catch
-		try {
-			assignProperties();
-			validateProperties();
-			printProperties();
-			assignState();
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
+	}
+
+	@Override
+	protected void init(BundleContext context) throws StepExecutionException {
+		super.init(context);
+		logger = new LogDispatcherImpl(context);
+		assignProperties();
+		validateProperties();
+		printProperties();
+
 	}
 
 	private void assignProperties() {
@@ -48,8 +53,8 @@ public class StepConradTrain extends AbstractStep {
 				ConradConstants.CONRAD_DIR_KEY));
 		stepWorkingDir = new File(super.getStepProperties().getProperty(
 				WORKING_DIR_KEY));
-		trainingFileName = super.getStepProperties().getProperty(
-				TRAINING_FILE_NAME_KEY);
+		trainingFile = new File(stepWorkingDir, super.getStepProperties()
+				.getProperty(TRAINING_FILE_NAME_KEY));
 		runEnv = super.getStepProperties().getProperty(RUN_KEY,
 				DEFAULT_RUN_VALUE);
 	}
@@ -62,28 +67,11 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	private void printProperties() {
-		System.out.println(this + ": created. Properties:");
-		System.out.println(this + ":\tstepWorkingDir=" + stepWorkingDir);
-		System.out.println(this + ":\tconradWorkingDir=" + conradWorkingDir);
-		System.out.println(this + ":\ttraiingFileName=" + trainingFileName);
-		System.out.println(this + ":\trunEnv=" + runEnv);
-	}
-
-	private void assignState() {
-		if (runEnv.equalsIgnoreCase(RUN_VALUE_LSF)) {
-			state = new RunStateLSF(stepWorkingDir, conradWorkingDir,
-					trainingFileName);
-			System.out.println(this + ": going to run on LSF");
-		} else if (runEnv.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
-			state = new RunStateLocal(stepWorkingDir, conradWorkingDir,
-					trainingFileName);
-			System.out.println(this + ": going to run locally");
-		} else {
-			state = new RunStateLocal(stepWorkingDir, conradWorkingDir,
-					trainingFileName);
-			System.out.println(this + ": unrecognized running env \""
-					+ "\", going to run locally");
-		}
+		logger.debug(this, " created, properties:");
+		logger.debug(this, "\tstepWorkingDir=" + stepWorkingDir);
+		logger.debug(this, "\tconradWorkingDir=" + conradWorkingDir);
+		logger.debug(this, "\ttraiingFile=" + trainingFile);
+		logger.debug(this, "\trunEnv=" + runEnv);
 	}
 
 	private boolean checkWorkingDir(final File workingDir) {
@@ -97,23 +85,37 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	@Override
-	public boolean checkRequirements(DataBean data)
+	public boolean requirementsSatisfied(DataBean data)
 			throws StepExecutionException {
-		// TODO try catch
 		try {
-			final ArrayList<? extends FASTASequence> fastas = data
-					.getVerifiedGenesFasta();
-			final ArrayList<? extends GTFElement> elements = data
-					.getVerifiedGenesGtf();
-//			System.out.println("++++++++++++++++++++++");
-//			System.out.println(this + ":checkRequirements: fastas=" + fastas);
-//			System.out.println(this + ":checkRequirements: elements=" + elements);
-//			System.out.println("++++++++++++++++++++++");
-			return (fastas != null && fastas.size() != 0 && elements != null && elements
-					.size() != 0);
-		} catch (Throwable t) {
-			t.printStackTrace();
-			throw new StepExecutionException(t);
+			final boolean fastas = (data.getVerifiedGenesFasta() != null);
+			final boolean fastasSize = (data.getVerifiedGenesFasta().size() != 0);
+			final boolean gtf = (data.getVerifiedGenesGtf() != null);
+			final boolean gtfSize = (data.getVerifiedGenesGtf().size() != 0);
+			logger.debug(this, "requirements:");
+			logger.debug(this, "\tfastas=" + fastas);
+			logger.debug(this, "\tfastasSize=" + fastasSize);
+			logger.debug(this, "\tgtf=" + gtf);
+			logger.debug(this, "\tgtfSize=" + gtfSize);
+
+			return (fastas && fastasSize && gtf && gtfSize);
+		} catch (DataBeanAccessException e) {
+			logger.error(this, e.toString(), e);
+			throw new StepExecutionException(e);
+		}
+
+	}
+
+	@Override
+	public boolean needToRun(DataBean data) throws StepExecutionException {
+		try {
+			final boolean trainingFile = (data.getConradTrainingFile() == null);
+			logger.debug(this, "need to run:");
+			logger.debug(this, "\ttrainingFile=" + trainingFile);
+			return trainingFile;
+		} catch (DataBeanAccessException e) {
+			logger.error(this, e.toString(), e);
+			throw new StepExecutionException(e);
 		}
 	}
 
@@ -121,45 +123,71 @@ public class StepConradTrain extends AbstractStep {
 	public DataBean run(DataBean data, StepProcessObserver listener)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends FASTASequence> fastas = data
-					.getVerifiedGenesFasta();
-			final ArrayList<? extends GTFElement> elements = data
-					.getVerifiedGenesGtf();
-			final boolean b = state.run(fastas, elements);
-			if (b == false) {
-				System.out.println(this
-						+ " training not sucessfull, cannot update data");
-			} else {
-				final File trainingFile = state.getResult();
-				System.out.println(this
-						+ " training sucessfull, created training file "
-						+ trainingFile);
-				data.setConradTrainingFile(trainingFile);
-				setSuccess(true);
+			if (trainingFile.exists())
+				takeShortcut(data);
+			else {
+				assignState();
+				final ArrayList<? extends FASTASequence> fastas = data
+						.getVerifiedGenesFasta();
+				final ArrayList<? extends GTFElement> elements = data
+						.getVerifiedGenesGtf();
+				final boolean b = state.run(fastas, elements);
+				if (b)
+					handleSuccess(data);
+				else
+					handleFailure(data);
 			}
-		} catch (Exception e) {
+
+		} catch (DataBeanAccessException e) {
+			logger.error(this, e.toString(), e);
 			throw new StepExecutionException(e);
 		}
 		return data;
 	}
 
-	public String toString() {
-		return this.getClass().getSimpleName();
+	private void takeShortcut(DataBean data) throws DataBeanAccessException {
+		logger.info(this, "training file already exists, taking short cut ("
+				+ trainingFile + ")");
+		handleSuccess(data);
 	}
 
-	@Override
-	public boolean needToRun(DataBean data) throws StepExecutionException {
-		// /**
-
-		try {
-			return (data.getConradTrainingFile() == null);
-		} catch (DataBeanAccessException e) {
-			throw new StepExecutionException(e);
+	private void assignState() {
+		if (runEnv.equalsIgnoreCase(RUN_VALUE_LSF)) {
+			runOnLSF();
+		} else if (runEnv.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
+			runLocally();
+			
+		} else {
+			logger.warn(this, "unrecognized running env \""
+					+ "\", going to run locally");
+			runLocally();
 		}
+	}
+	
+	private void runLocally(){
+		logger.info(this, "going to run locally");
+		state = new RunStateLocal(conradWorkingDir, stepWorkingDir, 
+				trainingFile);
+	}
+	
+	private void runOnLSF(){
+		logger.info(this, "going to run on LSF");
+		state = new RunStateLSF(conradWorkingDir, stepWorkingDir,
+				trainingFile);
+	}
+	
+	private void handleSuccess(DataBean data) throws DataBeanAccessException {
+		logger.info(this, "predicting sucessfull");
+		data.setConradTrainingFile(state.getResult());
+		setSuccess(true);
+	}
 
-		// */
+	private void handleFailure(DataBean data) {
+		logger.warn(this, "training not sucessfull, will not update data");
+	}
 
-		// return true;
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 
 }

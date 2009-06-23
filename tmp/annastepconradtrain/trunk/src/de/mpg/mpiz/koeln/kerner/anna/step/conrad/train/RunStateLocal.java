@@ -9,17 +9,18 @@ import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 class RunStateLocal extends AbstractRunStateTraining {
 
 	RunStateLocal(File workingDir, File conradWorkingDir,
-			String trainingFileName) {
-		super(workingDir, conradWorkingDir, trainingFileName);
+			File trainingFile) {
+		super(conradWorkingDir, workingDir, trainingFile);
 	}
 
 	@Override
 	protected
 	List<String> getCommandList() {
-		final CommandStringBuilder builder = new CommandStringBuilder(new File(conradWorkingDir,ConradConstants.CONRAD_EXE).getAbsolutePath());
+//		bin/conrad.sh train <xml model file> <training data> <training file>
+		final CommandStringBuilder builder = new CommandStringBuilder(new File(executableDir,ConradConstants.CONRAD_EXE).getAbsolutePath());
 		builder.addFlagCommand("train");
 		builder.addFlagCommand("models/singleSpecies.xml");
-		builder.addFlagCommand(stepWorkingDir.getAbsolutePath());
+		builder.addFlagCommand(workingDir.getAbsolutePath());
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
 		return builder.getCommandList();
 	}
