@@ -8,22 +8,25 @@ import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 class RunStateLocal extends AbstractRunStatePredicting {
 
-	protected RunStateLocal(File stepWorkingDir, File conradWorkingDir,
+	protected RunStateLocal(File workingDir, File executableDir,
 			File trainingFile) {
-		super(stepWorkingDir, conradWorkingDir, trainingFile);
+		super(workingDir, executableDir, trainingFile);
 	}
 
 	@Override
 	protected List<String> getCommandList() {
-		final CommandStringBuilder builder = new CommandStringBuilder(new File(conradWorkingDir,ConradConstants.CONRAD_EXE).getAbsolutePath());
+		// bin/conrad.sh predict <training file> <input data> <base filename for
+		// output >
+		final CommandStringBuilder builder = new CommandStringBuilder(new File(
+				executableDir, ConradConstants.CONRAD_EXE).getAbsolutePath());
 		builder.addFlagCommand("predict");
 		builder.addFlagCommand(trainingFile.getAbsolutePath());
-		builder.addFlagCommand(stepWorkingDir.getAbsolutePath());
+		builder.addFlagCommand(workingDir.getAbsolutePath());
 		builder.addFlagCommand(resultFile.getAbsolutePath());
 		return builder.getCommandList();
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.getClass().getSimpleName();
 	}
 
