@@ -70,7 +70,7 @@ public class StepConradPredict extends AbstractStep {
 	}
 
 	private void printProperties() {
-		logger.debug(this, "created. Properties:");
+		logger.debug(this, "created, properties:");
 		logger.debug(this, "\tstepWorkingDir=" + stepWorkingDir);
 		logger.debug(this, "\tconradWorkingDir=" + conradWorkingDir);
 		logger.debug(this, "\trunEnv=" + runEnv);
