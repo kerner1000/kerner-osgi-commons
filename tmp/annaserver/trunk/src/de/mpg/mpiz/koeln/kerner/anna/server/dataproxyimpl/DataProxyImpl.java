@@ -19,54 +19,19 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessExcepti
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl.DataBeanImpl;
 import de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator;
 
+/**
+ * 
+ * @ThreadSave
+ * 
+ */
 public class DataProxyImpl implements DataProxy {
 
-	// as long as file is not static, we do not need to synchronize to file, but
-	// we can synchronize to this
-	// actually, we do not neet to synchronize at all, due to synchronization of
-	// DataBean
 	private final File file;
 
 	public DataProxyImpl(Server server) {
 		file = new File(new File(server.getServerProperties().getProperty(
 				Server.WORKING_DIR_KEY)), "dataBean.ser");
 		printProperties();
-	}
-
-	public DataBean getDataBean() throws DataBeanAccessException {
-		DataBean data = null;
-		if (file.exists()) {
-			try {
-				ServerActivator.LOGGER.debug(this, file.toString()
-						+ " exists, reading");
-				data = fileToObject(DataBean.class, file);
-			} catch (EOFException e) {
-				ServerActivator.LOGGER.debug(this, file.toString()
-						+ " corrupt, returning new one", e);
-				file.delete();
-				data = new DataBeanImpl();
-
-			} catch (StreamCorruptedException e) {
-				ServerActivator.LOGGER.debug(this, file.toString()
-						+ " corrupt, returning new one", e);
-				file.delete();
-				data = new DataBeanImpl();
-			} catch (IOException e) {
-				ServerActivator.LOGGER.debug(this, "exception. throwing "
-						+ DataBeanAccessException.class.getSimpleName(), e);
-				throw new DataBeanAccessException(e);
-			} catch (ClassNotFoundException e) {
-				ServerActivator.LOGGER.debug(this, "exception. throwing "
-						+ DataBeanAccessException.class.getSimpleName(), e);
-				throw new DataBeanAccessException(e);
-			}
-		} else {
-			ServerActivator.LOGGER.debug(this, file.toString()
-					+ " does not exist, returning new one");
-			data = new DataBeanImpl();
-		}
-		ServerActivator.LOGGER.debug(this, "got DataBean");
-		return data;
 	}
 
 	public void updateDataBean(DataBean dataBean)
@@ -76,11 +41,52 @@ public class DataProxyImpl implements DataProxy {
 		// good...
 
 		try {
-			writeDataBean(dataBean);
+			synchronized (file) {
+				writeDataBean(dataBean);
+			}
 		} catch (IOException e) {
+			ServerActivator.LOGGER.error(this, e.toString(), e);
 			throw new DataBeanAccessException(e);
 		}
 
+	}
+
+	public DataBean getDataBean() throws DataBeanAccessException {
+		synchronized (file) {
+			DataBean data = null;
+			if (file.exists()) {
+				data = readFromDisk();
+			} else {
+				ServerActivator.LOGGER.debug(this, file
+						+ " does not exist, returning new one");
+				data = DataBeanImpl.INSTANCE;
+			}
+			return data;
+		}
+	}
+
+	private DataBean readFromDisk() throws DataBeanAccessException {
+		try {
+			ServerActivator.LOGGER.debug(this, file + " exists, reading");
+			return fileToObject(DataBean.class, file);
+		} catch (EOFException e) {
+			return handleCorruptData(e);
+		} catch (StreamCorruptedException e) {
+			return handleCorruptData(e);
+		} catch (IOException e) {
+			ServerActivator.LOGGER.error(this, e.toString(), e);
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			ServerActivator.LOGGER.error(this, e.toString(), e);
+			throw new DataBeanAccessException(e);
+		}
+	}
+
+	private DataBean handleCorruptData(Throwable t) {
+		ServerActivator.LOGGER.debug(this, file.toString()
+				+ " corrupt, returning new one", t);
+		file.delete();
+		return DataBeanImpl.INSTANCE;
 	}
 
 	private void writeDataBean(DataBean data) throws IOException {
@@ -96,7 +102,7 @@ public class DataProxyImpl implements DataProxy {
 	}
 
 	public String toString() {
-		return this.getClass().getSimpleName();
+		return this.getClass().getSimpleName()+Integer.toHexString(this.hashCode());
 	}
 
 	static void objectToFile(Serializable s, File file) throws IOException {

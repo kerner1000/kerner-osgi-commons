@@ -18,19 +18,21 @@ import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 public class StepConradTrain extends AbstractStep {
 
-	final static String PROPERTIES_KEY_PREFIX = ConradConstants.PROPERTIES_KEY_PREFIX
+	private final static String PROPERTIES_KEY_PREFIX = ConradConstants.PROPERTIES_KEY_PREFIX
 			+ "train.";
 	private final static String WORKING_DIR_KEY = PROPERTIES_KEY_PREFIX
 			+ "workingDir";
 	private final static String TRAINING_FILE_NAME_KEY = PROPERTIES_KEY_PREFIX
 			+ "trainingFileName";
+	private final static String FASTA_KEY = PROPERTIES_KEY_PREFIX + "fasta";
+	private final static String GTF_KEY = PROPERTIES_KEY_PREFIX + "gtf";
 	private final static String RUN_KEY = PROPERTIES_KEY_PREFIX + "run";
 	private final static String RUN_VALUE_LOCAL = "local";
 	private final static String RUN_VALUE_LSF = "lsf";
 	private final static String DEFAULT_RUN_VALUE = RUN_VALUE_LOCAL;
 
 	private AbstractRunStateTraining state;
-	private File conradWorkingDir, stepWorkingDir;
+	private File conradWorkingDir, stepWorkingDir, fastaFile, gtfFile;
 	private File trainingFile;
 	private String runEnv;
 	private LogDispatcher logger;
@@ -55,6 +57,8 @@ public class StepConradTrain extends AbstractStep {
 				WORKING_DIR_KEY));
 		trainingFile = new File(stepWorkingDir, super.getStepProperties()
 				.getProperty(TRAINING_FILE_NAME_KEY));
+		fastaFile = new File(super.getStepProperties().getProperty(FASTA_KEY));
+		gtfFile = new File(super.getStepProperties().getProperty(GTF_KEY));
 		runEnv = super.getStepProperties().getProperty(RUN_KEY,
 				DEFAULT_RUN_VALUE);
 	}
@@ -64,12 +68,20 @@ public class StepConradTrain extends AbstractStep {
 			throw new StepExecutionException("cannot access conrad working dir");
 		if (!checkWorkingDir(stepWorkingDir))
 			throw new StepExecutionException("cannot access step working dir");
+		if (!fastaFile.exists() || !fastaFile.canRead())
+			throw new StepExecutionException("cannot access fasta file "
+					+ fastaFile);
+		if (!gtfFile.exists() || !gtfFile.canRead())
+			throw new StepExecutionException("cannot access gtf file "
+					+ gtfFile);
 	}
 
 	private void printProperties() {
 		logger.debug(this, " created, properties:");
 		logger.debug(this, "\tstepWorkingDir=" + stepWorkingDir);
 		logger.debug(this, "\tconradWorkingDir=" + conradWorkingDir);
+		logger.debug(this, "\tfastaFile=" + fastaFile);
+		logger.debug(this, "\tgtfFile=" + gtfFile);
 		logger.debug(this, "\ttraiingFile=" + trainingFile);
 		logger.debug(this, "\trunEnv=" + runEnv);
 	}
@@ -109,10 +121,12 @@ public class StepConradTrain extends AbstractStep {
 	@Override
 	public boolean needToRun(DataBean data) throws StepExecutionException {
 		try {
-			final boolean trainingFile = (data.getConradTrainingFile() == null);
+			final boolean trainingFile = (!data.getConradTrainingFile().exists());
+			final boolean trainingFileRead = (!data.getConradTrainingFile().canRead());
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\ttrainingFile=" + trainingFile);
-			return trainingFile;
+			logger.debug(this, "\ttrainingFileRead=" + trainingFileRead);
+			return trainingFile && trainingFileRead;
 		} catch (DataBeanAccessException e) {
 			logger.error(this, e.toString(), e);
 			throw new StepExecutionException(e);
@@ -123,8 +137,9 @@ public class StepConradTrain extends AbstractStep {
 	public DataBean run(DataBean data, StepProcessObserver listener)
 			throws StepExecutionException {
 		try {
-			if (trainingFile.exists())
+			if (trainingFile.exists()){
 				takeShortcut(data);
+			}
 			else {
 				assignState();
 				final ArrayList<? extends FASTASequence> fastas = data
@@ -132,8 +147,11 @@ public class StepConradTrain extends AbstractStep {
 				final ArrayList<? extends GTFElement> elements = data
 						.getVerifiedGenesGtf();
 				final boolean b = state.run(fastas, elements);
-				if (b)
-					handleSuccess(data);
+				if (b){
+					logger.info(this, "training sucessfull");
+					data.setConradTrainingFile(state.getResult());
+					setSuccess(true);
+				}
 				else
 					handleFailure(data);
 			}
@@ -148,7 +166,9 @@ public class StepConradTrain extends AbstractStep {
 	private void takeShortcut(DataBean data) throws DataBeanAccessException {
 		logger.info(this, "training file already exists, taking short cut ("
 				+ trainingFile + ")");
-		handleSuccess(data);
+		logger.info(this, "training sucessfull");
+		data.setConradTrainingFile(trainingFile);
+		setSuccess(true);
 	}
 
 	private void assignState() {
@@ -156,30 +176,24 @@ public class StepConradTrain extends AbstractStep {
 			runOnLSF();
 		} else if (runEnv.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
 			runLocally();
-			
+
 		} else {
 			logger.warn(this, "unrecognized running env \""
 					+ "\", going to run locally");
 			runLocally();
 		}
 	}
-	
-	private void runLocally(){
+
+	private void runLocally() {
 		logger.info(this, "going to run locally");
-		state = new RunStateLocal(conradWorkingDir, stepWorkingDir, 
-				trainingFile);
+		state = new RunStateLocal(conradWorkingDir, stepWorkingDir,
+				trainingFile, fastaFile, gtfFile, logger);
 	}
-	
-	private void runOnLSF(){
+
+	private void runOnLSF() {
 		logger.info(this, "going to run on LSF");
-		state = new RunStateLSF(conradWorkingDir, stepWorkingDir,
-				trainingFile);
-	}
-	
-	private void handleSuccess(DataBean data) throws DataBeanAccessException {
-		logger.info(this, "predicting sucessfull");
-		data.setConradTrainingFile(state.getResult());
-		setSuccess(true);
+		state = new RunStateLSF(conradWorkingDir, stepWorkingDir, trainingFile,
+				fastaFile, gtfFile, logger);
 	}
 
 	private void handleFailure(DataBean data) {

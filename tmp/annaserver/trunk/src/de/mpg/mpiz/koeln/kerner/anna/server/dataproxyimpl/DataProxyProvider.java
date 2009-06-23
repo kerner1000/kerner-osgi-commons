@@ -3,6 +3,11 @@ package de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
+/**
+ * 
+ * @ThreadSave
+ *
+ */
 public class DataProxyProvider {
 
 	private final DataProxy proxy;

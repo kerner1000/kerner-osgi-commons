@@ -90,7 +90,7 @@ public abstract class AbstractStep implements BundleActivator {
 		init(context);
 	}
 	
-	protected void init(BundleContext context){
+	protected synchronized void init(BundleContext context) throws StepExecutionException{
 		// Do nothing by default
 	}
 
@@ -115,7 +115,7 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
-	public abstract boolean checkRequirements(DataBean data)
+	public abstract boolean requirementsSatisfied(DataBean data)
 			throws StepExecutionException;
 
 	public abstract boolean needToRun(DataBean data)

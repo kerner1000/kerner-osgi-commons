@@ -4,13 +4,14 @@ import java.io.File;
 import java.util.List;
 
 import de.kerner.commons.CommandStringBuilder;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 class RunStateLocal extends AbstractRunStateTraining {
 
-	RunStateLocal(File workingDir, File conradWorkingDir,
-			File trainingFile) {
-		super(conradWorkingDir, workingDir, trainingFile);
+	RunStateLocal(File conradWorkingDir, File workingDir, File trainingFile,
+			File fastaFile, File gtfFile, LogDispatcher logger) {
+		super(conradWorkingDir, workingDir, trainingFile, fastaFile, gtfFile, logger);
 	}
 
 	@Override

@@ -80,14 +80,19 @@ public class StepConradPredict extends AbstractStep {
 	public boolean requirementsSatisfied(DataBean data)
 			throws StepExecutionException {
 		try {
-			final boolean trainingFile = (data.getConradTrainingFile() != null);
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println(data.getConradTrainingFile());
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~");
+			final boolean trainingFile = (data.getConradTrainingFile().exists());
+			final boolean trainingFileRead = (data.getConradTrainingFile().canRead());
 			final boolean inputSequences = (data.getInputSequences() != null);
 			final boolean inputSequencesSize = (data.getInputSequences().size() != 0);
 			logger.debug(this, "requirements:");
 			logger.debug(this, "\ttrainingFile=" + trainingFile);
+			logger.debug(this, "\ttrainingFileRead=" + trainingFileRead);
 			logger.debug(this, "\tinputSequences=" + inputSequences);
 			logger.debug(this, "\tinputSequencesSize=" + inputSequencesSize);
-			return (trainingFile && inputSequences && inputSequencesSize);
+			return (trainingFile && trainingFileRead && inputSequences && inputSequencesSize);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}

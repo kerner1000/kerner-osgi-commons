@@ -7,18 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 import de.kerner.commons.CommandStringBuilder;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 class RunStateLSF extends AbstractRunStateTraining {
 	
-	private final static String BSUB_EXE = "bsub";
-	private final File LSFout, LSFerr;
-	
-	RunStateLSF(File workingDir, File conradWorkingDir, File trainingFile) {
-		super(conradWorkingDir, workingDir, trainingFile);
+	RunStateLSF(File conradWorkingDir, File workingDir, File trainingFile,
+			File fastaFile, File gtfFile, LogDispatcher logger) {
+		super(conradWorkingDir, workingDir, trainingFile, fastaFile, gtfFile, logger);
 		LSFout = new File(workingDir, "lsf-%J-%I.out");
 		LSFerr = new File(workingDir, "lsf-%J-%I.err");
 	}
+
+	private final static String BSUB_EXE = "bsub";
+	private final File LSFout, LSFerr;
+	
+	
 	
 	@Override
 	protected

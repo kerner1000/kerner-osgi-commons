@@ -38,7 +38,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 		synchronized (server) {
 			try {
 				server.getStepStateObserver().stepWaitForReq(step);
-				while (!step.checkRequirements(server.getDataProxyProvider()
+				while (!step.requirementsSatisfied(server.getDataProxyProvider()
 						.getDataProxy().getDataBean())) {
 					System.out.println(this + ": requirements for step " + step
 							+ " not satisfied, putting it to sleep");
@@ -50,10 +50,11 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 				throw new StepExecutionException(e);
 			} catch (InterruptedException e) {
 				throw new StepExecutionException(e);
+			} finally {
+				synchronized (server) {
+					server.notifyAll();
+				}
 			}
-		}
-		synchronized (server) {
-			server.notifyAll();
 		}
 	}
 
@@ -71,6 +72,10 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 			server.getStepStateObserver().stepFinished(step);
 		} catch (Throwable t) {
 			t.printStackTrace();
+		} finally {
+			synchronized (server) {
+				server.notifyAll();
+			}
 		}
 	}
 }

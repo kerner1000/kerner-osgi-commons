@@ -21,8 +21,10 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessExcepti
 
 public class StepSequenceReader extends AbstractStep {
 
-	private final static String FASTA_KEY = "fasta";
-	private final static String GTF_KEY = "gtf";
+	// TODO that refers to training step
+	private final static String FASTA_KEY = "anna.step.conrad.train.fasta";
+	// TODO that refers to training step
+	private final static String GTF_KEY = "anna.step.conrad.train.gtf";
 
 	// not final, due to delayed initiation
 	private File fasta;
@@ -34,7 +36,7 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	protected void init(BundleContext context) {
+	protected void init(BundleContext context) throws StepExecutionException {
 		super.init(context);
 		logger = new LogDispatcherImpl(context);
 		initFiles();
@@ -51,7 +53,7 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean checkRequirements(DataBean dataBean) {
+	public boolean requirementsSatisfied(DataBean dataBean) {
 		logger.info(this, ": no requirements needed");
 		return true;
 	}

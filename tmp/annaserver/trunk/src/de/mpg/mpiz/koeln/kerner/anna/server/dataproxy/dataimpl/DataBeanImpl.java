@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
 
-import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
@@ -23,12 +22,46 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessExcepti
  */
 @SuppressWarnings("unchecked")
 public class DataBeanImpl implements DataBean {
+	
+	public final static DataBean INSTANCE = new DataBeanImpl();
 
 	private static final long serialVersionUID = 2776955959983685805L;
 	private ArrayList<FASTASequence> verifiedGenesFastas = new ArrayList<FASTASequence>();
+	private ArrayList<FASTASequence> inputSequences = new ArrayList<FASTASequence>();
 	private ArrayList<GTFElement> verifiedGenesGTFs = new ArrayList<GTFElement>();
 	private ArrayList<GTFElement> predictedGenesGTFs = new ArrayList<GTFElement>();
 	private File conradTrainingFile = null;
+	
+	private DataBeanImpl(){}
+
+	public synchronized void setInputSequences(
+			ArrayList<? extends FASTASequence> sequences)
+			throws DataBeanAccessException {
+		if (sequences == null)
+			throw new NullPointerException();
+		if (sequences.size() == 0)
+			return;
+		try {
+			this.inputSequences.clear();
+			this.inputSequences.addAll(deepCopy(ArrayList.class, sequences));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
+	}
+
+	public synchronized ArrayList<? extends FASTASequence> getInputSequences()
+			throws DataBeanAccessException {
+		try {
+			return new ArrayList<FASTASequence>(deepCopy(ArrayList.class,
+					inputSequences));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
+	}
 
 	public synchronized void setVerifiedGenesFasta(
 			ArrayList<? extends FASTASequence> sequences)
@@ -89,8 +122,11 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized File getConradTrainingFile() {
-		if (conradTrainingFile == null)
+		if (conradTrainingFile == null){
+			System.out.println(this + ": training file requested, returning " + null);
 			return null;
+		}
+		System.out.println(this + ": training file requested, returning " + new File(conradTrainingFile.getAbsolutePath()));
 		return new File(conradTrainingFile.getAbsolutePath());
 	}
 
@@ -99,6 +135,7 @@ public class DataBeanImpl implements DataBean {
 		if (file == null || !file.exists() || !file.canRead())
 			throw new DataBeanAccessException("conrad training file invalid ("
 					+ file + ")");
+		System.out.println(this + ": training file modified from " + this.conradTrainingFile + " to " + file);
 		this.conradTrainingFile = new File(file.getAbsolutePath());
 	}
 
@@ -133,24 +170,7 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("DataBean:");
-		sb.append(FileUtils.NEW_LINE);
-		sb.append("FASTAs:");
-		sb.append(FileUtils.NEW_LINE);
-		if (verifiedGenesFastas.size() != 0) {
-			for (FASTASequence seq : verifiedGenesFastas) {
-				sb.append(seq);
-			}
-		}
-		sb.append("GTFs:");
-		sb.append(FileUtils.NEW_LINE);
-		if (verifiedGenesGTFs.size() != 0)
-			for (GTFElement e : verifiedGenesGTFs) {
-				sb.append(e);
-				sb.append(FileUtils.NEW_LINE);
-			}
-		return sb.toString();
+		return this.getClass().getSimpleName()+Integer.toHexString(this.hashCode());
 	}
 
 	/**

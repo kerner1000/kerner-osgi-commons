@@ -32,4 +32,10 @@ public interface DataBean extends Serializable {
 	public void setPredictedGenesGtf(ArrayList<? extends GTFElement> elements)
 			throws DataBeanAccessException;
 
+	public void setInputSequences(ArrayList<? extends FASTASequence> sequences)
+			throws DataBeanAccessException;
+
+	public ArrayList<? extends FASTASequence> getInputSequences()
+			throws DataBeanAccessException;
+
 }
