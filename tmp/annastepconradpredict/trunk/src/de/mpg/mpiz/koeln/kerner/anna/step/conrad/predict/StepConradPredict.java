@@ -146,20 +146,27 @@ public class StepConradPredict extends AbstractStep {
 			throws DataBeanAccessException {
 		AbstractRunStatePredicting state;
 		if (runEnv.equalsIgnoreCase(RUN_VALUE_LSF)) {
-			state = new RunStateLSF(stepWorkingDir, conradWorkingDir,
-					trainingFile);
-			logger.debug(this, "going to run on LSF");
+			state = runOnLSF(trainingFile);
 		} else if (runEnv.equalsIgnoreCase(RUN_VALUE_LOCAL)) {
-			state = new RunStateLocal(stepWorkingDir, conradWorkingDir,
-					trainingFile);
-			logger.debug(this, "going to run locally");
+			state = runLocally(trainingFile);
 		} else {
-			state = new RunStateLocal(stepWorkingDir, conradWorkingDir,
-					trainingFile);
 			logger.warn(this, "unrecognized running env \"" + runEnv
 					+ "\", going to run locally");
+			state = runLocally(trainingFile);
 		}
 		return state;
+	}
+
+	private AbstractRunStatePredicting runLocally(File trainingFile) {
+		logger.debug(this, "going to run locally");
+		return new RunStateLocal(stepWorkingDir, conradWorkingDir,
+				trainingFile);
+	}
+
+	private AbstractRunStatePredicting runOnLSF(File trainingFile) {
+		logger.debug(this, "going to run on LSF");	
+		return new RunStateLSF(stepWorkingDir, conradWorkingDir,
+				trainingFile);
 	}
 
 	private void writeInputSequencesToFile(DataBean data) throws IOException,
