@@ -28,7 +28,35 @@ public class DataBeanImpl implements DataBean {
 	private ArrayList<FASTASequence> inputSequences = new ArrayList<FASTASequence>();
 	private ArrayList<GTFElement> verifiedGenesGTFs = new ArrayList<GTFElement>();
 	private ArrayList<GTFElement> predictedGenesGTFs = new ArrayList<GTFElement>();
+	private ArrayList<GTFElement> repeatMaskerGFF = new ArrayList<GTFElement>();
 	private File conradTrainingFile = new File("-1");
+	
+	public String toString() {
+		return this.getClass().getSimpleName()+Integer.toHexString(this.hashCode());
+	}
+
+	/**
+	 * "STOLEN" from kerner commons, du to class loader issues
+	 * 
+	 * @param <V>
+	 * @param c
+	 * @param s
+	 * @return
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private static <V> V deepCopy(Class<V> c, Serializable s) throws IOException,
+			ClassNotFoundException {
+		if (c == null || s == null)
+			throw new NullPointerException();
+		ByteArrayOutputStream bs = new ByteArrayOutputStream();
+		new ObjectOutputStream(bs).writeObject(s);
+		ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
+		V v = c.cast(new ObjectInputStream(bi).readObject());
+		bs.close();
+		bi.close();
+		return v;
+	}
 
 	public synchronized void setInputSequences(
 			ArrayList<? extends FASTASequence> sequences)
@@ -165,31 +193,33 @@ public class DataBeanImpl implements DataBean {
 
 	}
 
-	public String toString() {
-		return this.getClass().getSimpleName()+Integer.toHexString(this.hashCode());
+	public ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+			throws DataBeanAccessException {
+		try {
+			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+					repeatMaskerGFF));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
 	}
 
-	/**
-	 * "STOLEN" from kerner commons, du to class loader issues
-	 * 
-	 * @param <V>
-	 * @param c
-	 * @param s
-	 * @return
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	private static <V> V deepCopy(Class<V> c, Serializable s) throws IOException,
-			ClassNotFoundException {
-		if (c == null || s == null)
+	public void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+			throws DataBeanAccessException {
+		if (elements == null)
 			throw new NullPointerException();
-		ByteArrayOutputStream bs = new ByteArrayOutputStream();
-		new ObjectOutputStream(bs).writeObject(s);
-		ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
-		V v = c.cast(new ObjectInputStream(bi).readObject());
-		bs.close();
-		bi.close();
-		return v;
+		if (elements.size() == 0)
+			return;
+		try {
+			this.repeatMaskerGFF.clear();
+			this.repeatMaskerGFF.addAll(deepCopy(ArrayList.class, elements));
+		} catch (IOException e) {
+			throw new DataBeanAccessException(e);
+		} catch (ClassNotFoundException e) {
+			throw new DataBeanAccessException(e);
+		}
+		
 	}
 
 }

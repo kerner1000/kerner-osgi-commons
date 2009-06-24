@@ -38,4 +38,10 @@ public interface DataBean extends Serializable {
 	public ArrayList<? extends FASTASequence> getInputSequences()
 			throws DataBeanAccessException;
 
+	public ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+			throws DataBeanAccessException;
+
+	public void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+			throws DataBeanAccessException;
+
 }

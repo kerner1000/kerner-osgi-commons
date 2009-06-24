@@ -116,4 +116,18 @@ public class DataProxyImpl implements DataProxy {
 		
 	}
 
+	public ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+			throws DataBeanAccessException {
+		final DataBean data = getDataBean();
+		return data.getRepeatMaskerGtf();
+	}
+
+	public void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+			throws DataBeanAccessException {
+		final DataBean data = getDataBean();
+		data.setRepeatMaskerGtf(elements);
+		strategy.writeDataBean(data, file);
+		
+	}
+
 }

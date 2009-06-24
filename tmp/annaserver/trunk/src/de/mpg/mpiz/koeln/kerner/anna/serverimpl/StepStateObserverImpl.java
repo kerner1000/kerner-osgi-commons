@@ -31,7 +31,7 @@ public class StepStateObserverImpl implements StepStateObserver {
 			final String s2 = "state=" + stepStates.get(s);
 			final String s3 = "skipped=" + s.wasSkipped();
 			String s4 = "success=" + stepSuccesses.get(s);
-			System.out.printf("\t%-22s\t%-22s\t%-10s\t%-10s", s1, s2, s3 ,s4);
+			System.out.printf("\t%-30s\t%-22s\t%-10s\t%-10s", s1, s2, s3 ,s4);
 //			System.out.print("\t" + s + "\t:state=" + stepStates.get(s)
 //					+ "\tskipped=" + s.wasSkipped() + "\tsuccess="
 //					+ s.getSuccess());

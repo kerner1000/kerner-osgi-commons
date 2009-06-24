@@ -30,5 +30,10 @@ public interface DataProxy {
 
 	void setPredictedGenesGtf(ArrayList<? extends GTFElement> result) throws DataBeanAccessException;
 	
+	ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+	throws DataBeanAccessException;
 
+	void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+	throws DataBeanAccessException;
+	
 }

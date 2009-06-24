@@ -92,12 +92,17 @@ public class StepSequenceReader extends AbstractStep {
 
 	private void doFasta(DataProxyProvider data) throws IOException,
 			DataBeanAccessException {
+		try{
 		logger.info(this, "reading FASTA file " + fasta);
 			final FASTAFile fastaFile = new FASTAFile(fasta);
 			final ArrayList<? extends FASTASequence> sequences = fastaFile
 					.getSequences();
 			logger.info(this, "done reading fasta");
 			data.getDataProxy().setVerifiedGenesFasta(sequences);
+		}catch(Throwable t){
+			t.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	@Override
