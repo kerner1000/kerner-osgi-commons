@@ -16,7 +16,7 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
 public class StepSequenceReader extends AbstractStep {
@@ -53,64 +53,60 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean requirementsSatisfied(DataBean dataBean) {
+	public boolean requirementsSatisfied(DataProxyProvider data) {
 		logger.info(this, ": no requirements needed");
 		return true;
 	}
 
 	@Override
-	public DataBean run(DataBean dataBean, StepProcessObserver observer)
-			throws StepExecutionException {
+	public boolean run(DataProxyProvider data, StepProcessObserver observer){
 		observer.setProgress(0, 100);
 		try {
 			observer.setProgress(30, 100);
-			dataBean = doFasta(dataBean);
+			doFasta(data);
 			observer.setProgress(60, 100);
-			dataBean = doGtf(dataBean);
+			doGtf(data);
 			observer.setProgress(100, 100);
-			setSuccess(true);
 		} catch (DataBeanAccessException e) {
 			logger.error(this, e.toString(), e);
-			throw new StepExecutionException(e);
+			return false;
 		} catch (IOException e) {
 			logger.error(this, e.toString(), e);
-			throw new StepExecutionException(e);
+			return false;
 		} catch (GTFFormatErrorException e) {
 			logger.error(this, e.toString(), e);
-			throw new StepExecutionException(e);
+			return false;
 		}
-		return dataBean;
+		return true;
 	}
 
-	private DataBean doGtf(DataBean data) throws IOException,
+	private void doGtf(DataProxyProvider data) throws IOException,
 			GTFFormatErrorException, DataBeanAccessException {
 			logger.info(this, "reading GTF file " + gtf);
 			final GTFFile gtfFile = new GTFFile(gtf);
 			final ArrayList<? extends GTFElement> elements = gtfFile
 					.getElements();
 			logger.info(this, "done reading gtf");
-			data.setVerifiedGenesGtf(elements);
-		return data;
+			data.getDataProxy().setVerifiedGenesGtf(elements);
 	}
 
-	private DataBean doFasta(DataBean data) throws IOException,
+	private void doFasta(DataProxyProvider data) throws IOException,
 			DataBeanAccessException {
 		logger.info(this, "reading FASTA file " + fasta);
 			final FASTAFile fastaFile = new FASTAFile(fasta);
 			final ArrayList<? extends FASTASequence> sequences = fastaFile
 					.getSequences();
 			logger.info(this, "done reading fasta");
-			data.setVerifiedGenesFasta(sequences);
-		return data;
+			data.getDataProxy().setVerifiedGenesFasta(sequences);
 	}
 
 	@Override
-	public boolean canBeSkipped(DataBean data) throws StepExecutionException {
+	public boolean canBeSkipped(DataProxyProvider data) throws StepExecutionException{
 		try {
 			// TODO size == 0 sub-optimal indicator
-			final ArrayList<? extends FASTASequence> list1 = data
+			final ArrayList<? extends FASTASequence> list1 = data.getDataProxy()
 					.getVerifiedGenesFasta();
-			final ArrayList<? extends GTFElement> list2 = data
+			final ArrayList<? extends GTFElement> list2 = data.getDataProxy()
 					.getVerifiedGenesGtf();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);
