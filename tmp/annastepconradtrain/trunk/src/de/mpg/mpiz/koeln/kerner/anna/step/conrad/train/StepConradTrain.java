@@ -109,7 +109,6 @@ public class StepConradTrain extends AbstractStep {
 			logger.debug(this, "\tfastasSize=" + fastasSize);
 			logger.debug(this, "\tgtf=" + gtf);
 			logger.debug(this, "\tgtfSize=" + gtfSize);
-
 			return (fastas && fastasSize && gtf && gtfSize);
 		} catch (DataBeanAccessException e) {
 			logger.error(this, e.toString(), e);
@@ -119,17 +118,21 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	@Override
-	public boolean needToRun(DataBean data) throws StepExecutionException {
+	public boolean canBeSkipped(DataBean data) throws StepExecutionException {
 		try {
-			final boolean trainingFile = (!data.getConradTrainingFile().exists());
-			final boolean trainingFileRead = (!data.getConradTrainingFile().canRead());
+			final boolean trainingFile = (data.getConradTrainingFile() != null && data
+					.getConradTrainingFile().exists());
+			final boolean trainingFileRead = (data.getConradTrainingFile() != null && data
+					.getConradTrainingFile().canRead());
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\ttrainingFile=" + trainingFile);
 			logger.debug(this, "\ttrainingFileRead=" + trainingFileRead);
 			return trainingFile && trainingFileRead;
-		} catch (DataBeanAccessException e) {
-			logger.error(this, e.toString(), e);
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			logger.error(this, t.toString(), t);
+			t.printStackTrace();
+			System.exit(1);
+			throw new StepExecutionException(t);
 		}
 	}
 
@@ -137,22 +140,20 @@ public class StepConradTrain extends AbstractStep {
 	public DataBean run(DataBean data, StepProcessObserver listener)
 			throws StepExecutionException {
 		try {
-			if (trainingFile.exists()){
+			if (trainingFile.exists()) {
 				takeShortcut(data);
-			}
-			else {
+			} else {
 				assignState();
 				final ArrayList<? extends FASTASequence> fastas = data
 						.getVerifiedGenesFasta();
 				final ArrayList<? extends GTFElement> elements = data
 						.getVerifiedGenesGtf();
 				final boolean b = state.run(fastas, elements);
-				if (b){
+				if (b) {
 					logger.info(this, "training sucessfull");
 					data.setConradTrainingFile(state.getResult());
 					setSuccess(true);
-				}
-				else
+				} else
 					handleFailure(data);
 			}
 

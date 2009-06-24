@@ -22,10 +22,10 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 		this.server = server;
 	}
 
-	protected boolean checkNeedToRun() throws StepExecutionException {
+	protected boolean checkCanBeSkipped() throws StepExecutionException {
 		try {
 			server.getStepStateObserver().stepChecksNeedToRun(step);
-			return step.needToRun(server.getDataProxyProvider().getDataProxy()
+			return step.canBeSkipped(server.getDataProxyProvider().getDataProxy()
 					.getDataBean());
 		} catch (StepExecutionException e) {
 			throw new StepExecutionException(e);

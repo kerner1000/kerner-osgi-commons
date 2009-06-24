@@ -22,17 +22,13 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessExcepti
  */
 @SuppressWarnings("unchecked")
 public class DataBeanImpl implements DataBean {
-	
-	public final static DataBean INSTANCE = new DataBeanImpl();
 
 	private static final long serialVersionUID = 2776955959983685805L;
 	private ArrayList<FASTASequence> verifiedGenesFastas = new ArrayList<FASTASequence>();
 	private ArrayList<FASTASequence> inputSequences = new ArrayList<FASTASequence>();
 	private ArrayList<GTFElement> verifiedGenesGTFs = new ArrayList<GTFElement>();
 	private ArrayList<GTFElement> predictedGenesGTFs = new ArrayList<GTFElement>();
-	private File conradTrainingFile = null;
-	
-	private DataBeanImpl(){}
+	private File conradTrainingFile = new File("-1");
 
 	public synchronized void setInputSequences(
 			ArrayList<? extends FASTASequence> sequences)
@@ -123,10 +119,10 @@ public class DataBeanImpl implements DataBean {
 
 	public synchronized File getConradTrainingFile() {
 		if (conradTrainingFile == null){
-			System.out.println(this + ": training file requested, returning " + null);
+//			System.out.println(this + ": training file requested, returning " + null);
 			return null;
 		}
-		System.out.println(this + ": training file requested, returning " + new File(conradTrainingFile.getAbsolutePath()));
+//		System.out.println(this + ":!!!!!!!!!!!!!! training file requested, returning " + new File(conradTrainingFile.getAbsolutePath()) + "!!!!!!!!!!!!!");
 		return new File(conradTrainingFile.getAbsolutePath());
 	}
 
@@ -135,7 +131,7 @@ public class DataBeanImpl implements DataBean {
 		if (file == null || !file.exists() || !file.canRead())
 			throw new DataBeanAccessException("conrad training file invalid ("
 					+ file + ")");
-		System.out.println(this + ": training file modified from " + this.conradTrainingFile + " to " + file);
+//		System.out.println(this + ": training file modified from " + this.conradTrainingFile + " to " + file);
 		this.conradTrainingFile = new File(file.getAbsolutePath());
 	}
 
@@ -183,7 +179,7 @@ public class DataBeanImpl implements DataBean {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	static <V> V deepCopy(Class<V> c, Serializable s) throws IOException,
+	private static <V> V deepCopy(Class<V> c, Serializable s) throws IOException,
 			ClassNotFoundException {
 		if (c == null || s == null)
 			throw new NullPointerException();

@@ -79,12 +79,13 @@ public class StepConradPredict extends AbstractStep {
 	@Override
 	public boolean requirementsSatisfied(DataBean data)
 			throws StepExecutionException {
+		// TODO try catch
 		try {
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println(data.getConradTrainingFile());
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~");
-			final boolean trainingFile = (data.getConradTrainingFile().exists());
-			final boolean trainingFileRead = (data.getConradTrainingFile().canRead());
+			final boolean trainingFile = (data.getConradTrainingFile() != null && data.getConradTrainingFile().exists());
+			final boolean trainingFileRead = (data.getConradTrainingFile() != null && data.getConradTrainingFile().canRead());
 			final boolean inputSequences = (data.getInputSequences() != null);
 			final boolean inputSequencesSize = (data.getInputSequences().size() != 0);
 			logger.debug(this, "requirements:");
@@ -93,23 +94,25 @@ public class StepConradPredict extends AbstractStep {
 			logger.debug(this, "\tinputSequences=" + inputSequences);
 			logger.debug(this, "\tinputSequencesSize=" + inputSequencesSize);
 			return (trainingFile && trainingFileRead && inputSequences && inputSequencesSize);
-		} catch (DataBeanAccessException e) {
+		} catch (Throwable e) {
+			e.printStackTrace();
+			System.exit(1);
 			throw new StepExecutionException(e);
 		}
 	}
 
 	@Override
-	public boolean needToRun(DataBean data) throws StepExecutionException {
+	public boolean canBeSkipped(DataBean data) throws StepExecutionException {
 
 		// TODO size may be zero, if nothing was found
 		try {
-			final boolean predictedGtf = (data.getPredictedGenesGtf() == null);
+			final boolean predictedGtf = (data.getPredictedGenesGtf() != null);
 			final boolean predictedGtfSize = (data.getPredictedGenesGtf()
-					.size() == 0);
+					.size() != 0);
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\tpredictedGtf=" + predictedGtf);
 			logger.debug(this, "\tpredictedGtfSize=" + predictedGtfSize);
-			return (predictedGtf || predictedGtfSize);
+			return (predictedGtf && predictedGtfSize);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}

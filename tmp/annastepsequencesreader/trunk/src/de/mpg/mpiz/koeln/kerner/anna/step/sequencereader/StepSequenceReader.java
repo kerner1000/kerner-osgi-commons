@@ -105,15 +105,15 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean needToRun(DataBean data) throws StepExecutionException {
+	public boolean canBeSkipped(DataBean data) throws StepExecutionException {
 		try {
 			// TODO size == 0 sub-optimal indicator
 			final ArrayList<? extends FASTASequence> list1 = data
 					.getVerifiedGenesFasta();
 			final ArrayList<? extends GTFElement> list2 = data
 					.getVerifiedGenesGtf();
-			return (list1 == null || list1.size() == 0 || list2 == null || list2
-					.size() == 0);
+			return (list1 != null && list1.size() != 0 && list2 != null && list2
+					.size() != 0);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}

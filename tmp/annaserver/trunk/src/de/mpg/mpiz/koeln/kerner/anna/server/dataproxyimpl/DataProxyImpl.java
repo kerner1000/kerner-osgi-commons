@@ -1,16 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl;
 
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.io.StreamCorruptedException;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
@@ -27,72 +17,61 @@ import de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator;
 public class DataProxyImpl implements DataProxy {
 
 	private final File file;
+	private final SerialisationStrategy strategy;
 
-	public DataProxyImpl(Server server) {
+	public DataProxyImpl(Server server, SerialisationStrategy strategy) {
 		file = new File(new File(server.getServerProperties().getProperty(
 				Server.WORKING_DIR_KEY)), "dataBean.ser");
+		this.strategy = strategy;
 		printProperties();
 	}
 
 	public void updateDataBean(DataBean dataBean)
 			throws DataBeanAccessException {
-		// TODO current implementation just overrides existing data bean. that
-		// is not so
-		// good...
-
-		try {
-			synchronized (file) {
-				writeDataBean(dataBean);
+		synchronized (file) {
+			// TODO try catch
+			try {
+				ServerActivator.LOGGER.debug(this, "updating dataBean:");
+				final DataBean currentDataBean = getDataBean();
+				ServerActivator.LOGGER.debug(this, "current bean="+currentDataBean);
+				final DataBean mergedDataBean = mergeDataBeans(currentDataBean, dataBean);
+				ServerActivator.LOGGER.debug(this, "merged bean="+mergedDataBean);
+				strategy.writeDataBean(mergedDataBean, file);
+			} catch (Throwable t) {
+				t.printStackTrace();
+				System.exit(1);
 			}
-		} catch (IOException e) {
-			ServerActivator.LOGGER.error(this, e.toString(), e);
-			throw new DataBeanAccessException(e);
 		}
+	}
 
+	private DataBean mergeDataBeans(DataBean currentDataBean, DataBean newDataBean) throws DataBeanAccessException {
+		// TODO
+		return newDataBean;
 	}
 
 	public DataBean getDataBean() throws DataBeanAccessException {
 		synchronized (file) {
 			DataBean data = null;
 			if (file.exists()) {
-				data = readFromDisk();
+				// TODO try catch
+				try {
+					final DataBean tmp = strategy.readFromDisk(file);
+					ServerActivator.LOGGER.debug(this, "reading dataBean precheck: " + tmp.toString());
+					ServerActivator.LOGGER.debug(this, "\tFile:" + tmp.getConradTrainingFile());
+					data = strategy.readFromDisk(file);
+					ServerActivator.LOGGER.debug(this, "dataBean read: " + data.toString());
+					ServerActivator.LOGGER.debug(this, "\tFile:" + data.getConradTrainingFile());
+				} catch (Throwable t) {
+					t.printStackTrace();
+					System.exit(1);
+				}
 			} else {
 				ServerActivator.LOGGER.debug(this, file
 						+ " does not exist, returning new one");
-				data = DataBeanImpl.INSTANCE;
+				data = new DataBeanImpl();
 			}
 			return data;
 		}
-	}
-
-	private DataBean readFromDisk() throws DataBeanAccessException {
-		try {
-			ServerActivator.LOGGER.debug(this, file + " exists, reading");
-			return fileToObject(DataBean.class, file);
-		} catch (EOFException e) {
-			return handleCorruptData(e);
-		} catch (StreamCorruptedException e) {
-			return handleCorruptData(e);
-		} catch (IOException e) {
-			ServerActivator.LOGGER.error(this, e.toString(), e);
-			throw new DataBeanAccessException(e);
-		} catch (ClassNotFoundException e) {
-			ServerActivator.LOGGER.error(this, e.toString(), e);
-			throw new DataBeanAccessException(e);
-		}
-	}
-
-	private DataBean handleCorruptData(Throwable t) {
-		ServerActivator.LOGGER.debug(this, file.toString()
-				+ " corrupt, returning new one", t);
-		file.delete();
-		return DataBeanImpl.INSTANCE;
-	}
-
-	private void writeDataBean(DataBean data) throws IOException {
-		ServerActivator.LOGGER.debug(this, "writing DataBean" + " to " + file);
-		de.kerner.commons.file.FileUtils.objectToFile(data, file);
-		ServerActivator.LOGGER.debug(this, "writing DataBean succesfull");
 	}
 
 	private void printProperties() {
@@ -102,30 +81,7 @@ public class DataProxyImpl implements DataProxy {
 	}
 
 	public String toString() {
-		return this.getClass().getSimpleName()+Integer.toHexString(this.hashCode());
-	}
-
-	static void objectToFile(Serializable s, File file) throws IOException {
-		if (s == null || file == null)
-			throw new NullPointerException(s + " + " + file
-					+ " must not be null");
-		OutputStream fos = new FileOutputStream(file);
-		ObjectOutputStream outStream = new ObjectOutputStream(fos);
-		outStream.writeObject(s);
-		outStream.close();
-		fos.close();
-	}
-
-	static <V> V fileToObject(Class<V> c, File file) throws IOException,
-			ClassNotFoundException {
-		if (c == null || file == null)
-			throw new NullPointerException(c + " + " + file
-					+ " must not be null");
-		InputStream fis = new FileInputStream(file);
-		ObjectInputStream inStream = new ObjectInputStream(fis);
-		V v = c.cast(inStream.readObject());
-		inStream.close();
-		fis.close();
-		return v;
+		return this.getClass().getSimpleName()
+				+ Integer.toHexString(this.hashCode());
 	}
 }

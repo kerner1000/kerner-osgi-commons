@@ -13,7 +13,9 @@ public class DataProxyProvider {
 	private final DataProxy proxy;
 
 	public DataProxyProvider(Server server) {
-		proxy = new DataProxyImpl(server);
+//		final SerialisationStrategy strategy = new SerializationStrategyXML();
+		final SerialisationStrategy strategy = new SerializationStrategySer();
+		proxy = new DataProxyImpl(server, strategy);
 	}
 
 	public String toString() {
