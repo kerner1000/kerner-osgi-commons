@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.StreamCorruptedException;
 
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.SerialisationStrategy;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.dataimpl.DataBeanImpl;
@@ -22,12 +23,13 @@ import de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator;
  * @ThreadSave
  *
  */
-class SerializationStrategySer implements SerialisationStrategy {
+public class SerializationStrategySer implements SerialisationStrategy {
 
-	public DataBean readFromDisk(File file) throws DataBeanAccessException {
+	public synchronized DataBean readFromDisk(File file) throws DataBeanAccessException {
 		try {
-			ServerActivator.LOGGER.debug(this, file + " exists, reading");
-			return fileToObject(DataBean.class, file);
+			final DataBean data = fileToObject(DataBean.class, file);
+			ServerActivator.LOGGER.debug(this, "reading data from file");
+			return data;
 		} catch (EOFException e) {
 			return handleCorruptData(file, e);
 		} catch (StreamCorruptedException e) {
@@ -43,7 +45,7 @@ class SerializationStrategySer implements SerialisationStrategy {
 	
 	private DataBean handleCorruptData(File file,  Throwable t) {
 		ServerActivator.LOGGER.debug(this, file.toString()
-				+ " corrupt, returning new one", t);
+				+ " corrupt, returning new one");
 		if(file.delete()){
 			// all good
 		} else {
@@ -52,9 +54,10 @@ class SerializationStrategySer implements SerialisationStrategy {
 		return new DataBeanImpl();
 	}
 
-	public void writeDataBean(DataBean dataBean, File file)
+	public synchronized void writeDataBean(DataBean dataBean, File file)
 			throws DataBeanAccessException {
 		try {
+			ServerActivator.LOGGER.debug(this, "writing data to file");
 			objectToFile(dataBean, file);
 		} catch (IOException e) {
 			ServerActivator.LOGGER.error(this, e.toString(), e);
@@ -85,6 +88,10 @@ class SerializationStrategySer implements SerialisationStrategy {
 		inStream.close();
 		fis.close();
 		return v;
+	}
+	
+	public String toString(){
+		return this.getClass().getSimpleName()+"@"+Integer.toHexString(hashCode());
 	}
 
 }

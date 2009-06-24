@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
-class StepController implements Callable<Boolean> {
+class StepController implements Callable<Void> {
 
 	private final AbstractStepExecutor exe;
 
@@ -18,11 +18,11 @@ class StepController implements Callable<Boolean> {
 				+ exe.getClass().getSimpleName();
 	}
 
-	public Boolean call() throws Exception {
-		System.out.println(this + ": stepexecutor activated " + exe);
+	public Void call() throws Exception {
+		System.out.println(this + ": step executor activated " + exe);
 		// call "call()" directly to run in same thread
 		exe.call();
-		return true;
+		return null;
 	}
 
 }

@@ -1,7 +1,8 @@
-package de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl;
+package de.mpg.mpiz.koeln.kerner.anna.server.dataproxy;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyImpl;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.SerializationStrategySer;
 
 /**
  * 

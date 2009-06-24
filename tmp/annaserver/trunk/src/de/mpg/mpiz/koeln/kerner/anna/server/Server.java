@@ -3,7 +3,7 @@ package de.mpg.mpiz.koeln.kerner.anna.server;
 import java.util.Properties;
 
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.DataProxyProvider;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
 import de.mpg.mpiz.koeln.kerner.anna.serverimpl.StepStateObserver;
 
 public interface Server {

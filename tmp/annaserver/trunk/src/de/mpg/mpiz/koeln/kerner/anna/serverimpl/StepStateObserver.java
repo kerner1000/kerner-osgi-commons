@@ -7,7 +7,7 @@ public interface StepStateObserver {
 
 	void stepStarted(AbstractStep step);
 
-	void stepFinished(AbstractStep step);
+	void stepFinished(AbstractStep step, boolean success);
 
 	void stepChecksNeedToRun(AbstractStep step);
 

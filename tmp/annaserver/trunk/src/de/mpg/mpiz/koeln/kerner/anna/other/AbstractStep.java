@@ -13,6 +13,7 @@ import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 
 /**
@@ -32,7 +33,6 @@ public abstract class AbstractStep implements BundleActivator {
 					+ File.separatorChar + "step.properties");
 	private final Properties properties;
 	private State state = State.LOOSE;
-	private boolean success = false;
 	private boolean skipped = false;
 
 	public AbstractStep() {
@@ -41,14 +41,6 @@ public abstract class AbstractStep implements BundleActivator {
 
 	protected final synchronized State getState() {
 		return state;
-	}
-
-	public final synchronized boolean getSuccess() {
-		return success;
-	}
-
-	public final synchronized void setSuccess(boolean success) {
-		this.success = success;
 	}
 
 	public final synchronized boolean wasSkipped() {
@@ -115,17 +107,17 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
-	public abstract boolean requirementsSatisfied(DataBean data)
+	public abstract boolean requirementsSatisfied(DataProxyProvider data)
 			throws StepExecutionException;
 
-	public abstract boolean canBeSkipped(DataBean data)
+	public abstract boolean canBeSkipped(DataProxyProvider data)
 			throws StepExecutionException;
 
-	public DataBean run(DataBean data) throws StepExecutionException {
+	public boolean run(DataProxyProvider data) throws StepExecutionException {
 		return run(data, null);
 	}
 
-	public abstract DataBean run(DataBean data, StepProcessObserver listener)
+	public abstract boolean run(DataProxyProvider data, StepProcessObserver listener)
 			throws StepExecutionException;
 
 }

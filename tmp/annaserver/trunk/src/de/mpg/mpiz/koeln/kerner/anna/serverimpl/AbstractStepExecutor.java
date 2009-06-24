@@ -25,11 +25,8 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	protected boolean checkCanBeSkipped() throws StepExecutionException {
 		try {
 			server.getStepStateObserver().stepChecksNeedToRun(step);
-			return step.canBeSkipped(server.getDataProxyProvider().getDataProxy()
-					.getDataBean());
+			return step.canBeSkipped(server.getDataProxyProvider());
 		} catch (StepExecutionException e) {
-			throw new StepExecutionException(e);
-		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
 		}
 	}
@@ -39,15 +36,13 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 			try {
 				server.getStepStateObserver().stepWaitForReq(step);
 				while (!step.requirementsSatisfied(server.getDataProxyProvider()
-						.getDataProxy().getDataBean())) {
+						)) {
 					System.out.println(this + ": requirements for step " + step
 							+ " not satisfied, putting it to sleep");
 					server.wait();
 				}
 				System.out.println(this + ": requirements for step " + step
 						+ " satisfied");
-			} catch (DataBeanAccessException e) {
-				throw new StepExecutionException(e);
 			} catch (InterruptedException e) {
 				throw new StepExecutionException(e);
 			} finally {
@@ -58,20 +53,20 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 		}
 	}
 
-	protected void run() throws StepExecutionException {
+	protected boolean run() throws StepExecutionException {
 		// TODO remove try catch
 		try {
 			server.getStepStateObserver().stepStarted(step);
 			System.out.println(this + ": running step " + step);
 			final StepProcessObserver listener = new StepProgressObserverImpl();
-			final DataBean data = step.run(server.getDataProxyProvider()
-					.getDataProxy().getDataBean(), listener);
+			final boolean success = step.run(server.getDataProxyProvider()
+					, listener);
 			System.out.println(this + ": step " + step
-					+ " finished, updateing data");
-			server.getDataProxyProvider().getDataProxy().updateDataBean(data);
-			server.getStepStateObserver().stepFinished(step);
+					+ " finished");
+			return success;
 		} catch (Throwable t) {
 			t.printStackTrace();
+			return false;
 		} finally {
 			synchronized (server) {
 				server.notifyAll();

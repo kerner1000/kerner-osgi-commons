@@ -11,23 +11,21 @@ class LocalSepExecutor extends AbstractStepExecutor {
 
 	public Boolean call() throws Exception {
 		final boolean b = checkCanBeSkipped();
+		boolean success = true;
 		if (b) {
 			
 			System.out.println(this + ": step " + step
 					+ " does not need to run, skipping");
 			step.setSkipped(true);
-			step.setSuccess(true);
-			server.getStepStateObserver().stepFinished(step);
-			
-			
 			
 		} else {
 			System.out.println(this + ": step " + step + " needs to run");
 			waitForReq();
-			run();
+			success = run();
 		}
 		System.out.println(this + ": step " + step + " done");
-		return true;
+		server.getStepStateObserver().stepFinished(step, success);
+		return success;
 	}
 
 	public String toString() {

@@ -8,6 +8,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import de.kerner.commons.file.LazyStringReader;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.SerialisationStrategy;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
