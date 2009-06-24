@@ -12,6 +12,7 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
@@ -97,13 +98,15 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	@Override
-	public boolean requirementsSatisfied(DataBean data)
+	public boolean requirementsSatisfied(DataProxyProvider data)
 			throws StepExecutionException {
 		try {
-			final boolean fastas = (data.getVerifiedGenesFasta() != null);
-			final boolean fastasSize = (data.getVerifiedGenesFasta().size() != 0);
-			final boolean gtf = (data.getVerifiedGenesGtf() != null);
-			final boolean gtfSize = (data.getVerifiedGenesGtf().size() != 0);
+			final boolean fastas = (data.getDataProxy().getVerifiedGenesFasta() != null);
+			final boolean fastasSize = (data.getDataProxy()
+					.getVerifiedGenesFasta().size() != 0);
+			final boolean gtf = (data.getDataProxy().getVerifiedGenesGtf() != null);
+			final boolean gtfSize = (data.getDataProxy().getVerifiedGenesGtf()
+					.size() != 0);
 			logger.debug(this, "requirements:");
 			logger.debug(this, "\tfastas=" + fastas);
 			logger.debug(this, "\tfastasSize=" + fastasSize);
@@ -114,15 +117,17 @@ public class StepConradTrain extends AbstractStep {
 			logger.error(this, e.toString(), e);
 			throw new StepExecutionException(e);
 		}
-
 	}
 
 	@Override
-	public boolean canBeSkipped(DataBean data) throws StepExecutionException {
+	public boolean canBeSkipped(DataProxyProvider data)
+			throws StepExecutionException {
 		try {
-			final boolean trainingFile = (data.getConradTrainingFile() != null && data
+			final boolean trainingFile = (data.getDataProxy()
+					.getConradTrainingFile() != null && data.getDataProxy()
 					.getConradTrainingFile().exists());
-			final boolean trainingFileRead = (data.getConradTrainingFile() != null && data
+			final boolean trainingFileRead = (data.getDataProxy()
+					.getConradTrainingFile() != null && data.getDataProxy()
 					.getConradTrainingFile().canRead());
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\ttrainingFile=" + trainingFile);
@@ -137,39 +142,39 @@ public class StepConradTrain extends AbstractStep {
 	}
 
 	@Override
-	public DataBean run(DataBean data, StepProcessObserver listener)
+	public boolean run(DataProxyProvider data, StepProcessObserver listener)
 			throws StepExecutionException {
+		boolean success = true;
 		try {
 			if (trainingFile.exists()) {
 				takeShortcut(data);
-			} else {
-				assignState();
-				final ArrayList<? extends FASTASequence> fastas = data
-						.getVerifiedGenesFasta();
-				final ArrayList<? extends GTFElement> elements = data
-						.getVerifiedGenesGtf();
-				final boolean b = state.run(fastas, elements);
-				if (b) {
-					logger.info(this, "training sucessfull");
-					data.setConradTrainingFile(state.getResult());
-					setSuccess(true);
-				} else
-					handleFailure(data);
+				return success;
 			}
-
+			assignState();
+			final ArrayList<? extends FASTASequence> fastas = data
+					.getDataProxy().getVerifiedGenesFasta();
+			final ArrayList<? extends GTFElement> elements = data
+					.getDataProxy().getVerifiedGenesGtf();
+			success = state.run(fastas, elements);
+			if (success) {
+				logger.info(this, "training sucessfull");
+				data.getDataProxy().setConradTrainingFile(state.getResult());
+				return success;
+			}
+			logger.warn(this, "training not sucessfull, will not update data");
+			return false;
 		} catch (DataBeanAccessException e) {
 			logger.error(this, e.toString(), e);
-			throw new StepExecutionException(e);
+			return false;
 		}
-		return data;
 	}
 
-	private void takeShortcut(DataBean data) throws DataBeanAccessException {
+	private void takeShortcut(DataProxyProvider data)
+			throws DataBeanAccessException {
 		logger.info(this, "training file already exists, taking short cut ("
 				+ trainingFile + ")");
 		logger.info(this, "training sucessfull");
-		data.setConradTrainingFile(trainingFile);
-		setSuccess(true);
+		data.getDataProxy().setConradTrainingFile(trainingFile);
 	}
 
 	private void assignState() {
@@ -195,10 +200,6 @@ public class StepConradTrain extends AbstractStep {
 		logger.info(this, "going to run on LSF");
 		state = new RunStateLSF(conradWorkingDir, stepWorkingDir, trainingFile,
 				fastaFile, gtfFile, logger);
-	}
-
-	private void handleFailure(DataBean data) {
-		logger.warn(this, "training not sucessfull, will not update data");
 	}
 
 	public String toString() {
