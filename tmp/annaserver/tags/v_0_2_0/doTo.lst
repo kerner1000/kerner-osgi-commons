@@ -1,0 +1,4 @@
+review service tracking
+review passing through of "ServerActivator" to be able to get an DataProxy instance
+properties are case sensitive
+stepExecutionException for run() maybe obsolete due to change to boolean run()
