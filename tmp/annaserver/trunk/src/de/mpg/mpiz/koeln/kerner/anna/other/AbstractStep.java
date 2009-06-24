@@ -55,7 +55,7 @@ public abstract class AbstractStep implements BundleActivator {
 		this.state = state;
 	}
 
-	private synchronized Properties getPropertes() {
+	private Properties getPropertes() {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);
 		try {
@@ -86,8 +86,10 @@ public abstract class AbstractStep implements BundleActivator {
 		// Do nothing by default
 	}
 
-	private synchronized void registerToServer(Server server) {
+	
+	private void registerToServer(Server server) {
 		System.out.println(this + ": registering to Server " + server);
+		// synchronized
 		server.registerStep(this);
 	}
 

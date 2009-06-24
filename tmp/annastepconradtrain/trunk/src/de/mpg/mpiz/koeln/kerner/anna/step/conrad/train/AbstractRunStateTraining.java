@@ -67,6 +67,8 @@ abstract class AbstractRunStateTraining extends AbstractStepProcessBuilder {
 			fastaFile.writeToFile(jetAnotherFile);
 			logger.debug(this, "writing gtf to " + andEvenOneMore);
 			gtfFile.writeToFile(andEvenOneMore);
+			jetAnotherFile.deleteOnExit();
+			andEvenOneMore.deleteOnExit();
 			return true;
 		} catch (IOException e) {
 			logger.error(this, e.toString(), e);
