@@ -175,6 +175,7 @@ public class StepConradPredict extends AbstractStep {
 	private void writeInputSequencesToFile(DataProxyProvider data)
 			throws IOException, DataBeanAccessException {
 		final File refFile = new File(stepWorkingDir, "ref.fasta");
+		refFile.deleteOnExit();
 		new FASTAFile(data.getDataProxy().getInputSequences())
 				.writeToFile(refFile);
 	}
