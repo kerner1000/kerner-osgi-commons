@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RepeatMasker-Common Plug-in
+Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common
+Bundle-Version: 0.0.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common
+Import-Package: de.kerner.osgi.commons.logger.dispatcher,
+ de.mpg.mpiz.koeln.kerner.anna.core,
+ de.mpg.mpiz.koeln.kerner.anna.other,
+ de.mpg.mpiz.koeln.kerner.anna.server,
+ de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
+ de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data,
+ org.bioutils.fasta,
+ org.bioutils.gtf,
+ org.osgi.framework
