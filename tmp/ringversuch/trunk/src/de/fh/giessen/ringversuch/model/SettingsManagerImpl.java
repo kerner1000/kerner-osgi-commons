@@ -8,6 +8,11 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+/**
+ * 
+ * !!! MAKE HIM THREADSAVE !!!
+ *
+ */
 public class SettingsManagerImpl implements SettingsManager {
 
 	private final static Logger LOGGER = Logger

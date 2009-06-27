@@ -4,8 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import de.fh.giessen.ringversuch.controller.Controller;
@@ -13,58 +19,55 @@ import de.fh.giessen.ringversuch.controller.ControllerImpl;
 
 public class ModelImpl implements Model {
 
-	private static String LOG_PROPERTIES = "C:\\Users\\juli\\log.properties";
+	private final static Logger LOGGER = Logger.getLogger(ModelImpl.class);
 	private final Controller controller;
-
-	public ModelImpl(ControllerImpl controller) {
+	private final SettingsManager settings = SettingsManagerImpl.INSTANCE;
+	private File outDir;
+	private File[] inputFiles;
+	private final ExecutorService exe = Executors.newSingleThreadExecutor();
+	
+	public ModelImpl(Controller controller) {
 		this.controller = controller;
 	}
 
-	public static void main(String args[]) {
-		try {
-
-			PropertyConfigurator.configure(LOG_PROPERTIES);
-
-			SettingsManager settings = SettingsManagerImpl.INSTANCE;
-			File file = new File(new File(System.getProperty("user.dir")),
-					"settings.ini");
-			settings.loadSettings(file);
-			File file0 = new File(
-					"C:\\Users\\juli\\Ergebnisse_RV_DIN38407-41\\L01_RV_DIN38407-41.xls");
-			File file1 = new File(
-					"C:\\Users\\juli\\Ergebnisse_RV_DIN38407-41\\L05_RV_DIN38407-41.xls");
-			File outFile = new File("C:\\Users\\juli\\ringversuch\\");
-			Collection<File> files = new ArrayList<File>();
-			files.add(file0);
-			files.add(file1);
-
-			final Collection<Labor> labors = new ArrayList<Labor>();
-			for (File f : files) {
-				labors.add(Core.readLaborFile(f, settings));
-			}
-
-			Collection<OutSubstance> outSubstances = Core
-					.getOutSubstancesFromLabors(labors, settings);
-			
-			for(OutSubstance s : outSubstances){
-				final String fileName = Core.getFileNameForOutSubstance(s);
-				Core.writeOutSubstance(s, new File(outFile, fileName + ".xls"));
-			}
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidSettingsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	
+	@Override
+	public void setOutDir(File selectedDir) {
+	this.outDir = selectedDir;
+	LOGGER.info("files will be written to " + outDir);
+	controller.printMessage("files will be written to " + outDir, false);
 	}
 
+	@Override
+	public void setSelectedFiles(File[] inputFiles) {
+		this.inputFiles = inputFiles;
+		LOGGER.info("input files: " + Arrays.asList(inputFiles));
+		controller.printMessage("selected " + Arrays.asList(inputFiles).size() + " file(s)", false);
+	}
+
+	@Override
+	public void start() {
+		LOGGER.info("starting...");
+		Future<Boolean> f = exe.submit(new Worker(inputFiles, outDir));
+		try {
+			final boolean success = f.get();
+			if(!success){
+				LOGGER.fatal("work was not successful!");
+				controller.printMessage("failed!", true);
+				return;
+			}
+		} catch (Exception e){
+			LOGGER.fatal("work was not successful!", e);
+			return;
+		}
+		LOGGER.info("...done!");
+		controller.printMessage("done!", false);
+	}
+
+	@Override
+	public void loadSettings(File settingsFile) throws IOException, InvalidSettingsException {
+		LOGGER.debug("loading settings from " + settingsFile);
+		settings.loadSettings(settingsFile);	
+	}
+	
 }

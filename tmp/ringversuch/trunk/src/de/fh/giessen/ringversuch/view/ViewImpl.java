@@ -6,21 +6,11 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Collection;
-import java.util.Properties;
 import java.util.Vector;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -34,14 +24,16 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.controller.Controller;
 
 public class ViewImpl implements View {
 
-	private static final String NEW_LINE = System.getProperty("line.separator");
 	private final static String MENU_TITLE = "Menu";
 	private final static String MENU_ABOUT = "About";
 	private final static String MENU_SETTINGS = "Settings";
@@ -52,6 +44,7 @@ public class ViewImpl implements View {
 	private final static String FILES_TITLE = "Files";
 	private final static String LOG_TITLE = "Log";
 	private final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
+	private final static Logger LOGGER = Logger.getLogger(ViewImpl.class);
 	
 	private final class MyPanel extends JPanel {
 		
@@ -66,28 +59,36 @@ public class ViewImpl implements View {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				LOGGER.debug("event received: " + e);
 				if (e.getSource() == buttonSelect) {
 					final int returnVal = fileChooserinputFiles.showOpenDialog(component);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						areaFiles.setText("");
 						files.clear();
-						File[] inputFiles = fileChooserinputFiles.getSelectedFiles();
+						final File[] inputFiles = fileChooserinputFiles.getSelectedFiles();
+						
+						// TODO that should do the controller
 						for (File f : inputFiles) {
-							areaFiles.append(f.getName() + NEW_LINE);
+							areaFiles.append(f.getName() + GUIPrefs.NEW_LINE);
 							files.add(f);
 						}
+						
+						// TODO that should do the controller
 						inputFilesSelected = true;
 						if (inputFilesSelectedOutputDirSelected()) {
 							setInputFilesSelectedOutputDirSelected();
 						}
-						controller.printMessage("selected " + files.size() + " file(s)", false);
+						controller.setSelectedFiles(inputFiles);
 					}
 				}
 
 				else if (e.getSource() == buttonSave) {
 					final int returnVal = fileChooseroutDir.showSaveDialog(component);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						controller.setOutFile(fileChooseroutDir.getSelectedFile());
+						System.err.println(fileChooseroutDir.getSelectedFile());
+						controller.setOutDir(fileChooseroutDir.getSelectedFile());
+						
+						// TODO that should do the model / controller
 						outputDirSelected = true;
 						if (inputFilesSelectedOutputDirSelected())
 							setInputFilesSelectedOutputDirSelected();
@@ -97,15 +98,35 @@ public class ViewImpl implements View {
 				else if (e.getSource() == menuSettings) {
 					showSettingsView();
 				}
+				
+				else if (e.getSource() == menuAbout) {
+					showAbout();
+				}
 
 				else if (e.getSource() == buttonStart) {
-					if(controller.settingsValid()){
-						setWorking();
-						exe.submit(new Worker());
-					} else {
-						controller.showError("Invalid settings");
-					}
+					controller.start();
+					
+					
+					// TODO take a look at that...
+//					if(controller.settingsValid()){
+//						setWorking();
+//						exe.submit(new Worker());
+//					} else {
+//						controller.showError("Invalid settings");
+//					}
 				}
+			}
+
+			private void showAbout() {
+				// take shortcut and directly show about, without notifying controller or model
+				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						JOptionPane.showMessageDialog(component, GUIPrefs.NAME + " Version " + GUIPrefs.VERSION+"\n"
+								+ "Markus Westphal: \tmarkus.c.westphal@tg.fh-giessen.de\n"
+								+ "Alexander Kerner: \tphilip.a.kerner@tg.fh-giessen.de",
+								"About", JOptionPane.INFORMATION_MESSAGE);	
+					}
+				});	
 			}
 		}
 
@@ -123,15 +144,21 @@ public class ViewImpl implements View {
 		private final JButton buttonSelect = new JButton(BUTTON_SELECT);
 		private final JButton buttonSave = new JButton(BUTTON_SAVE);
 		private final JButton buttonCancel = new JButton(BUTTON_CANCEL);
+		private final JTextArea areaLog = new JTextArea();
 		private boolean inputFilesSelected = false;
 		private boolean outputDirSelected = false;
 		private int progress = 0;
 		
 		MyPanel(Controller controller) {
-			init();
 			this.myListener = new MyListener(this, controller);
+			init();
+		}
+		
+		void printMessage(String message, boolean isError){
+			areaLog.append(message + GUIPrefs.NEW_LINE);
 		}
 
+		
 		private void init() {
 			initButtons(myListener);
 			initInputFilesChooser();
@@ -141,6 +168,13 @@ public class ViewImpl implements View {
 			add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, initFilesPanel(),
 					initLogPanel()), BorderLayout.CENTER);
 			add(initProgressAndButtonsPanel(), BorderLayout.AFTER_LAST_LINE);
+		}
+		
+		private void initButtons(ActionListener listener) {
+			buttonSelect.addActionListener(listener);
+			buttonStart.addActionListener(listener);
+			buttonCancel.addActionListener(listener);
+			buttonSave.addActionListener(listener);
 		}
 
 		private void initOutputDirFileChooser() {
@@ -178,7 +212,6 @@ public class ViewImpl implements View {
 		}
 
 		private JPanel initLogPanel() {
-			final JTextArea areaLog = new JTextArea();
 			areaLog.setEditable(false);
 			final JScrollPane s = new JScrollPane(areaLog);
 			final JPanel p1 = new JPanel();
@@ -202,13 +235,6 @@ public class ViewImpl implements View {
 			p1.setMinimumSize(minimumSize);
 			p1.add(s);
 			return p1;
-		}
-
-		private void initButtons(ActionListener listener) {
-			buttonSelect.addActionListener(listener);
-			buttonStart.addActionListener(listener);
-			buttonCancel.addActionListener(listener);
-			buttonSave.addActionListener(listener);
 		}
 
 		private JMenuBar initMenubar(ActionListener listener) {
@@ -286,37 +312,59 @@ public class ViewImpl implements View {
 
 	}
 
-	private final ExecutorService exe = Executors.newSingleThreadExecutor();
-
+	private final MyPanel panel;
 	public ViewImpl(final Controller  controller) {
+		// Create and set up the content pane.
+		// TODO must it be initialized in EventThread?
+		panel = new MyPanel(controller);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				if(GUIPrefs.NATIVE_LAF){
+					try {
+						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					} catch (Exception e) {
+						LOGGER.warn("could not init native look and feel", e);
+					}
+				}
 				final JFrame frame = new JFrame(GUIPrefs.NAME + " " + GUIPrefs.VERSION);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				// Create and set up the content pane.
-				final MyPanel panel = new MyPanel(controller);
-
 				// content panes must be opaque
 				panel.setOpaque(true);
 				frame.setContentPane(panel);
-
 				// Display the window.
 				frame.pack();
 				frame.setMinimumSize(new Dimension(400, 200));
+				
+				// TODO maybe move to "setOnline()"
 				frame.setVisible(true);
 			}
 		});
 	}
 
 	@Override
-	public void appendLog(String message, boolean isError) {
-		// TODO Auto-generated method stub
-		
+	public void printMessage(final String message, final boolean isError) {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				panel.printMessage(message, isError);
+			}
+		});
 	}
 
 	@Override
 	public void setOnline() {
-		// TODO Auto-generated method stub
-		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				panel.setOnline();
+			}
+		});
+	}
+
+	@Override
+	public void setWorking() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				panel.setWorking();
+			}
+		});	
 	}
 }
