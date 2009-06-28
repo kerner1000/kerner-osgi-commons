@@ -43,7 +43,7 @@ public class SettingsManagerImpl implements SettingsManager {
 
 	private Properties currentSettings = getDefaultSettings();
 
-	public static final SettingsManagerImpl INSTANCE = new SettingsManagerImpl();
+	public static final SettingsManager INSTANCE = new SettingsManagerImpl();
 
 	private SettingsManagerImpl() {
 		

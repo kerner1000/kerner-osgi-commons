@@ -193,7 +193,7 @@ public class DataBeanImpl implements DataBean {
 
 	}
 
-	public ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+	public synchronized ArrayList<? extends GTFElement> getRepeatMaskerGtf()
 			throws DataBeanAccessException {
 		try {
 			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
@@ -205,7 +205,7 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+	public synchronized void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
 			throws DataBeanAccessException {
 		if (elements == null)
 			throw new NullPointerException();

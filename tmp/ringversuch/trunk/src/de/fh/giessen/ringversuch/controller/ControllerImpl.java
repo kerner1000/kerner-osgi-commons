@@ -19,17 +19,19 @@ public class ControllerImpl implements Controller {
 	
 	@Override
 	public void printMessage(String message, boolean isError) {
+		LOGGER.debug("printMessage=" + message);
 		view.printMessage(message, isError);
 	}
 
 	@Override
 	public void setOutDir(File selectedDir) {
+		LOGGER.debug("setOutDir=" + selectedDir);
 		model.setOutDir(selectedDir);
 	}
 
 	@Override
 	public void showError(String message) {
-		// TODO Auto-generated method stub
+		LOGGER.debug("showError=" + message);
 
 	}
 	
@@ -47,6 +49,7 @@ public class ControllerImpl implements Controller {
 
 	@Override
 	public void setView(View view) {
+		LOGGER.debug("setView=" + view);
 		this.view = view;
 	}
 
@@ -71,6 +74,7 @@ public class ControllerImpl implements Controller {
 
 	@Override
 	public void setSelectedFiles(File[] inputFiles) {
+		LOGGER.info("setSelectedFiles=" + inputFiles);
 		model.setSelectedFiles(inputFiles);
 	}
 

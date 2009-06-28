@@ -6,6 +6,7 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -19,73 +20,80 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 
-class SettingsView {
+import de.fh.giessen.ringversuch.controller.Controller;
+import de.fh.giessen.ringversuch.model.InvalidSettingsException;
+
+class ViewImplSettings {
 
 	private final class MyPanel extends JPanel {
-
-		private static final long serialVersionUID = -1252068391141111780L;
 
 		private final class MyListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUse) {
+					try {
 						controller.setSettings(settings);
-						if (controller.settingsValid()) {
 						setVisible(false);
-					} else {
-						LOGGER.debug("settings invalid: " + settings);
-						controller.showError("Invalid settings. Please check again");
+					} catch (InvalidSettingsException e1) {
+						LOGGER.error("settings invalid", e1);
+						controller.showError(e1.getLocalizedMessage());
 					}
+
 				} else if (e.getSource() == buttonSave) {
+					try {
 						controller.setSettings(settings);
-						if (controller.settingsValid()) {
-						saveSettings();
-					} else {
-						LOGGER.debug("settings invalid: " + settings);
-						controller.showError("Invalid settings. Please check again");
+						controller.saveSettings();
+						setVisible(false);
+					} catch (InvalidSettingsException e1) {
+						LOGGER.error("settings invalid", e1);
+						controller.showError(e1.getLocalizedMessage());
 					}
 
 				} else if (e.getSource() == buttonLoad) {
 					loadSettings();
 				} else {
-					LOGGER.error("unrecognized action performed: " + e.getSource());
+					LOGGER.error("unrecognized action performed: "
+							+ e.getSource());
 				}
 			}
 		}
 
+		private static final long serialVersionUID = -1252068391141111780L;
+		
+		// TODO to GuiPrefs
 		private final static String SHEET_NO_TITLE = "Sheet No";
 		private final static String COLUMN_OF_SUBSTANCE_TITLE = "Column of Subst.";
 		private final static String VALUES_BEGIN_TITLE = "Values begin";
 		private final static String VALUES_END_TITLE = "Values end";
+		private final JButton buttonLoad = new JButton("Load");
+		private final JButton buttonSave = new JButton("Save");
+		private final JButton buttonUse = new JButton("Use");
+		
 		private final ActionListener listener = new MyListener();
 		private final JFileChooser fileChooser = new JFileChooser();
 		private final FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Settings file", "ini", "INI");
-		private Properties settings = controller.getDefaultSettings();
-		private final JButton buttonLoad = new JButton("Load");
-		private final JButton buttonSave = new JButton("Save");
-		private final JButton buttonUse = new JButton("Use");
-		private final JTextField fieldSheetNo = new JTextField(settings
+		private final JTextField fieldSheetNo = new JTextField(controller.getSettings()
 				.getProperty("SHEET_NO"));
-		private final JTextField fieldColumnSubstance = new JTextField(settings
+		private final JTextField fieldColumnSubstance = new JTextField(controller.getSettings()
 				.getProperty("SUBSTANCES_COLUMN"));
-		private final JTextField fieldProbeNo = new JTextField(settings
+		private final JTextField fieldProbeNo = new JTextField(controller.getSettings()
 				.getProperty("PROBE_USE"));
-		private final JTextField fieldProbeRow = new JTextField(settings
+		private final JTextField fieldProbeRow = new JTextField(controller.getSettings()
 				.getProperty("PROBE_NO_ROW"));
-		private final JTextField fieldProbeColumn = new JTextField(settings
+		private final JTextField fieldProbeColumn = new JTextField(controller.getSettings()
 				.getProperty("PROBE_NO_COLUMN"));
-		private final JTextField fieldLaborRow = new JTextField(settings
+		private final JTextField fieldLaborRow = new JTextField(controller.getSettings()
 				.getProperty("LABOR_NO_ROW"));
-		private final JTextField fieldLaborColumn = new JTextField(settings
+		private final JTextField fieldLaborColumn = new JTextField(controller.getSettings()
 				.getProperty("LABOR_NO_COLUMN"));
-		private final JTextField fieldValuesBeginRow = new JTextField(settings
+		private final JTextField fieldValuesBeginRow = new JTextField(controller.getSettings()
 				.getProperty("MAIN_START_ROW"));
 		private final JTextField fieldValuesBeginColumn = new JTextField(
-				settings.getProperty("MAIN_START_COLUMN"));
-		private final JTextField fieldValuesEndRow = new JTextField(settings
+				controller.getSettings().getProperty("MAIN_START_COLUMN"));
+		private final JTextField fieldValuesEndRow = new JTextField(controller.getSettings()
 				.getProperty("MAIN_END_ROW"));
-		private final JTextField fieldValuesEndColumn = new JTextField(settings
+		private final JTextField fieldValuesEndColumn = new JTextField(controller.getSettings()
 				.getProperty("MAIN_END_COLUMN"));
 
 		MyPanel() {
@@ -98,9 +106,10 @@ class SettingsView {
 			final JPanel panelLaborID = initLaborIDPanel(getLaborIDPanelLayout());
 			initPanels(panelSheetNo, panelColumnOfSubstance, panelProbeNo,
 					panelValuesBegin, panelValuesEnd, panelLaborID);
-			
-			fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			fileChooser.addChoosableFileFilter(filter);			
+
+			fileChooser.setCurrentDirectory(new File(System
+					.getProperty("user.dir")));
+			fileChooser.addChoosableFileFilter(filter);
 		}
 
 		private void initPanels(JPanel panelSheetNo,
@@ -129,6 +138,8 @@ class SettingsView {
 
 		private JPanel initLaborIDPanel(LayoutManager layout) {
 			final JPanel p1 = new JPanel(layout);
+			
+			// TODO move to GuiPrefs
 			p1.setBorder(new TitledBorder("Labor ID"));
 			final JLabel row = new JLabel("Row");
 			final JLabel column = new JLabel("Column");
@@ -142,6 +153,8 @@ class SettingsView {
 		private JPanel initValuesEndPanel(LayoutManager layout) {
 			final JPanel p1 = new JPanel(layout);
 			p1.setBorder(new TitledBorder(VALUES_END_TITLE));
+			
+			//TODO move to GuiPrefs
 			final JLabel row = new JLabel("Row");
 			final JLabel column = new JLabel("Column");
 			p1.add(row);
@@ -261,52 +274,52 @@ class SettingsView {
 				controller.saveSettings(fileChooser.getSelectedFile());
 			}
 		}
-		
+
 		private void loadSettings() {
 			int returnVal = fileChooser.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
+				final File file = fileChooser.getSelectedFile();
 				controller.loadSettings(file);
-				settings = controller.getSettings();
 				assignSettings();
 			}
 		}
 
 		private void assignSettings() {
+			final Properties settings = controller.getSettings();
+			
+			// TODO move to Gneral Prog Prefs
 			fieldLaborRow.setText(settings.getProperty("LABOR_NO_ROW"));
 			fieldLaborColumn.setText(settings.getProperty("LABOR_NO_COLUMN"));
 			fieldProbeRow.setText(settings.getProperty("PROBE_NO_ROW"));
 			fieldProbeColumn.setText(settings.getProperty("PROBE_NO_COLUMN"));
 			fieldProbeNo.setText(settings.getProperty("PROBE_USE"));
 			fieldSheetNo.setText(settings.getProperty("SHEET_NO"));
-			fieldColumnSubstance.setText(settings.getProperty("SUBSTANCES_COLUMN"));
+			fieldColumnSubstance.setText(settings
+					.getProperty("SUBSTANCES_COLUMN"));
 			fieldValuesEndRow.setText(settings.getProperty("MAIN_END_ROW"));
-			fieldValuesEndColumn.setText(settings.getProperty("MAIN_END_COLUMN"));
+			fieldValuesEndColumn.setText(settings
+					.getProperty("MAIN_END_COLUMN"));
 			fieldValuesBeginRow.setText(settings.getProperty("MAIN_START_ROW"));
-			fieldValuesBeginColumn
-					.setText(settings.getProperty("MAIN_START_COLUMN"));
+			fieldValuesBeginColumn.setText(settings
+					.getProperty("MAIN_START_COLUMN"));
 		}
 	}
 
-	private final static Logger LOGGER = Logger.getLogger(SettingsView.class);
-	private final SettingsViewController controller;
+	private final static Logger LOGGER = Logger
+			.getLogger(ViewImplSettings.class);
+	private final Controller controller;
 
-	private SettingsView(SettingsViewController controller) {
+	ViewImplSettings(Controller controller) {
 		this.controller = controller;
+		
+		// TODO move to GuiPrefs
 		final JFrame frame = new JFrame("Settings");
+
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		final JPanel myPanel = new MyPanel();
 		myPanel.setOpaque(true);
 		frame.setContentPane(myPanel);
 		frame.pack();
 		frame.setResizable(false);
-	}
-	
-	static void createSettingsView(final SettingsViewController controller){
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new SettingsView(controller);
-			}
-		});
 	}
 }
