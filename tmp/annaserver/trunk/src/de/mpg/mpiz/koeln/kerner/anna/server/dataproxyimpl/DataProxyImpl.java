@@ -23,8 +23,8 @@ public class DataProxyImpl implements DataProxy {
 
 	private final File file;
 	private final SerialisationStrategy strategy;
-	private DataBean current;
-	private boolean dirty = true;
+//	private DataBean current;
+//	private boolean dirty = true;
 
 	public DataProxyImpl(Server server, SerialisationStrategy strategy) {
 		file = new File(new File(server.getServerProperties().getProperty(
@@ -45,19 +45,19 @@ public class DataProxyImpl implements DataProxy {
 	}
 
 	private DataBean getDataBean() throws DataBeanAccessException {
-		if (dirty) {
-			ServerActivator.LOGGER.debug(this, "data dirty, reading from file");
+//		if (dirty) {
+//			ServerActivator.LOGGER.debug(this, "data dirty, reading from file");
 			if (file.exists() && file.canRead()) {
-				current = strategy.readFromDisk(file);
-				dirty = false;
-				return current;
+//				current = strategy.readFromDisk(file);
+//				dirty = false;
+				return strategy.readFromDisk(file);
 			} else {
 				return new DataBeanImpl();
 			}
-		} else {
-			ServerActivator.LOGGER.debug(this, "data clean, reading from cache");
-			return current;
-		}
+//		} else {
+//			ServerActivator.LOGGER.debug(this, "data clean, reading from cache");
+//			return current;
+//		}
 	}
 
 	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
@@ -78,7 +78,7 @@ public class DataProxyImpl implements DataProxy {
 		final DataBean data = getDataBean();
 		data.setVerifiedGenesFasta(sequences);
 		strategy.writeDataBean(data, file);
-		dirty = true;
+//		dirty = true;
 	}
 
 	public synchronized void setVerifiedGenesGtf(
@@ -87,7 +87,7 @@ public class DataProxyImpl implements DataProxy {
 		final DataBean data = getDataBean();
 		data.setVerifiedGenesGtf(elements);
 		strategy.writeDataBean(data, file);
-		dirty = true;
+//		dirty = true;
 	}
 
 	public synchronized ArrayList<? extends FASTASequence> getInputSequences()
@@ -102,7 +102,7 @@ public class DataProxyImpl implements DataProxy {
 		final DataBean data = getDataBean();
 		data.setInputSequences(fastas);
 		strategy.writeDataBean(data, file);
-		dirty = true;
+//		dirty = true;
 	}
 
 	public synchronized File getConradTrainingFile()
@@ -116,7 +116,7 @@ public class DataProxyImpl implements DataProxy {
 		final DataBean data = getDataBean();
 		data.setConradTrainingFile(trainingFile);
 		strategy.writeDataBean(data, file);
-		dirty = true;
+//		dirty = true;
 	}
 
 	public synchronized ArrayList<? extends GTFElement> getPredictedGenesGtf()
@@ -131,7 +131,7 @@ public class DataProxyImpl implements DataProxy {
 		final DataBean data = getDataBean();
 		data.setPredictedGenesGtf(result);
 		strategy.writeDataBean(data, file);
-		dirty = true;
+//		dirty = true;
 
 	}
 
@@ -147,7 +147,7 @@ public class DataProxyImpl implements DataProxy {
 		final DataBean data = getDataBean();
 		data.setRepeatMaskerGtf(elements);
 		strategy.writeDataBean(data, file);
-		dirty = true;
+//		dirty = true;
 
 	}
 
