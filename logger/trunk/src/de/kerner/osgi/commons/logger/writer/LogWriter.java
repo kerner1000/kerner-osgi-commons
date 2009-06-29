@@ -9,7 +9,7 @@ import org.osgi.service.log.LogService;
 
 class LogWriter implements LogListener {
 
-	private static final String LOG_PROPERTIES = "/home/alex/Dropbox/log.properties";
+	private static final String LOG_PROPERTIES = "/home/pcb/kerner/Dropbox/log.properties";
 	private static Logger LOGGER = Logger.getLogger(LogWriter.class);
 	
 	LogWriter(){

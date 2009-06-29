@@ -31,10 +31,10 @@ public class StepStateObserverImpl implements StepStateObserver {
 			final String s2 = "state=" + stepStates.get(s);
 			final String s3 = "skipped=" + s.wasSkipped();
 			String s4 = "success=" + stepSuccesses.get(s);
-			System.out.printf("\t%-30s\t%-22s\t%-10s\t%-10s", s1, s2, s3 ,s4);
-//			System.out.print("\t" + s + "\t:state=" + stepStates.get(s)
-//					+ "\tskipped=" + s.wasSkipped() + "\tsuccess="
-//					+ s.getSuccess());
+			System.out.printf("\t%-30s\t%-22s\t%-10s\t%-10s", s1, s2, s3, s4);
+			// System.out.print("\t" + s + "\t:state=" + stepStates.get(s)
+			// + "\tskipped=" + s.wasSkipped() + "\tsuccess="
+			// + s.getSuccess());
 			if (lastChangedStep.equals(s)) {
 				System.out.print("\t(changed)");
 			}
@@ -53,15 +53,16 @@ public class StepStateObserverImpl implements StepStateObserver {
 		}
 		if (!state.equals(expectedCurrentState)) {
 			// ignore inconsistency due to skipping of step
-			
-//			System.out.println(this
-//					+ ": warning, inconsistent step state mapping for step "
-//					+ step + "\n\t step state changed from "
-//					+ stepStates.get(step) + " to " + newState);
+
+			// System.out.println(this
+			// + ": warning, inconsistent step state mapping for step "
+			// + step + "\n\t step state changed from "
+			// + stepStates.get(step) + " to " + newState);
 		}
 	}
 
-	private synchronized void changeStepState(AbstractStep step, AbstractStep.State newState) {
+	private synchronized void changeStepState(AbstractStep step,
+			AbstractStep.State newState) {
 		stepStates.put(step, newState);
 		printStepStates(step);
 	}

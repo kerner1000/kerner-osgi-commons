@@ -24,7 +24,8 @@ class SerializationStrategyXML implements SerialisationStrategy {
 		}
 	}
 
-	public void writeDataBean(DataBean dataBean, File file) throws DataBeanAccessException {
+	public void writeDataBean(DataBean dataBean, File file)
+			throws DataBeanAccessException {
 		try {
 			objectToXML(dataBean, file);
 		} catch (IOException e) {
@@ -34,14 +35,14 @@ class SerializationStrategyXML implements SerialisationStrategy {
 		}
 
 	}
-	
+
 	private static void objectToXML(Object o, File file) throws IOException {
 		if (o == null || file == null)
 			throw new NullPointerException();
 		XStream xstream = new XStream(new DomDriver());
 		FileOutputStream fs = new FileOutputStream(file);
-        xstream.toXML(o, fs);
-        fs.close();
+		xstream.toXML(o, fs);
+		fs.close();
 	}
 
 	private static <V> V XMLToObject(Class<V> c, File file) throws IOException {

@@ -81,12 +81,12 @@ public abstract class AbstractStep implements BundleActivator {
 		registerToServer(new ServerProvider(context).getService());
 		init(context);
 	}
-	
-	protected synchronized void init(BundleContext context) throws StepExecutionException{
+
+	protected synchronized void init(BundleContext context)
+			throws StepExecutionException {
 		// Do nothing by default
 	}
 
-	
 	private void registerToServer(Server server) {
 		System.out.println(this + ": registering to Server " + server);
 		// synchronized
@@ -119,7 +119,7 @@ public abstract class AbstractStep implements BundleActivator {
 		return run(data, null);
 	}
 
-	public abstract boolean run(DataProxyProvider data, StepProcessObserver listener)
-			throws StepExecutionException;
+	public abstract boolean run(DataProxyProvider data,
+			StepProcessObserver listener) throws StepExecutionException;
 
 }

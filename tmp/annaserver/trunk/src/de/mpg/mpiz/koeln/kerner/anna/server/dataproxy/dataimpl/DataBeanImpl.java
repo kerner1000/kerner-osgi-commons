@@ -30,9 +30,10 @@ public class DataBeanImpl implements DataBean {
 	private ArrayList<GTFElement> predictedGenesGTFs = new ArrayList<GTFElement>();
 	private ArrayList<GTFElement> repeatMaskerGFF = new ArrayList<GTFElement>();
 	private File conradTrainingFile = new File("-1");
-	
+
 	public String toString() {
-		return this.getClass().getSimpleName()+Integer.toHexString(this.hashCode());
+		return this.getClass().getSimpleName()
+				+ Integer.toHexString(this.hashCode());
 	}
 
 	/**
@@ -45,8 +46,8 @@ public class DataBeanImpl implements DataBean {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private static <V> V deepCopy(Class<V> c, Serializable s) throws IOException,
-			ClassNotFoundException {
+	private static <V> V deepCopy(Class<V> c, Serializable s)
+			throws IOException, ClassNotFoundException {
 		if (c == null || s == null)
 			throw new NullPointerException();
 		ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -146,11 +147,14 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized File getConradTrainingFile() {
-		if (conradTrainingFile == null){
-//			System.out.println(this + ": training file requested, returning " + null);
+		if (conradTrainingFile == null) {
+			// System.out.println(this + ": training file requested, returning "
+			// + null);
 			return null;
 		}
-//		System.out.println(this + ":!!!!!!!!!!!!!! training file requested, returning " + new File(conradTrainingFile.getAbsolutePath()) + "!!!!!!!!!!!!!");
+		// System.out.println(this +
+		// ":!!!!!!!!!!!!!! training file requested, returning " + new
+		// File(conradTrainingFile.getAbsolutePath()) + "!!!!!!!!!!!!!");
 		return new File(conradTrainingFile.getAbsolutePath());
 	}
 
@@ -159,7 +163,8 @@ public class DataBeanImpl implements DataBean {
 		if (file == null || !file.exists() || !file.canRead())
 			throw new DataBeanAccessException("conrad training file invalid ("
 					+ file + ")");
-//		System.out.println(this + ": training file modified from " + this.conradTrainingFile + " to " + file);
+		// System.out.println(this + ": training file modified from " +
+		// this.conradTrainingFile + " to " + file);
 		this.conradTrainingFile = new File(file.getAbsolutePath());
 	}
 
@@ -205,7 +210,8 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+	public synchronized void setRepeatMaskerGtf(
+			ArrayList<? extends GTFElement> elements)
 			throws DataBeanAccessException {
 		if (elements == null)
 			throw new NullPointerException();
@@ -219,7 +225,7 @@ public class DataBeanImpl implements DataBean {
 		} catch (ClassNotFoundException e) {
 			throw new DataBeanAccessException(e);
 		}
-		
+
 	}
 
 }

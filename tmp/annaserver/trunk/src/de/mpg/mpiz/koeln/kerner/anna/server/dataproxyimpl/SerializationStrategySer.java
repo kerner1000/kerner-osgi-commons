@@ -21,11 +21,12 @@ import de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator;
 /**
  * 
  * @ThreadSave
- *
+ * 
  */
 public class SerializationStrategySer implements SerialisationStrategy {
 
-	public synchronized DataBean readFromDisk(File file) throws DataBeanAccessException {
+	public synchronized DataBean readFromDisk(File file)
+			throws DataBeanAccessException {
 		try {
 			final DataBean data = fileToObject(DataBean.class, file);
 			ServerActivator.LOGGER.debug(this, "reading data from file");
@@ -42,14 +43,15 @@ public class SerializationStrategySer implements SerialisationStrategy {
 			throw new DataBeanAccessException(e);
 		}
 	}
-	
-	private DataBean handleCorruptData(File file,  Throwable t) {
+
+	private DataBean handleCorruptData(File file, Throwable t) {
 		ServerActivator.LOGGER.debug(this, file.toString()
 				+ " corrupt, returning new one");
-		if(file.delete()){
+		if (file.delete()) {
 			// all good
 		} else {
-			ServerActivator.LOGGER.warn(this, "could not delete corrupt databean " + file);
+			ServerActivator.LOGGER.warn(this,
+					"could not delete corrupt databean " + file);
 		}
 		return new DataBeanImpl();
 	}
@@ -65,8 +67,9 @@ public class SerializationStrategySer implements SerialisationStrategy {
 		}
 
 	}
-	
-	private static void objectToFile(Serializable s, File file) throws IOException {
+
+	private static void objectToFile(Serializable s, File file)
+			throws IOException {
 		if (s == null || file == null)
 			throw new NullPointerException(s + " + " + file
 					+ " must not be null");
@@ -77,8 +80,8 @@ public class SerializationStrategySer implements SerialisationStrategy {
 		fos.close();
 	}
 
-	private static <V> V fileToObject(Class<V> c, File file) throws IOException,
-			ClassNotFoundException {
+	private static <V> V fileToObject(Class<V> c, File file)
+			throws IOException, ClassNotFoundException {
 		if (c == null || file == null)
 			throw new NullPointerException(c + " + " + file
 					+ " must not be null");
@@ -89,9 +92,11 @@ public class SerializationStrategySer implements SerialisationStrategy {
 		fis.close();
 		return v;
 	}
-	
-	public String toString(){
-		return this.getClass().getSimpleName()+"@"+Integer.toHexString(hashCode());
+
+	public String toString() {
+		return this.getClass().getSimpleName()
+		// +"@"+Integer.toHexString(hashCode())
+		;
 	}
 
 }

@@ -7,14 +7,15 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxyimpl.SerializationStrategyS
 /**
  * 
  * @ThreadSave
- *
+ * 
  */
 public class DataProxyProvider {
 
 	private final DataProxy proxy;
 
 	public DataProxyProvider(Server server) {
-//		final SerialisationStrategy strategy = new SerializationStrategyXML();
+		// final SerialisationStrategy strategy = new
+		// SerializationStrategyXML();
 		final SerialisationStrategy strategy = new SerializationStrategySer();
 		proxy = new DataProxyImpl(server, strategy);
 	}

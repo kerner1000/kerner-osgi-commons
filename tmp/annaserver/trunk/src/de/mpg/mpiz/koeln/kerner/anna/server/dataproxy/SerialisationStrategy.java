@@ -9,8 +9,7 @@ public interface SerialisationStrategy {
 
 	DataBean readFromDisk(File file) throws DataBeanAccessException;
 
-	void writeDataBean(DataBean dataBean, File file) throws DataBeanAccessException;
-
-	
+	void writeDataBean(DataBean dataBean, File file)
+			throws DataBeanAccessException;
 
 }
