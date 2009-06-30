@@ -7,17 +7,13 @@ import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep.State;
 
 /**
- * @Threadsave
+ * @Threadsave (everything guarded by this)
  * 
  */
 public class StepStateObserverImpl implements StepStateObserver {
 
 	private final Map<AbstractStep, AbstractStep.State> stepStates = new HashMap<AbstractStep, AbstractStep.State>();
 	private final Map<AbstractStep, Boolean> stepSuccesses = new HashMap<AbstractStep, Boolean>();
-
-	public StepStateObserverImpl() {
-
-	}
 
 	public String toString() {
 		return this.getClass().getSimpleName();

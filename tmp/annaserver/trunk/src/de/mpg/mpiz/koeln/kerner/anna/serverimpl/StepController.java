@@ -5,6 +5,11 @@ import java.util.concurrent.Callable;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
+/**
+ * 
+ * Actually, this class just hands over step (and server) to LocalStepExecutor
+ *
+ */
 class StepController implements Callable<Void> {
 
 	private final AbstractStepExecutor exe;
@@ -19,7 +24,6 @@ class StepController implements Callable<Void> {
 	}
 
 	public Void call() throws Exception {
-		System.out.println(this + ": step executor activated " + exe);
 		// call "call()" directly to run in same thread
 		exe.call();
 		return null;

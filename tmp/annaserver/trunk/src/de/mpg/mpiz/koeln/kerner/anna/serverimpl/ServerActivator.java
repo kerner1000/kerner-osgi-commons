@@ -13,17 +13,17 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 public class ServerActivator implements BundleActivator {
 
-	public static LogDispatcher LOGGER = null;
-	public static AbstractServiceProvider<DataProxy> provider = null;
+	private LogDispatcher logger = null;
+	private AbstractServiceProvider<DataProxy> provider = null;
 
 	@SuppressWarnings("unchecked")
 	public void start(BundleContext context) throws Exception {
 		provider = new DataProxyProvider(context);
-		LOGGER = new LogDispatcherImpl(context);
-		Server service = new ServerImpl(provider, LOGGER);
+		logger = new LogDispatcherImpl(context);
+		final Server service = new ServerImpl(provider, logger);
 		context.registerService(Server.class.getName(), service,
 				new Hashtable());
-		LOGGER.debug(this, "activated");
+		logger.debug(this, "activated");
 	}
 
 	public void stop(BundleContext context) throws Exception {

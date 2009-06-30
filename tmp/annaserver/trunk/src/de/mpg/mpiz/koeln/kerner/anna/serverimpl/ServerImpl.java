@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.kerner.commons.file.FileUtils;
+import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
@@ -17,7 +18,7 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 /**
  * 
- * @ThreadSave (everything guarded by this)
+ * @ThreadSave (individual guarded)
  * 
  */
 public class ServerImpl implements Server {
@@ -27,84 +28,64 @@ public class ServerImpl implements Server {
 					+ File.separatorChar + "server.properties");
 	private final Properties properties;
 	private final ExecutorService exe = Executors.newCachedThreadPool();
-	private final StepStateObserver monitor;
+	private final StepStateObserver observer;
 	private final AbstractServiceProvider<DataProxy> dataProxyProvder;
 	private final LogDispatcher logger;
 
 	ServerImpl(final AbstractServiceProvider<DataProxy> provider,
 			final LogDispatcher logger) {
-		this.monitor = new StepStateObserverImpl();
+		this.observer = new StepStateObserverImpl();
 		this.dataProxyProvder = provider;
 		if (logger != null)
 			this.logger = logger;
 		else
-			this.logger = null;
+			this.logger = new ConsoleLogger();
 		properties = getPropertes();
-		System.out.println(this + ": loaded properties: " + properties);
-		final File workingDir = new File(properties
-				.getProperty(WORKING_DIR_KEY));
-		if (checkWorkingDir(workingDir)) {
-			//
-		}
+		logger.debug(this, "loaded properties: " + properties);
 	}
 
 	ServerImpl(AbstractServiceProvider<DataProxy> provider) {
-		this.monitor = new StepStateObserverImpl();
+		this.observer = new StepStateObserverImpl();
 		this.dataProxyProvder = provider;
-		this.logger = null;
+		this.logger = new ConsoleLogger();
 		properties = getPropertes();
-		System.out.println(this + ": loaded properties: " + properties);
-		final File workingDir = new File(properties
-				.getProperty(WORKING_DIR_KEY));
-		if (checkWorkingDir(workingDir)) {
-			//
-		}
+		logger.debug(this, "loaded properties: " + properties);
 	}
 
-	public synchronized void registerStep(AbstractStep step) {
-		// TODO remove try catch
-		try {
-			monitor.stepRegistered(step);
-			StepController controller = new StepController(step, this);
+	public void registerStep(AbstractStep step) {
+		observer.stepRegistered(step);
+		StepController controller = new StepController(step, this);
+		synchronized (exe) {
 			exe.submit(controller);
-			System.out.println(this + ": registered step " + step);
-		} catch (Throwable t) {
-			t.printStackTrace();
 		}
+		logger.debug(this, "registered step " + step);
 	}
 
-	public synchronized void unregisterStep(AbstractStep step) {
-		System.out.println(this + ": unregistering step " + step);
+	public void unregisterStep(AbstractStep step) {
+		System.err.println(this + ": unregistering step " + step);
 		// TODO method stub
 
 	}
 
-	public synchronized StepStateObserver getStepStateObserver() {
-		return monitor;
+	// observer is final
+	public StepStateObserver getStepStateObserver() {
+		return observer;
 	}
 
-	public synchronized Properties getServerProperties() {
+	// properties is final
+	public Properties getServerProperties() {
 		return new Properties(properties);
 	}
-	
-	public synchronized AbstractServiceProvider<DataProxy> getDataProxyProvider() {
+
+	// dataProxyProvider is final
+	public AbstractServiceProvider<DataProxy> getDataProxyProvider() {
 		return dataProxyProvder;
 	}
 
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
-	
-	private boolean checkWorkingDir(final File workingDir) {
-		if (!workingDir.exists()) {
-			System.out.println(this + ": " + workingDir
-					+ " does not exist, creating");
-			final boolean b = workingDir.mkdirs();
-			return b;
-		}
-		return workingDir.canWrite();
-	}
-	
+
 	private Properties getPropertes() {
 		final Properties defaultProperties = initDefaults();
 		final Properties pro = new Properties(defaultProperties);

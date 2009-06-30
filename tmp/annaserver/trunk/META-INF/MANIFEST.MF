@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Server Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server
-Bundle-Version: 0.3.0
+Bundle-Version: 0.4.0
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.serverimpl.ServerActivator
 Import-Package: de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
