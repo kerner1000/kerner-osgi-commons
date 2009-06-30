@@ -1,0 +1,1 @@
+change logDispatchers methods from Object message to Object... messages

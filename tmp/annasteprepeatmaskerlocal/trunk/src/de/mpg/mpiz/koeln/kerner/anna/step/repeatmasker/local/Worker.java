@@ -31,6 +31,7 @@ class Worker extends AbstractStepProcessBuilder {
 //		builder.addValueCommand("-pa", "2");
 //		builder.addAllFlagCommands("-s");
 		builder.addFlagCommand("-gff");
+		builder.addFlagCommand("-qq");
 		builder.addFlagCommand(inFile.getAbsolutePath());
 		return builder.getCommandList();
 	}

@@ -7,6 +7,7 @@ import org.bioutils.fasta.FASTAFile;
 import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
+import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
@@ -25,7 +26,7 @@ public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
 		final File outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
 		try {
-			if(outFile.exists() && outFile.canRead()){
+			if(FileUtils.fileCheck(outFile, false)){
 				logger.debug(this, "repeatmasker output already there, taking shortcut ("
 						+ outFile + ")");
 				upUpdate(data, outFile);

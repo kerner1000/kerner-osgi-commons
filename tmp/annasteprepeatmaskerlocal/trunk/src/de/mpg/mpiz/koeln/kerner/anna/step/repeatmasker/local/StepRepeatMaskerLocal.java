@@ -16,7 +16,33 @@ import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.AbstractStepRepeat
 import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.RepeatMaskerConstants;
 
 public class StepRepeatMaskerLocal extends AbstractStepRepeatMasker {
-
+	
+	@Override
+	public boolean run(DataProxy data, StepProcessObserver listener)
+			throws StepExecutionException {
+		final File inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
+		final File outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
+				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
+		final AbstractStepProcessBuilder worker = new Worker(workingDir,
+				exeDir, logger, inFile);
+		boolean success = true;
+		try{
+			new FASTAFile(data.getInputSequences())
+			.writeToFile(inFile);
+		worker.addTempInFile(inFile);
+		worker.addResultFile(true, outFile);
+		success = worker.createAndStartProcess();
+		if (success) {
+			upUpdate(data, outFile);
+		}
+		}catch (Throwable t) {
+			t.printStackTrace();
+			System.exit(1);
+			return false;
+		}
+		return success;
+	}
+/**
 	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
@@ -25,7 +51,7 @@ public class StepRepeatMaskerLocal extends AbstractStepRepeatMasker {
 		final File outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
 		try {
-			if(outFile.exists() && outFile.canRead()){
+			if(FileUtils.fileCheck(outFile, false)){
 				logger.debug(this, "repeatmasker output already there, taking shortcut ("
 						+ outFile + ")");
 				upUpdate(data, outFile);
@@ -48,6 +74,8 @@ public class StepRepeatMaskerLocal extends AbstractStepRepeatMasker {
 			return false;
 		}
 	}
+	
+	*/
 	
 	private void upUpdate(DataProxy data, File outFile) throws DataBeanAccessException, IOException, GTFFormatErrorException{
 		data.setRepeatMaskerGtf(

@@ -5,7 +5,8 @@ Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common
 Bundle-Version: 0.0.1
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common
-Import-Package: de.kerner.osgi.commons.logger.dispatcher,
+Import-Package: de.kerner.commons.file,
+ de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.kerner.anna.core,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server,

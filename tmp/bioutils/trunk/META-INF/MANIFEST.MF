@@ -16,5 +16,4 @@ Export-Package: org.bioutils,
  org.bioutils.gtf
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
- de.kerner.commons.xml,
- de.kerner.commons.zip
+ de.kerner.commons.xml
