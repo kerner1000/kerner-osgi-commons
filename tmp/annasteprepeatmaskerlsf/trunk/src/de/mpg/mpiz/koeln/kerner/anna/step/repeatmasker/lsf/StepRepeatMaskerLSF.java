@@ -9,8 +9,8 @@ import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.AbstractStepRepeatMasker;
 import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.RepeatMaskerConstants;
@@ -18,7 +18,7 @@ import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.RepeatMaskerConsta
 public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
 
 	@Override
-	public boolean run(DataProxyProvider data, StepProcessObserver listener)
+	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		final File infile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
 		infile.deleteOnExit();
@@ -31,7 +31,7 @@ public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
 				upUpdate(data, outFile);
 				return true;
 			}
-			new FASTAFile(data.getDataProxy().getInputSequences())
+			new FASTAFile(data.getInputSequences())
 					.writeToFile(infile);
 			logger.debug(this, "created temp file with input sequence(s): "
 					+ infile);
@@ -49,8 +49,8 @@ public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
 		}
 	}
 	
-	private void upUpdate(DataProxyProvider data, File outFile) throws DataBeanAccessException, IOException, GTFFormatErrorException{
-		data.getDataProxy().setRepeatMaskerGtf(
+	private void upUpdate(DataProxy data, File outFile) throws IOException, GTFFormatErrorException, DataBeanAccessException{
+		data.setRepeatMaskerGtf(
 				new GTFFile(outFile).getElements());
 	}
 }

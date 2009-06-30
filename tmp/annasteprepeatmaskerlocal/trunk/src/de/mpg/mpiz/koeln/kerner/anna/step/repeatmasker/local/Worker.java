@@ -29,7 +29,7 @@ class Worker extends AbstractStepProcessBuilder {
 		final CommandStringBuilder builder = new CommandStringBuilder(new File(
 				executableDir, RepeatMaskerConstants.EXE).getAbsolutePath());
 //		builder.addValueCommand("-pa", "2");
-		builder.addAllFlagCommands("-s");
+//		builder.addAllFlagCommands("-s");
 		builder.addFlagCommand("-gff");
 		builder.addFlagCommand(inFile.getAbsolutePath());
 		return builder.getCommandList();

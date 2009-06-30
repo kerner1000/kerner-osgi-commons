@@ -16,8 +16,8 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 public class StepSequenceReader extends AbstractStep {
 
@@ -53,13 +53,13 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean requirementsSatisfied(DataProxyProvider data) {
+	public boolean requirementsSatisfied(DataProxy data) {
 		logger.info(this, ": no requirements needed");
 		return true;
 	}
 
 	@Override
-	public boolean run(DataProxyProvider data, StepProcessObserver observer){
+	public boolean run(DataProxy data, StepProcessObserver observer){
 		observer.setProgress(0, 100);
 		try {
 			observer.setProgress(30, 100);
@@ -80,17 +80,17 @@ public class StepSequenceReader extends AbstractStep {
 		return true;
 	}
 
-	private void doGtf(DataProxyProvider data) throws IOException,
+	private void doGtf(DataProxy data) throws IOException,
 			GTFFormatErrorException, DataBeanAccessException {
 			logger.info(this, "reading GTF file " + gtf);
 			final GTFFile gtfFile = new GTFFile(gtf);
 			final ArrayList<? extends GTFElement> elements = gtfFile
 					.getElements();
 			logger.info(this, "done reading gtf");
-			data.getDataProxy().setVerifiedGenesGtf(elements);
+			data.setVerifiedGenesGtf(elements);
 	}
 
-	private void doFasta(DataProxyProvider data) throws IOException,
+	private void doFasta(DataProxy data) throws IOException,
 			DataBeanAccessException {
 		try{
 		logger.info(this, "reading FASTA file " + fasta);
@@ -98,7 +98,7 @@ public class StepSequenceReader extends AbstractStep {
 			final ArrayList<? extends FASTASequence> sequences = fastaFile
 					.getSequences();
 			logger.info(this, "done reading fasta");
-			data.getDataProxy().setVerifiedGenesFasta(sequences);
+			data.setVerifiedGenesFasta(sequences);
 		}catch(Throwable t){
 			t.printStackTrace();
 			System.exit(1);
@@ -106,12 +106,12 @@ public class StepSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean canBeSkipped(DataProxyProvider data) throws StepExecutionException{
+	public boolean canBeSkipped(DataProxy data) throws StepExecutionException{
 		try {
 			// TODO size == 0 sub-optimal indicator
-			final ArrayList<? extends FASTASequence> list1 = data.getDataProxy()
+			final ArrayList<? extends FASTASequence> list1 = data
 					.getVerifiedGenesFasta();
-			final ArrayList<? extends GTFElement> list2 = data.getDataProxy()
+			final ArrayList<? extends GTFElement> list2 = data
 					.getVerifiedGenesGtf();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);

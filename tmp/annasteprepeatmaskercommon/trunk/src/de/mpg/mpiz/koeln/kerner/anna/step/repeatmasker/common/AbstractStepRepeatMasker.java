@@ -8,8 +8,8 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	
@@ -61,11 +61,11 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	}
 
 	@Override
-	public boolean canBeSkipped(DataProxyProvider data)
+	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		try {
-			final boolean repeatGtf = (data.getDataProxy().getRepeatMaskerGtf() != null);
-			final boolean repeatGtfSize = (data.getDataProxy()
+			final boolean repeatGtf = (data.getRepeatMaskerGtf() != null);
+			final boolean repeatGtfSize = (data
 					.getRepeatMaskerGtf().size() != 0);
 			return (repeatGtf && repeatGtfSize);
 		} catch (DataBeanAccessException e) {
@@ -74,11 +74,11 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	}
 
 	@Override
-	public boolean requirementsSatisfied(DataProxyProvider data)
+	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
-			final boolean sequence = (data.getDataProxy().getInputSequences() != null);
-			final boolean sequenceSize = (data.getDataProxy()
+			final boolean sequence = (data.getInputSequences() != null);
+			final boolean sequenceSize = (data
 					.getInputSequences().size() != 0);
 			return (sequence && sequenceSize);
 		} catch (DataBeanAccessException e) {

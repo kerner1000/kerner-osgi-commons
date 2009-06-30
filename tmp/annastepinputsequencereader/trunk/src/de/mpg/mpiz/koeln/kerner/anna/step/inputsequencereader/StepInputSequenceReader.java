@@ -13,9 +13,9 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 public class StepInputSequenceReader extends AbstractStep {
 
@@ -30,19 +30,19 @@ public class StepInputSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean requirementsSatisfied(DataProxyProvider data)
+	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		logger.debug(this, "no requirements needed");
 		return true;
 	}
 
 	@Override
-	public boolean canBeSkipped(DataProxyProvider data)
+	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		try {
-			final boolean inputSequences = (data.getDataProxy()
+			final boolean inputSequences = (data
 					.getInputSequences() != null);
-			final boolean inputSequencesSize = (data.getDataProxy()
+			final boolean inputSequencesSize = (data
 					.getInputSequences().size() != 0);
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\tinputSequences=" + inputSequences);
@@ -55,7 +55,7 @@ public class StepInputSequenceReader extends AbstractStep {
 	}
 
 	@Override
-	public boolean run(DataProxyProvider data, StepProcessObserver listener)
+	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		try {
 			final File inFile = new File(getStepProperties().getProperty(
@@ -69,7 +69,7 @@ public class StepInputSequenceReader extends AbstractStep {
 			}
 			logger.debug(this, "got input sequences:"
 					+ fastas.iterator().next().getHeader() + " [...]");
-			data.getDataProxy().setInputSequences(fastas);
+			data.setInputSequences(fastas);
 			return true;
 		} catch (IOException e) {
 			logger.error(this, e.toString(), e);

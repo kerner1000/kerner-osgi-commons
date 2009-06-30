@@ -11,8 +11,8 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 public class StepConradPredict extends AbstractStep {
@@ -77,19 +77,18 @@ public class StepConradPredict extends AbstractStep {
 	}
 
 	@Override
-	public boolean requirementsSatisfied(DataProxyProvider data)
+	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		// TODO try catch
 		try {
-			final boolean trainingFile = (data.getDataProxy()
-					.getConradTrainingFile() != null && data.getDataProxy()
-					.getConradTrainingFile().exists());
-			final boolean trainingFileRead = (data.getDataProxy()
-					.getConradTrainingFile() != null && data.getDataProxy()
+			final boolean trainingFile = (data
+					.getConradTrainingFile() != null && data					.getConradTrainingFile().exists());
+			final boolean trainingFileRead = (data
+					.getConradTrainingFile() != null && data
 					.getConradTrainingFile().canRead());
-			final boolean inputSequences = (data.getDataProxy()
+			final boolean inputSequences = (data
 					.getInputSequences() != null);
-			final boolean inputSequencesSize = (data.getDataProxy()
+			final boolean inputSequencesSize = (data
 					.getInputSequences().size() != 0);
 			logger.debug(this, "requirements:");
 			logger.debug(this, "\ttrainingFile=" + trainingFile);
@@ -105,14 +104,14 @@ public class StepConradPredict extends AbstractStep {
 	}
 
 	@Override
-	public boolean canBeSkipped(DataProxyProvider data)
+	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 
 		// TODO size may be zero, if nothing was found
 		try {
-			final boolean predictedGtf = (data.getDataProxy()
+			final boolean predictedGtf = (data
 					.getPredictedGenesGtf() != null);
-			final boolean predictedGtfSize = (data.getDataProxy()
+			final boolean predictedGtfSize = (data
 					.getPredictedGenesGtf().size() != 0);
 			logger.debug(this, "need to run:");
 			logger.debug(this, "\tpredictedGtf=" + predictedGtf);
@@ -126,17 +125,17 @@ public class StepConradPredict extends AbstractStep {
 	}
 
 	@Override
-	public boolean run(DataProxyProvider data, StepProcessObserver listener)
+	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		boolean success = false;
 		try {
 			writeInputSequencesToFile(data);
-			final File trainingFile = data.getDataProxy()
+			final File trainingFile = data
 					.getConradTrainingFile();
 			state = createState(trainingFile);
 			success = state.run(trainingFile);
 			if (success)
-				data.getDataProxy().setPredictedGenesGtf(state.getResult());
+				data.setPredictedGenesGtf(state.getResult());
 			return success;
 		} catch (DataBeanAccessException e) {
 			logger.error(this, e.toString(), e);
@@ -172,11 +171,11 @@ public class StepConradPredict extends AbstractStep {
 		return new RunStateLSF(stepWorkingDir, conradWorkingDir, trainingFile);
 	}
 
-	private void writeInputSequencesToFile(DataProxyProvider data)
+	private void writeInputSequencesToFile(DataProxy data)
 			throws IOException, DataBeanAccessException {
 		final File refFile = new File(stepWorkingDir, "ref.fasta");
 		refFile.deleteOnExit();
-		new FASTAFile(data.getDataProxy().getInputSequences())
+		new FASTAFile(data.getInputSequences())
 				.writeToFile(refFile);
 	}
 

@@ -8,8 +8,8 @@ Import-Package: de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.kerner.anna.core,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server,
+ de.mpg.mpiz.koeln.kerner.anna.server.data,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
- de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data,
  org.bioutils.fasta,
  org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

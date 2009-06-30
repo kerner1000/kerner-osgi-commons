@@ -10,8 +10,8 @@ import org.bioutils.gtf.GTFFile;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 public class StepGetPredictedGenes extends AbstractStep {
 
@@ -19,11 +19,11 @@ public class StepGetPredictedGenes extends AbstractStep {
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.predictedGenes.fileName";
 
 	@Override
-	public boolean requirementsSatisfied(DataProxyProvider data)
+	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
 			final ArrayList<? extends GTFElement> elements = data
-					.getDataProxy().getPredictedGenesGtf();
+					.getPredictedGenesGtf();
 			// TODO predicted genes may be size==0
 			return (elements != null && elements.size() != 0);
 		} catch (DataBeanAccessException e) {
@@ -32,13 +32,13 @@ public class StepGetPredictedGenes extends AbstractStep {
 	}
 
 	@Override
-	public boolean canBeSkipped(DataProxyProvider data)
+	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		return false;
 	}
 
 	@Override
-	public boolean run(DataProxyProvider data, StepProcessObserver listener)
+	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		boolean success = false;
 		try {
@@ -50,7 +50,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 			if (success) {
 				System.out.println(this + ": writing predicted genes to "
 						+ outFile);
-				final GTFFile file = new GTFFile(data.getDataProxy()
+				final GTFFile file = new GTFFile(data
 						.getPredictedGenesGtf());
 				file.writeToFile(outFile);
 			}
