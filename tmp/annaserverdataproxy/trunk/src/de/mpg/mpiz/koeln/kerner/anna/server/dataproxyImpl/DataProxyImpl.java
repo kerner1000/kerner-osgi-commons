@@ -41,20 +41,6 @@ public class DataProxyImpl implements DataProxy {
 		printProperties();
 	}
 
-	private void printProperties() {
-		logger.debug(this, "created. Properties:\n\tfile=" + file);
-		logger.debug(this, "\tfile=" + file);
-	}
-
-	private DataBean getDataBean() throws DataBeanAccessException {
-		if (file.exists() && file.canRead()) {
-			return strategy.readFromDisk(file);
-		} else {
-			logger.debug(this, "cannot read databean " + file + ", creating new databean");
-			return new DataBeanImpl();
-		}
-	}
-
 	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
@@ -141,5 +127,19 @@ public class DataProxyImpl implements DataProxy {
 	public String toString() {
 		return this.getClass().getSimpleName()
 				+ Integer.toHexString(this.hashCode());
+	}
+	
+	private void printProperties() {
+		logger.debug(this, "created. Properties:\n\tfile=" + file);
+		logger.debug(this, "\tfile=" + file);
+	}
+
+	private DataBean getDataBean() throws DataBeanAccessException {
+		if (file.exists() && file.canRead()) {
+			return strategy.readFromDisk(file);
+		} else {
+			logger.debug(this, "cannot read databean " + file + ", creating new databean");
+			return new DataBeanImpl();
+		}
 	}
 }
