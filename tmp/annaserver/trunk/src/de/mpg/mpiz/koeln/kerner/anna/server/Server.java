@@ -2,8 +2,9 @@ package de.mpg.mpiz.koeln.kerner.anna.server;
 
 import java.util.Properties;
 
+import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.serverimpl.StepStateObserver;
 
 public interface Server {
@@ -18,8 +19,8 @@ public interface Server {
 
 	public Properties getServerProperties();
 
-	public DataProxyProvider getDataProxyProvider();
-
 	public StepStateObserver getStepStateObserver();
+	
+	public AbstractServiceProvider<DataProxy> getDataProxyProvider();
 
 }

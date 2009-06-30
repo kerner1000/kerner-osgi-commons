@@ -13,8 +13,7 @@ import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 /**
  * 
@@ -109,17 +108,17 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
-	public abstract boolean requirementsSatisfied(DataProxyProvider data)
+	public abstract boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException;
 
-	public abstract boolean canBeSkipped(DataProxyProvider data)
+	public abstract boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException;
 
-	public boolean run(DataProxyProvider data) throws StepExecutionException {
+	public boolean run(DataProxy data) throws StepExecutionException {
 		return run(data, null);
 	}
 
-	public abstract boolean run(DataProxyProvider data,
+	public abstract boolean run(DataProxy data,
 			StepProcessObserver listener) throws StepExecutionException;
 
 }

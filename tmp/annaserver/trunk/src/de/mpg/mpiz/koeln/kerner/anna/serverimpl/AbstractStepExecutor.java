@@ -6,16 +6,11 @@ import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBean;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.data.DataBeanAccessException;
 
 abstract class AbstractStepExecutor implements Callable<Boolean> {
 
 	protected final AbstractStep step;
 	protected final Server server;
-
-	// private final ScheduledExecutorService exe =
-	// Executors.newSingleThreadScheduledExecutor();
 
 	AbstractStepExecutor(AbstractStep step, Server server) {
 		this.step = step;
@@ -25,7 +20,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 	protected boolean checkCanBeSkipped() throws StepExecutionException {
 		try {
 			server.getStepStateObserver().stepChecksNeedToRun(step);
-			return step.canBeSkipped(server.getDataProxyProvider());
+			return step.canBeSkipped(server.getDataProxyProvider().getService());
 		} catch (StepExecutionException e) {
 			throw new StepExecutionException(e);
 		}
@@ -36,7 +31,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 			try {
 				server.getStepStateObserver().stepWaitForReq(step);
 				while (!step.requirementsSatisfied(server
-						.getDataProxyProvider())) {
+						.getDataProxyProvider().getService())) {
 					System.out.println(this + ": requirements for step " + step
 							+ " not satisfied, putting it to sleep");
 					server.wait();
@@ -59,7 +54,7 @@ abstract class AbstractStepExecutor implements Callable<Boolean> {
 			server.getStepStateObserver().stepStarted(step);
 			System.out.println(this + ": running step " + step);
 			final StepProcessObserver listener = new StepProgressObserverImpl();
-			final boolean success = step.run(server.getDataProxyProvider(),
+			final boolean success = step.run(server.getDataProxyProvider().getService(),
 					listener);
 			System.out.println(this + ": step " + step + " finished");
 			return success;

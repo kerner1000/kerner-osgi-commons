@@ -4,38 +4,41 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import de.kerner.commons.file.FileUtils;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxyProvider;
+import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 /**
  * 
- * @ThreadSave
+ * @ThreadSave (everything guarded by this)
  * 
  */
 public class ServerImpl implements Server {
 
-	// TODO must run in this directory
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"plugins" + File.separatorChar + "configuration"
 					+ File.separatorChar + "server.properties");
 	private final Properties properties;
-	private final static int NUM_THREADS = 5;
-	// private final ExecutorService exe =
-	// Executors.newFixedThreadPool(NUM_THREADS);
 	private final ExecutorService exe = Executors.newCachedThreadPool();
-	private final DataProxyProvider provider;
 	private final StepStateObserver monitor;
+	private final AbstractServiceProvider<DataProxy> dataProxyProvder;
+	private final LogDispatcher logger;
 
-	ServerImpl() {
+	ServerImpl(final AbstractServiceProvider<DataProxy> provider,
+			final LogDispatcher logger) {
+		this.monitor = new StepStateObserverImpl();
+		this.dataProxyProvder = provider;
+		if (logger != null)
+			this.logger = logger;
+		else
+			this.logger = null;
 		properties = getPropertes();
 		System.out.println(this + ": loaded properties: " + properties);
 		final File workingDir = new File(properties
@@ -43,45 +46,19 @@ public class ServerImpl implements Server {
 		if (checkWorkingDir(workingDir)) {
 			//
 		}
-		this.provider = new DataProxyProvider(this);
+	}
+
+	ServerImpl(AbstractServiceProvider<DataProxy> provider) {
 		this.monitor = new StepStateObserverImpl();
-	}
-
-	private boolean checkWorkingDir(final File workingDir) {
-		if (!workingDir.exists()) {
-			System.out.println(this + ": " + workingDir
-					+ " does not exist, creating");
-			final boolean b = workingDir.mkdirs();
-			return b;
+		this.dataProxyProvder = provider;
+		this.logger = null;
+		properties = getPropertes();
+		System.out.println(this + ": loaded properties: " + properties);
+		final File workingDir = new File(properties
+				.getProperty(WORKING_DIR_KEY));
+		if (checkWorkingDir(workingDir)) {
+			//
 		}
-		return workingDir.canWrite();
-	}
-
-	private Properties getPropertes() {
-		final Properties defaultProperties = initDefaults();
-		final Properties pro = new Properties(defaultProperties);
-		try {
-			System.out.println(this + ": loading settings from "
-					+ PROPERTIES_FILE);
-			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
-			pro.load(fi);
-			fi.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.out.println(this + ": could not load settings from "
-					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(this + ": could not load settings from "
-					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
-		}
-		return pro;
-	}
-
-	private Properties initDefaults() {
-		Properties pro = new Properties();
-		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
-		return pro;
 	}
 
 	public synchronized void registerStep(AbstractStep step) {
@@ -109,13 +86,50 @@ public class ServerImpl implements Server {
 	public synchronized Properties getServerProperties() {
 		return new Properties(properties);
 	}
-
-	public synchronized DataProxyProvider getDataProxyProvider() {
-		return provider;
+	
+	public synchronized AbstractServiceProvider<DataProxy> getDataProxyProvider() {
+		return dataProxyProvder;
 	}
 
 	public String toString() {
 		return this.getClass().getSimpleName();
+	}
+	
+	private boolean checkWorkingDir(final File workingDir) {
+		if (!workingDir.exists()) {
+			System.out.println(this + ": " + workingDir
+					+ " does not exist, creating");
+			final boolean b = workingDir.mkdirs();
+			return b;
+		}
+		return workingDir.canWrite();
+	}
+	
+	private Properties getPropertes() {
+		final Properties defaultProperties = initDefaults();
+		final Properties pro = new Properties(defaultProperties);
+		try {
+			System.out.println(this + ": loading settings from "
+					+ PROPERTIES_FILE);
+			final FileInputStream fi = new FileInputStream(PROPERTIES_FILE);
+			pro.load(fi);
+			fi.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println(this + ": could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(this + ": could not load settings from "
+					+ PROPERTIES_FILE.getAbsolutePath() + ", using defaults");
+		}
+		return pro;
+	}
+
+	private Properties initDefaults() {
+		Properties pro = new Properties();
+		// pro.setProperty(WORKING_DIR_KEY, WORKING_DIR_VALUE);
+		return pro;
 	}
 
 }
