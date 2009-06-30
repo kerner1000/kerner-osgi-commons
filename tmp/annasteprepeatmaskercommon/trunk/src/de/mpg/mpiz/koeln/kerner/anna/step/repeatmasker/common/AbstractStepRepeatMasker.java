@@ -55,9 +55,11 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		try {
+			// must this two actions be atomar?
 			final boolean repeatGtf = (data.getRepeatMaskerGtf() != null);
 			final boolean repeatGtfSize = (data
 					.getRepeatMaskerGtf().size() != 0);
+			
 			return (repeatGtf && repeatGtfSize);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
@@ -68,9 +70,11 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
+			// must this two actions be atomar?
 			final boolean sequence = (data.getInputSequences() != null);
 			final boolean sequenceSize = (data
 					.getInputSequences().size() != 0);
+			
 			return (sequence && sequenceSize);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
