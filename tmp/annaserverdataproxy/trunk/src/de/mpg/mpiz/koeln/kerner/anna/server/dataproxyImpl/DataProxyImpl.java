@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.bioutils.fasta.FASTASequence;
 import org.bioutils.gtf.GTFElement;
 
+import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
@@ -19,23 +20,19 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
  */
 public class DataProxyImpl implements DataProxy {
 
-	private final File file;
+	// TODO path
+	private final static File file = new File("/home/pcb/kerner/Desktop/anna/server/data.ser");
 	private final SerialisationStrategy strategy;
 	private final LogDispatcher logger;
 	
 	public DataProxyImpl(SerialisationStrategy strategy, LogDispatcher logger) {
-		// TODO File hard coded !!
-		this.file = new File(
-				"/home/pcb/kerner/Dropbox/mpiz/diplom/pipelinetest/serverDir/dataBean.ser");
 		this.strategy = strategy;
 		this.logger = logger;
+		FileUtils.dirCheck(file.getParentFile(), true);
 		printProperties();
 	}
 
 	public DataProxyImpl(SerialisationStrategy strategy) {
-		// TODO File hard coded !!
-		this.file = new File(
-				"/home/pcb/kerner/Dropbox/mpiz/diplom/pipelinetest/serverDir/dataBean.ser");
 		this.strategy = strategy;
 		this.logger = null;
 		printProperties();
