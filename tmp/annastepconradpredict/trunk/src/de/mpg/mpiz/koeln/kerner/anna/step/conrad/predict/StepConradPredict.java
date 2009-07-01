@@ -38,6 +38,7 @@ public class StepConradPredict extends AbstractStep {
 	protected synchronized void init(BundleContext context) throws StepExecutionException {
 		super.init(context);
 		logger = new LogDispatcherImpl(context);
+		System.out.println(logger);
 		assignProperties();
 		validateProperties();
 		printProperties();
