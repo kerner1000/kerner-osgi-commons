@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -26,14 +29,38 @@ public abstract class AbstractStep implements BundleActivator {
 		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING, DONE
 	}
 
+	private class HelperThread implements Callable<Void> {
+
+		private final BundleContext context;
+
+		HelperThread(BundleContext context) {
+			this.context = context;
+		}
+
+		public Void call() throws Exception {
+			synchronized (this) {
+				while (new ServerProvider(context).getService() == null) {
+					System.out.println("no server found, trying again in " + TIMEOUT + " millisecs");
+					Thread.sleep(TIMEOUT);
+				}
+				registerToServer(new ServerProvider(context).getService());
+				init(context);
+			}
+			return null;
+		}
+
+	}
+
+	private final static ExecutorService exe = Executors.newCachedThreadPool();
+	private final static long TIMEOUT = 500;
 	// TODO must run in this directory
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
-			"plugins" + File.separatorChar + "configuration"
+			"configuration"
 					+ File.separatorChar + "step.properties");
 	private final Properties properties;
 	private State state = State.LOOSE;
 	private boolean skipped = false;
-
+	// TODO make fix size
 	public AbstractStep() {
 		properties = getPropertes();
 	}
@@ -77,8 +104,7 @@ public abstract class AbstractStep implements BundleActivator {
 	 * should only be called by the OSGi framework
 	 */
 	public void start(BundleContext context) throws Exception {
-		registerToServer(new ServerProvider(context).getService());
-		init(context);
+		exe.submit(new HelperThread(context));
 	}
 
 	protected synchronized void init(BundleContext context)
@@ -86,7 +112,7 @@ public abstract class AbstractStep implements BundleActivator {
 		// Do nothing by default
 	}
 
-	private void registerToServer(Server server) {
+	private synchronized void registerToServer(Server server) {
 		System.out.println(this + ": registering to Server " + server);
 		// synchronized
 		server.registerStep(this);
@@ -118,7 +144,7 @@ public abstract class AbstractStep implements BundleActivator {
 		return run(data, null);
 	}
 
-	public abstract boolean run(DataProxy data,
-			StepProcessObserver listener) throws StepExecutionException;
+	public abstract boolean run(DataProxy data, StepProcessObserver listener)
+			throws StepExecutionException;
 
 }

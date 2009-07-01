@@ -44,18 +44,26 @@ class LocalSepExecutor extends AbstractStepExecutor {
 			logger.debug(this, "notifying others");
 			server.notifyAll();
 		}
+		success = runStep();
+		stepFinished(success);
+		return success;
+	}
+	
+	private boolean runStep() throws StepExecutionException {
 		final StepProcessObserver listener = new StepProgressObserverImpl();
 		logger.debug(this, "step " + step + "running");
 		server.getStepStateObserver().stepStarted(step);
-		success = step
+		return step
 				.run(server.getDataProxyProvider().getService(), listener);
+	}
+
+	private void stepFinished(boolean success){
 		logger.debug(this, "step " + step + "done running");
 		server.getStepStateObserver().stepFinished(step, success);
 		synchronized (server) {
 			logger.debug(this, "notifying others");
 			server.notifyAll();
 		}
-		return success;
 	}
 
 	public String toString() {

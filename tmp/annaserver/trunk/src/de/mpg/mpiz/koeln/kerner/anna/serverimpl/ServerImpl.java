@@ -23,8 +23,9 @@ import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
  */
 public class ServerImpl implements Server {
 
+	// TODO path
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
-			"plugins" + File.separatorChar + "configuration"
+			"configuration"
 					+ File.separatorChar + "server.properties");
 	private final Properties properties;
 	private final ExecutorService exe = Executors.newCachedThreadPool();
