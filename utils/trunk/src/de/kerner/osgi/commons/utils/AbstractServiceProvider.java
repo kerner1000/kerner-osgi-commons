@@ -1,5 +1,11 @@
 package de.kerner.osgi.commons.utils;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -16,13 +22,8 @@ public abstract class AbstractServiceProvider<S> {
 	public S getService() {
 		final ServiceTracker tracker = new ServiceTracker(context,
 				getServiceClass().getName(), null);
-		if (tracker == null)
-			throw new RuntimeException("ServiceTracker null");
 		tracker.open();
-		final S proxy = getServiceClass().cast(tracker.getService());
-		if (proxy == null)
-			throw new RuntimeException("Service null");
-		return proxy;
+		final S s = getServiceClass().cast(tracker.getService());
+		return s;
 	}
-
 }
