@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.eclipse.core.runtime.adaptor.EclipseStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -41,6 +42,8 @@ public class Starter {
 		}
 		List<Bundle> installedPLugins = installPlugins(context, plugins);
 		startPlugins(context, installedPLugins);
+		
+		
 	}
 
 	private void startPlugins(BundleContext context,
@@ -109,9 +112,10 @@ public class Starter {
 			final File f1 = parser.getValues('d', File.class).get(0);
 			new Starter().start(f1.getAbsolutePath());
 			}
+			System.err.println("++"+EclipseStarter.isRunning()+"++");
 		} catch (Throwable t) {
 			t.printStackTrace();
-			System.exit(1);
+//			System.exit(1);
 		}
 	}
 
