@@ -5,17 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
+import de.kerner.osgi.commons.utils.AbstractServiceProvider;
+import de.kerner.osgi.commons.utils.GetServiceAndRun;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
-import de.mpg.mpiz.koeln.kerner.anna.server.ServerProvider;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
 /**
@@ -29,30 +28,6 @@ public abstract class AbstractStep implements BundleActivator {
 		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING, DONE
 	}
 
-	private class HelperThread implements Callable<Void> {
-
-		private final BundleContext context;
-
-		HelperThread(BundleContext context) {
-			this.context = context;
-		}
-
-		public Void call() throws Exception {
-			synchronized (this) {
-				while (new ServerProvider(context).getService() == null) {
-					System.out.println("no server found, trying again in " + TIMEOUT + " millisecs");
-					Thread.sleep(TIMEOUT);
-				}
-				registerToServer(new ServerProvider(context).getService());
-				init(context);
-			}
-			return null;
-		}
-
-	}
-
-	private final static ExecutorService exe = Executors.newCachedThreadPool();
-	private final static long TIMEOUT = 500;
 	// TODO must run in this directory
 	private final static File PROPERTIES_FILE = new File(FileUtils.WORKING_DIR,
 			"configuration"
@@ -103,8 +78,14 @@ public abstract class AbstractStep implements BundleActivator {
 	/**
 	 * should only be called by the OSGi framework
 	 */
-	public void start(BundleContext context) throws Exception {
-		exe.submit(new HelperThread(context));
+	public void start(final BundleContext context) throws Exception {
+		new GetServiceAndRun<Server>(Server.class, context) {
+			@Override
+			public void doSomeThing(Server s) throws Exception {
+				init(context);
+				registerToServer(s);
+			}
+		};
 	}
 
 	protected synchronized void init(BundleContext context)
