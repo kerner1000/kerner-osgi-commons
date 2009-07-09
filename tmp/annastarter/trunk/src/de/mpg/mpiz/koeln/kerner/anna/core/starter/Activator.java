@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.kerner.anna.starter;
+package de.mpg.mpiz.koeln.kerner.anna.core.starter;
 
 import java.io.File;
 import java.util.ArrayList;
