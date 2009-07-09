@@ -1,8 +1,8 @@
 package de.mpg.mpiz.koeln.kerner.anna.starter;
 
-class NoPluginsFoundException extends Exception {
+public class NoPluginsFoundException extends Exception {
 	
-	private static final long serialVersionUID = 357822793438590027L;
+	private static final long serialVersionUID = -2135835426594858338L;
 
 	public NoPluginsFoundException() {
 		// TODO Auto-generated constructor stub
