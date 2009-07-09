@@ -13,7 +13,6 @@ import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 

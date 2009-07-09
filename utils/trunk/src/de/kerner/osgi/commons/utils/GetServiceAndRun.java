@@ -18,7 +18,7 @@ public abstract class GetServiceAndRun<S> {
 		this.context = context;
 	}
 
-	synchronized void run() throws Exception {
+	public synchronized void run() throws Exception {
 		exe.submit(new Callable<Boolean>() {
 			public Boolean call() {
 				AbstractServiceProvider<S> p = new AbstractServiceProvider<S>(

@@ -5,13 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.Future;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 import de.kerner.osgi.commons.utils.GetServiceAndRun;
 import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
@@ -79,13 +77,17 @@ public abstract class AbstractStep implements BundleActivator {
 	 * should only be called by the OSGi framework
 	 */
 	public void start(final BundleContext context) throws Exception {
+		System.err.println(this + " started");
 		new GetServiceAndRun<Server>(Server.class, context) {
 			@Override
 			public void doSomeThing(Server s) throws Exception {
+				System.err.println(this + " doing it");
 				init(context);
 				registerToServer(s);
+				System.err.println(this + " done with it");
 			}
-		};
+		}.run();
+		System.err.println(this + " through");
 	}
 
 	protected synchronized void init(BundleContext context)
