@@ -28,6 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 
+import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.controller.Controller;
 
 class ViewImplMain extends JPanel {
@@ -35,13 +36,6 @@ class ViewImplMain extends JPanel {
 	// TODO encapsulate JPanel
 	
 	private final class MyListener implements ActionListener {
-		private final Component component;
-		private final Controller controller;
-
-		MyListener(Component component, Controller controller) {
-			this.component = component;
-			this.controller = controller;
-		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -55,7 +49,7 @@ class ViewImplMain extends JPanel {
 					
 					// TODO that should do the controller
 					for (File f : inputFiles) {
-						areaFiles.append(f.getName() + GUIPrefs.NEW_LINE);
+						areaFiles.append(f.getName() + Preferences.NEW_LINE);
 						files.add(f);
 					}
 					
@@ -111,7 +105,7 @@ class ViewImplMain extends JPanel {
 			// take shortcut and directly show about, without notifying controller or model
 			javax.swing.SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					JOptionPane.showMessageDialog(component, GUIPrefs.NAME + " Version " + GUIPrefs.VERSION+"\n"
+					JOptionPane.showMessageDialog(component, Preferences.NAME + " Version " + Preferences.VERSION+"\n"
 							+ "Markus Westphal: \tmarkus.c.westphal@tg.fh-giessen.de\n"
 							+ "Alexander Kerner: \tphilip.a.kerner@tg.fh-giessen.de",
 							"About", JOptionPane.INFORMATION_MESSAGE);	
@@ -121,7 +115,6 @@ class ViewImplMain extends JPanel {
 	}
 
 	private static final long serialVersionUID = 5815887454332977224L;
-	private final ActionListener myListener;
 	private final Collection<File> files = new Vector<File>();
 	private final JTextArea areaFiles = new JTextArea();
 	private final JFileChooser fileChooserinputFiles  = new JFileChooser();
@@ -139,14 +132,18 @@ class ViewImplMain extends JPanel {
 	private boolean outputDirSelected = false;
 	private int progress = 0;
 	final static Logger LOGGER = Logger.getLogger(ViewImplMain.class);
+	private final ViewController controller;
+	private final Component component;
+	private final ActionListener myListener = new MyListener();
 	
-	ViewImplMain(Controller controller) {
-		this.myListener = new MyListener(this, controller);
+	ViewImplMain(ViewController controller) {
+		this.controller = controller;
+		this.component = this;
 		init();
 	}
 	
 	void printMessage(String message, boolean isError){
-		areaLog.append(message + GUIPrefs.NEW_LINE);
+		areaLog.append(message + Preferences.NEW_LINE);
 	}
 
 	
@@ -297,8 +294,7 @@ class ViewImplMain extends JPanel {
 	}
 	
 	private void showSettingsView() {
-		// TODO Auto-generated method stub
-		
+		controller.showSettingsView();
 	}
 
 }

@@ -1,8 +1,7 @@
 package de.fh.giessen.ringversuch.model;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
+import java.util.Properties;
 
 public interface Model {
 
@@ -10,9 +9,16 @@ public interface Model {
 
 	void setSelectedFiles(File[] inputFiles);
 	
-	void loadSettings(File settingsFile) throws IOException, InvalidSettingsException;
+	boolean loadSettings(File settingsFile);
+	
+	boolean saveSettings();
 
 	void start();
 
+	Properties getDefaultSettings();
 	
+	Properties getCurrentSettings();
+
+	boolean setSettings(Properties settings);
+
 }

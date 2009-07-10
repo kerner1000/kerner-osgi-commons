@@ -1,10 +1,12 @@
 package de.fh.giessen.ringversuch.controller;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.model.Model;
 import de.fh.giessen.ringversuch.model.ModelImpl;
 import de.fh.giessen.ringversuch.view.View;
@@ -12,37 +14,55 @@ import de.fh.giessen.ringversuch.view.ViewImpl;
 
 public class ControllerImpl implements Controller {
 
-	private final static String LOG_PROPERTIES = "/home/alex/Dropbox/log.properties";
 	private final static Logger LOGGER = Logger.getLogger(ControllerImpl.class);
 	private View view;
 	private Model model;
-	
+
 	@Override
 	public void printMessage(String message, boolean isError) {
 		LOGGER.debug("printMessage=" + message);
-		view.printMessage(message, isError);
+		if (view != null)
+			view.printMessage(message, isError);
 	}
 
 	@Override
 	public void setOutDir(File selectedDir) {
 		LOGGER.debug("setOutDir=" + selectedDir);
-		model.setOutDir(selectedDir);
+		if (model != null)
+			model.setOutDir(selectedDir);
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
 	}
 
 	@Override
 	public void showError(String message) {
 		LOGGER.debug("showError=" + message);
-
+		if (view != null)
+			view.showError(message);
 	}
-	
-	public static void main(String[] args){
-		PropertyConfigurator.configure(LOG_PROPERTIES);
+
+	public static void main(String[] args) {
+		PropertyConfigurator.configure(Preferences.LOG_PROPERTIES);
 		LOGGER.debug("starting up");
 		final Controller controller = new ControllerImpl();
-		final View view = new ViewImpl(controller);
 		final Model model = new ModelImpl(controller);
-		controller.setView(view);
+		final View view = new ViewImpl(controller);
 		controller.setModel(model);
+		controller.setView(view);
+		
+		// must be done here, because model is not set after init of view
+		try{
+			final File f = new File(Preferences.SETTINGS_FILE);
+			model.loadSettings(f);
+			view.setSettingsOut(model.getCurrentSettings());
+			controller.printMessage("successfully loaded settings from " + f, false);
+		}catch(Exception e){
+			LOGGER.error(e.getLocalizedMessage(), e);
+			controller.printMessage(e.getLocalizedMessage(), false);
+			controller.printMessage("loading default settings", false);
+			view.setSettingsOut(model.getDefaultSettings());
+		}
+		
 		view.setOnline();
 		LOGGER.debug("view created and online");
 	}
@@ -55,27 +75,17 @@ public class ControllerImpl implements Controller {
 
 	@Override
 	public void setModel(Model model) {
+		LOGGER.debug("setModel=" + model);
 		this.model = model;
-		// init default settings
-		final File file = new File(new File(System.getProperty("user.dir")),
-		"settings.ini");
-		LOGGER.info("loading settings from " + file);
-		
-		// view may not be initialized yet
-		if(view != null){
-			view.printMessage("loading settings from " + file, false);
-		}
-		try {
-			model.loadSettings(file);
-		} catch (Exception e) {
-			LOGGER.warn("could not load settings from " + file, e);
-		}
 	}
 
 	@Override
 	public void setSelectedFiles(File[] inputFiles) {
 		LOGGER.info("setSelectedFiles=" + inputFiles);
-		model.setSelectedFiles(inputFiles);
+		if (model != null)
+			model.setSelectedFiles(inputFiles);
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
 	}
 
 	@Override
@@ -84,4 +94,58 @@ public class ControllerImpl implements Controller {
 		model.start();
 		view.setOnline();
 	}
+
+	@Override
+	public Properties getDefaultSettings() {
+		if (model != null)
+			return model.getDefaultSettings();
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
+		return null;
+	}
+
+	@Override
+	public boolean loadSettings(File file) {
+		if (model != null)
+			return model.loadSettings(file);
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
+		return false;
+
+	}
+
+	@Override
+	public boolean saveSettings()
+			{
+		if (model != null)
+			return model.saveSettings();
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
+		return false;
+	}
+
+	@Override
+	public Properties getSettings() {
+		if (model != null)
+			return model.getCurrentSettings();
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
+		return null;
+	}
+
+	@Override
+	public boolean setSettingsIn(Properties settings) {
+		if (model != null)
+			return model.setSettings(settings);
+		else
+			LOGGER.fatal("model not initialized jet", new NullPointerException());
+		return false;
+	}
+
+	@Override
+	public void setSettingsOut(Properties settings) {
+		view.setSettingsOut(settings);
+	}
+	
+	
 }

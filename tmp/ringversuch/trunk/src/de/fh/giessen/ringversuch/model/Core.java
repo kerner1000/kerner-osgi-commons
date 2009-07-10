@@ -12,15 +12,13 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+
+import de.fh.giessen.ringversuch.common.Preferences;
 
 class Core {
 
@@ -55,8 +53,11 @@ class Core {
 
 	private static Probe getProbeFromSheet(final HSSFSheet sheet,
 			final SettingsManager settings) {
-		final int rowIndex = settings.getProbeRowIndex();
-		final int columnIndex = settings.getProbeColumnIndex();
+		final int rowIndex = Integer.parseInt(settings.getCurrentProperties()
+				.getProperty(Preferences.PROBE_NO_ROW)) - 1;
+		final int columnIndex = Integer.parseInt(settings
+				.getCurrentProperties()
+				.getProperty(Preferences.PROBE_NO_COLUMN)) - 1;
 		LOGGER.debug("probe indices: " + rowIndex + " " + columnIndex);
 		final HSSFRow row = sheet.getRow(rowIndex);
 		final HSSFCell cell = row.getCell(columnIndex);
@@ -71,10 +72,10 @@ class Core {
 
 	private static Collection<Analyse> getAnalysesFromSheet(
 			final HSSFSheet sheet, final SettingsManager settings) {
-		final int startRow = settings.getValuesStartRowIndex();
-		final int startColumn = settings.getValuesStartColumnIndex();
-		final int endRow = settings.getValuesEndRowIndex();
-		final int endColumn = settings.getValuesEndColumnIndex();
+		final int startRow = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_START_ROW)) -1;
+		final int startColumn = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_START_COLUMN)) -1;
+		final int endRow = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_END_ROW)) -1;
+		final int endColumn = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_END_COLUMN)) -1;
 		LOGGER.debug("got values start indices: " + startRow + " "
 				+ startColumn);
 		LOGGER.debug("got values end indices: " + endRow + " " + endColumn);
@@ -82,7 +83,7 @@ class Core {
 		HSSFRow currentRow = null;
 		HSSFCell currentCell = null;
 		String currentSubstance = null;
-		final int substancesColumnIndex = settings.getSubstancesColumnIndex();
+		final int substancesColumnIndex = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.SUBSTANCES_COLUMN)) -1;
 		LOGGER.debug("substances at column: " + substancesColumnIndex);
 		for (int i = startColumn; i <= endColumn; i++) {
 			final String analyseIdent = Integer.toString(i - startColumn + 1);
@@ -106,9 +107,9 @@ class Core {
 
 	private static String getLaborIdentFromSheet(final HSSFSheet sheet,
 			final SettingsManager settings) {
-		final int rowIndex = settings.getLaborRowIndex();
+		final int rowIndex = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.LABOR_NO_ROW)) -1;
 		final HSSFRow row = sheet.getRow(rowIndex);
-		final HSSFCell cell = row.getCell(settings.getLaborColumnIndex());
+		final HSSFCell cell = row.getCell(Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.LABOR_NO_COLUMN)) -1);
 		return cell.toString();
 	}
 
@@ -132,7 +133,7 @@ class Core {
 			final Collection<Labor> labors, final SettingsManager settings)
 			throws InvalidFormatException {
 		final Collection<OutSubstance> result = new ArrayList<OutSubstance>();
-		final String probeIdent = settings.getProbeIdent();
+		final String probeIdent = settings.getCurrentProperties().getProperty(Preferences.PROBE_VALUE);
 		Collection<String> commonKeys = getCommonSubstanceKeys(labors,
 				probeIdent);
 		for (String s : commonKeys) {
@@ -213,7 +214,7 @@ class Core {
 		for (OutSubstanceEntry entry : s.getEntries()) {
 			writeProbeNr(entry.getIdent(), sheet);
 			writeHeaderRow(sheet, entry.getValues().size());
-			
+
 			final HSSFRow valueRow = sheet.createRow(currentRow);
 			System.out.println(s);
 			int currentColumn = 3;
@@ -238,18 +239,18 @@ class Core {
 	}
 
 	// TODO eliminate hardcoding
-	private static void writeHeaderRow(HSSFSheet sheet,int length) {
+	private static void writeHeaderRow(HSSFSheet sheet, int length) {
 		final HSSFRow row = sheet.createRow(HEADER_ROW);
 		final HSSFCell c0 = row.createCell(0);
 		c0.setCellValue(new HSSFRichTextString("Substanz"));
 		final HSSFCell c1 = row.createCell(1);
 		c1.setCellValue(new HSSFRichTextString("Lname"));
-		
-		for(int i= 3; i<3+length;i++){
+
+		for (int i = 3; i < 3 + length; i++) {
 			final HSSFCell cell = row.createCell(i);
-			cell.setCellValue(new HSSFRichTextString(Integer.toString(i-2)));
+			cell.setCellValue(new HSSFRichTextString(Integer.toString(i - 2)));
 		}
-		
+
 	}
 
 	private static void writeProbeNr(String ident, HSSFSheet sheet) {

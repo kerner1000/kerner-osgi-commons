@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.view;
 
+import java.util.Properties;
+
 
 public interface View {
 	
@@ -8,5 +10,11 @@ public interface View {
 	void setOnline();
 
 	void setWorking();
+
+	void showError(String message);
+	
+	void setSettingsOut(Properties settings);
+	
+	boolean setSettingsIn(Properties settings);
 	
 }

@@ -1,21 +1,17 @@
 package de.fh.giessen.ringversuch.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.concurrent.ExecutionException;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
+import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.controller.Controller;
-import de.fh.giessen.ringversuch.controller.ControllerImpl;
 
 public class ModelImpl implements Model {
 
@@ -30,7 +26,6 @@ public class ModelImpl implements Model {
 		this.controller = controller;
 	}
 
-	
 	@Override
 	public void setOutDir(File selectedDir) {
 	this.outDir = selectedDir;
@@ -65,9 +60,49 @@ public class ModelImpl implements Model {
 	}
 
 	@Override
-	public void loadSettings(File settingsFile) throws IOException, InvalidSettingsException {
+	public boolean loadSettings(File settingsFile) {
 		LOGGER.debug("loading settings from " + settingsFile);
-		settings.loadSettings(settingsFile);	
+		try {
+			settings.loadSettings(settingsFile);
+			return true;
+		} catch (Exception e){
+			LOGGER.error(e.getLocalizedMessage(), e);
+			controller.showError(e.getLocalizedMessage());
+			return false;
+		}
 	}
-	
+
+	@Override
+	public Properties getDefaultSettings() {
+		return settings.getDefaultProperties();
+	}
+
+	@Override
+	public boolean saveSettings() {
+		try {
+			settings.saveSettings(new File(Preferences.SETTINGS_FILE));
+			return true;
+		} catch (IOException e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			controller.showError(e.getLocalizedMessage());
+			return false;
+		}
+	}
+
+	@Override
+	public Properties getCurrentSettings() {
+		return settings.getCurrentProperties();
+	}
+
+	@Override
+	public boolean setSettings(Properties settings) {
+		try {
+			this.settings.setCurrentProperties(settings);
+			return true;
+		} catch (InvalidSettingsException e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			controller.showError(e.getLocalizedMessage());
+			return false;
+		}
+	}
 }

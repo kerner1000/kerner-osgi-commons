@@ -8,40 +8,28 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import de.fh.giessen.ringversuch.common.Preferences;
+
 /**
  * 
  * !!! MAKE HIM THREADSAVE !!!
- *
+ * 
  */
 public class SettingsManagerImpl implements SettingsManager {
 
 	private final static Logger LOGGER = Logger
 			.getLogger(SettingsManagerImpl.class);
-	private final static String SETTINGS_HEADER = "This is a settings file for \"Ringversuch-v.x.x.jar\"";
-	private final static String LABOR_NO_ROW = "labor.no.row";
 	private int laborNoRow = -1;
-	private final static String LABOR_NO_COLUMN = "labor.no.column";
 	private int laborNoColumn = -1;
-	private final static String PROBE_NO_ROW = "probe.no.row";
 	private int probeNoRow = -1;
-	private final static String PROBE_NO_COLUMN = "probe.no.column";
 	private int probeNoCOlumn = -1;
-	private final static String PROBE_VALUE = "probe.ident";
 	private String probeValue = null;
-	private final static String SHEET_NO = "sheet.no";
 	private int sheetNo = -1;
-	private final static String SUBSTANCES_COLUMN = "substances.column";
 	private int substancesColumn = -1;
-	private final static String VALUES_START_ROW = "values.start.row";
 	private int valuesStartRow = -1;
-	private final static String VALUES_START_COLUMN = "values.start.column";
 	private int valuesStartColumn = -1;
-	private final static String VALUES_END_ROW = "values.end.row";
 	private int valuesEndRow = -1;
-	private final static String VALUES_END_COLUMN = "values.end.column";
 	private int valuesEndColumn = -1;
-
-	private Properties currentSettings = getDefaultSettings();
 
 	public static final SettingsManager INSTANCE = new SettingsManagerImpl();
 
@@ -50,26 +38,85 @@ public class SettingsManagerImpl implements SettingsManager {
 	}
 
 	@Override
+	public synchronized Properties getCurrentProperties() {
+		final Properties p = buildProperties();
+		LOGGER.debug("current properties="+p);
+		return p;
+	}
+	
+	@Override
+	public synchronized void setCurrentProperties(Properties properties) throws InvalidSettingsException{
+		LOGGER.debug("setting properties="+properties);
+		setLaborNoRow(properties.getProperty(Preferences.LABOR_NO_ROW));
+		setLaborNoColumn(properties
+				.getProperty(Preferences.LABOR_NO_COLUMN));
+		setProbeNoRow(properties.getProperty(Preferences.PROBE_NO_ROW));
+		setProbeNoColumn(properties
+				.getProperty(Preferences.PROBE_NO_COLUMN));
+		setProbeValue(properties.getProperty(Preferences.PROBE_VALUE));
+		setSheetNo(properties.getProperty(Preferences.SHEET_NO));
+		setSubstancesColumn(properties
+				.getProperty(Preferences.SUBSTANCES_COLUMN));
+		setValuesStartRow(properties
+				.getProperty(Preferences.VALUES_START_ROW));
+		setValuesStartColumn(properties
+				.getProperty(Preferences.VALUES_START_COLUMN));
+		setValuesEndRow(properties.getProperty(Preferences.VALUES_END_ROW));
+		setValuesEndColumn(properties
+				.getProperty(Preferences.VALUES_END_COLUMN));
+	}
+
+	@Override
+	public synchronized Properties getDefaultProperties() {
+		return getDefaultSettings();
+	}
+
+	@Override
 	public synchronized void loadSettings(final File file) throws IOException,
 			InvalidSettingsException {
 		final FileInputStream in = new FileInputStream(file);
-		currentSettings.load(in);
+		final Properties p = new Properties();
+		p.load(in);
 		in.close();
-		mergeSettings();
+		setCurrentProperties(p);
+	}
+	
+	@Override
+	public synchronized void saveSettings(final File file) throws IOException {
+		String path = file.getAbsolutePath();
+		if (path.endsWith((".ini"))) {
+			path = path.substring(0, path.lastIndexOf('.'));
+		}
+		path = path + ".ini";
+		final FileOutputStream out = new FileOutputStream(path);
+		final Properties p = new Properties(getCurrentProperties());
+		p.store(out, Preferences.SETTINGS_HEADER);
+		out.close();
 	}
 
-	private void mergeSettings() throws InvalidSettingsException {
-		setLaborNoRow(currentSettings.getProperty(LABOR_NO_ROW));
-		setLaborNoColumn(currentSettings.getProperty(LABOR_NO_COLUMN));
-		setProbeNoRow(currentSettings.getProperty(PROBE_NO_ROW));
-		setProbeNoColumn(currentSettings.getProperty(PROBE_NO_COLUMN));
-		setProbeValue(currentSettings.getProperty(PROBE_VALUE));
-		setSheetNo(currentSettings.getProperty(SHEET_NO));
-		setSubstancesColumn(currentSettings.getProperty(SUBSTANCES_COLUMN));
-		setValuesStartRow(currentSettings.getProperty(VALUES_START_ROW));
-		setValuesStartColumn(currentSettings.getProperty(VALUES_START_COLUMN));
-		setValuesEndRow(currentSettings.getProperty(VALUES_END_ROW));
-		setValuesEndColumn(currentSettings.getProperty(VALUES_END_COLUMN));
+	private Properties buildProperties() {
+		final Properties settings = new Properties();
+		settings.setProperty(Preferences.LABOR_NO_ROW, Integer
+				.toString(laborNoRow));
+		settings.setProperty(Preferences.LABOR_NO_COLUMN, Integer
+				.toString(laborNoColumn));
+		settings.setProperty(Preferences.PROBE_NO_ROW, Integer
+				.toString(probeNoRow));
+		settings.setProperty(Preferences.PROBE_NO_COLUMN, Integer
+				.toString(probeNoCOlumn));
+		settings.setProperty(Preferences.PROBE_VALUE, probeValue);
+		settings.setProperty(Preferences.SHEET_NO, Integer.toString(sheetNo));
+		settings.setProperty(Preferences.SUBSTANCES_COLUMN, Integer
+				.toString(substancesColumn));
+		settings.setProperty(Preferences.VALUES_START_ROW, Integer
+				.toString(valuesStartRow));
+		settings.setProperty(Preferences.VALUES_START_COLUMN, Integer
+				.toString(valuesStartColumn));
+		settings.setProperty(Preferences.VALUES_END_ROW, Integer
+				.toString(valuesEndRow));
+		settings.setProperty(Preferences.VALUES_END_COLUMN, Integer
+				.toString(valuesEndColumn));
+		return settings;
 	}
 
 	private void setValuesEndColumn(String string)
@@ -173,9 +220,9 @@ public class SettingsManagerImpl implements SettingsManager {
 	private void setLaborNoRow(final String string)
 			throws InvalidSettingsException {
 		int i = -1;
-		try{
-		i = Integer.parseInt(string);
-		}catch(NumberFormatException e){
+		try {
+			i = Integer.parseInt(string);
+		} catch (NumberFormatException e) {
 			throw new InvalidSettingsException(
 					"Row of labor identifier invalid for value " + string);
 		}
@@ -186,36 +233,24 @@ public class SettingsManagerImpl implements SettingsManager {
 					"Row of labor identifier invalid for value " + string);
 	}
 
-	public synchronized void saveSettings(final File file) throws IOException {
-		String path = file.getAbsolutePath();
-		if (path.endsWith((".ini"))) {
-			path = path.substring(0, path.lastIndexOf('.'));
-		}
-		path = path + ".ini";
-		final FileOutputStream out = new FileOutputStream(path);
-		currentSettings.store(out, SETTINGS_HEADER);
-		out.close();
-	}
-
 	private Properties getDefaultSettings() {
 		final Properties defaultSettings = new Properties();
-		defaultSettings.setProperty(SettingsManagerImpl.LABOR_NO_ROW, "e.g. 1");
-		defaultSettings.setProperty(SettingsManagerImpl.LABOR_NO_COLUMN, "e.g. A");
-		defaultSettings.setProperty(SettingsManagerImpl.PROBE_NO_ROW, "e.g. 1");
-		defaultSettings.setProperty(SettingsManagerImpl.PROBE_NO_COLUMN, "e.g. A");
-		defaultSettings.setProperty(SettingsManagerImpl.PROBE_VALUE, "e.g. 1");
-		defaultSettings.setProperty(SettingsManagerImpl.SHEET_NO, "e.g. 1");
-		defaultSettings
-				.setProperty(SettingsManagerImpl.SUBSTANCES_COLUMN, "e.g. A");
-		defaultSettings.setProperty(SettingsManagerImpl.VALUES_START_ROW, "e.g. 1");
-		defaultSettings.setProperty(SettingsManagerImpl.VALUES_START_COLUMN,
-				"e.g A");
-		defaultSettings.setProperty(SettingsManagerImpl.VALUES_END_ROW, "e.g. 1");
-		defaultSettings.setProperty(SettingsManagerImpl.VALUES_END_COLUMN, "e.g A");
+		defaultSettings.setProperty(Preferences.LABOR_NO_ROW, "e.g. 1");
+		defaultSettings.setProperty(Preferences.LABOR_NO_COLUMN, "e.g. A");
+		defaultSettings.setProperty(Preferences.PROBE_NO_ROW, "e.g. 1");
+		defaultSettings.setProperty(Preferences.PROBE_NO_COLUMN, "e.g. A");
+		defaultSettings.setProperty(Preferences.PROBE_VALUE, "e.g. 1");
+		defaultSettings.setProperty(Preferences.SHEET_NO, "e.g. 1");
+		defaultSettings.setProperty(Preferences.SUBSTANCES_COLUMN, "e.g. A");
+		defaultSettings.setProperty(Preferences.VALUES_START_ROW, "e.g. 1");
+		defaultSettings.setProperty(Preferences.VALUES_START_COLUMN, "e.g A");
+		defaultSettings.setProperty(Preferences.VALUES_END_ROW, "e.g. 1");
+		defaultSettings.setProperty(Preferences.VALUES_END_COLUMN, "e.g A");
 		return defaultSettings;
 	}
 
 	private boolean isValidChar(int i) {
+		LOGGER.debug("checking char validity for integer " + i);
 		if (i > 0 && i < 27)
 			return true;
 		else
@@ -230,14 +265,18 @@ public class SettingsManagerImpl implements SettingsManager {
 	 * @throws InvalidSettingsException
 	 */
 	private int convert(String string) throws InvalidSettingsException {
+		LOGGER.debug("converting string " + string + " to integer");
 		int i = -1;
 		char c = 'a';
 		if (string.length() > 1) {
 			LOGGER.debug("unexpected string length: string: " + string);
 		}
 		c = string.toUpperCase().charAt(0);
+		LOGGER.debug("character="+c);
 		i = (int) c;
+		LOGGER.debug("integer="+i);
 		i = i - 64;
+		LOGGER.debug("integer="+i);
 		if (isValidChar(i))
 			return i;
 		else {
@@ -247,54 +286,10 @@ public class SettingsManagerImpl implements SettingsManager {
 			throw e;
 		}
 	}
-
-	@Override
-	public int getProbeRowIndex() {
-		return probeNoRow;
-	}
-
-	@Override
-	public int getProbeColumnIndex() {
-		return probeNoCOlumn;
-	}
-
-	@Override
-	public int getLaborColumnIndex() {
-		return laborNoColumn;
-	}
-
-	@Override
-	public int getLaborRowIndex() {
-		return laborNoRow;
-	}
-
-	@Override
-	public int getValuesStartColumnIndex() {
-		return valuesStartColumn;
-	}
-
-	@Override
-	public int getValuesStartRowIndex() {
-		return valuesStartRow;
-	}
-
-	@Override
-	public int getValuesEndColumnIndex() {
-		return valuesEndColumn;
-	}
-
-	@Override
-	public int getValuesEndRowIndex() {
-		return valuesEndRow;
-	}
-
-	@Override
-	public int getSubstancesColumnIndex() {
-		return substancesColumn;
-	}
-
-	@Override
-	public String getProbeIdent() {
-		return probeValue;
+	
+	private String convert(int i) {
+		LOGGER.debug("converting integer " + i + " to string");
+		char c = (char) i;
+		return Character.toString(c);
 	}
 }
