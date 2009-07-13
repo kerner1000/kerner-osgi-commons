@@ -1,9 +1,9 @@
 package de.fh.giessen.ringversuch.controller;
 
 import java.io.File;
-import java.util.Properties;
 
 import de.fh.giessen.ringversuch.model.Model;
+import de.fh.giessen.ringversuch.view.SettingsView;
 import de.fh.giessen.ringversuch.view.View;
 
 public interface Controller {
@@ -18,10 +18,25 @@ public interface Controller {
 	void setModel(Model model);
 	
 	void start();
-	Properties getDefaultSettings();
-	Properties getSettings();
+	
+	void done(boolean b);
+	
+	/**
+	 * from view to model
+	 * @param file
+	 */
 	boolean loadSettings(File file);
-	boolean saveSettings();
-	boolean setSettingsIn(Properties settings);
-	void setSettingsOut(Properties settings);
+	
+	/**
+	 * from view to model
+	 * @param settings
+	 */
+	boolean saveSettings(SettingsView settings);
+	
+	/**
+	 * from view to model
+	 * @param settings
+	 */
+	boolean setSettings(SettingsView settings);
+
 }

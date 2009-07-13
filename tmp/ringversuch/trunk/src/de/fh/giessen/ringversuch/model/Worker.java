@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
+
 class Worker implements Callable<Boolean> {
 
-	final File outDir;
-	final File[] files;
-	private final SettingsManager settings = SettingsManagerImpl.INSTANCE;
+	private final File outDir;
+	private final File[] files;
+	private final SettingsModel settings;
 
-	Worker(File[] inputFiles, File outDir) {
+	Worker(File[] inputFiles, File outDir, SettingsModel settings) {
 		this.outDir = outDir;
 		this.files = inputFiles;
+		this.settings = settings;
 	}
 
 	@Override

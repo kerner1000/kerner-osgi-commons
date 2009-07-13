@@ -1,7 +1,6 @@
 package de.fh.giessen.ringversuch.view;
 
 import java.io.File;
-import java.util.Properties;
 
 interface ViewController {
 
@@ -11,12 +10,15 @@ interface ViewController {
 
 	void start();
 
-	Properties getSettings();
-
 	void showSettingsView();
-
-	boolean setSettingsIn(Properties settings);
 	
-	void setSettingsOut(Properties settings);
+	SettingsView getSettings();
+	
+	boolean setSettingsOut(SettingsView settings);
 
+	boolean saveSettingsOut(SettingsView settings);
+
+	boolean loadSettings(File file);
+
+	void hideSettingsView();
 }

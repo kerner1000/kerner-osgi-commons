@@ -29,7 +29,7 @@ class Core {
 	private final static Logger LOGGER = Logger.getLogger(Core.class);
 	public static final String NEW_LINE = System.getProperty("line.separator");
 
-	static Labor readLaborFile(final File file, final SettingsManager settings)
+	static Labor readLaborFile(final File file, final SettingsModel settings)
 			throws FileNotFoundException, IOException, InvalidFormatException {
 		LOGGER.debug("reading file " + file);
 		final POIFSFileSystem fs = new POIFSFileSystem(
@@ -52,12 +52,9 @@ class Core {
 	}
 
 	private static Probe getProbeFromSheet(final HSSFSheet sheet,
-			final SettingsManager settings) {
-		final int rowIndex = Integer.parseInt(settings.getCurrentProperties()
-				.getProperty(Preferences.PROBE_NO_ROW)) - 1;
-		final int columnIndex = Integer.parseInt(settings
-				.getCurrentProperties()
-				.getProperty(Preferences.PROBE_NO_COLUMN)) - 1;
+			final SettingsModel settings) {
+		final int rowIndex = settings.getProbeIdentRow();
+		final int columnIndex = settings.getProbeIdentColumn();
 		LOGGER.debug("probe indices: " + rowIndex + " " + columnIndex);
 		final HSSFRow row = sheet.getRow(rowIndex);
 		final HSSFCell cell = row.getCell(columnIndex);
@@ -71,11 +68,11 @@ class Core {
 	}
 
 	private static Collection<Analyse> getAnalysesFromSheet(
-			final HSSFSheet sheet, final SettingsManager settings) {
-		final int startRow = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_START_ROW)) -1;
-		final int startColumn = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_START_COLUMN)) -1;
-		final int endRow = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_END_ROW)) -1;
-		final int endColumn = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.VALUES_END_COLUMN)) -1;
+			final HSSFSheet sheet, final SettingsModel settings) {
+		final int startRow = settings.getValuesStartRow();
+		final int startColumn = settings.getValuesStartColumn();
+		final int endRow = settings.getValuesEndRow();
+		final int endColumn = settings.getValuesEndColumn();
 		LOGGER.debug("got values start indices: " + startRow + " "
 				+ startColumn);
 		LOGGER.debug("got values end indices: " + endRow + " " + endColumn);
@@ -83,7 +80,7 @@ class Core {
 		HSSFRow currentRow = null;
 		HSSFCell currentCell = null;
 		String currentSubstance = null;
-		final int substancesColumnIndex = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.SUBSTANCES_COLUMN)) -1;
+		final int substancesColumnIndex = settings.getSubstancesColumn();
 		LOGGER.debug("substances at column: " + substancesColumnIndex);
 		for (int i = startColumn; i <= endColumn; i++) {
 			final String analyseIdent = Integer.toString(i - startColumn + 1);
@@ -106,10 +103,10 @@ class Core {
 	}
 
 	private static String getLaborIdentFromSheet(final HSSFSheet sheet,
-			final SettingsManager settings) {
-		final int rowIndex = Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.LABOR_NO_ROW)) -1;
+			final SettingsModel settings) {
+		final int rowIndex = settings.getLaborIdentRow();
 		final HSSFRow row = sheet.getRow(rowIndex);
-		final HSSFCell cell = row.getCell(Integer.parseInt(settings.getCurrentProperties().getProperty(Preferences.LABOR_NO_COLUMN)) -1);
+		final HSSFCell cell = row.getCell(settings.getLaborIdentColumn());
 		return cell.toString();
 	}
 
@@ -130,10 +127,10 @@ class Core {
 	}
 
 	public static Collection<OutSubstance> getOutSubstancesFromLabors(
-			final Collection<Labor> labors, final SettingsManager settings)
+			final Collection<Labor> labors, final SettingsModel settings)
 			throws InvalidFormatException {
 		final Collection<OutSubstance> result = new ArrayList<OutSubstance>();
-		final String probeIdent = settings.getCurrentProperties().getProperty(Preferences.PROBE_VALUE);
+		final String probeIdent = settings.getProbeIdent();
 		Collection<String> commonKeys = getCommonSubstanceKeys(labors,
 				probeIdent);
 		for (String s : commonKeys) {
@@ -161,6 +158,7 @@ class Core {
 	public static Collection<String> getCommonSubstanceKeys(
 			final Collection<Labor> labors, final String probeIdent)
 			throws InvalidFormatException {
+		LOGGER.debug("labors="+labors + Preferences.NEW_LINE+"probeIdent="+probeIdent);
 		Collection<String> keys = null;
 		for (Labor l : labors) {
 			final Probe p = l.getProbe(probeIdent);

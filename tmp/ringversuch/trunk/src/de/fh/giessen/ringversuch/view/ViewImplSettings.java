@@ -1,12 +1,15 @@
 package de.fh.giessen.ringversuch.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -26,16 +29,19 @@ class ViewImplSettings extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == buttonUse) {
-				if(controller.setSettingsIn(getSettings()))
-				setVisible(false);
+				if(controller.setSettingsOut(getSettings()))
+				controller.hideSettingsView();
 
 			} else if (e.getSource() == buttonSave) {
-				if(controller.setSettingsIn(getSettings())){
-				setVisible(false);
-				}
+				if(controller.saveSettingsOut(getSettings()))controller.hideSettingsView();
 
 			} else if (e.getSource() == buttonLoad) {
-				setSettings(controller.getSettings());
+				final int returnVal = fileChooser.showOpenDialog(component);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+					if(controller.loadSettings(file))
+						controller.hideSettingsView();
+				}
 			} else {
 				LOGGER.error("unrecognized action performed: " + e.getSource());
 			}
@@ -55,7 +61,7 @@ class ViewImplSettings extends JPanel {
 	private final JButton buttonLoad = new JButton("Load");
 	private final JButton buttonSave = new JButton("Save");
 	private final JButton buttonUse = new JButton("Use");
-
+	
 	private final ActionListener listener = new MyListener();
 	private final JFileChooser fileChooser = new JFileChooser();
 	private final FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -71,6 +77,8 @@ class ViewImplSettings extends JPanel {
 	private final JTextField fieldValuesBeginColumn;
 	private final JTextField fieldValuesEndRow;
 	private final JTextField fieldValuesEndColumn;
+	
+	private final Component component = this;
 
 	ViewImplSettings(ViewController controller) {
 		this.controller = controller;
@@ -257,38 +265,33 @@ class ViewImplSettings extends JPanel {
 		buttonUse.addActionListener(listener);
 	}
 
-	public void setSettings(Properties settings) {
-		fieldLaborRow.setText(settings.getProperty(Preferences.LABOR_NO_ROW));
-		fieldLaborColumn.setText(settings.getProperty(Preferences.LABOR_NO_COLUMN));
-		fieldProbeRow.setText(settings.getProperty(Preferences.PROBE_NO_ROW));
-		fieldProbeColumn.setText(settings.getProperty(Preferences.PROBE_NO_COLUMN));
-		fieldProbeNo.setText(settings.getProperty(Preferences.PROBE_VALUE));
-		fieldSheetNo.setText(settings.getProperty(Preferences.SHEET_NO));
-		fieldColumnSubstance.setText(settings.getProperty(Preferences.SUBSTANCES_COLUMN));
-		fieldValuesEndRow.setText(settings.getProperty(Preferences.VALUES_END_ROW));
-		fieldValuesEndColumn.setText(settings.getProperty(Preferences.VALUES_END_COLUMN));
-		fieldValuesBeginRow.setText(settings.getProperty(Preferences.VALUES_START_ROW));
-		fieldValuesBeginColumn.setText(settings
-				.getProperty(Preferences.VALUES_START_COLUMN));
+	void setSettings(SettingsView settings) {
+		fieldLaborRow.setText(settings.getLaborIdentRow());
+		fieldLaborColumn.setText(settings.getLaborIdentColumn());
+		fieldProbeRow.setText(settings.getProbeIdentRow());
+		fieldProbeColumn.setText(settings.getProbeIdentColumn());
+		fieldProbeNo.setText(settings.getProbeIdent());
+		fieldSheetNo.setText(settings.getSheetNo());
+		fieldColumnSubstance.setText(settings.getSubstancesColumn());
+		fieldValuesEndRow.setText(settings.getValuesEndRow());
+		fieldValuesEndColumn.setText(settings.getValuesEndColumn());
+		fieldValuesBeginRow.setText(settings.getValuesStartRow());
+		fieldValuesBeginColumn.setText(settings.getValuesStartColumn());
 	}
 
-	public Properties getSettings() {
-		final Properties p = new Properties();
-		p.setProperty(Preferences.LABOR_NO_ROW, fieldLaborRow.getText());
-		p.setProperty(Preferences.LABOR_NO_COLUMN, fieldLaborColumn.getText());
-		p.setProperty(Preferences.PROBE_NO_ROW, fieldProbeRow.getText());
-		p.setProperty(Preferences.PROBE_NO_COLUMN, fieldProbeColumn.getText());
-		p.setProperty(Preferences.PROBE_VALUE, fieldProbeNo.getText());
-		p.setProperty(Preferences.SHEET_NO, fieldSheetNo.getText());
-		p.setProperty(Preferences.SUBSTANCES_COLUMN, fieldColumnSubstance
-				.getText());
-		p.setProperty(Preferences.VALUES_END_ROW, fieldValuesEndRow.getText());
-		p.setProperty(Preferences.VALUES_END_COLUMN, fieldValuesEndColumn
-				.getText());
-		p.setProperty(Preferences.VALUES_START_ROW, fieldValuesBeginRow
-				.getText());
-		p.setProperty(Preferences.VALUES_START_COLUMN, fieldValuesBeginColumn
-				.getText());
-		return p;
+	SettingsView getSettings() {
+		final SettingsView settings = new SettingsViewImpl();
+		settings.setLaborIdentColumn(fieldLaborColumn.getText());
+		settings.setLaborIdentRow(fieldLaborRow.getText());
+		settings.setProbeIdent(fieldProbeNo.getText());
+		settings.setProbeIdentColumn(fieldProbeColumn.getText());
+		settings.setProbeIdentRow(fieldProbeRow.getText());
+		settings.setSheetNo(fieldSheetNo.getText());
+		settings.setSubstancesColumn(fieldColumnSubstance.getText());
+		settings.setValuesEndColumn(fieldValuesEndColumn.getText());
+		settings.setValuesEndRow(fieldValuesEndRow.getText());
+		settings.setValuesStartColumn(fieldValuesBeginColumn.getText());
+		settings.setValuesStartRow(fieldValuesBeginRow.getText());
+		return settings;
 	}
 }

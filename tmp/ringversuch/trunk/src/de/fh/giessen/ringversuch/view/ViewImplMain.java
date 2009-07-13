@@ -29,7 +29,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
-import de.fh.giessen.ringversuch.controller.Controller;
 
 class ViewImplMain extends JPanel {
 
@@ -263,6 +262,7 @@ class ViewImplMain extends JPanel {
 		buttonStart.setEnabled(false);
 		buttonSelect.setEnabled(true);
 		buttonSave.setEnabled(true);
+		setCursor(null);
 	}
 
 	void setWorking() {

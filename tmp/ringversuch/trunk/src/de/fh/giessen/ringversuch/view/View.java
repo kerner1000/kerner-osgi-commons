@@ -1,8 +1,5 @@
 package de.fh.giessen.ringversuch.view;
 
-import java.util.Properties;
-
-
 public interface View {
 	
 	void printMessage(String message, boolean isError);
@@ -13,8 +10,9 @@ public interface View {
 
 	void showError(String message);
 	
-	void setSettingsOut(Properties settings);
+	SettingsView getSettings();
 	
-	boolean setSettingsIn(Properties settings);
+	void setSettings(SettingsView settings);
+
 	
 }

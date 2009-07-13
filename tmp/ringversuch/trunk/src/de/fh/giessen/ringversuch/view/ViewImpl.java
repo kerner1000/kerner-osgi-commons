@@ -2,7 +2,8 @@ package de.fh.giessen.ringversuch.view;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -27,6 +28,7 @@ public class ViewImpl implements View, ViewController {
 	final static String LOG_TITLE = "Log";
 	final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
 	private final static Logger LOGGER = Logger.getLogger(ViewImpl.class);
+	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	private final Controller controller;
 	private final ViewImplMain panel;
 	private final ViewImplSettings panelSettings;
@@ -45,6 +47,7 @@ public class ViewImpl implements View, ViewController {
 
 	@Override
 	public void printMessage(final String message, final boolean isError) {
+		LOGGER.debug("print message="+message+", is error="+isError);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				panel.printMessage(message, isError);
@@ -54,6 +57,7 @@ public class ViewImpl implements View, ViewController {
 
 	@Override
 	public void showError(final String message) {
+		LOGGER.debug("show error="+message);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JOptionPane.showMessageDialog(panel, message, "Error",
@@ -79,6 +83,24 @@ public class ViewImpl implements View, ViewController {
 			}
 		});
 	}
+	
+	@Override
+	public SettingsView getSettings() {
+		
+		// TODO event thread
+			return	panelSettings.getSettings();
+	}
+
+	@Override
+	public void setSettings(final SettingsView settings) {
+		LOGGER.debug("new settings="+settings);
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				panelSettings.setSettings(settings);
+			}
+		});
+	}
+
 
 	@Override
 	public void showSettingsView() {
@@ -90,10 +112,10 @@ public class ViewImpl implements View, ViewController {
 	}
 	
 	@Override
-	public void setSettingsOut(final Properties settings) {
+	public void hideSettingsView() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-		panelSettings.setSettings(settings);
+				settingsFrame.setVisible(false);
 			}
 		});
 	}
@@ -150,11 +172,6 @@ public class ViewImpl implements View, ViewController {
 	}
 
 	@Override
-	public Properties getSettings() {
-		return controller.getSettings();
-	}
-
-	@Override
 	public void setOutDir(File selectedFile) {
 		controller.setOutDir(selectedFile);
 	}
@@ -163,14 +180,24 @@ public class ViewImpl implements View, ViewController {
 	public void setSelectedFiles(File[] inputFiles) {
 		controller.setSelectedFiles(inputFiles);
 	}
-	
-	@Override
-	public boolean setSettingsIn(Properties properties){
-		return controller.setSettingsIn(properties);
-	}
 
 	@Override
 	public void start() {
 		controller.start();
+	}
+
+	@Override
+	public boolean loadSettings(File file) {
+		return controller.loadSettings(file);
+	}
+
+	@Override
+	public boolean saveSettingsOut(SettingsView settings) {
+		return controller.saveSettings(settings);
+	}
+
+	@Override
+	public boolean setSettingsOut(SettingsView settings) {
+		return controller.setSettings(settings);
 	}
 }
