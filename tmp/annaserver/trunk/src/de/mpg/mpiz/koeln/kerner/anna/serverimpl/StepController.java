@@ -2,7 +2,7 @@ package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 
 import java.util.concurrent.Callable;
 
-import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
 /**

@@ -10,7 +10,7 @@ import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 

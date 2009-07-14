@@ -8,7 +8,7 @@ import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
 import de.kerner.commons.file.FileUtils;
-import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;

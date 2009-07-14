@@ -7,7 +7,6 @@ Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.lsf.StepRepeat
 Import-Package: de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
- de.mpg.mpiz.koeln.kerner.anna.core,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server,
  de.mpg.mpiz.koeln.kerner.anna.server.data,

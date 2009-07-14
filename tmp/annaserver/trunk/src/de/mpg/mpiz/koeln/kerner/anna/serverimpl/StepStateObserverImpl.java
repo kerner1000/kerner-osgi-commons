@@ -3,8 +3,8 @@ package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep.State;
+import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep.State;
 
 /**
  * @Threadsave (everything guarded by this)

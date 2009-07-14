@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.kerner.anna.other;
+package de.mpg.mpiz.koeln.kerner.anna.abstractstep;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,8 @@ import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.utils.GetServiceAndRun;
-import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 

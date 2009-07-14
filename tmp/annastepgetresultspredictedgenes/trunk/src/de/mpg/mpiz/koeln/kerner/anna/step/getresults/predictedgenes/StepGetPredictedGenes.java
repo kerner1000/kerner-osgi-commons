@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 
-import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;

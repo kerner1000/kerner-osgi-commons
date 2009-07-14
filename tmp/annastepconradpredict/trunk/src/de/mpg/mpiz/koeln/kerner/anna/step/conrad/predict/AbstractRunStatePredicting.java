@@ -8,7 +8,7 @@ import org.bioutils.gtf.GTFElement;
 import org.bioutils.gtf.GTFFile;
 import org.bioutils.gtf.GTFFormatErrorException;
 
-import de.mpg.mpiz.koeln.kerner.anna.core.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 
 abstract class AbstractRunStatePredicting extends AbstractStepProcessBuilder {

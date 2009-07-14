@@ -4,7 +4,7 @@ Bundle-Name: Get-results-predicted-genes Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.getresults.predictedgenes
 Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.getresults.predictedgenes.StepGetPredictedGenes
-Import-Package: de.mpg.mpiz.koeln.kerner.anna.core,
+Import-Package: de.mpg.mpiz.koeln.kerner.anna.abstractstep,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server.data,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,

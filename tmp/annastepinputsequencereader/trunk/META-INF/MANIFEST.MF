@@ -5,7 +5,7 @@ Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.inputsequencereader
 Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.inputsequencereader.StepInputSequenceReader
 Import-Package: de.kerner.osgi.commons.logger.dispatcher,
- de.mpg.mpiz.koeln.kerner.anna.core,
+ de.mpg.mpiz.koeln.kerner.anna.abstractstep,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server,
  de.mpg.mpiz.koeln.kerner.anna.server.data,

@@ -1,8 +1,8 @@
-package de.mpg.mpiz.koeln.kerner.anna.core;
+package de.mpg.mpiz.koeln.kerner.anna.other;
 
 public class StepExecutionException extends Exception {
 
-	private static final long serialVersionUID = -128082253297588445L;
+	private static final long serialVersionUID = 5683856650378220175L;
 
 	public StepExecutionException() {
 		// TODO Auto-generated constructor stub

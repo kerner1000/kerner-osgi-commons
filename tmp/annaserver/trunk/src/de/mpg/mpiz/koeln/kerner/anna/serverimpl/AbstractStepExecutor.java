@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
 abstract class AbstractStepExecutor implements Callable<Boolean> {

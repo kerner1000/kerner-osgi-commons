@@ -12,7 +12,7 @@ import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.utils.AbstractServiceProvider;
-import de.mpg.mpiz.koeln.kerner.anna.other.AbstractStep;
+import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 

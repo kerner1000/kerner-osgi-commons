@@ -6,7 +6,6 @@ Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict.StepConradPredict
 Import-Package: de.kerner.commons,
  de.kerner.osgi.commons.logger.dispatcher,
- de.mpg.mpiz.koeln.kerner.anna.core,
  de.mpg.mpiz.koeln.kerner.anna.other,
  de.mpg.mpiz.koeln.kerner.anna.server.data,
  de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
