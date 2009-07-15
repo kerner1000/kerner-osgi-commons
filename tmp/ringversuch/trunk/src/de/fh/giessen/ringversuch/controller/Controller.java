@@ -18,7 +18,6 @@ public interface Controller {
 	void setModel(Model model);
 	
 	void start();
-	
 	void done(boolean b);
 	
 	/**
@@ -38,5 +37,9 @@ public interface Controller {
 	 * @param settings
 	 */
 	boolean setSettings(SettingsView settings);
+	
+	void setProgress(int current, int max);
+	
+	void cancel();
 
 }

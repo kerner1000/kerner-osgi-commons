@@ -15,4 +15,6 @@ public interface Model {
 	
 	void setSettings(SettingsModel settings);
 
+	void cancel();
+
 }

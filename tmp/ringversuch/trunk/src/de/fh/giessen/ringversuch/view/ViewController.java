@@ -9,6 +9,8 @@ interface ViewController {
 	void setOutDir(File selectedFile);
 
 	void start();
+	
+	void cancel();
 
 	void showSettingsView();
 	

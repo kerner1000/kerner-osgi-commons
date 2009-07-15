@@ -37,7 +37,6 @@ public class ViewImpl implements View, ViewController {
 	public ViewImpl(final Controller controller) {
 		this.controller = controller;
 		// Create and set up the content pane.
-		// TODO must it be initialized in EventThread?
 		panel = new ViewImplMain(this);
 		panelSettings = new ViewImplSettings(this);
 		setLookAndFeel();
@@ -71,6 +70,16 @@ public class ViewImpl implements View, ViewController {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				panel.setOnline();
+			}
+		});
+	}
+	
+	
+	@Override
+	public void setReady() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				panel.setReady();
 			}
 		});
 	}
@@ -116,6 +125,15 @@ public class ViewImpl implements View, ViewController {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				settingsFrame.setVisible(false);
+			}
+		});
+	}
+	
+	@Override
+	public void setProgress(final int current, final int max) {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				panel.setProgress(current, max);
 			}
 		});
 	}
@@ -185,6 +203,11 @@ public class ViewImpl implements View, ViewController {
 	public void start() {
 		controller.start();
 	}
+	
+	@Override
+	public void cancel() {
+		controller.cancel();
+	}
 
 	@Override
 	public boolean loadSettings(File file) {
@@ -200,4 +223,5 @@ public class ViewImpl implements View, ViewController {
 	public boolean setSettingsOut(SettingsView settings) {
 		return controller.setSettings(settings);
 	}
+
 }

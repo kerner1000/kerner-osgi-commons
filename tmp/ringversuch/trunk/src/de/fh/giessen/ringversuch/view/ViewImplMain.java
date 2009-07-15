@@ -64,7 +64,6 @@ class ViewImplMain extends JPanel {
 			else if (e.getSource() == buttonSave) {
 				final int returnVal = fileChooseroutDir.showSaveDialog(component);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					System.err.println(fileChooseroutDir.getSelectedFile());
 					controller.setOutDir(fileChooseroutDir.getSelectedFile());
 					
 					// TODO that should do the model / controller
@@ -80,6 +79,10 @@ class ViewImplMain extends JPanel {
 			
 			else if (e.getSource() == menuAbout) {
 				showAbout();
+			}
+			
+			else if (e.getSource() == buttonCancel) {
+				controller.cancel();
 			}
 
 			else if (e.getSource() == buttonStart) {
@@ -248,7 +251,7 @@ class ViewImplMain extends JPanel {
 		return vier;
 	}
 
-	private void setOffline() {
+	void setOffline() {
 		menu.setEnabled(false);
 		buttonCancel.setEnabled(false);
 		buttonSave.setEnabled(false);
@@ -263,6 +266,17 @@ class ViewImplMain extends JPanel {
 		buttonSelect.setEnabled(true);
 		buttonSave.setEnabled(true);
 		setCursor(null);
+		progressBar.setValue(0);
+	}
+	
+	void setReady() {
+		menu.setEnabled(true);
+		buttonCancel.setEnabled(false);
+		buttonStart.setEnabled(true);
+		buttonSelect.setEnabled(true);
+		buttonSave.setEnabled(true);
+		setCursor(null);
+		progressBar.setValue(0);
 	}
 
 	void setWorking() {
@@ -277,13 +291,18 @@ class ViewImplMain extends JPanel {
 		progressBar.setValue(progress);
 	}
 
-	public void setInputFilesSelectedOutputDirSelected() {
+	void setInputFilesSelectedOutputDirSelected() {
 		menu.setEnabled(true);
 		buttonCancel.setEnabled(false);
 		buttonStart.setEnabled(true);
 		buttonSelect.setEnabled(true);
 		buttonSave.setEnabled(true);
 		setCursor(null);
+	}
+	
+	void setProgress(int current, int max) {
+		progressBar.setMaximum(max);
+		progressBar.setValue(current);
 	}
 
 	boolean inputFilesSelectedOutputDirSelected() {

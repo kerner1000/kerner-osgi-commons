@@ -7,12 +7,18 @@ public interface View {
 	void setOnline();
 
 	void setWorking();
+	
+	void setReady();
 
 	void showError(String message);
 	
 	SettingsView getSettings();
 	
 	void setSettings(SettingsView settings);
+
+	void setProgress(int current, int max);
+
+	
 
 	
 }

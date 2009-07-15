@@ -20,28 +20,29 @@ import de.fh.giessen.ringversuch.view.ViewImpl;
 public class ControllerImpl implements Controller {
 
 	private final static Logger LOGGER = Logger.getLogger(ControllerImpl.class);
+	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	private View view;
 	private Model model;
 
 	@Override
-	public void printMessage(String message, boolean isError) {
+	public synchronized void printMessage(String message, boolean isError) {
 		LOGGER.debug("printMessage=" + message);
 		if (view != null)
 			view.printMessage(message, isError);
 	}
 
 	@Override
-	public void setOutDir(File selectedDir) {
+	public synchronized void setOutDir(File selectedDir) {
 		LOGGER.debug("setOutDir=" + selectedDir);
 		if (model != null)
 			model.setOutDir(selectedDir);
 		else
 			LOGGER.fatal("model not initialized jet",
-					new NullPointerException());
+					new NullPointerException("model not initialized jet"));
 	}
 
 	@Override
-	public void showError(String message) {
+	public synchronized void showError(String message) {
 		LOGGER.debug("showError=" + message);
 		if (view != null)
 			view.showError(message);
@@ -79,42 +80,54 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void setView(View view) {
+	public synchronized void setView(View view) {
 		LOGGER.debug("setView=" + view);
 		this.view = view;
 	}
 
 	@Override
-	public void setModel(Model model) {
+	public synchronized void setModel(Model model) {
 		LOGGER.debug("setModel=" + model);
 		this.model = model;
 	}
 
 	@Override
-	public void setSelectedFiles(File[] inputFiles) {
+	public synchronized void setSelectedFiles(File[] inputFiles) {
 		LOGGER.info("setSelectedFiles=" + inputFiles);
 		if (model != null)
 			model.setSelectedFiles(inputFiles);
 		else
 			LOGGER.fatal("model not initialized jet",
-					new NullPointerException());
+					new NullPointerException("model not initialized jet"));
 	}
 
 	@Override
-	public void start() {
-		view.setWorking();
-		model.start();
-		view.setOnline();
+	public synchronized void start() {
+		exe.submit(new Runnable() {
+			@Override
+			public void run() {
+				view.setWorking();
+				model.start();
+//				view.setOnline();
+			}
+		});
 	}
 	
 	@Override
-	public void done(boolean b) {
-		view.setOnline();
+	public synchronized void done(boolean b) {
+		LOGGER.debug("done. setting view ready.");
+		view.setReady();
+	}
+	
+	@Override
+	public synchronized void setProgress(int current, int max) {
+		view.setProgress(current, max);
 	}
 
 	@Override
-	public boolean loadSettings(File file) {
+	public synchronized boolean loadSettings(File file) {
 		try {
+			LOGGER.debug("loading settings");
 			model.setSettings(SettingsConverter.propertiesToModelSettings(SettingsConverter.fileToProperties(file)));
 			return true;
 		} catch (Exception e) {
@@ -125,8 +138,9 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public boolean saveSettings(SettingsView settings) {
+	public synchronized boolean saveSettings(SettingsView settings) {
 		 try {
+			 LOGGER.debug("saving settings");
 		 model.setSettings(SettingsConverter.viewSettingsToModelSettings(settings));
 			SettingsConverter.propertiesToFile(SettingsConverter.settingsToProperties(model.getSettings()), new File(Preferences.SETTINGS_FILE));
 			return true;
@@ -138,8 +152,9 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public boolean setSettings(SettingsView settings) {
+	public synchronized boolean setSettings(SettingsView settings) {
 		 try {
+			 LOGGER.debug("setting settings");
 			model.setSettings(SettingsConverter.viewSettingsToModelSettings(settings));
 			LOGGER.debug("settings successfull set");
 			return true;
@@ -149,4 +164,10 @@ public class ControllerImpl implements Controller {
 			return false;
 		}
 	}
+
+	@Override
+	public synchronized void cancel() {
+		model.cancel();
+	}
+
 }

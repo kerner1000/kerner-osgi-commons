@@ -104,6 +104,8 @@ class SettingsConverter {
 	}
 
 	static Properties settingsToProperties(SettingsModel settings) {
+		LOGGER.debug(new StringBuilder()
+				.append("converting view settings to properties"));
 		final SettingsView sv = modelSettingsToViewSettings(settings);
 		final Properties p = new Properties();
 		p.setProperty(LABOR_NO_COLUMN, sv.getLaborIdentColumn());
@@ -122,6 +124,9 @@ class SettingsConverter {
 
 	static SettingsModel viewSettingsToModelSettings(SettingsView settings)
 			throws InvalidSettingsException {
+		LOGGER.debug(new StringBuilder().append(
+				"converting view settings to model settings:").append(" ")
+				.append("viewSettings=").append(settings));
 		final SettingsModel sm = new SettingsModelImpl();
 		sm.setLaborIdentColumn(modelGetLaborIdentColumn(settings
 				.getLaborIdentColumn()));
@@ -140,10 +145,16 @@ class SettingsConverter {
 				.getValuesStartColumn()));
 		sm.setValuesStartRow(modelGetValuesStartRow(settings
 				.getValuesStartRow()));
+		LOGGER.debug(new StringBuilder().append(
+		"done converting view settings to model settings:").append(" ")
+		.append("modelSettings=").append(sm));
 		return sm;
 	}
 
 	static SettingsView modelSettingsToViewSettings(SettingsModel settings) {
+		LOGGER.debug(new StringBuilder().append(
+		"converting model settings to view settings:").append(" ")
+		.append("modelSettings=").append(settings));
 		final SettingsView sv = new SettingsViewImpl();
 		sv.setLaborIdentColumn(viewGetLaborIdentColumn(settings
 				.getLaborIdentColumn()));
@@ -163,6 +174,9 @@ class SettingsConverter {
 				.setValuesStartRow(viewGetValuesStartRow(settings
 						.getValuesStartRow()));
 		sv.setValuesEndRow(viewGetValuesEndRow(settings.getValuesEndRow()));
+		LOGGER.debug(new StringBuilder().append(
+		"done converting model settings to view settings:").append(" ")
+		.append("viewSettings=").append(sv));
 		return sv;
 	}
 
@@ -207,7 +221,7 @@ class SettingsConverter {
 	}
 
 	private static String viewGetLaborIdentColumn(int i) {
-		return intToString(i +1 );
+		return intToString(i + 1);
 	}
 
 	private static int modelGetLaborIdentRow(final String string)
@@ -291,7 +305,11 @@ class SettingsConverter {
 				"probe identifier invalid for value " + string);
 		if (string == null || string.length() == 0)
 			throw xx;
-		return string;
+		// convert single numbers like "1" to Double representation like "1.0"
+		LOGGER.debug("adapting string representation for probe identifier: " + string);
+		final String r = new Double(string).toString();
+		LOGGER.debug("adapted representation: " + r);
+		return r;
 	}
 
 	private static int modelGetLaborIdentColumn(String laborIdentColumn)
@@ -367,8 +385,8 @@ class SettingsConverter {
 		final String string = Character.toString((char) (i + 64));
 		LOGGER.debug(new StringBuilder()
 				.append("converting integer to string:").append(
-						Preferences.NEW_LINE).append("integer=").append(i).append(", ")
-				.append("string=").append(string));
+						Preferences.NEW_LINE).append("integer=").append(i)
+				.append(", ").append("string=").append(string));
 		return string;
 	}
 

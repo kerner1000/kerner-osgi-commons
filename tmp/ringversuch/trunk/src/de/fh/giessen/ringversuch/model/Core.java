@@ -40,6 +40,7 @@ class Core {
 		final Collection<Probe> probes = new ArrayList<Probe>();
 		final String laborIdent = getLaborIdentFromSheet(wb.getSheetAt(0),
 				settings);
+		LOGGER.debug("laborIdent=" + laborIdent);
 		for (int i = 0; i < no; i++) {
 			final HSSFSheet sheet = wb.getSheetAt(i);
 			final Probe probe = getProbeFromSheet(sheet, settings);
@@ -161,7 +162,10 @@ class Core {
 		LOGGER.debug("labors="+labors + Preferences.NEW_LINE+"probeIdent="+probeIdent);
 		Collection<String> keys = null;
 		for (Labor l : labors) {
+			LOGGER.debug("currentLabor="+l);
+			LOGGER.debug("currentProbeIdent="+probeIdent);
 			final Probe p = l.getProbe(probeIdent);
+			LOGGER.debug("got probe form labor: "+p);
 			Collection<String> tmpKeys = p.getCommonSubstanceKeys();
 			if (keys == null) {
 				keys = new ArrayList<String>(tmpKeys);

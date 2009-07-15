@@ -40,6 +40,7 @@ class ProbeImpl implements Probe {
 
 	@Override
 	public Collection<String> getCommonSubstanceKeys() {
+		LOGGER.debug("getting substances identificators");
 		Collection<String> result = new ArrayList<String>();
 		for(Substance s : analyses.iterator().next().getSubstances()){
 			final String key = s.getIdentifier();
@@ -49,6 +50,7 @@ class ProbeImpl implements Probe {
 				LOGGER.error("Warning: Substance " + key + " is not contained in every analyse of probe " + this.getIdentifier());
 			}
 		}
+		LOGGER.debug("got substances identificators: " + result);
 		return result;
 	}
 

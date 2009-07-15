@@ -2,11 +2,16 @@ package de.fh.giessen.ringversuch.model;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
+
+import de.fh.giessen.ringversuch.common.Preferences;
+
 
 class LaborImpl implements Labor {
 	
 	private final String ident;
 	private final Collection<Probe> probes;
+	private final static Logger LOGGER = Logger.getLogger(LaborImpl.class);
 	
 	LaborImpl(String ident, Collection<Probe> probes) throws InvalidFormatException{
 		// TODO check if probeIdents are unique
@@ -41,11 +46,14 @@ class LaborImpl implements Labor {
 	@Override
 	public Probe getProbe(String probeIdent) {
 		// TODO defensive copying ?
+		LOGGER.debug("getting probe for identifier \"" + probeIdent + "\"");
 		for(Probe p : probes){
 			if(p.getIdentifier().equalsIgnoreCase(probeIdent)){
+				LOGGER.debug("got probe: " + p);
 				return p;
 			}
 		}
+		LOGGER.error("could not get probe for identifier \"" + probeIdent + "\"." + Preferences.NEW_LINE + "registered probes: " + probes);
 		return null;
 	}
 
