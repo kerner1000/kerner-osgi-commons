@@ -1,6 +1,6 @@
-package de.fh.giessen.ringversuch.model;
+package de.fh.giessen.ringversuch.model.settings;
 
-public interface SettingsModel {
+public interface ModelSettings {
 
 	void setLaborIdentColumn(int laborIdentColumn);
 

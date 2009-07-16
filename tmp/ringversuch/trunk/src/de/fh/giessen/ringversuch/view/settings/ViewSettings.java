@@ -1,6 +1,6 @@
-package de.fh.giessen.ringversuch.view;
+package de.fh.giessen.ringversuch.view.settings;
 
-public interface SettingsView {
+public interface ViewSettings {
 
 	void setLaborIdentColumn(String laborIdentColumn);
 

@@ -1,8 +1,8 @@
-package de.fh.giessen.ringversuch.model;
+package de.fh.giessen.ringversuch.model.settings;
 
 import java.util.Properties;
 
-public class SettingsModelImpl implements SettingsModel {
+public class ModelSettingsImpl implements ModelSettings {
 
 	private int laborNoRow = -1;
 	private int laborNoColumn = -1;

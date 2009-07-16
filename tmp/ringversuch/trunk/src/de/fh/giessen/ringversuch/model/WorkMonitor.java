@@ -1,12 +1,12 @@
 package de.fh.giessen.ringversuch.model;
 
-import de.fh.giessen.ringversuch.controller.Controller;
+import de.fh.giessen.ringversuch.controller.ControllerOut;
 
 class WorkMonitor {
 	
-	private final Controller controller;
+	private final ControllerOut controller;
 	
-	WorkMonitor(Controller controller) {
+	WorkMonitor(ControllerOut controller) {
 		this.controller = controller;
 	}
 	

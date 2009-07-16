@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.view;
 
+import de.fh.giessen.ringversuch.view.settings.ViewSettings;
+
 public interface View {
 	
 	void printMessage(String message, boolean isError);
@@ -12,9 +14,9 @@ public interface View {
 
 	void showError(String message);
 	
-	SettingsView getSettings();
+	ViewSettings getSettings();
 	
-	void setSettings(SettingsView settings);
+	void setSettings(ViewSettings settings);
 
 	void setProgress(int current, int max);
 

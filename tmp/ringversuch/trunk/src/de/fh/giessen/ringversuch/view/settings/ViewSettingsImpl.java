@@ -1,6 +1,7 @@
-package de.fh.giessen.ringversuch.view;
+package de.fh.giessen.ringversuch.view.settings;
 
-public class SettingsViewImpl implements SettingsView {
+
+public class ViewSettingsImpl implements ViewSettings {
 	
 	private String laborIdentColumn = "A";
 	private String laborIdentRow = "1";

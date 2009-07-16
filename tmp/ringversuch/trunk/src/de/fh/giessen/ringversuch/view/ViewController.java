@@ -2,6 +2,8 @@ package de.fh.giessen.ringversuch.view;
 
 import java.io.File;
 
+import de.fh.giessen.ringversuch.view.settings.ViewSettings;
+
 interface ViewController {
 
 	void setSelectedFiles(File[] inputFiles);
@@ -14,11 +16,11 @@ interface ViewController {
 
 	void showSettingsView();
 	
-	SettingsView getSettings();
+	ViewSettings getSettings();
 	
-	boolean setSettingsOut(SettingsView settings);
+	boolean setSettingsOut(ViewSettings settings);
 
-	boolean saveSettingsOut(SettingsView settings);
+	boolean saveSettingsOut(ViewSettings settings);
 
 	boolean loadSettings(File file);
 

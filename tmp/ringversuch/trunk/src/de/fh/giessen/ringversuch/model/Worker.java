@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
+import de.fh.giessen.ringversuch.model.settings.ModelSettings;
+
 
 class Worker implements Callable<Boolean> {
 
 	private final File outDir;
 	private final File[] files;
-	private final SettingsModel settings;
+	private final ModelSettings settings;
 	private final WorkMonitor monitor;
 
-	Worker(File[] inputFiles, File outDir, SettingsModel settings, WorkMonitor monitor) {
+	Worker(File[] inputFiles, File outDir, ModelSettings settings, WorkMonitor monitor) {
 		this.outDir = outDir;
 		this.files = inputFiles;
 		this.settings = settings;

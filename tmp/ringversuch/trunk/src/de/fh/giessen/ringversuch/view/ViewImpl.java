@@ -12,7 +12,8 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
-import de.fh.giessen.ringversuch.controller.Controller;
+import de.fh.giessen.ringversuch.controller.ControllerIn;
+import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
 public class ViewImpl implements View, ViewController {
 
@@ -29,12 +30,12 @@ public class ViewImpl implements View, ViewController {
 	final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
 	private final static Logger LOGGER = Logger.getLogger(ViewImpl.class);
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
-	private final Controller controller;
+	private final ControllerIn controller;
 	private final ViewImplMain panel;
 	private final ViewImplSettings panelSettings;
 	private JFrame settingsFrame;
 
-	public ViewImpl(final Controller controller) {
+	public ViewImpl(final ControllerIn controller) {
 		this.controller = controller;
 		// Create and set up the content pane.
 		panel = new ViewImplMain(this);
@@ -94,14 +95,14 @@ public class ViewImpl implements View, ViewController {
 	}
 	
 	@Override
-	public SettingsView getSettings() {
+	public ViewSettings getSettings() {
 		
 		// TODO event thread
 			return	panelSettings.getSettings();
 	}
 
 	@Override
-	public void setSettings(final SettingsView settings) {
+	public void setSettings(final ViewSettings settings) {
 		LOGGER.debug("new settings="+settings);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -215,12 +216,12 @@ public class ViewImpl implements View, ViewController {
 	}
 
 	@Override
-	public boolean saveSettingsOut(SettingsView settings) {
+	public boolean saveSettingsOut(ViewSettings settings) {
 		return controller.saveSettings(settings);
 	}
 
 	@Override
-	public boolean setSettingsOut(SettingsView settings) {
+	public boolean setSettingsOut(ViewSettings settings) {
 		return controller.setSettings(settings);
 	}
 

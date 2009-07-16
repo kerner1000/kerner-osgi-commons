@@ -19,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import de.fh.giessen.ringversuch.common.Preferences;
+import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 class Core {
 
@@ -29,7 +30,7 @@ class Core {
 	private final static Logger LOGGER = Logger.getLogger(Core.class);
 	public static final String NEW_LINE = System.getProperty("line.separator");
 
-	static Labor readLaborFile(final File file, final SettingsModel settings)
+	static Labor readLaborFile(final File file, final ModelSettings settings)
 			throws FileNotFoundException, IOException, InvalidFormatException {
 		LOGGER.debug("reading file " + file);
 		final POIFSFileSystem fs = new POIFSFileSystem(
@@ -53,7 +54,7 @@ class Core {
 	}
 
 	private static Probe getProbeFromSheet(final HSSFSheet sheet,
-			final SettingsModel settings) {
+			final ModelSettings settings) {
 		final int rowIndex = settings.getProbeIdentRow();
 		final int columnIndex = settings.getProbeIdentColumn();
 		LOGGER.debug("probe indices: " + rowIndex + " " + columnIndex);
@@ -69,7 +70,7 @@ class Core {
 	}
 
 	private static Collection<Analyse> getAnalysesFromSheet(
-			final HSSFSheet sheet, final SettingsModel settings) {
+			final HSSFSheet sheet, final ModelSettings settings) {
 		final int startRow = settings.getValuesStartRow();
 		final int startColumn = settings.getValuesStartColumn();
 		final int endRow = settings.getValuesEndRow();
@@ -104,7 +105,7 @@ class Core {
 	}
 
 	private static String getLaborIdentFromSheet(final HSSFSheet sheet,
-			final SettingsModel settings) {
+			final ModelSettings settings) {
 		final int rowIndex = settings.getLaborIdentRow();
 		final HSSFRow row = sheet.getRow(rowIndex);
 		final HSSFCell cell = row.getCell(settings.getLaborIdentColumn());
@@ -128,7 +129,7 @@ class Core {
 	}
 
 	public static Collection<OutSubstance> getOutSubstancesFromLabors(
-			final Collection<Labor> labors, final SettingsModel settings)
+			final Collection<Labor> labors, final ModelSettings settings)
 			throws InvalidFormatException {
 		final Collection<OutSubstance> result = new ArrayList<OutSubstance>();
 		final String probeIdent = settings.getProbeIdent();

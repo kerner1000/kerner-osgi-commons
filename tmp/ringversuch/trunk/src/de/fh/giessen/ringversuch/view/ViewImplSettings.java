@@ -22,6 +22,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
+import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
+import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
 class ViewImplSettings extends JPanel {
 
@@ -265,7 +267,7 @@ class ViewImplSettings extends JPanel {
 		buttonUse.addActionListener(listener);
 	}
 
-	void setSettings(SettingsView settings) {
+	void setSettings(ViewSettings settings) {
 		fieldLaborRow.setText(settings.getLaborIdentRow());
 		fieldLaborColumn.setText(settings.getLaborIdentColumn());
 		fieldProbeRow.setText(settings.getProbeIdentRow());
@@ -279,8 +281,8 @@ class ViewImplSettings extends JPanel {
 		fieldValuesBeginColumn.setText(settings.getValuesStartColumn());
 	}
 
-	SettingsView getSettings() {
-		final SettingsView settings = new SettingsViewImpl();
+	ViewSettings getSettings() {
+		final ViewSettings settings = new ViewSettingsImpl();
 		settings.setLaborIdentColumn(fieldLaborColumn.getText());
 		settings.setLaborIdentRow(fieldLaborRow.getText());
 		settings.setProbeIdent(fieldProbeNo.getText());

@@ -10,10 +10,10 @@ import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.model.InvalidSettingsException;
-import de.fh.giessen.ringversuch.model.SettingsModel;
-import de.fh.giessen.ringversuch.model.SettingsModelImpl;
-import de.fh.giessen.ringversuch.view.SettingsView;
-import de.fh.giessen.ringversuch.view.SettingsViewImpl;
+import de.fh.giessen.ringversuch.model.settings.ModelSettings;
+import de.fh.giessen.ringversuch.model.settings.ModelSettingsImpl;
+import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
+import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
 class SettingsConverter {
 
@@ -76,15 +76,15 @@ class SettingsConverter {
 	 * @return
 	 * @throws InvalidSettingsException
 	 */
-	static SettingsModel propertiesToModelSettings(Properties properties)
+	static ModelSettings propertiesToModelSettings(Properties properties)
 			throws InvalidSettingsException {
 		LOGGER.debug("converting properties to model settings");
 		return viewSettingsToModelSettings(propertiesToViewSettings(properties));
 	}
 
-	static SettingsView propertiesToViewSettings(Properties properties) {
+	static ViewSettings propertiesToViewSettings(Properties properties) {
 		LOGGER.debug("converting properties to view settings");
-		final SettingsView sv = new SettingsViewImpl();
+		final ViewSettings sv = new ViewSettingsImpl();
 		sv.setLaborIdentColumn(properties.getProperty(LABOR_NO_COLUMN));
 		sv.setLaborIdentRow(properties.getProperty(LABOR_NO_ROW));
 		sv.setProbeIdent(properties.getProperty(PROBE_VALUE));
@@ -103,10 +103,10 @@ class SettingsConverter {
 		return sv;
 	}
 
-	static Properties settingsToProperties(SettingsModel settings) {
+	static Properties settingsToProperties(ModelSettings settings) {
 		LOGGER.debug(new StringBuilder()
 				.append("converting view settings to properties"));
-		final SettingsView sv = modelSettingsToViewSettings(settings);
+		final ViewSettings sv = modelSettingsToViewSettings(settings);
 		final Properties p = new Properties();
 		p.setProperty(LABOR_NO_COLUMN, sv.getLaborIdentColumn());
 		p.setProperty(LABOR_NO_ROW, sv.getLaborIdentRow());
@@ -122,12 +122,12 @@ class SettingsConverter {
 		return p;
 	}
 
-	static SettingsModel viewSettingsToModelSettings(SettingsView settings)
+	static ModelSettings viewSettingsToModelSettings(ViewSettings settings)
 			throws InvalidSettingsException {
 		LOGGER.debug(new StringBuilder().append(
 				"converting view settings to model settings:").append(" ")
 				.append("viewSettings=").append(settings));
-		final SettingsModel sm = new SettingsModelImpl();
+		final ModelSettings sm = new ModelSettingsImpl();
 		sm.setLaborIdentColumn(modelGetLaborIdentColumn(settings
 				.getLaborIdentColumn()));
 		sm.setLaborIdentRow(modelGetLaborIdentRow(settings.getLaborIdentRow()));
@@ -151,11 +151,11 @@ class SettingsConverter {
 		return sm;
 	}
 
-	static SettingsView modelSettingsToViewSettings(SettingsModel settings) {
+	static ViewSettings modelSettingsToViewSettings(ModelSettings settings) {
 		LOGGER.debug(new StringBuilder().append(
 		"converting model settings to view settings:").append(" ")
 		.append("modelSettings=").append(settings));
-		final SettingsView sv = new SettingsViewImpl();
+		final ViewSettings sv = new ViewSettingsImpl();
 		sv.setLaborIdentColumn(viewGetLaborIdentColumn(settings
 				.getLaborIdentColumn()));
 		sv.setLaborIdentRow(viewGetLaborIdentRow(settings.getLaborIdentRow()));
