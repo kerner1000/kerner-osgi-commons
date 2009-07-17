@@ -68,6 +68,9 @@ public class ModelImpl implements Model {
 		this.settings = settings;
 	}
 
+	/**
+	 * Must not be synchronized !!
+	 */
 	@Override
 	public void cancel() {
 		currentJob.cancel(true);
