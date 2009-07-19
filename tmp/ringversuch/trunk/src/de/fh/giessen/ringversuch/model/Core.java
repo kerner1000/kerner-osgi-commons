@@ -189,6 +189,7 @@ class Core {
 
 	public static boolean collectionsAreEqual(final Collection<String> col1,
 			final Collection<String> col2) {
+		// TODO also check second collection
 		for (String s : col1) {
 			if (!col2.contains(s)) {
 				LOGGER.error("collections not equal:\n" + col1 + "\n" + col2);
@@ -219,13 +220,13 @@ class Core {
 			writeHeaderRow(sheet, entry.getValues().size());
 
 			final HSSFRow valueRow = sheet.createRow(currentRow);
-			System.out.println(s);
+//			System.out.println(s);
 			int currentColumn = 3;
 			for (String value : entry.getValues()) {
-				LOGGER.debug("writing " + value + " to " + currentRow + " "
+				final HSSFCell laborNameCell = valueRow.createCell(currentColumn);
+				laborNameCell.setCellValue(new HSSFRichTextString(s.getIdent()));
+				LOGGER.debug("writing value=" + value + " to row=" + currentRow + ", col="
 						+ currentColumn);
-				System.out.println("writing " + value + " to " + currentRow
-						+ " " + currentColumn);
 				final HSSFCell valueCell = valueRow.createCell(currentColumn);
 				valueCell.setCellValue(new HSSFRichTextString(value));
 				currentColumn++;
