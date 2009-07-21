@@ -7,11 +7,12 @@ class OutSubstanceImpl implements OutSubstance {
 	private final String probeIdent, substanceIdent;
 	private final Collection<OutSubstanceEntry> entries;
 	
-	OutSubstanceImpl(String ident, String probeIdent, Collection<OutSubstanceEntry> entries) {
+	OutSubstanceImpl(String substanceIdent, String probeIdent, Collection<OutSubstanceEntry> entries) {
 		this.entries = entries;
 		this.probeIdent = probeIdent;
-		this.substanceIdent = ident;
+		this.substanceIdent = substanceIdent;
 	}
+
 	
 	@Override
 	public String toString(){
@@ -25,7 +26,7 @@ class OutSubstanceImpl implements OutSubstance {
 	}
 
 	@Override
-	public String getIdent() {
+	public String getSubstanceIdent() {
 		return substanceIdent;
 	}
 

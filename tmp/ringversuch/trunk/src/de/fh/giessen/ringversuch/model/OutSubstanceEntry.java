@@ -4,7 +4,7 @@ import java.util.Collection;
 
 interface OutSubstanceEntry {
 	
-	String getIdent();
+	Labor getLabor();
 	Collection<String> getValues();
 
 }

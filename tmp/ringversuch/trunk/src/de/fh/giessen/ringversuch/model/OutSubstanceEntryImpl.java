@@ -4,18 +4,14 @@ import java.util.Collection;
 
 class OutSubstanceEntryImpl implements OutSubstanceEntry {
 
-	private final String ident;
 	private final Collection<String> values;
+	private final Labor labor;
 	
-	OutSubstanceEntryImpl(String identifier, Collection<String> values) {
-		this.ident = identifier;
+	OutSubstanceEntryImpl(Labor labor, Collection<String> values) {
 		this.values = values;
+		this.labor = labor;
 	}
 
-	@Override
-	public String getIdent() {
-		return ident;
-	}
 
 	@Override
 	public Collection<String> getValues() {
@@ -25,6 +21,11 @@ class OutSubstanceEntryImpl implements OutSubstanceEntry {
 
 	@Override
 	public String toString(){
-		return ident + ":" + values;
+		return labor.getIdentifier() + ":" + values;
+	}
+
+	@Override
+	public Labor getLabor() {
+		return labor;
 	}
 }

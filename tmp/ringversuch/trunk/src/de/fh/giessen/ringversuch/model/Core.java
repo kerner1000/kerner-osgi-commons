@@ -137,22 +137,7 @@ class Core {
 				probeIdent);
 		for (String s : commonKeys) {
 			result.add(new OutSubstanceImpl(s, probeIdent,
-					getOutSubstanceEntry(s, labors, probeIdent)));
-		}
-		return result;
-	}
-
-	private static Collection<OutSubstanceEntry> getOutSubstanceEntry(
-			final String substanceIdent, final Collection<Labor> labors,
-			final String probeIdent) {
-		final Collection<OutSubstanceEntry> result = new ArrayList<OutSubstanceEntry>();
-		for (Labor l : labors) {
-			Probe p = l.getProbe(probeIdent);
-			Collection<String> values = new ArrayList<String>();
-			for (Analyse a : p.getAnalyses()) {
-				values.add(a.getValueForSubstance(substanceIdent));
-			}
-			result.add(new OutSubstanceEntryImpl(l.getIdentifier(), values));
+					getOutSubstanceEntrys(s, labors, probeIdent)));
 		}
 		return result;
 	}
@@ -186,6 +171,22 @@ class Core {
 		}
 		return keys;
 	}
+	
+	private static Collection<OutSubstanceEntry> getOutSubstanceEntrys(
+			final String substanceIdent, final Collection<Labor> labors,
+			final String probeIdent) {
+		final Collection<OutSubstanceEntry> result = new ArrayList<OutSubstanceEntry>();
+		for (Labor l : labors) {
+			Probe p = l.getProbe(probeIdent);
+			Collection<String> values = new ArrayList<String>();
+			for (Analyse a : p.getAnalyses()) {
+				values.add(a.getValueForSubstance(substanceIdent));
+			}
+			System.err.println(l);
+			result.add(new OutSubstanceEntryImpl(l, values));
+		}
+		return result;
+	}
 
 	public static boolean collectionsAreEqual(final Collection<String> col1,
 			final Collection<String> col2) {
@@ -203,7 +204,7 @@ class Core {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(s.getProbeIdent());
 		sb.append("_");
-		sb.append(s.getIdent());
+		sb.append(s.getSubstanceIdent());
 		return sb.toString();
 	}
 
@@ -216,15 +217,15 @@ class Core {
 
 		int currentRow = 5;
 		for (OutSubstanceEntry entry : s.getEntries()) {
-			writeProbeNr(entry.getIdent(), sheet);
+			writeProbeNr(s.getProbeIdent(), sheet);
 			writeHeaderRow(sheet, entry.getValues().size());
 
 			final HSSFRow valueRow = sheet.createRow(currentRow);
 //			System.out.println(s);
 			int currentColumn = 3;
 			for (String value : entry.getValues()) {
-				final HSSFCell laborNameCell = valueRow.createCell(currentColumn);
-				laborNameCell.setCellValue(new HSSFRichTextString(s.getIdent()));
+				final HSSFCell laborNameCell = valueRow.createCell(1);
+				laborNameCell.setCellValue(new HSSFRichTextString(entry.getLabor().getIdentifier()));
 				LOGGER.debug("writing value=" + value + " to row=" + currentRow + ", col="
 						+ currentColumn);
 				final HSSFCell valueCell = valueRow.createCell(currentColumn);

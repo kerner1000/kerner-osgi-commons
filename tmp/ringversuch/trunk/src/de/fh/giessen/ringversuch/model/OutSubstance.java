@@ -5,7 +5,7 @@ import java.util.Collection;
 interface OutSubstance {
 	
 	String getProbeIdent();
-	String getIdent();
+	String getSubstanceIdent();
 	Collection<OutSubstanceEntry> getEntries();
 
 }
