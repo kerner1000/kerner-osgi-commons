@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bioutils Plug-in
+Bundle-SymbolicName: de.bioutils
+Bundle-Version: 0.0.1
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: lib/bioutils-0.0.1.jar,
+ .
+Export-Package: org.bioutils,
+ org.bioutils.blast,
+ org.bioutils.blast.filter,
+ org.bioutils.blast.parser,
+ org.bioutils.blast.printer,
+ org.bioutils.blast.utils,
+ org.bioutils.fasta,
+ org.bioutils.gtf
+Import-Package: de.kerner.commons,
+ de.kerner.commons.file,
+ de.kerner.commons.xml
