@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.bioutils.fasta.FASTASequence;
-import org.bioutils.gtf.GTFElement;
+import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gtf.GTFElement;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;

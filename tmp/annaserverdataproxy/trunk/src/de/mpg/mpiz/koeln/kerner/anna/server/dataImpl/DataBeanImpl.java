@@ -9,8 +9,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.bioutils.fasta.FASTASequence;
-import org.bioutils.gtf.GTFElement;
+import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gtf.GTFElement;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBean;

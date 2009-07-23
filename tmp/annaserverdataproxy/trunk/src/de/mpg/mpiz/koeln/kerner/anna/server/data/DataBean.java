@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.bioutils.fasta.FASTASequence;
-import org.bioutils.gtf.GTFElement;
+import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gtf.GTFElement;
 
 public interface DataBean extends Serializable {
 

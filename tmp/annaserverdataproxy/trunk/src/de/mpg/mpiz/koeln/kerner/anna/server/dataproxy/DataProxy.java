@@ -3,8 +3,8 @@ package de.mpg.mpiz.koeln.kerner.anna.server.dataproxy;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.bioutils.fasta.FASTASequence;
-import org.bioutils.gtf.GTFElement;
+import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gtf.GTFElement;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 
