@@ -17,17 +17,17 @@ public class TrainLocal extends AbstractConradTrainStep {
 
 		protected Process(File executableDir, File workingDir,
 				File trainingFile, LogDispatcher logger) {
-			super(executableDir, workingDir , logger);
+			super(executableDir, workingDir, logger);
 			this.trainingFile = trainingFile;
 			// TODO WAS IS DAS HIER WIEDER FÜR EIN AFFENSCHEISS !?!?!
-			try{
-				System.out.println("executableDir="+executableDir);
-				System.out.println("workingDir="+workingDir);
-				System.out.println("executableDir="+executableDir);
-			logger.debug(this, "executableDir="+executableDir);
-			logger.debug(this, "workingDir="+workingDir);
-			logger.debug(this, "executableDir="+executableDir);
-			}catch(Throwable t){
+			try {
+				System.out.println("executableDir=" + executableDir);
+				System.out.println("workingDir=" + workingDir);
+				System.out.println("executableDir=" + executableDir);
+				logger.debug(this, "executableDir=" + executableDir);
+				logger.debug(this, "workingDir=" + workingDir);
+				logger.debug(this, "executableDir=" + executableDir);
+			} catch (Throwable t) {
 				t.printStackTrace();
 			}
 		}
@@ -45,10 +45,10 @@ public class TrainLocal extends AbstractConradTrainStep {
 		}
 
 	}
-	
+
 	@Override
-	protected AbstractStepProcessBuilder getProcess(File executableDir, File workingDir,
-			File trainingFile) {
+	protected AbstractStepProcessBuilder getProcess(File executableDir,
+			File workingDir, File trainingFile) {
 		return new Process(executableDir, workingDir, trainingFile, logger);
 	}
 }

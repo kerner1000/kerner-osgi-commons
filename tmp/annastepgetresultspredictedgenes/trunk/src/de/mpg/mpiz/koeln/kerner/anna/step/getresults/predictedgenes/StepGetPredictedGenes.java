@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bioutils.gtf.GTFElement;
-import org.bioutils.gtf.GTFFile;
+import de.bioutils.gtf.GTFElement;
+import de.bioutils.gtf.GTFFile;
 
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
@@ -52,7 +52,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 						+ outFile);
 				final GTFFile file = new GTFFile(data
 						.getPredictedGenesGtf());
-				file.writeToFile(outFile);
+				file.write(outFile);
 			}
 		} catch (DataBeanAccessException e) {
 
