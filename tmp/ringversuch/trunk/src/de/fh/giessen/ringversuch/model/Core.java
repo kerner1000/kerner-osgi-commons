@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -26,7 +24,7 @@ class Core {
 	private Core() {
 	}
 
-	private final static char REPLACEMENT = '_';
+	
 	private final static Logger LOGGER = Logger.getLogger(Core.class);
 	public static final String NEW_LINE = System.getProperty("line.separator");
 
@@ -92,7 +90,6 @@ class Core {
 				currentCell = currentRow.getCell(i);
 				currentSubstance = currentRow.getCell(substancesColumnIndex)
 						.toString();
-				currentSubstance = formatToValidString(currentSubstance);
 				final Substance substance = new SubstanceImpl(currentSubstance,
 						currentCell.toString());
 				LOGGER.debug("cell " + j + " " + i + " analyse " + analyseIdent
@@ -112,21 +109,7 @@ class Core {
 		return cell.toString();
 	}
 
-	private static String formatToValidString(final String string) {
-		final char[] chars = string.toCharArray();
-		final StringBuilder sb = new StringBuilder();
-		final Pattern p = Pattern.compile("[a-zA-Z0-9_-]");
-		Matcher m;
-		for (char c : chars) {
-			m = p.matcher(new String(Character.toString(c)));
-			if (m.matches()) {
-				sb.append(c);
-			} else {
-				sb.append(REPLACEMENT);
-			}
-		}
-		return sb.toString();
-	}
+	
 
 	public static Collection<OutSubstance> getOutSubstancesFromLabors(
 			final Collection<Labor> labors, final ModelSettings settings)
@@ -211,7 +194,6 @@ class Core {
 	public static void writeOutSubstance(final OutSubstance s, final File file)
 			throws IOException {
 		LOGGER.debug("writing file " + file);
-		System.out.println("writing file " + file);
 		final HSSFWorkbook wb = new HSSFWorkbook();
 		final HSSFSheet sheet = wb.createSheet();
 

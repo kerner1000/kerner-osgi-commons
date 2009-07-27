@@ -47,11 +47,9 @@ class Worker implements Callable<Boolean> {
 		for(OutSubstance s : outSubstances){
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
-			final String fileName = Core.getFileNameForOutSubstance(s);
-			monitor.printMessage("writing file " + fileName);
-			if(Thread.currentThread().isInterrupted())
-				throw new InterruptedException();
-			Core.writeOutSubstance(s, new File(outDir, fileName + ".xls"));
+			final OutSubstanceWriter writer = new OutSubstanceWriter(s, outDir);
+			monitor.printMessage("writing " + writer.getOutFile());
+			writer.write();
 			monitor.setProgress(currentProgress++, maxProgress);
 		}
 		return success;
