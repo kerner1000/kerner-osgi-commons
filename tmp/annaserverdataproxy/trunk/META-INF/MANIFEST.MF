@@ -4,7 +4,14 @@ Bundle-Name: Dataproxy Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.server.dataproxy
 Bundle-Version: 0.0.5
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.server.dataproxyImpl.DataProxyActivator
-Import-Package: de.bioutils.fasta,
+Import-Package: de.bioutils,
+ de.bioutils.blast,
+ de.bioutils.blast.filter,
+ de.bioutils.blast.parser,
+ de.bioutils.blast.printer,
+ de.bioutils.blast.utils,
+ de.bioutils.fasta,
+ de.bioutils.gff,
  de.bioutils.gtf,
  de.kerner.commons,
  de.kerner.commons.file,

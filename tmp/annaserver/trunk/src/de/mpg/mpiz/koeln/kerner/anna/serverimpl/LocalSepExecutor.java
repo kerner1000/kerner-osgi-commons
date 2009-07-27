@@ -1,5 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
@@ -7,8 +8,8 @@ import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 
 class LocalSepExecutor extends AbstractStepExecutor {
 
-	LocalSepExecutor(AbstractStep step, Server server) {
-		super(step, server);
+	LocalSepExecutor(AbstractStep step, Server server, LogDispatcher logger) {
+		super(step, server, logger);
 	}
 
 	public Boolean call() throws Exception {

@@ -27,7 +27,6 @@ public class LogDispatcherImpl implements LogDispatcher {
 		// everything good, we do not need to do anything
 		if (tracker != null)
 			return true;
-
 		tracker = new ServiceTracker(context, LogService.class.getName(), null);
 		if (tracker == null)
 			return false;

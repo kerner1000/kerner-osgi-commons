@@ -92,19 +92,19 @@ public class Activator implements BundleActivator {
 	}
 
 	private final static String PLUGINS_PATH_0 = System.getProperty("user.dir")
-			+ "/plugins/00-framework/";
+			+ "/00-framework/";
 	private final static String PLUGINS_PATH_1 = System.getProperty("user.dir")
-	+ "/plugins/01-libs/";
+	+ "/01-libs/";
 	private final static String PLUGINS_PATH_2 = System.getProperty("user.dir")
-	+ "/plugins/02-anna-libs/";
+	+ "/02-anna-libs/";
 	private final static String PLUGINS_PATH_3 = System.getProperty("user.dir")
-	+ "/plugins/03-anna-core/";
+	+ "/03-anna-core/";
 	private final static String PLUGINS_PATH_4 = System.getProperty("user.dir")
-	+ "/plugins/04-anna-dataserver/";
+	+ "/04-anna-dataserver/";
 	private final static String PLUGINS_PATH_5 = System.getProperty("user.dir")
-	+ "/plugins/05-anna-server/";
+	+ "/05-anna-server/";
 	private final static String PLUGINS_PATH_6 = System.getProperty("user.dir")
-	+ "/plugins/06-anna-steps/";
+	+ "/06-anna-steps/";
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	public void start(BundleContext context) throws Exception {
 		synchronized (this) {

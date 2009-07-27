@@ -55,7 +55,7 @@ public class ServerImpl implements Server {
 
 	public void registerStep(AbstractStep step) {
 		observer.stepRegistered(step);
-		StepController controller = new StepController(step, this);
+		StepController controller = new StepController(step, this, logger);
 		synchronized (exe) {
 			exe.submit(controller);
 		}
