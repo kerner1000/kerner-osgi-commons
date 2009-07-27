@@ -5,10 +5,9 @@ Bundle-SymbolicName: de.bioutils
 Bundle-Version: 0.0.3
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
- lib/bioutils-0.0.3.jar,
  lib/commons-lang-2.4.jar,
- lib/log4j-1.2.15.jar,
- lib/nanoxml-2.2.3.jar
+ lib/nanoxml-2.2.3.jar,
+ lib/bioutils-0.0.4.jar
 Export-Package: de.bioutils,
  de.bioutils.blast,
  de.bioutils.blast.filter,
