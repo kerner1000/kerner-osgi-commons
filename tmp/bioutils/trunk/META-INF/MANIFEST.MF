@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bioutils Plug-in
 Bundle-SymbolicName: de.bioutils
-Bundle-Version: 0.0.3
+Bundle-Version: 0.0.4
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
  lib/commons-lang-2.4.jar,
@@ -17,6 +17,3 @@ Export-Package: de.bioutils,
  de.bioutils.fasta,
  de.bioutils.gff,
  de.bioutils.gtf
-Import-Package: de.kerner.commons,
- de.kerner.commons.file,
- de.kerner.commons.xml
