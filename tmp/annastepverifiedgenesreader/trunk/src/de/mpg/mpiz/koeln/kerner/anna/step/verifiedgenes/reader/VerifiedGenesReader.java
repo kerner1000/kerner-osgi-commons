@@ -1,16 +1,18 @@
-package de.mpg.mpiz.koeln.kerner.anna.step.sequencereader;
+package de.mpg.mpiz.koeln.kerner.anna.step.verifiedgenes.reader;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
-import org.bioutils.fasta.FASTAFile;
-import org.bioutils.fasta.FASTASequence;
-import org.bioutils.gtf.GTFElement;
-import org.bioutils.gtf.GTFFile;
-import org.bioutils.gtf.GTFFormatErrorException;
 import org.osgi.framework.BundleContext;
 
+import de.bioutils.fasta.FASTAFile;
+import de.bioutils.fasta.FASTAFileImpl;
+import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gff.GFFFormatErrorException;
+import de.bioutils.gtf.GTFElement;
+import de.bioutils.gtf.GTFFile;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
@@ -19,7 +21,7 @@ import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 
-public class StepSequenceReader extends AbstractStep {
+public class VerifiedGenesReader extends AbstractStep {
 
 	// TODO that refers to training step
 	private final static String FASTA_KEY = "anna.step.conrad.train.fasta";
@@ -31,12 +33,13 @@ public class StepSequenceReader extends AbstractStep {
 	private File gtf;
 	private LogDispatcher logger = null;
 
-	public StepSequenceReader() {
+	public VerifiedGenesReader() {
 		// use "init()" instead, to make sure "logger" is initiated
 	}
 
 	@Override
-	protected synchronized void init(BundleContext context) throws StepExecutionException {
+	protected synchronized void init(BundleContext context)
+			throws StepExecutionException {
 		super.init(context);
 		logger = new LogDispatcherImpl(context);
 		initFiles();
@@ -54,12 +57,12 @@ public class StepSequenceReader extends AbstractStep {
 
 	@Override
 	public boolean requirementsSatisfied(DataProxy data) {
-		logger.info(this, ": no requirements needed");
+		logger.info(this, "no requirements needed");
 		return true;
 	}
 
 	@Override
-	public boolean run(DataProxy data, StepProcessObserver observer){
+	public boolean run(DataProxy data, StepProcessObserver observer) {
 		observer.setProgress(0, 100);
 		try {
 			observer.setProgress(30, 100);
@@ -67,59 +70,49 @@ public class StepSequenceReader extends AbstractStep {
 			observer.setProgress(60, 100);
 			doGtf(data);
 			observer.setProgress(100, 100);
-		} catch (DataBeanAccessException e) {
-			logger.error(this, e.toString(), e);
-			return false;
-		} catch (IOException e) {
-			logger.error(this, e.toString(), e);
-			return false;
-		} catch (GTFFormatErrorException e) {
-			logger.error(this, e.toString(), e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(this, e.getLocalizedMessage(), e);
 			return false;
 		}
 		return true;
 	}
 
 	private void doGtf(DataProxy data) throws IOException,
-			GTFFormatErrorException, DataBeanAccessException {
-			logger.info(this, "reading GTF file " + gtf);
-			final GTFFile gtfFile = new GTFFile(gtf);
-			final ArrayList<? extends GTFElement> elements = gtfFile
-					.getElements();
-			logger.info(this, "done reading gtf");
-			data.setVerifiedGenesGtf(elements);
+			GFFFormatErrorException, DataBeanAccessException {
+		logger.info(this, "reading GTF file " + gtf);
+		final GTFFile gtfFile = new GTFFile(gtf, null);
+		final Collection<? extends GTFElement> elements = gtfFile
+				.getElements();
+		logger.info(this, "done reading gtf");
+		data.setVerifiedGenesGtf(new ArrayList<GTFElement>(elements));
 	}
 
 	private void doFasta(DataProxy data) throws IOException,
 			DataBeanAccessException {
-		try{
 		logger.info(this, "reading FASTA file " + fasta);
-			final FASTAFile fastaFile = new FASTAFile(fasta);
-			final ArrayList<? extends FASTASequence> sequences = fastaFile
-					.getSequences();
-			logger.info(this, "done reading fasta");
-			data.setVerifiedGenesFasta(sequences);
-		}catch(Throwable t){
-			t.printStackTrace();
-			System.exit(1);
-		}
+		final FASTAFile fastaFile = new FASTAFileImpl(fasta, null);
+		final Collection<? extends FASTASequence> sequences = fastaFile.getElements();
+		logger.info(this, "done reading fasta");
+		data.setVerifiedGenesFasta(new ArrayList<FASTASequence>(sequences));
 	}
 
 	@Override
-	public boolean canBeSkipped(DataProxy data) throws StepExecutionException{
+	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 		try {
 			// TODO size == 0 sub-optimal indicator
-			final ArrayList<? extends FASTASequence> list1 = data
+			final Collection<? extends FASTASequence> list1 = data
 					.getVerifiedGenesFasta();
-			final ArrayList<? extends GTFElement> list2 = data
+			final Collection<? extends GTFElement> list2 = data
 					.getVerifiedGenesGtf();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);
-		} catch (DataBeanAccessException e) {
+		} catch (Exception e) {
+			logger.error(this, e.getLocalizedMessage(), e);
 			throw new StepExecutionException(e);
 		}
 	}
-	
+
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
