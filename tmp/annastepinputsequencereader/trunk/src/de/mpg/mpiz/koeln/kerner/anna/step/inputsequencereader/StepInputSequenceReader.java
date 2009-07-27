@@ -1,13 +1,12 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.inputsequencereader;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bioutils.fasta.FASTAFile;
-import org.bioutils.fasta.FASTASequence;
 import org.osgi.framework.BundleContext;
 
+import de.bioutils.fasta.FASTAFileImpl;
+import de.bioutils.fasta.FASTASequence;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
@@ -60,8 +59,8 @@ public class StepInputSequenceReader extends AbstractStep {
 			final File inFile = new File(getStepProperties().getProperty(
 					INFILE_KEY));
 			logger.debug(this, "reading file " + inFile);
-			final ArrayList<? extends FASTASequence> fastas = new FASTAFile(
-					inFile).getSequences();
+			final ArrayList<? extends FASTASequence> fastas = new FASTAFileImpl(
+					inFile, null).getElements();
 			if (fastas == null || fastas.size() == 0) {
 				logger.warn(this, "file " + inFile + " is invalid");
 				return false;
@@ -70,10 +69,7 @@ public class StepInputSequenceReader extends AbstractStep {
 					+ fastas.iterator().next().getHeader() + " [...]");
 			data.setInputSequences(fastas);
 			return true;
-		} catch (IOException e) {
-			logger.error(this, e.toString(), e);
-			return false;
-		} catch (DataBeanAccessException e) {
+		} catch (Exception e) {
 			logger.error(this, e.toString(), e);
 			return false;
 		}
