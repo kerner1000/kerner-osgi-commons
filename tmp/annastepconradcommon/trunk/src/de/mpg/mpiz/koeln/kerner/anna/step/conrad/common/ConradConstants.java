@@ -1,5 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.conrad.common;
 
+
 public class ConradConstants {
 	
 	private ConradConstants(){}
