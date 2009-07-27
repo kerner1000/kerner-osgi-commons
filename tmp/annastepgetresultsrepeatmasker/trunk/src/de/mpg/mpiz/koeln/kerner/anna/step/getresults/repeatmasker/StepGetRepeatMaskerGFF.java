@@ -1,12 +1,10 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.getresults.repeatmasker;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bioutils.gtf.GTFElement;
-import org.bioutils.gtf.GTFFile;
-
+import de.bioutils.gtf.GTFElement;
+import de.bioutils.gtf.GTFFile;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
@@ -17,10 +15,6 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 	
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.repeatMasker.fileName";
-
-	public String toString(){
-		return this.getClass().getSimpleName(); 
-	}
 	
 	@Override
 	public boolean canBeSkipped(DataProxy data)
@@ -56,7 +50,7 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 						+ outFile);
 				final GTFFile file = new GTFFile(data
 						.getRepeatMaskerGtf());
-				file.writeToFile(outFile);
+				file.write(outFile);
 			}
 		} catch (Throwable t){t.printStackTrace(); System.exit(1);}
 		return success;
@@ -70,6 +64,11 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 			return b;
 		}
 		return outFile.canWrite();
+	}
+	
+	@Override
+	public String toString(){
+		return this.getClass().getSimpleName(); 
 	}
 
 }
