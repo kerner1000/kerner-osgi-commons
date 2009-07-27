@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Repeatmasker Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.local
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.local.StepRepeatMaskerLocal
 Import-Package: de.bioutils,
  de.bioutils.fasta,

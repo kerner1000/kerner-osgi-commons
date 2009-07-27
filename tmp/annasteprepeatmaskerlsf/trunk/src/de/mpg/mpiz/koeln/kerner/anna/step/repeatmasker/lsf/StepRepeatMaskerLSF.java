@@ -1,57 +1,48 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.lsf;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
-import org.bioutils.fasta.FASTAFile;
-import org.bioutils.gtf.GTFFile;
-import org.bioutils.gtf.GTFFormatErrorException;
-
-import de.kerner.commons.file.FileUtils;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
-import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
-import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.kerner.commons.CommandStringBuilder;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.lsf.LSF;
 import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.AbstractStepRepeatMasker;
 import de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common.RepeatMaskerConstants;
 
 public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
 
-	@Override
-	public boolean run(DataProxy data, StepProcessObserver listener)
-			throws StepExecutionException {
-		final File infile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
-		infile.deleteOnExit();
-		final File outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
-				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
-		try {
-			if(FileUtils.fileCheck(outFile, false)){
-				logger.debug(this, "repeatmasker output already there, taking shortcut ("
-						+ outFile + ")");
-				upUpdate(data, outFile);
-				return true;
-			}
-			new FASTAFile(data.getInputSequences())
-					.writeToFile(infile);
-			logger.debug(this, "created temp file with input sequence(s): "
-					+ infile);
-			final AbstractStepProcessBuilder worker = new Worker(workingDir,
-					exeDir, logger, infile);
-			final boolean success = worker.createAndStartProcess();
-			if (success) {
-				upUpdate(data, outFile);
-			}
-			return success;
-		} catch (Throwable t) {
-			t.printStackTrace();
-			System.exit(1);
-			return false;
+	private class Process extends AbstractStepProcessBuilder {
+
+		private final File inFile;
+
+		protected Process(File executableDir, File stepWorkingDir,
+				LogDispatcher logger, File inFile) {
+			super(stepWorkingDir, executableDir, logger);
+			this.inFile = inFile;
+		}
+
+		public String toString() {
+			return this.getClass().getSimpleName();
+		}
+		
+		@Override
+		protected List<String> getCommandList() {
+			final CommandStringBuilder builder = new CommandStringBuilder(LSF.BSUB_EXE);
+			builder.addAllFlagCommands(LSF.getBsubFlagCommandStrings());
+			builder.addAllValueCommands(LSF.getBsubValueCommandStrings(workingDir));
+			builder.addFlagCommand(new File(
+					executableDir, RepeatMaskerConstants.EXE).getAbsolutePath());
+//			builder.addAllFlagCommands("-s");
+			builder.addFlagCommand("-gff");
+			builder.addFlagCommand(inFile.getAbsolutePath());
+			return builder.getCommandList();
 		}
 	}
 	
-	private void upUpdate(DataProxy data, File outFile) throws IOException, GTFFormatErrorException, DataBeanAccessException{
-		data.setRepeatMaskerGtf(
-				new GTFFile(outFile).getElements());
-	}
+	@Override
+	protected AbstractStepProcessBuilder getProcess(File inFile) {
+		return new Process(exeDir, workingDir
+				, logger, inFile);
+	}	
 }

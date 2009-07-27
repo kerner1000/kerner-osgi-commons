@@ -1,16 +1,24 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.repeatmasker.common;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import org.osgi.framework.BundleContext;
 
+import de.bioutils.fasta.FASTAFileImpl;
+import de.bioutils.gff.GFFFormatErrorException;
+import de.bioutils.gtf.GTFElement;
+import de.bioutils.gtf.GTFFile;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 
 public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	
@@ -80,5 +88,35 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 			throw new StepExecutionException(e);
 		}
 	}
+	
+	@Override
+	public boolean run(DataProxy data, StepProcessObserver listener)
+			throws StepExecutionException {
+		final File inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
+		final File outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
+				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
+		final AbstractStepProcessBuilder worker = getProcess(inFile);
+		boolean success = true;
+		try{
+			new FASTAFileImpl(data.getInputSequences())
+			.write(inFile);
+		success = worker.createAndStartProcess();
+		if (success) {
+			upUpdate(data, outFile);
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(this, e.getLocalizedMessage(), e);
+			throw new StepExecutionException(e);
+		}
+		return success;
+	}
+	
+	private void upUpdate(DataProxy data, File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
+		data.setRepeatMaskerGtf(
+				(ArrayList<? extends GTFElement>) new GTFFile(outFile, null).getElements());
+	}
+	
+	protected abstract AbstractStepProcessBuilder getProcess(File inFile);
 
 }
