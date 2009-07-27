@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>Creating a new Step for Anna</title>
+<link rel="stylesheet" type="text/css" href="css/allgemein.css">
+</head>
+<body>
+<h1>Creating a new Anna-Step</h1>
+<p>In Eclipse, choose <span class="fett">File &rarr;
+Project... &rarr; Plug-in-Project</span>.</p>
+<iframe class="iframeSingle" src="pics/new_plugin_project.jpg"
+	name="new_plugin_project.jpg">
+<p>Your browser is old and weak:</p>
+<img src="pics/new_plugin_project.jpg" name="new_plugin_project.jpg"
+	alt="new_plugin_project.jpg"> </iframe>
+
+<p>Choose any name.</p>
+<p>For terms of compatibility, the runtime environment for our
+Plugin shall be any OSGi implementation. Therefore, we choose <span
+	class="fett">standard</span> for the OSGi framework.</p>
+<p>Click <span class="fett">Next.</span></p>
+
+<iframe class="iframeSingle" src="pics/new_plugin_project_2.jpg"
+	name="new_plugin_project_2.jpg">
+<p>Your browser is old and weak:</p>
+<img src="pics/new_plugin_project_2.jpg" name="new_plugin_project_2.jpg"
+	alt="new_plugin_project_2.jpg"> </iframe>
+
+<p>The settings of the next page provide some meta information for
+the Plug-In, which also contain the runtime specification. Make sure you
+choose <span class="fett">J2SE-1.5</span></p>
+<p>The generation of an Activator class is not necessary, because we
+will provide a custom activator later on.</p>
+
+<iframe class="iframeSingle" src="pics/new_plugin_project_3.jpg"
+	name="new_plugin_project_3.jpg">
+<p>Your browser is old and weak:</p>
+<img src="pics/new_plugin_project_3.jpg" name="new_plugin_project_3.jpg"
+	alt="new_plugin_project_3.jpg"> </iframe>
+
+<p>Click <span class="fett">Finish</span>.</p>
+
+<p>Your Plug-In project has been created, we now can start to
+implement our own step.</p>
+<h2>Examples</h2>
+<ul>
+	<li>
+	<h3>Creating a simple sequence reader</h3>
+	<p>This is a first, simple example, how to implement your own step.
+	This Plug-In will read in a FASTA-File and provide it as the input
+	sequence within the pipeline.</p>
+	<ul>
+		<li>
+		<h4>Importing Anna-classes to project</h4>
+		<p>To import Anna-classes, double click the <span class="fett">MANIFEST.MF</span>
+		file to open the Plug-In's Manifest editor.</p>
+		<table style="width: 93%; height: 66%;">
+			<tr>
+				<td><iframe class="iframe2by2" src="pics/manifest.jpg"
+					name="manifest.jpg"">
+				<p>Your browser is old and weak:</p>
+				<img src="pics/manifest.jpg" name="manifest.jpg" alt="manifest.jpg">
+				</iframe></td>
+				<td><iframe class="iframe2by2" src="pics/manifest2.jpg"
+					name="manifest2.jpg">
+				<p>Your browser is old and weak:</p>
+				<img src="pics/manifest2.jpg" name="manifest2.jpg"
+					alt="manifest2.jpg"> </iframe></td>
+			</tr>
+		</table>
+		<p>Click on <span class="fett">Dependencies &rarr; Imported
+		Packages &rarr; Add...</span></p>
+		<p>Select</p>
+		<p><span class="fett">de.bioutils.fasta</span></p>
+		<p><span class="fett">de.mpg.mpiz.koeln.kerner.anna.abstractstep</span></p>
+		<p><span class="fett">de.mpg.mpiz.koeln.kerner.anna.other</span></p>
+		<p><span class="fett">de.mpg.mpiz.koeln.kerner.anna.server</span></p>
+		<p><span class="fett">de.mpg.mpiz.koeln.kerner.anna.server.data</span></p>
+		<p><span class="fett">de.mpg.mpiz.koeln.kerner.anna.server.dataproxy</span></p>
+		<p><span class="fett">org.osgi.framework</span></p>
+
+		<iframe class="iframeSingle" src="pics/packages.jpg"
+			name="packages.jpg">
+		<p>Your browser is old and weak:</p>
+		<img src="pics/packages.jpg" name="packages.jpg" alt="packages.jpg">
+		</iframe>
+
+		<p>Now the basic classes are imported and you can continue
+		creating your "Step-class".</p>
+		</li>
+		<li>
+		<h4>Step-class</h4>
+		<p>Create a package and a new class within it.</p>
+		<p>Make the new class extend <span class="fett">AbstractStep.</span>
+		(<span class="mono">de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep</span>)</p>
+
+		<iframe class="iframeSingle" src="pics/abstractstep.jpg"
+			name="abstractstep.jpg">
+		<p>Your browser is old and weak:</p>
+		<img src="pics/abstractstep.jpg" name="abstractstep.jpg"
+			alt="abstractstep.jpg"> </iframe></li>
+		<li>
+		<h4>Implement methods</h4>
+		<ul>
+			<li>
+			<h5>Implement <span class="fett">canBeSkipped()</span></h5>
+			<p>In order to see, if the desired sequence has already be read,
+			</p>
+			</li>
+			<li>
+			<h5>Implement <span class="fett">requirementsSatisfied()</span></h5>
+			</li>
+			<li>
+			<h5>Implement <span class="fett">run()</span></h5>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+
+
+
+
+</body>
+</html>

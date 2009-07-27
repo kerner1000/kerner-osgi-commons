@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Installation of Equinox as the OSGi framework</title>
+<link rel="stylesheet" type="text/css" href="css/allgemein.css">
+</head>
+<body>
+<h1>Installation of Equinox as the OSGi framework</h1>
+<p>To be able to develop new Steps for Anna, you should have an OSGi
+framework installed and set up within Eclipse.<br>
+In general, it is possible to use any OSGi implementation, but for
+convenience, this guide will show you how to install Eclipse Equinox as
+the OSGi framework.</p>
+<ul>
+	<li>
+	<h2>Download Eclipse Equinox</h2>
+	Go to
+	<p><a href="http://download.eclipse.org/eclipse/equinox/">http://download.eclipse.org/eclipse/equinox/</a></p>
+	and download the Equinox Software Developement Kit:
+	<p><span class="mono">eclipse-equinox-SDK-3.4.zip</span></p>
+	Extract it to any place. <br>
+	</li>
+	<li>
+	<h2>Setting up Eclipse Equinox</h2>
+	<p>In Eclipse, go to <span class="fett">Window</span> &rarr; <span
+		class="fett">Preferences</span>.</p>
+	<p>Select <span class="fett">Plug-in Development</span> &rarr; <span
+		class="fett">Target Platform</span>.</p>
+	<p>Click <span class="fett">Add...</span></p>
+	<p><span class="fett">Initialize the target definition with:
+	Nothing</span></p>
+	<p>Give any name for the target and create a new target location.</p>
+	<p>Click <span class="fett">Add...</span> and select the directory where
+	you extracted the Equinox SDK.</p>
+	<iframe class="iframeSingle"
+		src="pics/new_target.jpg" name="new_target.jpg">
+	<p>Your browser is old and weak:</p>
+	<img src="pics/new_target.jpg" name="new_target.jpg"
+		alt="new_target.jpg"> </iframe>
+		<p>For Example</p>
+	<p><span class="mono">eclipse-equinox-SDK-3.4/eclipse</span></p>
+	
+	<iframe class="iframeSingle"
+		src="pics/target_directory.jpg" name="target_directory.jpg">
+	<p>Your browser is old and weak:</p>
+	<img src="pics/target_directory.jpg" name="target_directory.jpg"
+		alt="target_directory.jpg"> </iframe>
+	
+	<p>Select your new target and click <span class="fett">OK</span></p>
+	
+	<iframe class="iframeSingle"
+		src="pics/target_done.jpg" name="target_done.jpg">
+	<p>Your browser is old and weak:</p>
+	<img src="pics/target_done.jpg" name="target_done.jpg"
+		alt="target_done.jpg"> </iframe>
+	
+	</li>
+	<li>
+	<h2>Done!</h2>
+	You are now ready to generally develop new OSGi-<span class="kursiv">Bundles</span>
+	with Eclipse. In order to develop your own Anna-Steps, continue with <a
+		href="anna_prepare.html" target="mainFrame"><b>Preparing Anna</b></a>.
+	</li>
+</ul>
+</body>
+</html>
