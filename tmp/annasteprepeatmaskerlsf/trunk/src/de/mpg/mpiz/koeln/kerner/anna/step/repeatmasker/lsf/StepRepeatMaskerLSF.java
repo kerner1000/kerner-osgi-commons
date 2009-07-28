@@ -18,7 +18,7 @@ public class StepRepeatMaskerLSF extends AbstractStepRepeatMasker {
 
 		protected Process(File executableDir, File stepWorkingDir,
 				LogDispatcher logger, File inFile) {
-			super(stepWorkingDir, executableDir, logger);
+			super(executableDir, stepWorkingDir, logger);
 			this.inFile = inFile;
 		}
 
