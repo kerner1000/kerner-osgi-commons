@@ -1,7 +1,6 @@
 package de.kerner.osgi.commons.utils;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +28,7 @@ public abstract class GetServiceAndRun<S> {
 					}
 				};
 				try {
-					final S s = p.waitForServiceAndBlock();
+					final S s = p.getServiceForSure();
 					doSomeThing(s);
 				} catch (Exception e) {
 					return Boolean.FALSE;
@@ -37,6 +36,11 @@ public abstract class GetServiceAndRun<S> {
 				return Boolean.TRUE;
 			}
 		});
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getName();
 	}
 
 	public abstract void doSomeThing(S s) throws Exception;

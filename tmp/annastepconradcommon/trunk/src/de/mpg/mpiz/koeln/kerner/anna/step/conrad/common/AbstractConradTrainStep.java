@@ -50,8 +50,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		if (!FileUtils.dirCheck(workingDir, true))
 			throw new FileNotFoundException("cannot access working dir "
 					+ workingDir);
-		final File trainingFile = new File(workingDir, super
-				.getStepProperties().getProperty(TRAINING_FILE_NAME_KEY));
+		final File trainingFile = new File(workingDir, "trainingFile.bin");
 		process = getProcess(executableDir, workingDir, trainingFile);
 	}
 

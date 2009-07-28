@@ -49,7 +49,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		if (!FileUtils.dirCheck(workingDir, true))
 			throw new FileNotFoundException("cannot access working dir "
 					+ workingDir);
-		trainingFile = new File(workingDir, "trainingFile.dat");
+		trainingFile = new File(workingDir, "trainingFile.bin");
 		resultFile = new File(workingDir, "result.gtf");
 		process = getProcess(executableDir, workingDir, trainingFile, resultFile);
 	}

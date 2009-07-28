@@ -15,7 +15,11 @@ class LogWriter implements LogListener {
 	private static Logger LOGGER = Logger.getLogger(LogWriter.class);
 	
 	LogWriter(){
+		try{
 		PropertyConfigurator.configure(LOG_PROPERTIES);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void logged(LogEntry entry) {
