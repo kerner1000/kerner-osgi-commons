@@ -1,6 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 /**
  * 

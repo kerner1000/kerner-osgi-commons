@@ -11,10 +11,10 @@ import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.utils.GetServiceAndRun;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 /**
  * 
@@ -83,7 +83,11 @@ public abstract class AbstractStep implements BundleActivator {
 			@Override
 			public void doSomeThing(Server s) throws Exception {
 				System.err.println(this + " doing it");
+				try{
 				init(context);
+				}catch(Throwable t){
+					t.printStackTrace();
+				}
 				registerToServer(s);
 				System.err.println(this + " done with it");
 			}
@@ -118,16 +122,49 @@ public abstract class AbstractStep implements BundleActivator {
 		return pro;
 	}
 
+	/**
+	 * No need for synchronization.
+	 * DataProxy is fully threadSave.
+	 * 
+	 * @param data
+	 * @return
+	 * @throws StepExecutionException
+	 */
 	public abstract boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException;
 
+	/**
+	 * No need for synchronization.
+	 * DataProxy is fully threadSave. 
+	 * 
+	 * @param data
+	 * @return
+	 * @throws StepExecutionException
+	 */
 	public abstract boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException;
 
+	/**
+	 * No need for synchronization.
+	 * DataProxy is fully threadSave.
+	 * 
+	 * @param data
+	 * @return
+	 * @throws StepExecutionException
+	 */
 	public boolean run(DataProxy data) throws StepExecutionException {
 		return run(data, null);
 	}
 
+	/**
+	 * No need for synchronization.
+	 * DataProxy is fully threadSave. 
+	 * 
+	 * @param data
+	 * @param listener
+	 * @return
+	 * @throws StepExecutionException
+	 */
 	public abstract boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException;
 
