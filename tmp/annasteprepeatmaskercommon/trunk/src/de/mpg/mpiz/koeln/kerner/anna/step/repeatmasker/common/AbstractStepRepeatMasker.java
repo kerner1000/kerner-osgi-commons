@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import org.osgi.framework.BundleContext;
 
 import de.bioutils.fasta.FASTAFileImpl;
+import de.bioutils.gff.GFFElement;
+import de.bioutils.gff.GFFFile;
 import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
@@ -14,11 +16,11 @@ import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	
@@ -64,9 +66,9 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 			throws StepExecutionException {
 		try {
 			// must this two actions be atomar?
-			final boolean repeatGtf = (data.getRepeatMaskerGtf() != null);
+			final boolean repeatGtf = (data.getRepeatMaskerGff() != null);
 			final boolean repeatGtfSize = (data
-					.getRepeatMaskerGtf().size() != 0);
+					.getRepeatMaskerGff().size() != 0);
 			
 			return (repeatGtf && repeatGtfSize);
 		} catch (DataBeanAccessException e) {
@@ -92,14 +94,18 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
+		logger.debug(this, "running");
 		final File inFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME);
 		final File outFile = new File(workingDir, RepeatMaskerConstants.TMP_FILENAME
 				+ RepeatMaskerConstants.OUTFILE_POSTFIX);
+		logger.debug(this, "inFile="+inFile);
+		logger.debug(this, "outFile="+outFile);
 		final AbstractStepProcessBuilder worker = getProcess(inFile);
 		boolean success = true;
 		try{
 			new FASTAFileImpl(data.getInputSequences())
 			.write(inFile);
+			worker.addResultFile(true, outFile);
 		success = worker.createAndStartProcess();
 		if (success) {
 			upUpdate(data, outFile);
@@ -113,8 +119,9 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	}
 	
 	private void upUpdate(DataProxy data, File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
-		data.setRepeatMaskerGtf(
-				(ArrayList<? extends GTFElement>) new GTFFile(outFile, null).getElements());
+		logger.debug(this, "updating data");
+		data.setRepeatMaskerGff(
+				(ArrayList<? extends GFFElement>) new GFFFile(outFile, null).getElements());
 	}
 	
 	protected abstract AbstractStepProcessBuilder getProcess(File inFile);

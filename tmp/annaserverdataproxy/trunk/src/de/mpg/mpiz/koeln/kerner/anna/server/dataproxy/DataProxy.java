@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gff.GFFElement;
 import de.bioutils.gtf.GTFElement;
 
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
@@ -39,10 +40,10 @@ public interface DataProxy {
 	void setPredictedGenesGtf(ArrayList<? extends GTFElement> result)
 			throws DataBeanAccessException;
 
-	ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+	ArrayList<? extends GFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException;
 
-	void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+	void setRepeatMaskerGff(ArrayList<? extends GFFElement> elements)
 			throws DataBeanAccessException;
 
 }

@@ -15,11 +15,9 @@ public class DataProxyActivator implements BundleActivator {
 
 	public void start(BundleContext context) throws Exception {
 		logger = new LogDispatcherImpl(context);
-		System.err.println(logger);
 		DataProxy proxy = new DataProxyImpl(new SerializationStrategySer(logger), logger);
 		context.registerService(DataProxy.class.getName(), proxy,
 				new Hashtable<Object, Object>());
-		logger.debug(this, "activated");
 	}
 
 	public void stop(BundleContext context) throws Exception {

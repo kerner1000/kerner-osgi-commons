@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gff.GFFElement;
 import de.bioutils.gtf.GTFElement;
 
 public interface DataBean extends Serializable {
@@ -38,10 +39,10 @@ public interface DataBean extends Serializable {
 	public ArrayList<? extends FASTASequence> getInputSequences()
 			throws DataBeanAccessException;
 
-	public ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+	public ArrayList<? extends GFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException;
 
-	public void setRepeatMaskerGtf(ArrayList<? extends GTFElement> elements)
+	public void setRepeatMaskerGff(ArrayList<? extends GFFElement> elements)
 			throws DataBeanAccessException;
 
 }

@@ -3,22 +3,35 @@ package de.mpg.mpiz.koeln.kerner.anna.step.getresults.repeatmasker;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.bioutils.gtf.GTFElement;
-import de.bioutils.gtf.GTFFile;
+import org.osgi.framework.BundleContext;
+
+import de.bioutils.gff.GFFElement;
+import de.bioutils.gff.GFFFile;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 public class StepGetRepeatMaskerGFF extends AbstractStep {
 	
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.repeatMasker.fileName";
+	private LogDispatcher logger;
+	
+	@Override
+	protected synchronized void init(BundleContext context)
+			throws StepExecutionException {
+		super.init(context);
+		this.logger = new LogDispatcherImpl(context);
+	}
 	
 	@Override
 	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
+		logger.debug(this, "cannot be skipped");
 		return false;
 	}
 
@@ -26,9 +39,10 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends GTFElement> elements = data
-					.getRepeatMaskerGtf();
+			final ArrayList<? extends GFFElement> elements = data
+					.getRepeatMaskerGff();
 			// TODO predicted genes may be size==0
+			logger.debug(this, "requirements satisfied="+(elements != null && elements.size() != 0));
 			return (elements != null && elements.size() != 0);
 		} catch (DataBeanAccessException e) {
 			throw new StepExecutionException(e);
@@ -48,8 +62,8 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 			if (success) {
 				System.out.println(this + ": writing repeatmasker gff to "
 						+ outFile);
-				final GTFFile file = new GTFFile(data
-						.getRepeatMaskerGtf());
+				final GFFFile file = new GFFFile(data
+						.getRepeatMaskerGff());
 				file.write(outFile);
 			}
 		} catch (Throwable t){t.printStackTrace(); System.exit(1);}
@@ -58,7 +72,7 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 
 	private boolean checkOutDir(File outFile) {
 		if (!outFile.exists()) {
-			System.out.println(this + ": " + outFile
+			logger.info(this, ": " + outFile
 					+ " does not exist, creating");
 			final boolean b = outFile.mkdirs();
 			return b;

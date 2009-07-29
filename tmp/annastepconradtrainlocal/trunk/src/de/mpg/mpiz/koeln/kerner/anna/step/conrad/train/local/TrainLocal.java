@@ -9,27 +9,17 @@ import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.AbstractConradTrainStep;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
+/**
+ * @cleaned 0992-07-28
+ * @author Alexander Kerner
+ *
+ */
 public class TrainLocal extends AbstractConradTrainStep {
 
 	private class Process extends AbstractStepProcessBuilder {
 
-		private final File trainingFile;
-
-		protected Process(File executableDir, File workingDir,
-				File trainingFile, LogDispatcher logger) {
+		protected Process(File executableDir, File workingDir, LogDispatcher logger) {
 			super(executableDir, workingDir, logger);
-			this.trainingFile = trainingFile;
-			// TODO WAS IS DAS HIER WIEDER FÜR EIN AFFENSCHEISS !?!?!
-			try {
-				System.out.println("executableDir=" + executableDir);
-				System.out.println("workingDir=" + workingDir);
-				System.out.println("executableDir=" + executableDir);
-				logger.debug(this, "executableDir=" + executableDir);
-				logger.debug(this, "workingDir=" + workingDir);
-				logger.debug(this, "executableDir=" + executableDir);
-			} catch (Throwable t) {
-				t.printStackTrace();
-			}
 		}
 
 		@Override
@@ -43,12 +33,12 @@ public class TrainLocal extends AbstractConradTrainStep {
 			builder.addFlagCommand(trainingFile.getAbsolutePath());
 			return builder.getCommandList();
 		}
-
 	}
 
 	@Override
-	protected AbstractStepProcessBuilder getProcess(File executableDir,
-			File workingDir, File trainingFile) {
-		return new Process(executableDir, workingDir, trainingFile, logger);
+	protected AbstractStepProcessBuilder getProcess() {
+		final Process p = new Process(exeDir.getAbsoluteFile(), workingDir.getAbsoluteFile(), logger);
+//		p.addResultFile(true, trainingFile);
+		return p;
 	}
 }

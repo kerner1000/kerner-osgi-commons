@@ -8,10 +8,10 @@ import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
 
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 public class StepGetPredictedGenes extends AbstractStep {
 

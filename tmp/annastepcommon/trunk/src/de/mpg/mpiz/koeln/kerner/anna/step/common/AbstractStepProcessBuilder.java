@@ -36,6 +36,20 @@ public abstract class AbstractStepProcessBuilder {
 		addResultFile(takeShortCutIfAlreadyThere, new File(workingDir, fileName));
 	}
 	
+//	public void addAllResultFile(Map<String, Boolean> m) {
+//		if(m.isEmpty())
+//			return;
+//		for(Entry<String, Boolean> e : m.entrySet()){
+//			addResultFile(e.getValue(), new File(workingDir, e.getKey()));
+//		}
+//	}
+	
+	public void addAllResultFiles(Map<File, Boolean> m) {
+		if(m.isEmpty())
+			return;
+		outFiles.putAll(m);
+	}
+	
 	public void addResultFile(boolean takeShortCutIfAlreadyThere, File file) {
 		if (file == null)
 			throw new NullPointerException(
@@ -45,19 +59,32 @@ public abstract class AbstractStepProcessBuilder {
 	}
 
 	private boolean takeShortCut() {
-		if(outFiles.isEmpty())
+		logger.debug(this, "checking for shortcut available");
+		if(outFiles.isEmpty()){
+			logger.debug(this, "no outfiles defined");
 			return false;
-		for (Entry<File, Boolean> e : outFiles.entrySet()) {
-			if(!(FileUtils.fileCheck(e.getKey(), false) && e.getValue()))
-				return false;
 		}
+		for (Entry<File, Boolean> e : outFiles.entrySet()) {
+			final boolean fileCheck = FileUtils.fileCheck(e.getKey(), false);
+			final boolean skipIt = e.getValue();
+			logger.debug(this, "file " + e.getKey().getAbsolutePath() + " there="+fileCheck);
+			logger.debug(this, "file " + e.getKey() + " skip="+skipIt);
+			if(!(fileCheck && skipIt)){
+				logger.debug(this, "cannot skip");
+				return false;
+			}
+		}
+		logger.debug(this, "skip available");
 		return true;
 	}
 
 	public boolean createAndStartProcess(final OutputStream out,
 			final OutputStream err) {
-		if (takeShortCut())
+		if (takeShortCut()){
+			logger.info(this, "file(s) there, taking shortcut");
 			return true;
+		}
+		logger.debug(this, "file(s) not there, cannot take shortcut");
 		final List<String> processCommandList = getCommandList();
 		final ProcessBuilder processBuilder = new ProcessBuilder(
 				processCommandList);

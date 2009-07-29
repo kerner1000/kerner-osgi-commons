@@ -16,10 +16,10 @@ import de.bioutils.gtf.GTFFile;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 public class VerifiedGenesReader extends AbstractStep {
 
@@ -90,11 +90,15 @@ public class VerifiedGenesReader extends AbstractStep {
 
 	private void doFasta(DataProxy data) throws IOException,
 			DataBeanAccessException {
+		try{
 		logger.info(this, "reading FASTA file " + fasta);
 		final FASTAFile fastaFile = new FASTAFileImpl(fasta, null);
 		final Collection<? extends FASTASequence> sequences = fastaFile.getElements();
 		logger.info(this, "done reading fasta");
 		data.setVerifiedGenesFasta(new ArrayList<FASTASequence>(sequences));
+		}catch(Throwable t){
+			t.printStackTrace();
+		}
 	}
 
 	@Override

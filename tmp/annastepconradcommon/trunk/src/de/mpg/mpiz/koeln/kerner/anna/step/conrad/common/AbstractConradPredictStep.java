@@ -1,7 +1,6 @@
 package de.mpg.mpiz.koeln.kerner.anna.step.conrad.common;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,48 +11,45 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
-import de.kerner.commons.file.FileUtils;
 import de.kerner.commons.file.LazyFileCopier;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepUtils;
 
+/**
+ * @cleaned 2009-07-28
+ * @author Alexander Kerner
+ *
+ */
 public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	
-	private File trainingFile;
-	private File resultFile;
+	protected File trainingFile;
+	protected File resultFile;
 
 	@Override
 	protected synchronized void init(BundleContext context)
 			throws StepExecutionException {
 		try {
-			super.init(context);
+			// oder important
+			trainingFile = new File(workingDir, "trainingFile.bin");
+			resultFile = new File(workingDir, "result.gtf");
 			logger = new LogDispatcherImpl(context);
-			assignProperties();
+			super.init(context);
+			super.init();
+			//
+			
+			logger.debug(this, "init done: workingDir=" + workingDir.getAbsolutePath());
+			logger.debug(this, "init done: trainingFile="
+					+ trainingFile.getAbsolutePath());
+			logger.debug(this, "init done: process=" + process);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.debug(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			StepUtils.handleStepException(this, e, logger);
 		}
 	}
-
-	private void assignProperties() throws StepExecutionException,
-			FileNotFoundException {
-		final File executableDir = new File(super.getStepProperties()
-				.getProperty(ConradConstants.CONRAD_DIR_KEY));
-		workingDir = new File(super.getStepProperties().getProperty(
-				WORKING_DIR_KEY));
-		if (!FileUtils.dirCheck(workingDir, true))
-			throw new FileNotFoundException("cannot access working dir "
-					+ workingDir);
-		trainingFile = new File(workingDir, "trainingFile.bin");
-		resultFile = new File(workingDir, "result.gtf");
-		process = getProcess(executableDir, workingDir, trainingFile, resultFile);
-	}
-
+	
 	@Override
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 
@@ -62,14 +58,13 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			final boolean predictedGtf = (data.getPredictedGenesGtf() != null);
 			final boolean predictedGtfSize = (data.getPredictedGenesGtf()
 					.size() != 0);
-			logger.debug(this, "need to run:");
-			logger.debug(this, "\tpredictedGtf=" + predictedGtf);
-			logger.debug(this, "\tpredictedGtfSize=" + predictedGtfSize);
+			logger.debug(this, "need to run: predictedGtf=" + predictedGtf);
+			logger.debug(this, "need to run: predictedGtfSize=" + predictedGtfSize);
 			return (predictedGtf && predictedGtfSize);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			StepUtils.handleStepException(this, e, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 
@@ -79,20 +74,23 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		try {
 			final boolean trainingFile = (data.getConradTrainingFile() != null && data
 					.getConradTrainingFile().exists());
+			
 			final boolean trainingFileRead = (data.getConradTrainingFile() != null && data
 					.getConradTrainingFile().canRead());
+			
 			final boolean inputSequences = (data.getInputSequences() != null);
 			final boolean inputSequencesSize = (data.getInputSequences().size() != 0);
-			logger.debug(this, "requirements:");
-			logger.debug(this, "\ttrainingFile=" + trainingFile);
-			logger.debug(this, "\ttrainingFileRead=" + trainingFileRead);
-			logger.debug(this, "\tinputSequences=" + inputSequences);
-			logger.debug(this, "\tinputSequencesSize=" + inputSequencesSize);
+			
+			logger.debug(this, "requirements: trainingFile=" + trainingFile);
+			logger.debug(this, "requirements: trainingFileRead=" + trainingFileRead);
+			logger.debug(this, "requirements: inputSequences=" + inputSequences);
+			logger.debug(this, "requirements: inputSequencesSize=" + inputSequencesSize);
+			
 			return (trainingFile && trainingFileRead && inputSequences && inputSequencesSize);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			StepUtils.handleStepException(this, e, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 
@@ -102,13 +100,14 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		boolean success = true;
 		try {
 			createFiles(data);
-			process.addResultFile(true, resultFile);
+			process.addResultFile(true, resultFile.getAbsoluteFile());
 			success = process.createAndStartProcess();
 			if(success)
-				update(resultFile, data);
+				update(resultFile.getAbsoluteFile(), data);
 		} catch (Exception e) {
-			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+			StepUtils.handleStepException(this, e, logger);
+			// cannot be reached
+			return false;
 		}
 		return success;
 	}
@@ -130,6 +129,4 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		trainingFile.deleteOnExit();
 		file.deleteOnExit();
 	}
-
-	protected abstract AbstractStepProcessBuilder getProcess(File executableDir, File workingDir, File trainingFile, File resultFile);
 }

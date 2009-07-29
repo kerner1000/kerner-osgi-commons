@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gff.GFFElement;
 import de.bioutils.gtf.GTFElement;
 
 import de.kerner.commons.file.FileUtils;
@@ -133,17 +134,17 @@ public class DataProxyImpl implements DataProxy {
 		strategy.writeDataBean(data, file);
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+	public synchronized ArrayList<? extends GFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
-		return data.getRepeatMaskerGtf();
+		return data.getRepeatMaskerGff();
 	}
 
-	public synchronized void setRepeatMaskerGtf(
-			ArrayList<? extends GTFElement> elements)
+	public synchronized void setRepeatMaskerGff(
+			ArrayList<? extends GFFElement> elements)
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
-		data.setRepeatMaskerGtf(elements);
+		data.setRepeatMaskerGff(elements);
 		strategy.writeDataBean(data, file);
 	}
 	

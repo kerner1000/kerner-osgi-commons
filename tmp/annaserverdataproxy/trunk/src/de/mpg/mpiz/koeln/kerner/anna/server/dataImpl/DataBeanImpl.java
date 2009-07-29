@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gff.GFFElement;
 import de.bioutils.gtf.GTFElement;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
@@ -29,7 +30,7 @@ public class DataBeanImpl implements DataBean {
 	private ArrayList<FASTASequence> inputSequences = new ArrayList<FASTASequence>();
 	private ArrayList<GTFElement> verifiedGenesGFFs = new ArrayList<GTFElement>();
 	private ArrayList<GTFElement> predictedGenesGFFs = new ArrayList<GTFElement>();
-	private ArrayList<GTFElement> repeatMaskerGFF = new ArrayList<GTFElement>();
+	private ArrayList<GFFElement> repeatMaskerGFF = new ArrayList<GFFElement>();
 	private File conradTrainingFile = null;
 //	private final LogDispatcher logger;
 
@@ -196,10 +197,10 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getRepeatMaskerGtf()
+	public synchronized ArrayList<? extends GFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+			return new ArrayList<GFFElement>(deepCopy(ArrayList.class,
 					repeatMaskerGFF));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -208,8 +209,8 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized void setRepeatMaskerGtf(
-			ArrayList<? extends GTFElement> elements)
+	public synchronized void setRepeatMaskerGff(
+			ArrayList<? extends GFFElement> elements)
 			throws DataBeanAccessException {
 		if (elements == null)
 			throw new NullPointerException();
