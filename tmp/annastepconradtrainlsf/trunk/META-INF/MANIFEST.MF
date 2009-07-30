@@ -19,6 +19,5 @@ Import-Package: de.bioutils,
  de.mpg.mpiz.koeln.kerner.anna.step.common,
  de.mpg.mpiz.koeln.kerner.anna.step.common.lsf,
  de.mpg.mpiz.koeln.kerner.anna.step.conrad.common,
- de.mpg.mpiz.koeln.kerner.anna.utils,
  org.osgi.framework;version="1.4.0"
 Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.conrad.train.lsf.TrainLSF
