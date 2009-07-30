@@ -37,7 +37,16 @@ class ViewImplSettings extends JPanel {
 			} else if (e.getSource() == buttonSave) {
 				if(controller.saveSettingsOut(getSettings()))controller.hideSettingsView();
 
-			} else if (e.getSource() == buttonLoad) {
+			}
+			
+			
+		else if (e.getSource() == buttonDetect) {
+			
+
+		}
+			
+			
+			else if (e.getSource() == buttonLoad) {
 				final int returnVal = fileChooser.showOpenDialog(component);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
@@ -63,6 +72,7 @@ class ViewImplSettings extends JPanel {
 	private final JButton buttonLoad = new JButton("Load");
 	private final JButton buttonSave = new JButton("Save");
 	private final JButton buttonUse = new JButton("Use");
+	private final JButton buttonDetect = new JButton("Detect");
 	
 	private final ActionListener listener = new MyListener();
 	private final JFileChooser fileChooser = new JFileChooser();
@@ -125,7 +135,8 @@ class ViewImplSettings extends JPanel {
 		north.add(panelSheetNo);
 		north.add(panelColumnOfSubstance);
 
-		final JPanel south = new JPanel(getThreeInARowGridLayout());
+		final JPanel south = new JPanel(getTwoByTowGridLayout());
+		south.add(buttonDetect);
 		south.add(buttonSave);
 		south.add(buttonUse);
 		south.add(buttonLoad);
@@ -265,6 +276,7 @@ class ViewImplSettings extends JPanel {
 		buttonLoad.addActionListener(listener);
 		buttonSave.addActionListener(listener);
 		buttonUse.addActionListener(listener);
+		buttonDetect.addActionListener(listener);
 	}
 
 	void setSettings(ViewSettings settings) {
