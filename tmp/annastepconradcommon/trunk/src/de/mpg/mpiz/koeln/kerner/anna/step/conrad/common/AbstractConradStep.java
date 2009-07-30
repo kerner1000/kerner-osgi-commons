@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
@@ -23,14 +21,13 @@ public abstract class AbstractConradStep extends AbstractStep {
 	protected final static String WORKING_DIR_KEY = ConradConstants.PROPERTIES_KEY_PREFIX
 	+ "workingDir";
 	
-	protected LogDispatcher logger;
 	protected AbstractStepProcessBuilder process;
 	protected File exeDir;
 	protected File workingDir;
 	
 	protected synchronized void init(BundleContext context) throws StepExecutionException {
-		logger = new LogDispatcherImpl(context);
 		try{
+			super.init(context);
 		exeDir = new File(super.getStepProperties()
 				.getProperty(ConradConstants.CONRAD_DIR_KEY));
 		logger.debug(this, "got exe dir="+exeDir);
@@ -42,7 +39,7 @@ public abstract class AbstractConradStep extends AbstractStep {
 					+ workingDir.getAbsolutePath());
 		process = getProcess();
 		}catch(Exception e){
-			StepUtils.handleStepException(this, e, logger);
+			StepUtils.handleException(this, e, logger);
 		}
 	}
 	

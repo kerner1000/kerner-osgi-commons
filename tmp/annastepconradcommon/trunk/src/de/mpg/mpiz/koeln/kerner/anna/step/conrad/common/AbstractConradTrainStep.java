@@ -13,7 +13,6 @@ import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
-import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepUtils;
@@ -41,7 +40,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 					+ trainingFile.getAbsolutePath());
 			logger.debug(this, "init done: process=" + process);
 		} catch (Exception e) {
-			StepUtils.handleStepException(this, e, logger);
+			StepUtils.handleException(this, e, logger);
 		}
 		logger.debug(this, "initialisation done");
 	}
@@ -60,7 +59,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			
 			return trainingFile && trainingFileRead;
 		} catch (Exception e) {
-			StepUtils.handleStepException(this, e, logger);
+			StepUtils.handleException(this, e, logger);
 			// cannot be reached
 			return false;
 		}
@@ -80,7 +79,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "requirements: gtfSize=" + gtfSize);
 			return (fastas && fastasSize && gtf && gtfSize);
 		} catch (Exception e) {
-			StepUtils.handleStepException(this, e, logger);
+			StepUtils.handleException(this, e, logger);
 			// cannot be reached
 			return false;
 		}
@@ -131,7 +130,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 				update(data);
 			}
 		} catch (Exception e) {
-			StepUtils.handleStepException(this, e, logger);
+			StepUtils.handleException(this, e, logger);
 			// cannot be reached
 			return false;
 		}

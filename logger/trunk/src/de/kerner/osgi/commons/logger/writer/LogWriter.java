@@ -44,6 +44,7 @@ class LogWriter implements LogListener {
             break;
         case LogService.LOG_ERROR:
             LOGGER.debug(identifier + message, t);
+            break;
         default:
             System.err.println("Unknown Log message:\n" + level + " " + bundle + ": " + message + " " + t);
         }

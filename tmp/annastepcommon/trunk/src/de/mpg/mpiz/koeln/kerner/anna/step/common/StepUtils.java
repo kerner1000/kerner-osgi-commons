@@ -12,10 +12,10 @@ public class StepUtils {
 	private StepUtils() {
 	};
 
-	public static void handleStepException(Object cause, Throwable t,
+	public static void handleException(Object cause, Throwable t,
 			LogDispatcher logger) throws StepExecutionException {
 		if (logger == null) {
-			handleStepException(cause, t);
+			handleException(cause, t);
 		} else {
 			t.printStackTrace();
 			logger.error(cause, t.getLocalizedMessage(), t);
@@ -23,7 +23,7 @@ public class StepUtils {
 		}
 	}
 
-	public static void handleStepException(Object cause, Throwable t)
+	public static void handleException(Object cause, Throwable t)
 			throws StepExecutionException {
 		t.printStackTrace();
 		throw new StepExecutionException(t);

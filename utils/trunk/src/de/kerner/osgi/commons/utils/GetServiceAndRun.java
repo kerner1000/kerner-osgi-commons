@@ -19,23 +19,19 @@ public abstract class GetServiceAndRun<S> {
 
 	public synchronized void run() throws Exception {
 		exe.submit(new Callable<Boolean>() {
-			public Boolean call() {
-				AbstractServiceProvider<S> p = new AbstractServiceProvider<S>(
+			public Boolean call() throws Exception {
+				final AbstractServiceProvider<S> p = new AbstractServiceProvider<S>(
 						context) {
 					@Override
 					protected Class<S> getServiceClass() {
 						return c;
 					}
 				};
-				try {
 					final S s = p.getServiceForSure();
 					doSomeThing(s);
-				} catch (Exception e) {
-					return Boolean.FALSE;
-				}
 				return Boolean.TRUE;
 			}
-		});
+		}).get();
 	}
 	
 	@Override

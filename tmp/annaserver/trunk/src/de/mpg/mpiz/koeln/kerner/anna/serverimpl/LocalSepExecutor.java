@@ -5,6 +5,7 @@ import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.Server;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepUtils;
 
 class LocalSepExecutor extends AbstractStepExecutor {
 
@@ -14,6 +15,7 @@ class LocalSepExecutor extends AbstractStepExecutor {
 
 	public Boolean call() throws Exception {
 		boolean success = true;
+		try{
 		server.getStepStateObserver().stepChecksNeedToRun(step);
 		final boolean b = step.canBeSkipped(server.getDataProxyProvider()
 				.getService());
@@ -37,16 +39,19 @@ class LocalSepExecutor extends AbstractStepExecutor {
 				logger.debug(this, "requirements for step " + step
 						+ " satisfied");
 			} catch (InterruptedException e) {
-				logger.error(this, e, e);
 				logger.debug(this, "notifying others");
 				server.notifyAll();
-				throw new StepExecutionException(e);
+				StepUtils.handleException(this, e);
 			}
 			logger.debug(this, "notifying others");
 			server.notifyAll();
 		}
 		success = runStep();
 		stepFinished(success);
+		}catch(StepExecutionException e){
+			logger.info(this, "executing step " + step + " was erroneous", e);
+			step.setState(AbstractStep.State.ERROR);
+		}
 		return success;
 	}
 	

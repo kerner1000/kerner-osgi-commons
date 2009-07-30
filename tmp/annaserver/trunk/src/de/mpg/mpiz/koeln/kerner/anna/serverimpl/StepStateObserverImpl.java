@@ -56,67 +56,49 @@ public class StepStateObserverImpl implements StepStateObserver {
 		logger.info(this, FileUtils.NEW_LINE);
 	}
 
-	private void checkConsistity(AbstractStep step,
-			AbstractStep.State expectedCurrentState, AbstractStep.State newState) {
-		AbstractStep.State state = stepStates.get(step);
-		final StringBuilder sb = new StringBuilder();
-		
-		
-		if (state == null) {
-			state = AbstractStep.State.LOOSE;
-			logger.debug(this, sb.append("step").append(step).append("new, assuming state ").append(state));
-		}
-		if (!state.equals(expectedCurrentState)) {
-			// ignore inconsistency due to skipping of step
-
-			// System.out.println(this
-			// + ": warning, inconsistent step state mapping for step "
-			// + step + "\n\t step state changed from "
-			// + stepStates.get(step) + " to " + newState);
-		}
-	}
-
 	private void changeStepState(AbstractStep step,
 			AbstractStep.State newState) {
+		if(step.getState().equals(AbstractStep.State.ERROR))
+			newState = AbstractStep.State.ERROR;
 		stepStates.put(step, newState);
 		printStepStates(step);
 	}
 
 	public synchronized void stepFinished(AbstractStep step, boolean success) {
 		final AbstractStep.State newState = AbstractStep.State.DONE;
-		final AbstractStep.State expectedCurrentState = State.RUNNING;
+//		final AbstractStep.State expectedCurrentState = State.RUNNING;
 		stepSuccesses.put(step, success);
-		checkConsistity(step, expectedCurrentState, newState);
+//		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
 
 	public synchronized void stepRegistered(AbstractStep step) {
 		final AbstractStep.State newState = AbstractStep.State.REGISTERED;
-		final AbstractStep.State expectedCurrentState = AbstractStep.State.LOOSE;
-		checkConsistity(step, expectedCurrentState, newState);
+//		final AbstractStep.State expectedCurrentState = AbstractStep.State.LOOSE;
+//		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 
 	}
 
 	public synchronized void stepStarted(AbstractStep step) {
 		final AbstractStep.State newState = AbstractStep.State.RUNNING;
-		final AbstractStep.State expectedCurrentState = AbstractStep.State.WAIT_FOR_REQ;
-		checkConsistity(step, expectedCurrentState, newState);
+//		final AbstractStep.State expectedCurrentState = AbstractStep.State.WAIT_FOR_REQ;
+//		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
 
 	public synchronized void stepChecksNeedToRun(AbstractStep step) {
 		final AbstractStep.State newState = AbstractStep.State.CHECK_NEED_TO_RUN;
-		final AbstractStep.State expectedCurrentState = AbstractStep.State.REGISTERED;
-		checkConsistity(step, expectedCurrentState, newState);
+//		final AbstractStep.State expectedCurrentState = AbstractStep.State.REGISTERED;
+//		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 
 	}
 
 	public synchronized void stepWaitForReq(AbstractStep step) {
 		final AbstractStep.State newState = AbstractStep.State.WAIT_FOR_REQ;
-		final AbstractStep.State expectedCurrentState = AbstractStep.State.CHECK_NEED_TO_RUN;
-		checkConsistity(step, expectedCurrentState, newState);
+//		final AbstractStep.State expectedCurrentState = AbstractStep.State.CHECK_NEED_TO_RUN;
+//		checkConsistity(step, expectedCurrentState, newState);
 		changeStepState(step, newState);
 	}
 

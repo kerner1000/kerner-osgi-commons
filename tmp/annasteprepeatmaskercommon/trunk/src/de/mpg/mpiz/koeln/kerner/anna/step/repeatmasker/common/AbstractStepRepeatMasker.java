@@ -10,11 +10,7 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.gff.GFFElement;
 import de.bioutils.gff.GFFFile;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gtf.GTFElement;
-import de.bioutils.gtf.GTFFile;
 import de.kerner.commons.file.FileUtils;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
@@ -24,7 +20,6 @@ import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 
 public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	
-	protected LogDispatcher logger;
 	protected File exeDir;
 	protected File workingDir;
 
@@ -36,7 +31,6 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	@Override
 	protected synchronized void init(BundleContext context) throws StepExecutionException {
 		super.init(context);
-		logger = new LogDispatcherImpl(context);
 		assignProperties();
 		validateProperties();
 		printProperties();
