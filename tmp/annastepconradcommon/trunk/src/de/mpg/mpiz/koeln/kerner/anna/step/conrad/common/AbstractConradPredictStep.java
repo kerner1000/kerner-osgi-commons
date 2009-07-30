@@ -12,7 +12,6 @@ import de.bioutils.gff.GFFFormatErrorException;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
 import de.kerner.commons.file.LazyFileCopier;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
@@ -33,14 +32,11 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 	protected synchronized void init(BundleContext context)
 			throws StepExecutionException {
 		try {
-			// oder important
+			super.init(context);
+			logger.debug(this, "doing initialisation");
 			trainingFile = new File(workingDir, "trainingFile.bin");
 			resultFile = new File(workingDir, "result.gtf");
-			logger = new LogDispatcherImpl(context);
-			super.init(context);
-			super.init();
-			//
-			
+		
 			logger.debug(this, "init done: workingDir=" + workingDir.getAbsolutePath());
 			logger.debug(this, "init done: trainingFile="
 					+ trainingFile.getAbsolutePath());

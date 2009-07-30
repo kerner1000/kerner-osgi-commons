@@ -3,16 +3,16 @@ package de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict;
 import java.io.File;
 import java.io.IOException;
 
-import org.bioutils.fasta.FASTAFile;
 import org.osgi.framework.BundleContext;
 
+import de.bioutils.fasta.FASTAFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 public class StepConradPredict extends AbstractStep {
@@ -176,8 +176,8 @@ public class StepConradPredict extends AbstractStep {
 			throws IOException, DataBeanAccessException {
 		final File refFile = new File(stepWorkingDir, "ref.fasta");
 		refFile.deleteOnExit();
-		new FASTAFile(data.getInputSequences())
-				.writeToFile(refFile);
+		new FASTAFileImpl(data.getInputSequences())
+				.write(refFile);
 	}
 
 	public String toString() {

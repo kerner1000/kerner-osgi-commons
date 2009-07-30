@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bioutils.gtf.GTFElement;
-import org.bioutils.gtf.GTFFile;
-import org.bioutils.gtf.GTFFormatErrorException;
+import de.bioutils.gtf.GTFElement;
+import de.bioutils.gtf.GTFFile;
+import de.bioutils.gff.GFFFormatErrorException;
 
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
 
 abstract class AbstractRunStatePredicting extends AbstractStepProcessBuilder {
 
@@ -45,16 +45,16 @@ abstract class AbstractRunStatePredicting extends AbstractStepProcessBuilder {
 			return success;
 		} catch (IOException e) {
 			throw new StepExecutionException(e);
-		} catch (GTFFormatErrorException e) {
+		} catch (GFFFormatErrorException e) {
 			throw new StepExecutionException(e);
 
 		}
 	}
 
-	private void finish(File f) throws IOException, GTFFormatErrorException {
+	private void finish(File f) throws IOException, GFFFormatErrorException {
 		System.out.println(this + ": reading " + f);
-		final GTFFile gtfFile = new GTFFile(f);
-		result = gtfFile.getElements();
+		final GTFFile gtfFile = new GTFFile(f, null);
+		result = (ArrayList<? extends GTFElement>) gtfFile.getElements();
 		System.out.println(this + ": got GTF from " + f + ", fist entry: "
 				+ result.get(0));
 	}

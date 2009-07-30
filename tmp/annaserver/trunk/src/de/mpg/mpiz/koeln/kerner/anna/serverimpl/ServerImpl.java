@@ -35,20 +35,20 @@ public class ServerImpl implements Server {
 
 	ServerImpl(final AbstractServiceProvider<DataProxy> provider,
 			final LogDispatcher logger) {
-		this.observer = new StepStateObserverImpl();
-		this.dataProxyProvder = provider;
 		if (logger != null)
 			this.logger = logger;
 		else
 			this.logger = new ConsoleLogger();
+		this.observer = new StepStateObserverImpl(this.logger);
+		this.dataProxyProvder = provider;
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
 	}
 
 	ServerImpl(AbstractServiceProvider<DataProxy> provider) {
-		this.observer = new StepStateObserverImpl();
-		this.dataProxyProvder = provider;
 		this.logger = new ConsoleLogger();
+		this.observer = new StepStateObserverImpl(logger);
+		this.dataProxyProvder = provider;
 		properties = getPropertes();
 		logger.debug(this, "loaded properties: " + properties);
 	}

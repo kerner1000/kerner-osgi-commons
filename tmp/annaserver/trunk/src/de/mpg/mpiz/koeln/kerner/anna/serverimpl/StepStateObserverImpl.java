@@ -1,51 +1,70 @@
 package de.mpg.mpiz.koeln.kerner.anna.serverimpl;
 
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.kerner.commons.file.FileUtils;
+import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.kerner.anna.abstractstep.AbstractStep.State;
 
 /**
- * @Threadsave (everything guarded by this)
- * 
+ * @ThreadSave
+ * @cleaned 2009-07.29
+ * @author Alexander Kerner
+ *
  */
 public class StepStateObserverImpl implements StepStateObserver {
 
 	private final Map<AbstractStep, AbstractStep.State> stepStates = new HashMap<AbstractStep, AbstractStep.State>();
 	private final Map<AbstractStep, Boolean> stepSuccesses = new HashMap<AbstractStep, Boolean>();
+	private final static String PRE_LINE =  "++++++ current states ++++++++";
+	private final static String POST_LINE = "++++++++++++++++++++++++++++++";
+	private final LogDispatcher logger;
+	
+	public StepStateObserverImpl(LogDispatcher logger) {
+		this.logger = logger;
+	}
 
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
 
 	private synchronized void printStepStates(AbstractStep lastChangedStep) {
-		System.out.println("++++++++++++++++++++++++");
-		System.out.println(this + ": current step states:");
+		logger.info(this, FileUtils.NEW_LINE);
+		logger.info(this, PRE_LINE);
+		
 		for (AbstractStep s : stepStates.keySet()) {
 			final String s1 = s.toString();
 			final String s2 = "state=" + stepStates.get(s);
 			final String s3 = "skipped=" + s.wasSkipped();
 			String s4 = "success=" + stepSuccesses.get(s);
-			System.out.printf("\t%-30s\t%-22s\t%-10s\t%-10s", s1, s2, s3, s4);
-			// System.out.print("\t" + s + "\t:state=" + stepStates.get(s)
-			// + "\tskipped=" + s.wasSkipped() + "\tsuccess="
-			// + s.getSuccess());
+			
+			final StringBuilder sb = new StringBuilder();
+			// TODO better: String.format();
+			final Formatter f = new Formatter();
+			sb.append(f.format("\t%-28s\t%-22s\t%-10s\t%-10s", s1, s2, s3, s4).toString());
+			
 			if (lastChangedStep.equals(s)) {
-				System.out.print("\t(changed)");
+				sb.append("\t(changed)");
 			}
-			System.out.println();
+//			sb.append(FileUtils.NEW_LINE);
+			logger.info(this, sb.toString());
 		}
-		System.out.println("++++++++++++++++++++++++");
+		logger.info(this, POST_LINE);
+		logger.info(this, FileUtils.NEW_LINE);
 	}
 
-	private synchronized void checkConsistity(AbstractStep step,
+	private void checkConsistity(AbstractStep step,
 			AbstractStep.State expectedCurrentState, AbstractStep.State newState) {
 		AbstractStep.State state = stepStates.get(step);
+		final StringBuilder sb = new StringBuilder();
+		
+		
 		if (state == null) {
 			state = AbstractStep.State.LOOSE;
-			System.out.println(this + ": step " + step
-					+ " new, assuming state " + state);
+			logger.debug(this, sb.append("step").append(step).append("new, assuming state ").append(state));
 		}
 		if (!state.equals(expectedCurrentState)) {
 			// ignore inconsistency due to skipping of step
@@ -57,7 +76,7 @@ public class StepStateObserverImpl implements StepStateObserver {
 		}
 	}
 
-	private synchronized void changeStepState(AbstractStep step,
+	private void changeStepState(AbstractStep step,
 			AbstractStep.State newState) {
 		stepStates.put(step, newState);
 		printStepStates(step);

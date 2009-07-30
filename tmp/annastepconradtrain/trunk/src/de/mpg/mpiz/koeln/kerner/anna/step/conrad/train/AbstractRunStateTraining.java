@@ -4,14 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bioutils.fasta.FASTAFile;
-import org.bioutils.fasta.FASTASequence;
-import org.bioutils.gtf.GTFElement;
-import org.bioutils.gtf.GTFFile;
+import de.bioutils.fasta.FASTAFile;
+import de.bioutils.fasta.FASTAFileImpl;
+import de.bioutils.fasta.FASTASequence;
+import de.bioutils.gtf.GTFElement;
+import de.bioutils.gtf.GTFFile;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.kerner.anna.other.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
+import de.mpg.mpiz.koeln.kerner.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.kerner.anna.step.conrad.common.ConradConstants;
 
 abstract class AbstractRunStateTraining extends AbstractStepProcessBuilder {
@@ -57,16 +58,16 @@ abstract class AbstractRunStateTraining extends AbstractStepProcessBuilder {
 			ArrayList<? extends GTFElement> elements) throws StepExecutionException {
 		if(fastas == null || elements == null || logger == null)
 			throw new NullPointerException("fastas="+fastas +", elements="+elements +", logger="+logger);
-		final FASTAFile fastaFile = new FASTAFile(fastas);
+		final FASTAFile fastaFile = new FASTAFileImpl(fastas);
 		final GTFFile gtfFile = new GTFFile(elements);
 		fastaFile.setLineLength(60);
 		try {
-			final File jetAnotherFile = new File(workingDir, ConradConstants.FASTA_FILE_NAME);
-			final File andEvenOneMore = new File(workingDir, ConradConstants.GTF_FILE_NAME);
+			final File jetAnotherFile = new File(workingDir, "ref.fasta");
+			final File andEvenOneMore = new File(workingDir, "ref.gtf");
 			logger.debug(this, "writing fastas to " + jetAnotherFile);
-			fastaFile.writeToFile(jetAnotherFile);
+			fastaFile.write(jetAnotherFile);
 			logger.debug(this, "writing gtf to " + andEvenOneMore);
-			gtfFile.writeToFile(andEvenOneMore);
+			gtfFile.write(andEvenOneMore);
 			jetAnotherFile.deleteOnExit();
 			andEvenOneMore.deleteOnExit();
 			return true;

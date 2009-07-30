@@ -11,7 +11,6 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.fasta.FASTASequence;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
-import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.kerner.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.kerner.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.kerner.anna.step.common.AbstractStepProcessBuilder;
@@ -34,15 +33,9 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 	protected synchronized void init(BundleContext context)
 			throws StepExecutionException {
 		try {
-			logger = new LogDispatcherImpl(context);
-			
-			// order important
 			super.init(context);
-			super.init();
-			//
-			trainingFile = new File(workingDir, "trainingFile.bin");
 			logger.debug(this, "doing initialisation");
-			
+			trainingFile = new File(workingDir, "trainingFile.bin");
 			logger.debug(this, "init done: workingDir=" + workingDir.getAbsolutePath());
 			logger.debug(this, "init done: trainingFile="
 					+ trainingFile.getAbsolutePath());
@@ -149,6 +142,4 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 	protected void update(DataProxy data) throws DataBeanAccessException {
 		data.setConradTrainingFile(trainingFile.getAbsoluteFile());
 	}
-
-	protected abstract AbstractStepProcessBuilder getProcess();
 }
