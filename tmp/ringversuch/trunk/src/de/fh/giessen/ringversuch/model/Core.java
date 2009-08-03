@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.model;
 
+import hssf.utils.HSSFUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -203,16 +205,55 @@ class Core {
 		return sb.toString();
 	}
 	
-	public static HSSFCell detectValuesBeginCell(File file) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public static HSSFCell detectValuesEndCell(File file) {
-		HSSFCell result;
+	public static HSSFCell detectValuesBeginCell(File file) throws FileNotFoundException, IOException, FailedToDetectException {
+		HSSFCell result = null;
 		int currentMaxNums = 0;
 		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
 		LOGGER.debug("detecting cell containing first value");
+		
+		final HSSFWorkbook wb = getWorkbookFromFile(file);
+		// TODO for now, we only look at sheet 0
+		final HSSFSheet sheet = wb.getSheetAt(0);
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				if(map.containsKey(c)){
+					LOGGER.error("IllegalStateException", new IllegalStateException("cannot be"));
+				} else {
+					final HSSFCellFilter filter = new HSSFCellFilterOnlyNumericCellValues();
+					final int numOfCellsBelow = filter.filter(getCellsBelowCell(sheet, c)).size();
+					LOGGER.debug("cell " + c.getRowIndex() + "," + c.getColumnIndex() + " has " + numOfCellsBelow + " cells below (numeric)");
+					map.put(c, numOfCellsBelow);
+				}
+			}
+		}	
+		for(Entry<HSSFCell, Integer> e : map.entrySet()){
+			final HSSFCell xx = e.getKey();
+			final int num = e.getValue();
+			final HSSFRow rowAbove = sheet.getRow(xx.getRowIndex()-1);
+			if(rowAbove == null)
+				continue;
+			final HSSFCell cellAbove = rowAbove.getCell(xx.getColumnIndex());
+			if(cellAbove == null)
+				continue;
+			if(result == null || (num > currentMaxNums && cellAbove.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx.getCellType() == HSSFCell.CELL_TYPE_NUMERIC && xx.getColumnIndex() < result.getColumnIndex())){
+				currentMaxNums = num;
+				result = xx;
+			}
+		}
+		if(result == null)
+			throw new FailedToDetectException("could not find suitable cell");
+		return result;
+	}
+	
+	public static HSSFCell detectValuesEndCell(File file) throws FileNotFoundException, IOException, FailedToDetectException {
+		HSSFCell result = null;
+		int currentMaxNums = 0;
+		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
+		LOGGER.debug("detecting cell containing last value");
 		
 		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
@@ -236,11 +277,19 @@ class Core {
 		for(Entry<HSSFCell, Integer> e : map.entrySet()){
 			final HSSFCell xx = e.getKey();
 			final int num = e.getValue();
-			if(num > currentMaxNums){
+			final HSSFRow rowBelow = sheet.getRow(xx.getRowIndex()+1);
+			if(rowBelow == null)
+				continue;
+			final HSSFCell cellBelow = rowBelow.getCell(xx.getColumnIndex());
+			if(cellBelow == null)
+				continue;
+			if(result == null || (num > currentMaxNums && cellBelow.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx.getCellType() == HSSFCell.CELL_TYPE_NUMERIC && xx.getColumnIndex() > result.getColumnIndex())){
 				currentMaxNums = num;
 				result = xx;
 			}
 		}
+		if(result == null)
+			throw new FailedToDetectException("could not find suitable cell");
 		return result;
 	}
 	
@@ -274,6 +323,24 @@ class Core {
 			if(num > currentMaxNums){
 				currentMaxNums = num;
 				result = xx.getColumnIndex();
+			}
+		}
+		return result;
+	}
+	
+	private static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet, HSSFCell cell) {
+		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				if(c.getColumnIndex() == cell.getColumnIndex() && c.getRowIndex() < cell.getRowIndex()){
+					result.add(c);
+				} else {
+					// ignore
+				}
 			}
 		}
 		return result;
@@ -330,7 +397,8 @@ class Core {
 			throw new FailedToDetectException(
 					"could not auto-detect cell containing labor ident string. number of found cells="
 							+ cells.size());
-		return cells.iterator().next();
+		final HSSFCell result = HSSFUtils.getNextStringBasedCellInRow(cells.iterator().next());
+		return result;
 	}
 
 	public static HSSFCell detectProbeCell(File file)
@@ -368,7 +436,8 @@ class Core {
 			throw new FailedToDetectException(
 					"could not auto-detect cell containing probe ident string. number of found cells="
 							+ cells.size());
-		return cells.iterator().next();
+		final HSSFCell result = HSSFUtils.getNextStringBasedCellInRow(cells.iterator().next());
+		return result;
 	}
 
 	public static void writeOutSubstance(final OutSubstance s, final File file)

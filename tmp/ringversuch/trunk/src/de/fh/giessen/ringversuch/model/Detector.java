@@ -13,17 +13,19 @@ class Detector implements Callable<ModelSettings> {
 
 	private final File[] inFiles;
 	private final WorkMonitor monitor;
+	private final ModelSettings settings;
 	private final static Logger LOGGER = Logger.getLogger(Detector.class);
 	
-	Detector(File[] inputFiles, WorkMonitor monitor) {
+	Detector(File[] inputFiles, WorkMonitor monitor, ModelSettings settings) {
 		this.inFiles = inputFiles;
 		this.monitor = monitor;
+		this.settings = settings;
 	}
 
 	@Override
 	public ModelSettings call() throws Exception {
 		if(inFiles == null || inFiles.length == 0)
-			throw new NullPointerException("Bitte zuerst Datei(en) auswählen");
+			throw new NullPointerException("files not selected yet");
 		int probeCellRow;
 		int probeCellCol;
 		int laborCellRow;
@@ -40,6 +42,7 @@ class Detector implements Callable<ModelSettings> {
 			final String s = "got cell containing probe ident: " + probeCellRow + ","+ probeCellCol;
 			LOGGER.info(s);
 			monitor.printMessage(s);
+			
 			
 			final HSSFCell laborCell = Core.detectLaborCell(f);
 			laborCellRow = laborCell.getRowIndex();
@@ -69,7 +72,7 @@ class Detector implements Callable<ModelSettings> {
 			// TODO considering only first file
 			break;
 		}
-		return null;
+		return settings;
 	}
 
 }

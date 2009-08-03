@@ -81,6 +81,9 @@ public class ModelImpl implements Model {
 	 */
 	@Override
 	public void cancel() {
+		if(currentJob != null)
 		currentJob.cancel(true);
+		if(currentDetectJob != null)
+			currentDetectJob.cancel(true);
 	}
 }
