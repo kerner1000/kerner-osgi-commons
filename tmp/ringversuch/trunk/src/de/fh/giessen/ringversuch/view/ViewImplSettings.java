@@ -33,25 +33,25 @@ class ViewImplSettings extends JPanel {
 			if (e.getSource() == buttonUse) {
 				if(controller.setSettingsOut(getSettings()))
 				controller.hideSettingsView();
-
+				
 			} else if (e.getSource() == buttonSave) {
 				if(controller.saveSettingsOut(getSettings()))controller.hideSettingsView();
-
 			}
 			
-			
 		else if (e.getSource() == buttonDetect) {
-			
-
+			if(controller.detect()){
+				setSettings(controller.getSettings());
+			}
 		}
-			
 			
 			else if (e.getSource() == buttonLoad) {
 				final int returnVal = fileChooser.showOpenDialog(component);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
-					if(controller.loadSettings(file))
+					if(controller.loadSettings(file)){
+						setSettings(controller.getSettings());
 						controller.hideSettingsView();
+					}
 				}
 			} else {
 				LOGGER.error("unrecognized action performed: " + e.getSource());

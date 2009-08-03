@@ -27,6 +27,7 @@ public class ModelImpl implements Model {
 	private File[] inputFiles;
 	private ModelSettings settings;
 	private Future<Boolean> currentJob;
+	private Future<ModelSettings> currentDetectJob;
 
 	public ModelImpl(ControllerOut controller) {
 		this.controller = controller;
@@ -48,13 +49,20 @@ public class ModelImpl implements Model {
 	}
 
 	@Override
+	public synchronized void detect() throws Exception {
+		LOGGER.debug("trying to detect settings");
+		currentDetectJob = modelThread.submit(new Detector(inputFiles, new WorkMonitor(controller)));
+		settings = currentDetectJob.get();
+		LOGGER.debug("settings detected");
+	}
+	
+	@Override
 	public synchronized boolean start() throws CancellationException, InterruptedException, ExecutionException {
 		LOGGER.info("starting...");
 			currentJob = modelThread.submit(new Worker(inputFiles, outDir, settings,
 					new WorkMonitor(controller)));
 				final Boolean success = currentJob.get();
 				return success;
-		
 	}
 
 	@Override

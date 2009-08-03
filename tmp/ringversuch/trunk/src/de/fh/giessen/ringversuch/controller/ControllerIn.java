@@ -58,4 +58,10 @@ public interface ControllerIn {
 	 */
 	void setSelectedFiles(File[] inputFiles);
 
+	/**
+	 * In
+	 * @return
+	 */
+	boolean detect();
+
 }

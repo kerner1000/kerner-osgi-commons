@@ -7,6 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -21,19 +29,24 @@ import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 class Core {
 
+	// TODO output only filenames while writing
 	private Core() {
 	}
 
-	
 	private final static Logger LOGGER = Logger.getLogger(Core.class);
 	public static final String NEW_LINE = System.getProperty("line.separator");
+
+	static HSSFWorkbook getWorkbookFromFile(File file)
+			throws FileNotFoundException, IOException {
+		final POIFSFileSystem fs = new POIFSFileSystem(
+				new FileInputStream(file));
+		return new HSSFWorkbook(fs);
+	}
 
 	static Labor readLaborFile(final File file, final ModelSettings settings)
 			throws FileNotFoundException, IOException, InvalidFormatException {
 		LOGGER.debug("reading file " + file);
-		final POIFSFileSystem fs = new POIFSFileSystem(
-				new FileInputStream(file));
-		final HSSFWorkbook wb = new HSSFWorkbook(fs);
+		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		final int no = wb.getNumberOfSheets();
 		LOGGER.debug("no of sheets: " + no);
 		final Collection<Probe> probes = new ArrayList<Probe>();
@@ -109,8 +122,6 @@ class Core {
 		return cell.toString();
 	}
 
-	
-
 	public static Collection<OutSubstance> getOutSubstancesFromLabors(
 			final Collection<Labor> labors, final ModelSettings settings)
 			throws InvalidFormatException {
@@ -128,13 +139,14 @@ class Core {
 	public static Collection<String> getCommonSubstanceKeys(
 			final Collection<Labor> labors, final String probeIdent)
 			throws InvalidFormatException {
-		LOGGER.debug("labors="+labors + Preferences.NEW_LINE+"probeIdent="+probeIdent);
+		LOGGER.debug("labors=" + labors + Preferences.NEW_LINE + "probeIdent="
+				+ probeIdent);
 		Collection<String> keys = null;
 		for (Labor l : labors) {
-			LOGGER.debug("currentLabor="+l);
-			LOGGER.debug("currentProbeIdent="+probeIdent);
+			LOGGER.debug("currentLabor=" + l);
+			LOGGER.debug("currentProbeIdent=" + probeIdent);
 			final Probe p = l.getProbe(probeIdent);
-			LOGGER.debug("got probe form labor: "+p);
+			LOGGER.debug("got probe form labor: " + p);
 			Collection<String> tmpKeys = p.getCommonSubstanceKeys();
 			if (keys == null) {
 				keys = new ArrayList<String>(tmpKeys);
@@ -154,7 +166,7 @@ class Core {
 		}
 		return keys;
 	}
-	
+
 	private static Collection<OutSubstanceEntry> getOutSubstanceEntrys(
 			final String substanceIdent, final Collection<Labor> labors,
 			final String probeIdent) {
@@ -190,6 +202,174 @@ class Core {
 		sb.append(s.getSubstanceIdent());
 		return sb.toString();
 	}
+	
+	public static HSSFCell detectValuesBeginCell(File file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public static HSSFCell detectValuesEndCell(File file) {
+		HSSFCell result;
+		int currentMaxNums = 0;
+		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
+		LOGGER.debug("detecting cell containing first value");
+		
+		final HSSFWorkbook wb = getWorkbookFromFile(file);
+		// TODO for now, we only look at sheet 0
+		final HSSFSheet sheet = wb.getSheetAt(0);
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				if(map.containsKey(c)){
+					LOGGER.error("IllegalStateException", new IllegalStateException("cannot be"));
+				} else {
+					final HSSFCellFilter filter = new HSSFCellFilterOnlyNumericCellValues();
+					final int numOfCellsAbove = filter.filter(getCellsAboveCell(sheet, c)).size();
+					LOGGER.debug("cell " + c.getRowIndex() + "," + c.getColumnIndex() + " has " + numOfCellsAbove + " cells above (numeric)");
+					map.put(c, numOfCellsAbove);
+				}
+			}
+		}	
+		for(Entry<HSSFCell, Integer> e : map.entrySet()){
+			final HSSFCell xx = e.getKey();
+			final int num = e.getValue();
+			if(num > currentMaxNums){
+				currentMaxNums = num;
+				result = xx;
+			}
+		}
+		return result;
+	}
+	
+	public static int detectSubstancesCol(File file) throws FileNotFoundException, IOException {
+		int result = -1;
+		int currentMaxNums = 0;
+		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
+		LOGGER.debug("detecting column with substances");
+		final HSSFWorkbook wb = getWorkbookFromFile(file);
+		// TODO for now, we only look at sheet 0
+		final HSSFSheet sheet = wb.getSheetAt(0);
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				if(map.containsKey(c)){
+					LOGGER.error("IllegalStateException", new IllegalStateException("cannot be"));
+				} else {
+					final HSSFCellFilter filter = new HSSFCellFilterOnlyStringCellValues();
+					final int numOfCellsBelow = filter.filter(getCellsBelowCell(sheet, c)).size();
+					LOGGER.debug("cell " + c.getRowIndex() + "," + c.getColumnIndex() + " has " + numOfCellsBelow + " cells below (string)");
+					map.put(c, numOfCellsBelow);
+				}
+			}
+		}	
+		for(Entry<HSSFCell, Integer> e : map.entrySet()){
+			final HSSFCell xx = e.getKey();
+			final int num = e.getValue();
+			if(num > currentMaxNums){
+				currentMaxNums = num;
+				result = xx.getColumnIndex();
+			}
+		}
+		return result;
+	}
+
+	private static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet, HSSFCell cell) {
+		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				if(c.getColumnIndex() == cell.getColumnIndex() && c.getRowIndex() > cell.getRowIndex()){
+					result.add(c);
+				} else {
+					// ignore
+				}
+			}
+		}
+		return result;
+	}
+
+	public static HSSFCell detectLaborCell(File file)
+			throws FileNotFoundException, IOException, FailedToDetectException {
+		final Set<HSSFCell> cells = new HashSet<HSSFCell>();
+		final Pattern p = Pattern.compile(".*labor.+nr.*",
+				Pattern.CASE_INSENSITIVE);
+		LOGGER.debug("detecting cell with labor identifier");
+		final HSSFWorkbook wb = getWorkbookFromFile(file);
+		// TODO for now, we only look at sheet 0
+		final HSSFSheet sheet = wb.getSheetAt(0);
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				if (c.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+					final Matcher m = p.matcher(c.getRichStringCellValue()
+							.getString());
+					if (m.matches()) {
+						LOGGER.debug("found match "
+								+ c.getRichStringCellValue().getString());
+						cells.add(c);
+					} else {
+						// ignore
+					}
+				}
+			}
+		}
+		// TODO only consider first found cell;
+		if (cells.isEmpty() || cells.size() > 1)
+			throw new FailedToDetectException(
+					"could not auto-detect cell containing labor ident string. number of found cells="
+							+ cells.size());
+		return cells.iterator().next();
+	}
+
+	public static HSSFCell detectProbeCell(File file)
+			throws FileNotFoundException, IOException, FailedToDetectException {
+		final Set<HSSFCell> cells = new HashSet<HSSFCell>();
+		final Pattern p = Pattern.compile(".*probe.+nr.*",
+				Pattern.CASE_INSENSITIVE);
+		LOGGER.debug("detecting cell with probe identifier");
+		final HSSFWorkbook wb = getWorkbookFromFile(file);
+		// TODO for now, we only look at sheet 0
+		final HSSFSheet sheet = wb.getSheetAt(0);
+		final Iterator<HSSFRow> i = sheet.rowIterator();
+		while (i.hasNext()) {
+			final HSSFRow r = (HSSFRow) i.next();
+			// LOGGER.debug("now row " + r);
+			final Iterator<HSSFCell> i2 = r.cellIterator();
+			while (i2.hasNext()) {
+				final HSSFCell c = (HSSFCell) i2.next();
+				// LOGGER.debug("now cell " + c);
+				if (c.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+					final Matcher m = p.matcher(c.getRichStringCellValue()
+							.getString());
+					if (m.matches()) {
+						LOGGER.debug("found match "
+								+ c.getRichStringCellValue().getString());
+						cells.add(c);
+					} else {
+						// ignore
+					}
+				}
+			}
+		}
+		// TODO only consider first found cell;
+		if (cells.isEmpty() || cells.size() > 1)
+			throw new FailedToDetectException(
+					"could not auto-detect cell containing probe ident string. number of found cells="
+							+ cells.size());
+		return cells.iterator().next();
+	}
 
 	public static void writeOutSubstance(final OutSubstance s, final File file)
 			throws IOException {
@@ -203,13 +383,14 @@ class Core {
 			writeHeaderRow(sheet, entry.getValues().size());
 
 			final HSSFRow valueRow = sheet.createRow(currentRow);
-//			System.out.println(s);
+			// System.out.println(s);
 			int currentColumn = 3;
 			for (String value : entry.getValues()) {
 				final HSSFCell laborNameCell = valueRow.createCell(1);
-				laborNameCell.setCellValue(new HSSFRichTextString(entry.getLabor().getIdentifier()));
-				LOGGER.debug("writing value=" + value + " to row=" + currentRow + ", col="
-						+ currentColumn);
+				laborNameCell.setCellValue(new HSSFRichTextString(entry
+						.getLabor().getIdentifier()));
+				LOGGER.debug("writing value=" + value + " to row=" + currentRow
+						+ ", col=" + currentColumn);
 				final HSSFCell valueCell = valueRow.createCell(currentColumn);
 				valueCell.setCellValue(new HSSFRichTextString(value));
 				currentColumn++;
@@ -253,4 +434,9 @@ class Core {
 	private final static String PROBE_IDENT_PREFIX = "Probe Nr.: ";
 	private final static String PROBE_IDENT_POSTFIX = "";
 	private final static int HEADER_ROW = PROBE_IDENT_ROW + 2;
+
+	
+
+	
+
 }

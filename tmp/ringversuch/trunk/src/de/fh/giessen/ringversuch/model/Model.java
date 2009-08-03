@@ -1,8 +1,6 @@
 package de.fh.giessen.ringversuch.model;
 
 import java.io.File;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
@@ -13,12 +11,15 @@ public interface Model {
 
 	void setSelectedFiles(File[] inputFiles);
 
-	boolean start() throws CancellationException, InterruptedException, ExecutionException;
+	// TODO should be void
+	boolean start() throws Exception;
 
 	ModelSettings getSettings();
 	
 	void setSettings(ModelSettings settings);
 	
 	void cancel();
+
+	void detect() throws Exception;
 
 }

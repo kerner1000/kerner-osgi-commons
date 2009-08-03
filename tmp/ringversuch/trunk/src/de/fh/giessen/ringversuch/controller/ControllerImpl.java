@@ -112,7 +112,7 @@ class ControllerImpl implements Controller {
 	@Override
 	public boolean loadSettings(final File file) {
 		try {
-			return out.submit(new Callable<Boolean>() {
+			return in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
 					LOGGER.debug("loading settings");
@@ -129,11 +129,30 @@ class ControllerImpl implements Controller {
 			return Boolean.FALSE;
 		}
 	}
+	
+	@Override
+	public boolean detect() {
+		try {
+			return in.submit(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					LOGGER.debug("auto-detecting settings");
+					model.detect();
+					return Boolean.TRUE;
+				}
+			}).get();
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.showError("could not auto-detect settings. ("
+					+ e.getLocalizedMessage() + ")");
+			return Boolean.FALSE;
+		}
+	}
 
 	@Override
 	public boolean saveSettings(final ViewSettings settings) {
 		try {
-			return out.submit(new Callable<Boolean>() {
+			return in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
 					LOGGER.debug("saving settings");
@@ -156,7 +175,7 @@ class ControllerImpl implements Controller {
 	@Override
 	public boolean setSettings(final ViewSettings settings) {
 		try {
-			return out.submit(new Callable<Boolean>() {
+			return in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
 					LOGGER.debug("setting settings");

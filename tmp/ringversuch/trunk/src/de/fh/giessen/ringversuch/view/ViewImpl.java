@@ -209,6 +209,11 @@ public class ViewImpl implements View, ViewController {
 	public void cancel() {
 		controller.cancel();
 	}
+	
+	@Override
+	public boolean detect() {
+		return controller.detect();
+	}
 
 	@Override
 	public boolean loadSettings(File file) {

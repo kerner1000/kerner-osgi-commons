@@ -25,4 +25,6 @@ interface ViewController {
 	boolean loadSettings(File file);
 
 	void hideSettingsView();
+
+	boolean detect();
 }
