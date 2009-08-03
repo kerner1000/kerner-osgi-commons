@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Conrad-Predict-Local
-Bundle-SymbolicName: de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict.local
+Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.predict.local
 Bundle-Version: 0.2.0
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: de.bioutils,
@@ -11,11 +11,11 @@ Import-Package: de.bioutils,
  de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
- de.mpg.mpiz.koeln.kerner.anna.abstractstep,
- de.mpg.mpiz.koeln.kerner.anna.server,
- de.mpg.mpiz.koeln.kerner.anna.server.data,
- de.mpg.mpiz.koeln.kerner.anna.server.dataproxy,
- de.mpg.mpiz.koeln.kerner.anna.step.common,
- de.mpg.mpiz.koeln.kerner.anna.step.conrad.common,
+ de.mpg.mpiz.koeln.anna.abstractstep,
+ de.mpg.mpiz.koeln.anna.server,
+ de.mpg.mpiz.koeln.anna.server.data,
+ de.mpg.mpiz.koeln.anna.server.dataproxy,
+ de.mpg.mpiz.koeln.anna.step.common,
+ de.mpg.mpiz.koeln.anna.step.conrad.common,
  org.osgi.framework;version="1.4.0"
-Bundle-Activator: de.mpg.mpiz.koeln.kerner.anna.step.conrad.predict.local.PredictLocal
+Bundle-Activator: de.mpg.mpiz.koeln.anna.step.conrad.predict.local.PredictLocal
