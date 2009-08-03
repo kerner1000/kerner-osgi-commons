@@ -9,9 +9,9 @@ import de.bioutils.gff.GFFElement;
 import de.bioutils.gff.GFFFile;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
@@ -28,14 +28,12 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 		this.logger = new LogDispatcherImpl(context);
 	}
 	
-	@Override
 	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		logger.debug(this, "cannot be skipped");
 		return false;
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -49,7 +47,6 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 		}
 	}
 
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		boolean success = false;

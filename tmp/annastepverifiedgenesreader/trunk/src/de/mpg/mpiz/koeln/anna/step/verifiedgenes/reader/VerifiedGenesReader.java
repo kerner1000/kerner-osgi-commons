@@ -15,9 +15,9 @@ import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
@@ -55,13 +55,11 @@ public class VerifiedGenesReader extends AbstractStep {
 		gtf = new File(gtfPath);
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data) {
 		logger.info(this, "no requirements needed");
 		return true;
 	}
 
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver observer) {
 		observer.setProgress(0, 100);
 		try {
@@ -101,7 +99,6 @@ public class VerifiedGenesReader extends AbstractStep {
 		}
 	}
 
-	@Override
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 		try {
 			// TODO size == 0 sub-optimal indicator

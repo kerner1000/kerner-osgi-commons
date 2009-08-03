@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.abstractstep;
+package de.mpg.mpiz.koeln.anna.step;
 
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
@@ -12,24 +12,20 @@ class DummyStep extends AbstractStep {
 		this.name = name;
 	}
 
-	@Override
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 		return true;
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		return true;
 	}
 
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		return true;
 	}
 	
-	@Override
 	public String toString() {
 		return "(dummy)"+name;
 	}

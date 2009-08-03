@@ -1,8 +1,9 @@
 package de.mpg.mpiz.koeln.anna.serverimpl;
 
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 
 public interface StepStateObserver {
+	
 	void stepRegistered(AbstractStep step);
 
 	void stepStarted(AbstractStep step);

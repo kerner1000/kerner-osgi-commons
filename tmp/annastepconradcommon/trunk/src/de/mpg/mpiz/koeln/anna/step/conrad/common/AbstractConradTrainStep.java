@@ -45,7 +45,6 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		logger.debug(this, "initialisation done");
 	}
 
-	@Override
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 		try {
 			final boolean trainingFile = (data.getConradTrainingFile() != null && data
@@ -65,7 +64,6 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		}
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -113,8 +111,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		inFasta.deleteOnExit();
 		inGff.deleteOnExit();
 	}
-
-	@Override
+	
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		logger.debug(this, "running");

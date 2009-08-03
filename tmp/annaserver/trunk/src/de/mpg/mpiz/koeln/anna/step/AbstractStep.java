@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.abstractstep;
+package de.mpg.mpiz.koeln.anna.step;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
  * @author Alexander Kerner
  * 
  */
-public abstract class AbstractStep implements BundleActivator {
+public abstract class AbstractStep implements BundleActivator, Step {
 
 	public enum State {
 		LOOSE, REGISTERED, CHECK_NEED_TO_RUN, WAIT_FOR_REQ, RUNNING, DONE,
@@ -41,27 +41,7 @@ public abstract class AbstractStep implements BundleActivator {
 	public AbstractStep() {
 		
 	}
-
-	/**
-	 * No need for synchronization. DataProxy is fully threadSave.
-	 * 
-	 * @param data
-	 * @return
-	 * @throws StepExecutionException
-	 */
-	public abstract boolean requirementsSatisfied(DataProxy data)
-			throws StepExecutionException;
-
-	/**
-	 * No need for synchronization. DataProxy is fully threadSave.
-	 * 
-	 * @param data
-	 * @return
-	 * @throws StepExecutionException
-	 */
-	public abstract boolean canBeSkipped(DataProxy data)
-			throws StepExecutionException;
-
+	
 	/**
 	 * No need for synchronization. DataProxy is fully threadSave.
 	 * 
@@ -72,17 +52,6 @@ public abstract class AbstractStep implements BundleActivator {
 	public boolean run(DataProxy data) throws StepExecutionException {
 		return run(data, null);
 	}
-
-	/**
-	 * No need for synchronization. DataProxy is fully threadSave.
-	 * 
-	 * @param data
-	 * @param listener
-	 * @return
-	 * @throws StepExecutionException
-	 */
-	public abstract boolean run(DataProxy data, StepProcessObserver listener)
-			throws StepExecutionException;
 
 	public final synchronized State getState() {
 		return state;

@@ -46,7 +46,6 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		}
 	}
 	
-	@Override
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 
 		// TODO size may be zero, if nothing was found
@@ -64,7 +63,6 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		}
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -90,7 +88,6 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		}
 	}
 
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		boolean success = true;

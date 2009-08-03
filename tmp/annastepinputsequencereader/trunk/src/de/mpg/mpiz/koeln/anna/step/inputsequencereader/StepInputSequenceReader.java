@@ -9,9 +9,9 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.fasta.FASTASequence;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
@@ -27,14 +27,12 @@ public class StepInputSequenceReader extends AbstractStep {
 		logger = new LogDispatcherImpl(context);
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		logger.debug(this, "no requirements needed");
 		return true;
 	}
 
-	@Override
 	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -52,7 +50,6 @@ public class StepInputSequenceReader extends AbstractStep {
 		}
 	}
 
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		try {

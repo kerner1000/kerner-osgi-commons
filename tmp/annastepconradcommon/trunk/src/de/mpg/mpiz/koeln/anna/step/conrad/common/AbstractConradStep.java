@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import org.osgi.framework.BundleContext;
 
 import de.kerner.commons.file.FileUtils;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;

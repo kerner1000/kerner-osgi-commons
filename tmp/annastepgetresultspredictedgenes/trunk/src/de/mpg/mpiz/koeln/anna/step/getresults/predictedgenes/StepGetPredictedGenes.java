@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
 
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
@@ -18,7 +18,6 @@ public class StepGetPredictedGenes extends AbstractStep {
 	private final static String OUT_DIR_KEY = "anna.step.getResults.outDir";
 	private final static String OUT_FILE_NAME_KEY = "anna.step.getResults.predictedGenes.fileName";
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -31,13 +30,11 @@ public class StepGetPredictedGenes extends AbstractStep {
 		}
 	}
 
-	@Override
 	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		return false;
 	}
 
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		boolean success = false;

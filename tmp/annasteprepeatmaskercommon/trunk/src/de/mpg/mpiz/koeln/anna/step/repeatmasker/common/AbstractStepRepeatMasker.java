@@ -11,9 +11,9 @@ import de.bioutils.gff.GFFElement;
 import de.bioutils.gff.GFFFile;
 import de.bioutils.gff.GFFFormatErrorException;
 import de.kerner.commons.file.FileUtils;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
@@ -55,7 +55,6 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		logger.debug(this, "\texeDir=" + exeDir);
 	}
 
-	@Override
 	public boolean canBeSkipped(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -70,7 +69,6 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		}
 	}
 
-	@Override
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
@@ -85,7 +83,6 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		}
 	}
 	
-	@Override
 	public boolean run(DataProxy data, StepProcessObserver listener)
 			throws StepExecutionException {
 		logger.debug(this, "running");

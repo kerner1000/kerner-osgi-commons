@@ -3,8 +3,8 @@ package de.mpg.mpiz.koeln.anna.serverimpl;
 import java.util.concurrent.Callable;
 
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
 import de.mpg.mpiz.koeln.anna.server.Server;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 
 /**
  * 

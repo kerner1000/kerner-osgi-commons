@@ -6,8 +6,8 @@ import java.util.Map;
 
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep;
-import de.mpg.mpiz.koeln.anna.abstractstep.AbstractStep.State;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.AbstractStep.State;
 
 /**
  * @ThreadSave
