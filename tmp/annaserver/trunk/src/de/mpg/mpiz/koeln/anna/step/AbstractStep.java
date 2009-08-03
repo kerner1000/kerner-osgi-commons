@@ -16,7 +16,6 @@ import de.kerner.osgi.commons.utils.GetServiceAndRun;
 import de.mpg.mpiz.koeln.anna.server.Server;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
 /**
  * @ThredSave
