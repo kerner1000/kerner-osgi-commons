@@ -15,8 +15,31 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
 public class Activator implements BundleActivator {
+	
+	private class BundleStarter implements Callable<Void> {
+		
+		private final Collection<Bundle> installedBundles;
+		
+		BundleStarter(Collection<Bundle> installedBundles) {
+			this.installedBundles = installedBundles;
+		}
 
-	private class BundleInstaller implements Callable<Void> {
+		public Void call() throws Exception {
+			startBundles(installedBundles);
+			return null;
+		}
+		
+		private void startBundles(Collection<Bundle> installedBundles) throws BundleException {
+			if (installedBundles.size() == 0){
+				System.err.println("no plugins started");
+				return;}
+			for (Bundle b : installedBundles) {
+				b.start();
+			}
+		}
+	}
+
+	private class BundleInstaller implements Callable<Collection<Bundle>> {
 
 		private final File path;
 		private final BundleContext context;
@@ -26,25 +49,10 @@ public class Activator implements BundleActivator {
 			this.context = context;
 		}
 
-		public Void call() throws Exception {
-			try{
-				
+		public Collection<Bundle> call() throws Exception {
 			final Collection<String> bundlePathes = getBundlePathes(path);
 			final Collection<Bundle> installedBundles = installBundles(bundlePathes);
-			startBundles(installedBundles);
-			}catch(Throwable t){
-				t.printStackTrace();
-			}
-			return null;
-		}
-
-		private void startBundles(Collection<Bundle> installedBundles) throws BundleException {
-			if (installedBundles.size() == 0){
-				System.err.println("no plugins started");
-				return;}
-			for (Bundle b : installedBundles) {
-				b.start();
-			}
+			return installedBundles;
 		}
 
 		private Collection<Bundle> installBundles(
@@ -108,13 +116,14 @@ public class Activator implements BundleActivator {
 	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	public void start(BundleContext context) throws Exception {
 		synchronized (this) {
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_0)));
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_1)));
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_2)));
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_3)));
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_4)));
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_5)));
-			exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_6)));
+			final Collection<Bundle> c = exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_0))).get();
+			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_1))).get());
+			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_2))).get());
+			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_3))).get());
+			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_4))).get());
+			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_5))).get());
+			c.addAll(exe.submit(new BundleInstaller(context, new File(PLUGINS_PATH_6))).get());
+			exe.submit(new BundleStarter(c)).get();
 		}
 	}
 

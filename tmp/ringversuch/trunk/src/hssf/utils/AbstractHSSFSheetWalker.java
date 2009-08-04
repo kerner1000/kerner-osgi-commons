@@ -11,14 +11,18 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 public abstract class AbstractHSSFSheetWalker {
 
 	private final HSSFSheet sheet;
-	private final Collection<HSSFCellTypeFilter> filters = new ArrayList<HSSFCellTypeFilter>();
+	private final Collection<HSSFCellFilter> filters = new ArrayList<HSSFCellFilter>();
 
 	public AbstractHSSFSheetWalker(HSSFSheet sheet) {
 		this.sheet = sheet;
 	}
 
-	public synchronized void addHSSFCellFilter(HSSFCellTypeFilter filter) {
+	public synchronized void addHSSFCellFilter(HSSFCellFilter filter) {
 		this.filters.add(filter);
+	}
+	
+	public synchronized void addAllHSSFCellFilters(Collection<HSSFCellFilter> filter) {
+		this.filters.addAll(filter);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,7 +42,9 @@ public abstract class AbstractHSSFSheetWalker {
 	private boolean accepted(HSSFCell c) {
 		if (filters.size() == 0)
 			return true;
-		for (HSSFCellTypeFilter f : filters) {
+		if(c == null)
+			return false;
+		for (HSSFCellFilter f : filters) {
 			if (!f.accept(c))
 				return false;
 		}

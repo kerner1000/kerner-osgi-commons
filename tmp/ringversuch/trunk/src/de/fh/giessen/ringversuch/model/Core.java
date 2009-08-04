@@ -1,5 +1,8 @@
 package de.fh.giessen.ringversuch.model;
 
+import hssf.utils.AbstractHSSFSheetWalker;
+import hssf.utils.HSSFCellTypeNumericFilter;
+import hssf.utils.HSSFCellTypeStringFilter;
 import hssf.utils.HSSFUtils;
 
 import java.io.File;
@@ -15,6 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -204,96 +208,104 @@ class Core {
 		sb.append(s.getSubstanceIdent());
 		return sb.toString();
 	}
-	
-	public static HSSFCell detectValuesBeginCell(File file) throws FileNotFoundException, IOException, FailedToDetectException {
+
+	public static HSSFCell detectValuesBeginCell(File file) throws Exception {
 		HSSFCell result = null;
 		int currentMaxNums = 0;
-		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
+		final Map<HSSFCell, Integer> map = new ConcurrentHashMap<HSSFCell, Integer>();
 		LOGGER.debug("detecting cell containing first value");
-		
 		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
 		final HSSFSheet sheet = wb.getSheetAt(0);
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				if(map.containsKey(c)){
-					LOGGER.error("IllegalStateException", new IllegalStateException("cannot be"));
+		AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+			@Override
+			public void handleCell(HSSFCell c) {
+				if (map.containsKey(c)) {
+					LOGGER.error("IllegalStateException",
+							new IllegalStateException("cannot be"));
 				} else {
-					final HSSFCellFilter filter = new HSSFCellFilterOnlyNumericCellValues();
-					final int numOfCellsBelow = filter.filter(getCellsBelowCell(sheet, c)).size();
-					LOGGER.debug("cell " + c.getRowIndex() + "," + c.getColumnIndex() + " has " + numOfCellsBelow + " cells below (numeric)");
-					map.put(c, numOfCellsBelow);
+					final int num = HSSFUtils.getCellsBelowCell(sheet, c).size();
+					LOGGER.debug("cell " + c.getRowIndex() + ","
+							+ c.getColumnIndex() + " has " + num
+							+ " cells below (numeric)");
+					map.put(c, num);
 				}
 			}
-		}	
-		for(Entry<HSSFCell, Integer> e : map.entrySet()){
+		};
+		walker.addHSSFCellFilter(new HSSFCellTypeNumericFilter());
+		walker.walk();
+		for (Entry<HSSFCell, Integer> e : map.entrySet()) {
 			final HSSFCell xx = e.getKey();
 			final int num = e.getValue();
-			final HSSFRow rowAbove = sheet.getRow(xx.getRowIndex()-1);
-			if(rowAbove == null)
+			final HSSFRow rowAbove = sheet.getRow(xx.getRowIndex() - 1);
+			if (rowAbove == null)
 				continue;
 			final HSSFCell cellAbove = rowAbove.getCell(xx.getColumnIndex());
-			if(cellAbove == null)
+			if (cellAbove == null)
 				continue;
-			if(result == null || (num > currentMaxNums && cellAbove.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx.getCellType() == HSSFCell.CELL_TYPE_NUMERIC && xx.getColumnIndex() < result.getColumnIndex())){
+			if (result == null
+					|| (num > currentMaxNums
+							&& cellAbove.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx
+							.getColumnIndex() < result.getColumnIndex())) {
 				currentMaxNums = num;
 				result = xx;
 			}
 		}
-		if(result == null)
+		if (result == null)
 			throw new FailedToDetectException("could not find suitable cell");
 		return result;
 	}
-	
-	public static HSSFCell detectValuesEndCell(File file) throws FileNotFoundException, IOException, FailedToDetectException {
+
+	public static HSSFCell detectValuesEndCell(File file) throws Exception {
 		HSSFCell result = null;
 		int currentMaxNums = 0;
-		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
+		final Map<HSSFCell, Integer> map = new ConcurrentHashMap<HSSFCell, Integer>();
 		LOGGER.debug("detecting cell containing last value");
-		
 		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
 		final HSSFSheet sheet = wb.getSheetAt(0);
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				if(map.containsKey(c)){
-					LOGGER.error("IllegalStateException", new IllegalStateException("cannot be"));
+		AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+			@Override
+			public void handleCell(HSSFCell c) {
+				if (map.containsKey(c)) {
+					LOGGER.error("IllegalStateException",
+							new IllegalStateException("cannot be"));
 				} else {
-					final HSSFCellFilter filter = new HSSFCellFilterOnlyNumericCellValues();
-					final int numOfCellsAbove = filter.filter(getCellsAboveCell(sheet, c)).size();
-					LOGGER.debug("cell " + c.getRowIndex() + "," + c.getColumnIndex() + " has " + numOfCellsAbove + " cells above (numeric)");
-					map.put(c, numOfCellsAbove);
+					final int num = HSSFUtils.getCellsAboveCell(sheet, c,
+							new HSSFCellTypeNumericFilter()).size();
+					LOGGER.debug("cell " + c.getRowIndex() + ","
+							+ c.getColumnIndex() + " has " + num
+							+ " cells above (numeric)");
+					map.put(c, num);
 				}
 			}
-		}	
-		for(Entry<HSSFCell, Integer> e : map.entrySet()){
+		};
+		walker.addHSSFCellFilter(new HSSFCellTypeNumericFilter());
+		walker.walk();
+		for (Entry<HSSFCell, Integer> e : map.entrySet()) {
 			final HSSFCell xx = e.getKey();
 			final int num = e.getValue();
-			final HSSFRow rowBelow = sheet.getRow(xx.getRowIndex()+1);
-			if(rowBelow == null)
+			final HSSFRow rowBelow = sheet.getRow(xx.getRowIndex() + 1);
+			if (rowBelow == null)
 				continue;
 			final HSSFCell cellBelow = rowBelow.getCell(xx.getColumnIndex());
-			if(cellBelow == null)
+			if (cellBelow == null)
 				continue;
-			if(result == null || (num > currentMaxNums && cellBelow.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx.getCellType() == HSSFCell.CELL_TYPE_NUMERIC && xx.getColumnIndex() > result.getColumnIndex())){
+			if (result == null
+					|| (num > currentMaxNums
+							&& cellBelow.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx
+							.getColumnIndex() > result.getColumnIndex())) {
 				currentMaxNums = num;
 				result = xx;
 			}
 		}
-		if(result == null)
+		if (result == null)
 			throw new FailedToDetectException("could not find suitable cell");
 		return result;
 	}
-	
-	public static int detectSubstancesCol(File file) throws FileNotFoundException, IOException {
+
+	public static int detectSubstancesCol(File file)
+			throws FileNotFoundException, IOException {
 		int result = -1;
 		int currentMaxNums = 0;
 		final Map<HSSFCell, Integer> map = new HashMap<HSSFCell, Integer>();
@@ -301,64 +313,30 @@ class Core {
 		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
 		final HSSFSheet sheet = wb.getSheetAt(0);
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				if(map.containsKey(c)){
-					LOGGER.error("IllegalStateException", new IllegalStateException("cannot be"));
+		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+			@Override
+			public void handleCell(HSSFCell c) {
+				if (map.containsKey(c)) {
+					LOGGER.error("IllegalStateException",
+							new IllegalStateException("cannot be"));
 				} else {
 					final HSSFCellFilter filter = new HSSFCellFilterOnlyStringCellValues();
-					final int numOfCellsBelow = filter.filter(getCellsBelowCell(sheet, c)).size();
-					LOGGER.debug("cell " + c.getRowIndex() + "," + c.getColumnIndex() + " has " + numOfCellsBelow + " cells below (string)");
-					map.put(c, numOfCellsBelow);
+					final int num = HSSFUtils.getCellsBelowCell(sheet, c, new HSSFCellTypeStringFilter()).size();
+					LOGGER.debug("cell " + c.getRowIndex() + ","
+							+ c.getColumnIndex() + " has " + num
+							+ " cells below (string)");
+					map.put(c, num);
 				}
 			}
-		}	
-		for(Entry<HSSFCell, Integer> e : map.entrySet()){
+		};
+		walker.addHSSFCellFilter(new HSSFCellTypeStringFilter());
+		walker.walk();
+		for (Entry<HSSFCell, Integer> e : map.entrySet()) {
 			final HSSFCell xx = e.getKey();
 			final int num = e.getValue();
-			if(num > currentMaxNums){
+			if (num > currentMaxNums) {
 				currentMaxNums = num;
 				result = xx.getColumnIndex();
-			}
-		}
-		return result;
-	}
-	
-	private static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet, HSSFCell cell) {
-		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				if(c.getColumnIndex() == cell.getColumnIndex() && c.getRowIndex() < cell.getRowIndex()){
-					result.add(c);
-				} else {
-					// ignore
-				}
-			}
-		}
-		return result;
-	}
-
-	private static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet, HSSFCell cell) {
-		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				if(c.getColumnIndex() == cell.getColumnIndex() && c.getRowIndex() > cell.getRowIndex()){
-					result.add(c);
-				} else {
-					// ignore
-				}
 			}
 		}
 		return result;
@@ -373,70 +351,65 @@ class Core {
 		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
 		final HSSFSheet sheet = wb.getSheetAt(0);
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				if (c.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-					final Matcher m = p.matcher(c.getRichStringCellValue()
-							.getString());
-					if (m.matches()) {
-						LOGGER.debug("found match "
-								+ c.getRichStringCellValue().getString());
-						cells.add(c);
-					} else {
-						// ignore
-					}
+		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+			@Override
+			public void handleCell(HSSFCell c) {
+				final Matcher m = p.matcher(c.getRichStringCellValue()
+						.getString());
+				if (m.matches()) {
+					LOGGER.debug("found match "
+							+ c.getRichStringCellValue().getString());
+					cells.add(c);
+				} else {
+					// ignore
 				}
 			}
-		}
+		};	
+		walker.addHSSFCellFilter(new HSSFCellTypeStringFilter());
+		walker.walk();
 		// TODO only consider first found cell;
 		if (cells.isEmpty() || cells.size() > 1)
 			throw new FailedToDetectException(
 					"could not auto-detect cell containing labor ident string. number of found cells="
 							+ cells.size());
-		final HSSFCell result = HSSFUtils.getNextStringBasedCellInRow(cells.iterator().next());
+		final HSSFCell result = HSSFUtils.getNextNumericCellInRow(sheet, cells
+				.iterator().next());
 		return result;
 	}
 
 	public static HSSFCell detectProbeCell(File file)
 			throws FileNotFoundException, IOException, FailedToDetectException {
-		final Set<HSSFCell> cells = new HashSet<HSSFCell>();
+		final Collection<HSSFCell> cells = new HashSet<HSSFCell>();
 		final Pattern p = Pattern.compile(".*probe.+nr.*",
 				Pattern.CASE_INSENSITIVE);
 		LOGGER.debug("detecting cell with probe identifier");
 		final HSSFWorkbook wb = getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
 		final HSSFSheet sheet = wb.getSheetAt(0);
-		final Iterator<HSSFRow> i = sheet.rowIterator();
-		while (i.hasNext()) {
-			final HSSFRow r = (HSSFRow) i.next();
-			// LOGGER.debug("now row " + r);
-			final Iterator<HSSFCell> i2 = r.cellIterator();
-			while (i2.hasNext()) {
-				final HSSFCell c = (HSSFCell) i2.next();
-				// LOGGER.debug("now cell " + c);
-				if (c.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-					final Matcher m = p.matcher(c.getRichStringCellValue()
-							.getString());
-					if (m.matches()) {
-						LOGGER.debug("found match "
-								+ c.getRichStringCellValue().getString());
-						cells.add(c);
-					} else {
-						// ignore
-					}
+		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+			@Override
+			public void handleCell(HSSFCell c) {
+				final Matcher m = p.matcher(c.getRichStringCellValue()
+						.getString());
+				if (m.matches()) {
+					LOGGER.debug("found match "
+							+ c.getRichStringCellValue().getString());
+					cells.add(c);
+				} else {
+					// ignore
+//					System.err.println(c.getRichStringCellValue().getString());
 				}
 			}
-		}
+		};
+		walker.addHSSFCellFilter(new HSSFCellTypeStringFilter());
+		walker.walk();
 		// TODO only consider first found cell;
 		if (cells.isEmpty() || cells.size() > 1)
 			throw new FailedToDetectException(
-					"could not auto-detect cell containing probe ident string. number of found cells="
+					"could not detect cell containing probe ident. number of found cells="
 							+ cells.size());
-		final HSSFCell result = HSSFUtils.getNextStringBasedCellInRow(cells.iterator().next());
+		final HSSFCell result = HSSFUtils.getNextNumericCellInRow(sheet, cells
+				.iterator().next());
 		return result;
 	}
 
@@ -503,9 +476,5 @@ class Core {
 	private final static String PROBE_IDENT_PREFIX = "Probe Nr.: ";
 	private final static String PROBE_IDENT_POSTFIX = "";
 	private final static int HEADER_ROW = PROBE_IDENT_ROW + 2;
-
-	
-
-	
 
 }

@@ -51,7 +51,7 @@ public class ModelImpl implements Model {
 	@Override
 	public synchronized void detect() throws Exception {
 		LOGGER.debug("trying to detect settings");
-		currentDetectJob = modelThread.submit(new Detector(inputFiles, new WorkMonitor(controller)));
+		currentDetectJob = modelThread.submit(new Detector(inputFiles, new WorkMonitor(controller), getSettings()));
 		settings = currentDetectJob.get();
 		LOGGER.debug("settings detected");
 	}

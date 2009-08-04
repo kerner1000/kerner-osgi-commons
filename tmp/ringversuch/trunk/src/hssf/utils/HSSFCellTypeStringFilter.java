@@ -2,7 +2,7 @@ package hssf.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 
-public class StringBasedCellFilter implements HSSFCellTypeFilter {
+public class HSSFCellTypeStringFilter implements HSSFCellFilter {
 
 	@Override
 	public boolean accept(HSSFCell cell) {
