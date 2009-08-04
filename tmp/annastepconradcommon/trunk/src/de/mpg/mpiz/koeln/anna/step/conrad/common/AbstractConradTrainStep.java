@@ -1,6 +1,7 @@
 package de.mpg.mpiz.koeln.anna.step.conrad.common;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.fasta.FASTASequence;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
+import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
@@ -23,7 +25,10 @@ import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
  * 
  */
 public abstract class AbstractConradTrainStep extends AbstractConradStep {
-
+	
+	protected final static String TRAIN_PREFIX_KEY = "train.";
+	protected final static String WORKING_DIR_KEY = ConradConstants.PROPERTIES_KEY_PREFIX
+	+ TRAIN_PREFIX_KEY + "workingDir";
 	protected File inFasta;
 	protected File inGff;
 	protected File trainingFile;
@@ -34,6 +39,13 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		try {
 			super.init(context);
 			logger.debug(this, "doing initialisation");
+			workingDir = new File(super.getStepProperties().getProperty(
+					WORKING_DIR_KEY));
+			logger.debug(this, "got working dir="+workingDir.getAbsolutePath());
+			if (!FileUtils.dirCheck(workingDir.getAbsoluteFile(), true))
+				throw new FileNotFoundException("cannot access working dir "
+						+ workingDir.getAbsolutePath());
+			process = getProcess();
 			trainingFile = new File(workingDir, "trainingFile.bin");
 			logger.debug(this, "init done: workingDir=" + workingDir.getAbsolutePath());
 			logger.debug(this, "init done: trainingFile="

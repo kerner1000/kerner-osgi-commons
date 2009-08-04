@@ -23,12 +23,9 @@ import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 
 public class VerifiedGenesReader extends AbstractStep {
 
-	// TODO that refers to training step
-	private final static String FASTA_KEY = "anna.step.conrad.train.fasta";
-	// TODO that refers to training step
-	private final static String GTF_KEY = "anna.step.conrad.train.gtf";
+	private final static String FASTA_KEY = "anna.step.verified.fasta";
+	private final static String GTF_KEY = "anna.step.verified.gtf";
 
-	// not final, due to delayed initiation
 	private File fasta;
 	private File gtf;
 	private LogDispatcher logger = null;
