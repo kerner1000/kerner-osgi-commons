@@ -25,8 +25,10 @@ public class HSSFCellColumnFilter implements HSSFCellFilter {
 			return (colIndex < i);
 		case EQUAL:
 			return (colIndex == i);
-		default:
+		default: {
+			System.err.println("warning: unknown index " + index);
 			return (colIndex == i);
+		}
 		}
 	}
 }

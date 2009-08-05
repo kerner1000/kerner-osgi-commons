@@ -7,9 +7,10 @@ public class HSSFCellRowFilter implements HSSFCellFilter {
 	public enum Index {
 		BELOW, ABOVE, EQUAL
 	}
+
 	private final int rowIndex;
 	private final Index index;
-	
+
 	public HSSFCellRowFilter(int rowIndex, Index index) {
 		this.rowIndex = rowIndex;
 		this.index = index;
@@ -17,7 +18,7 @@ public class HSSFCellRowFilter implements HSSFCellFilter {
 
 	@Override
 	public boolean accept(HSSFCell cell) {
-		final int i = cell.getColumnIndex();
+		final int i = cell.getRowIndex();
 		switch (index) {
 		case BELOW:
 			return (rowIndex > i);
@@ -25,8 +26,10 @@ public class HSSFCellRowFilter implements HSSFCellFilter {
 			return (rowIndex < i);
 		case EQUAL:
 			return (rowIndex == i);
-		default:
+		default: {
+			System.err.println("warning: unknown index " + index);
 			return (rowIndex == i);
+		}
 		}
 	}
 

@@ -1,43 +1,32 @@
 package hssf.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 public class HSSFUtils {
+	
+	private final static Logger LOGGER = Logger.getLogger(HSSFUtils.class);
 
 	private HSSFUtils() {
 	}
-
-	public static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet,
-			HSSFCell cell, final HSSFCellFilter filter) {
-		return getCellsAboveCell(sheet, cell, new ArrayList<HSSFCellFilter>() {
-			{
-				add(filter);
-			}
-		});
-	}
 	
 	public static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet,
 			HSSFCell cell) {
-		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
-		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
-			@Override
-			public void handleCell(HSSFCell cell) {
-				result.add(cell);
-			}
-		};
-		final int rowIndex = cell.getRowIndex();
-		final int colIndex = cell.getColumnIndex();
-		walker.addHSSFCellFilter(new HSSFCellColumnFilter(colIndex,
-				HSSFCellColumnFilter.Index.EQUAL));
-		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,
-				HSSFCellRowFilter.Index.BELOW));
-			walker.walk();
-		return result;
+		Collection<HSSFCellFilter> c = Collections.emptyList();
+		return getCellsAboveCell(sheet, cell, c);
 	}
 
 	public static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet,
@@ -62,40 +51,20 @@ public class HSSFUtils {
 	}
 	
 	public static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet,
-			HSSFCell cell, final HSSFCellFilter filter) {
-		return getCellsBelowCell(sheet, cell, new ArrayList<HSSFCellFilter>() {
-			{
-				add(filter);
-			}
-		});
-	}
-	
-	public static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet,
 			HSSFCell cell) {
-		final Collection<HSSFCell> result = new CopyOnWriteArrayList<HSSFCell>();
-		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
-			@Override
-			public void handleCell(HSSFCell cell) {
-				result.add(cell);
-			}
-		};
-		final int rowIndex = cell.getRowIndex();
-		final int colIndex = cell.getColumnIndex();
-		walker.addHSSFCellFilter(new HSSFCellColumnFilter(colIndex,
-				HSSFCellColumnFilter.Index.EQUAL));
-		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,
-				HSSFCellRowFilter.Index.ABOVE));
-			walker.walk();
-		return result;
+		Collection<HSSFCellFilter> c = Collections.emptyList();
+		return getCellsBelowCell(sheet, cell, c);
 	}
 
 	public static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet,
 			HSSFCell cell, Collection<HSSFCellFilter> filters) {
+//		LOGGER.debug("now cell " + cell.getRowIndex() + "," + cell.getColumnIndex());
 		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
 		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
 			@Override
-			public void handleCell(HSSFCell cell) {
-				result.add(cell);
+			public void handleCell(HSSFCell c) {
+				result.add(c);
+//				LOGGER.debug("adding " + c.getRowIndex() + "," + c.getColumnIndex());
 			}
 		};
 		final int rowIndex = cell.getRowIndex();
@@ -104,8 +73,7 @@ public class HSSFUtils {
 			walker.addAllHSSFCellFilters(filters);
 		walker.addHSSFCellFilter(new HSSFCellColumnFilter(colIndex,
 				HSSFCellColumnFilter.Index.EQUAL));
-		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,
-				HSSFCellRowFilter.Index.ABOVE));
+		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,HSSFCellRowFilter.Index.ABOVE));
 			walker.walk();
 		return result;
 	}
@@ -179,4 +147,11 @@ public class HSSFUtils {
 		return result;
 	
 	}
+	
+	public static HSSFWorkbook getWorkbookFromFile(File file)
+	throws FileNotFoundException, IOException {
+		final POIFSFileSystem fs = new POIFSFileSystem(
+		new FileInputStream(file));
+		return new HSSFWorkbook(fs);
+}
 }

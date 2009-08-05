@@ -10,7 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 
 public abstract class AbstractHSSFSheetWalker {
 
-	private final HSSFSheet sheet;
+	protected final HSSFSheet sheet;
 	private final Collection<HSSFCellFilter> filters = new ArrayList<HSSFCellFilter>();
 
 	public AbstractHSSFSheetWalker(HSSFSheet sheet) {
@@ -33,6 +33,7 @@ public abstract class AbstractHSSFSheetWalker {
 			final Iterator<HSSFCell> i2 = r.cellIterator();
 			while (i2.hasNext()) {
 				final HSSFCell c = (HSSFCell) i2.next();
+//				LOGGER.debug("current cell="+c.getRowIndex()+","+c.getColumnIndex());
 				if (accepted(c))
 					handleCell(c);
 			}
