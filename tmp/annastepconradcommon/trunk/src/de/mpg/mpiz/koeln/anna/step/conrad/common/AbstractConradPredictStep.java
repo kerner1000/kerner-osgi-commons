@@ -23,13 +23,13 @@ import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 /**
  * @cleaned 2009-07-28
  * @author Alexander Kerner
- *
+ * 
  */
 public abstract class AbstractConradPredictStep extends AbstractConradStep {
-	
+
 	protected final static String TRAIN_PREFIX_KEY = "predict.";
 	protected final static String WORKING_DIR_KEY = ConradConstants.PROPERTIES_KEY_PREFIX
-	+ TRAIN_PREFIX_KEY + "workingDir";
+			+ TRAIN_PREFIX_KEY + "workingDir";
 	protected File trainingFile;
 	protected File resultFile;
 
@@ -41,15 +41,16 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			logger.debug(this, "doing initialisation");
 			workingDir = new File(super.getStepProperties().getProperty(
 					WORKING_DIR_KEY));
-			logger.debug(this, "got working dir="+workingDir.getAbsolutePath());
+			logger.debug(this, "got working dir="
+					+ workingDir.getAbsolutePath());
 			if (!FileUtils.dirCheck(workingDir.getAbsoluteFile(), true))
 				throw new FileNotFoundException("cannot access working dir "
 						+ workingDir.getAbsolutePath());
 			process = getProcess();
 			trainingFile = new File(workingDir, "trainingFile.bin");
 			resultFile = new File(workingDir, "result.gtf");
-		
-			logger.debug(this, "init done: workingDir=" + workingDir.getAbsolutePath());
+			logger.debug(this, "init done: workingDir="
+					+ workingDir.getAbsolutePath());
 			logger.debug(this, "init done: trainingFile="
 					+ trainingFile.getAbsolutePath());
 			logger.debug(this, "init done: process=" + process);
@@ -57,7 +58,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			StepUtils.handleException(this, e, logger);
 		}
 	}
-	
+
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 
 		// TODO size may be zero, if nothing was found
@@ -66,7 +67,8 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			final boolean predictedGtfSize = (data.getPredictedGenesGtf()
 					.size() != 0);
 			logger.debug(this, "need to run: predictedGtf=" + predictedGtf);
-			logger.debug(this, "need to run: predictedGtfSize=" + predictedGtfSize);
+			logger.debug(this, "need to run: predictedGtfSize="
+					+ predictedGtfSize);
 			return (predictedGtf && predictedGtfSize);
 		} catch (Exception e) {
 			StepUtils.handleException(this, e, logger);
@@ -80,18 +82,22 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		try {
 			final boolean trainingFile = (data.getConradTrainingFile() != null && data
 					.getConradTrainingFile().exists());
-			
+
 			final boolean trainingFileRead = (data.getConradTrainingFile() != null && data
 					.getConradTrainingFile().canRead());
-			
+
 			final boolean inputSequences = (data.getInputSequences() != null);
 			final boolean inputSequencesSize = (data.getInputSequences().size() != 0);
-			
+
 			logger.debug(this, "requirements: trainingFile=" + trainingFile);
-			logger.debug(this, "requirements: trainingFileRead=" + trainingFileRead);
-			logger.debug(this, "requirements: inputSequences=" + inputSequences);
-			logger.debug(this, "requirements: inputSequencesSize=" + inputSequencesSize);
-			
+			logger.debug(this, "requirements: trainingFileRead="
+					+ trainingFileRead);
+			logger
+					.debug(this, "requirements: inputSequences="
+							+ inputSequences);
+			logger.debug(this, "requirements: inputSequencesSize="
+					+ inputSequencesSize);
+
 			return (trainingFile && trainingFileRead && inputSequences && inputSequencesSize);
 		} catch (Exception e) {
 			StepUtils.handleException(this, e, logger);
@@ -107,7 +113,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			createFiles(data);
 			process.addResultFile(true, resultFile.getAbsoluteFile());
 			success = process.createAndStartProcess();
-			if(success)
+			if (success)
 				update(resultFile.getAbsoluteFile(), data);
 		} catch (Exception e) {
 			StepUtils.handleException(this, e, logger);
@@ -117,9 +123,11 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		return success;
 	}
 
-	private void update(File resultFile, DataProxy data) throws IOException, GFFFormatErrorException, DataBeanAccessException {
-		final Collection<? extends GTFElement> c = new GTFFile(resultFile, null).getElements();
-		data.setPredictedGenesGtf(new ArrayList<GTFElement>(c));	
+	private void update(File resultFile, DataProxy data) throws IOException,
+			GFFFormatErrorException, DataBeanAccessException {
+		final Collection<? extends GTFElement> c = new GTFFile(resultFile, null)
+				.getElements();
+		data.setPredictedGenesGtf(new ArrayList<GTFElement>(c));
 	}
 
 	private void createFiles(DataProxy data) throws DataBeanAccessException,
@@ -129,9 +137,22 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 		new FASTAFileImpl(data.getInputSequences()).write(file);
 
 		final File file2 = data.getConradTrainingFile();
-		new LazyFileCopier(file2, trainingFile).copy();
-
-		trainingFile.deleteOnExit();
+		logger.debug(this, "got " + file2
+				+ " as training file from data proxy (size=" + file2.length()
+				+ ")");
+		
+		// copying does not work for some reason.
+		// take "original" file for now
+		trainingFile = file2;
+		
+//		try {
+//			new LazyFileCopier(file2, trainingFile).copy();
+//		} catch (Throwable t) {
+//			t.printStackTrace();
+//		}
+//		logger.debug(this, "copied files: old=" + file2.length() + ",new="
+//				+ trainingFile.length());
+//		trainingFile.deleteOnExit();
 		file.deleteOnExit();
 	}
 }
