@@ -27,4 +27,6 @@ public interface Model {
 
 	void detectValuesEndCell() throws Exception;
 
+	void detectColumnOfSubstances() throws Exception;
+
 }

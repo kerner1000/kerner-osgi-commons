@@ -51,6 +51,8 @@ class ControllerImpl implements Controller {
 									"model not initialized jet"));
 			}
 		});
+		LOGGER.info("files selected, trying to detect settings");
+		detect();
 	}
 
 	@Override
@@ -76,7 +78,7 @@ class ControllerImpl implements Controller {
 			}
 		});
 	}
-	
+
 	@Override
 	public void cancel() {
 		in.submit(new Runnable() {
@@ -129,18 +131,43 @@ class ControllerImpl implements Controller {
 			return Boolean.FALSE;
 		}
 	}
-	
+
 	@Override
 	public synchronized void detect() {
 		LOGGER.debug("auto-detecting settings");
 		detectProbeCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
+				.getSettings()));
 		detectLaborCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
+				.getSettings()));
+		detectColumnOfSubstances();
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
+				.getSettings()));
 		detectValuesBeginCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
+				.getSettings()));
 		detectValuesEndCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
+				.getSettings()));
+	}
+
+	private void detectColumnOfSubstances() {
+		LOGGER.debug("auto-detecting settings column of substances");
+		try {
+			in.submit(new Callable<Void>() {
+				@Override
+				public Void call() throws Exception {
+					model.detectColumnOfSubstances();
+					return null;
+				}
+			}).get();
+			LOGGER.debug("auto-detecting settings column of substances successful");
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.printMessage("could not find column of substances ("
+					+ e.getLocalizedMessage() + ")", true);
+		}
 	}
 
 	private void detectValuesEndCell() {
@@ -156,7 +183,8 @@ class ControllerImpl implements Controller {
 			LOGGER.debug("auto-detecting settings values end cell successful");
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find values end cell (" + e.getLocalizedMessage() + ")", true);
+			view.printMessage("could not find values end cell ("
+					+ e.getLocalizedMessage() + ")", true);
 		}
 	}
 
@@ -170,10 +198,12 @@ class ControllerImpl implements Controller {
 					return null;
 				}
 			}).get();
-			LOGGER.debug("auto-detecting settings values begin cell successful");
+			LOGGER
+					.debug("auto-detecting settings values begin cell successful");
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find values begin cell (" + e.getLocalizedMessage() + ")", true);
+			view.printMessage("could not find values begin cell ("
+					+ e.getLocalizedMessage() + ")", true);
 		}
 	}
 
@@ -190,7 +220,8 @@ class ControllerImpl implements Controller {
 			LOGGER.debug("auto-detecting settings labor cell successful");
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find labor cell (" + e.getLocalizedMessage() + ")", true);
+			view.printMessage("could not find labor cell ("
+					+ e.getLocalizedMessage() + ")", true);
 		}
 	}
 
@@ -207,7 +238,8 @@ class ControllerImpl implements Controller {
 			LOGGER.debug("auto-detecting settings probe cell successful");
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find probe cell (" + e.getLocalizedMessage() + ")", true);
+			view.printMessage("could not find probe cell ("
+					+ e.getLocalizedMessage() + ")", true);
 		}
 	}
 

@@ -83,6 +83,12 @@ public class ModelImpl implements Model {
 	}
 	
 	@Override
+	public void detectColumnOfSubstances() throws Exception {
+		currentDetectJob = modelThread.submit(new ColumnOfSubstancesDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		setSettings(currentDetectJob.get());
+	}
+	
+	@Override
 	public synchronized boolean start() throws CancellationException, InterruptedException, ExecutionException {
 		LOGGER.info("starting...");
 			currentJob = modelThread.submit(new Worker(inputFiles, outDir, settings,

@@ -69,7 +69,7 @@ class Core {
 			final ModelSettings settings) {
 		final int rowIndex = settings.getProbeIdentRow();
 		final int columnIndex = settings.getProbeIdentColumn();
-		LOGGER.debug("probe indices: " + rowIndex + " " + columnIndex);
+		LOGGER.debug("probe indices: " + rowIndex + "," + columnIndex);
 		final HSSFRow row = sheet.getRow(rowIndex);
 		final HSSFCell cell = row.getCell(columnIndex);
 		final String probe = cell.toString();
