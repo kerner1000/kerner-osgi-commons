@@ -214,51 +214,12 @@ class Core {
 	}
 
 	public static HSSFCell detectValuesEndCell(File file) throws Exception {
-		HSSFCell result = null;
-		int currentMaxNums = 0;
-		final Map<HSSFCell, Integer> map = new ConcurrentHashMap<HSSFCell, Integer>();
 		LOGGER.debug("detecting cell containing last value");
 		final HSSFWorkbook wb = HSSFUtils.getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
 		final HSSFSheet sheet = wb.getSheetAt(0);
-		AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
-			@Override
-			public void handleCell(HSSFCell c) {
-				if (map.containsKey(c)) {
-					LOGGER.error("IllegalStateException",
-							new IllegalStateException("cannot be"));
-				} else {
-					final int num = HSSFUtils.getCellsAboveCell(sheet, c)
-							.size();
-					LOGGER.debug("cell " + c.getRowIndex() + ","
-							+ c.getColumnIndex() + " has " + num
-							+ " cells above (numeric)");
-					map.put(c, num);
-				}
-			}
-		};
-		walker.addHSSFCellFilter(new HSSFCellTypeNumericFilter());
-		walker.walk();
-		for (Entry<HSSFCell, Integer> e : map.entrySet()) {
-			final HSSFCell xx = e.getKey();
-			final int num = e.getValue();
-			final HSSFRow rowBelow = sheet.getRow(xx.getRowIndex() + 1);
-			if (rowBelow == null)
-				continue;
-			final HSSFCell cellBelow = rowBelow.getCell(xx.getColumnIndex());
-			if (cellBelow == null)
-				continue;
-			if (result == null
-					|| (num > currentMaxNums
-							&& cellBelow.getCellType() != HSSFCell.CELL_TYPE_NUMERIC && xx
-							.getColumnIndex() > result.getColumnIndex())) {
-				currentMaxNums = num;
-				result = xx;
-			}
-		}
-		if (result == null)
-			throw new FailedToDetectException("could not find suitable cell");
-		return result;
+		final ValuesEndDetector walker = new ValuesEndDetector(sheet);
+		return walker.getValuesEndCell();
 	}
 
 	public static int detectSubstancesCol(File file)
@@ -341,8 +302,8 @@ class Core {
 	public static HSSFCell detectProbeCell(File file)
 			throws FileNotFoundException, IOException, FailedToDetectException {
 		final Collection<HSSFCell> cells = new HashSet<HSSFCell>();
-		final Pattern p = Pattern.compile(".*probe.+nr.*",
-				Pattern.CASE_INSENSITIVE);
+		final Pattern p = Pattern.compile(".*probe.+nr.*",Pattern.CASE_INSENSITIVE);
+//		final Pattern p = Pattern.compile(".*affe.*",Pattern.CASE_INSENSITIVE);
 		LOGGER.debug("detecting cell with probe identifier");
 		final HSSFWorkbook wb = HSSFUtils.getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0

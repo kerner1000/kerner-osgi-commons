@@ -17,12 +17,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 public class HSSFUtils {
-	
+
 	private final static Logger LOGGER = Logger.getLogger(HSSFUtils.class);
 
 	private HSSFUtils() {
 	}
-	
+
 	public static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet,
 			HSSFCell cell) {
 		Collection<HSSFCellFilter> c = Collections.emptyList();
@@ -32,10 +32,11 @@ public class HSSFUtils {
 	public static Collection<HSSFCell> getCellsAboveCell(HSSFSheet sheet,
 			HSSFCell cell, Collection<HSSFCellFilter> filters) {
 		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
-		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(
+				sheet) {
 			@Override
-			public void handleCell(HSSFCell cell) {
-				result.add(cell);
+			public void handleCell(HSSFCell c) {
+				result.add(c);
 			}
 		};
 		final int rowIndex = cell.getRowIndex();
@@ -46,10 +47,10 @@ public class HSSFUtils {
 				HSSFCellColumnFilter.Index.EQUAL));
 		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,
 				HSSFCellRowFilter.Index.BELOW));
-			walker.walk();
+		walker.walk();
 		return result;
 	}
-	
+
 	public static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet,
 			HSSFCell cell) {
 		Collection<HSSFCellFilter> c = Collections.emptyList();
@@ -58,13 +59,12 @@ public class HSSFUtils {
 
 	public static Collection<HSSFCell> getCellsBelowCell(HSSFSheet sheet,
 			HSSFCell cell, Collection<HSSFCellFilter> filters) {
-//		LOGGER.debug("now cell " + cell.getRowIndex() + "," + cell.getColumnIndex());
 		final Collection<HSSFCell> result = new ArrayList<HSSFCell>();
-		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(sheet) {
+		final AbstractHSSFSheetWalker walker = new AbstractHSSFSheetWalker(
+				sheet) {
 			@Override
 			public void handleCell(HSSFCell c) {
 				result.add(c);
-//				LOGGER.debug("adding " + c.getRowIndex() + "," + c.getColumnIndex());
 			}
 		};
 		final int rowIndex = cell.getRowIndex();
@@ -73,8 +73,9 @@ public class HSSFUtils {
 			walker.addAllHSSFCellFilters(filters);
 		walker.addHSSFCellFilter(new HSSFCellColumnFilter(colIndex,
 				HSSFCellColumnFilter.Index.EQUAL));
-		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,HSSFCellRowFilter.Index.ABOVE));
-			walker.walk();
+		walker.addHSSFCellFilter(new HSSFCellRowFilter(rowIndex,
+				HSSFCellRowFilter.Index.ABOVE));
+		walker.walk();
 		return result;
 	}
 
@@ -113,7 +114,8 @@ public class HSSFUtils {
 		return result;
 	}
 
-	public static HSSFCell getNextNumericCellInRow(HSSFSheet sheet, final HSSFCell cellOrig) {
+	public static HSSFCell getNextNumericCellInRow(HSSFSheet sheet,
+			final HSSFCell cellOrig) {
 		HSSFCell result = null;
 		final class Walker extends AbstractHSSFSheetWalker {
 			HSSFCell result;
@@ -145,13 +147,13 @@ public class HSSFUtils {
 		if (result == null)
 			throw new NullPointerException("could not get cell");
 		return result;
-	
+
 	}
-	
+
 	public static HSSFWorkbook getWorkbookFromFile(File file)
-	throws FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException {
 		final POIFSFileSystem fs = new POIFSFileSystem(
-		new FileInputStream(file));
+				new FileInputStream(file));
 		return new HSSFWorkbook(fs);
-}
+	}
 }

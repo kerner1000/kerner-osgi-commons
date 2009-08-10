@@ -4,7 +4,6 @@ import java.io.File;
 
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
-
 public interface Model {
 
 	void setOutDir(File selectedDir);
@@ -15,11 +14,17 @@ public interface Model {
 	boolean start() throws Exception;
 
 	ModelSettings getSettings();
-	
+
 	void setSettings(ModelSettings settings);
-	
+
 	void cancel();
 
-	void detect() throws Exception;
+	void detectProbeCell() throws Exception;
+
+	void detectLaborCell() throws Exception;
+
+	void detectValuesBeginCell() throws Exception;
+
+	void detectValuesEndCell() throws Exception;
 
 }

@@ -131,21 +131,83 @@ class ControllerImpl implements Controller {
 	}
 	
 	@Override
-	public boolean detect() {
+	public synchronized void detect() {
+		LOGGER.debug("auto-detecting settings");
+		detectProbeCell();
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		detectLaborCell();
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		detectValuesBeginCell();
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+		detectValuesEndCell();
+		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model.getSettings()));
+	}
+
+	private void detectValuesEndCell() {
+		LOGGER.debug("auto-detecting settings values end cell");
 		try {
-			return in.submit(new Callable<Boolean>() {
+			in.submit(new Callable<Void>() {
 				@Override
-				public Boolean call() throws Exception {
-					LOGGER.debug("auto-detecting settings");
-					model.detect();
-					return Boolean.TRUE;
+				public Void call() throws Exception {
+					model.detectValuesEndCell();
+					return null;
 				}
 			}).get();
+			LOGGER.debug("auto-detecting settings values end cell successful");
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError("could not auto-detect settings. ("
-					+ e.getLocalizedMessage() + ")");
-			return Boolean.FALSE;
+			view.printMessage("could not find values end cell (" + e.getLocalizedMessage() + ")", true);
+		}
+	}
+
+	private void detectValuesBeginCell() {
+		LOGGER.debug("auto-detecting settings values begin cell");
+		try {
+			in.submit(new Callable<Void>() {
+				@Override
+				public Void call() throws Exception {
+					model.detectValuesBeginCell();
+					return null;
+				}
+			}).get();
+			LOGGER.debug("auto-detecting settings values begin cell successful");
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.printMessage("could not find values begin cell (" + e.getLocalizedMessage() + ")", true);
+		}
+	}
+
+	private void detectLaborCell() {
+		LOGGER.debug("auto-detecting settings labor cell");
+		try {
+			in.submit(new Callable<Void>() {
+				@Override
+				public Void call() throws Exception {
+					model.detectLaborCell();
+					return null;
+				}
+			}).get();
+			LOGGER.debug("auto-detecting settings labor cell successful");
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.printMessage("could not find labor cell (" + e.getLocalizedMessage() + ")", true);
+		}
+	}
+
+	private void detectProbeCell() {
+		LOGGER.debug("auto-detecting settings probe cell");
+		try {
+			in.submit(new Callable<Void>() {
+				@Override
+				public Void call() throws Exception {
+					model.detectProbeCell();
+					return null;
+				}
+			}).get();
+			LOGGER.debug("auto-detecting settings probe cell successful");
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.printMessage("could not find probe cell (" + e.getLocalizedMessage() + ")", true);
 		}
 	}
 

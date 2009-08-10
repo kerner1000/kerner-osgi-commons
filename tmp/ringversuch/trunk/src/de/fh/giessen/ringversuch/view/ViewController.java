@@ -26,5 +26,5 @@ interface ViewController {
 
 	void hideSettingsView();
 
-	boolean detect();
+	void detect();
 }

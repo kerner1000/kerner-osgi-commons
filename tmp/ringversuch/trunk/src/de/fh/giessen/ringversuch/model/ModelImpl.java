@@ -48,12 +48,38 @@ public class ModelImpl implements Model {
 				+ " file(s)", false);
 	}
 
+	/**
 	@Override
 	public synchronized void detect() throws Exception {
 		LOGGER.debug("trying to detect settings");
-		currentDetectJob = modelThread.submit(new Detector(inputFiles, new WorkMonitor(controller), getSettings()));
+		currentDetectJob = modelThread.submit(new DetectorOld(inputFiles, new WorkMonitor(controller), getSettings()));
 		settings = currentDetectJob.get();
-		LOGGER.debug("settings detected");
+		LOGGER.debug("settings detected");		
+	}
+	*/
+	
+	@Override
+	public void detectProbeCell() throws Exception {
+		currentDetectJob = modelThread.submit(new ProbeCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		setSettings(currentDetectJob.get());
+	}
+	
+	@Override
+	public void detectLaborCell() throws Exception {
+		currentDetectJob = modelThread.submit(new LaborCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		setSettings(currentDetectJob.get());
+	}
+	
+	@Override
+	public void detectValuesBeginCell() throws Exception {
+		currentDetectJob = modelThread.submit(new ValuesBeginCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		setSettings(currentDetectJob.get());
+	}
+	
+	@Override
+	public void detectValuesEndCell() throws Exception {
+		currentDetectJob = modelThread.submit(new ValuesEndCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		setSettings(currentDetectJob.get());
 	}
 	
 	@Override

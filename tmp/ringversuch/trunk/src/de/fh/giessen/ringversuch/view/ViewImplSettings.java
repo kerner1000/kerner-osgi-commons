@@ -39,9 +39,7 @@ class ViewImplSettings extends JPanel {
 			}
 			
 		else if (e.getSource() == buttonDetect) {
-			if(controller.detect()){
-				setSettings(controller.getSettings());
-			}
+			controller.detect();
 		}
 			
 			else if (e.getSource() == buttonLoad) {

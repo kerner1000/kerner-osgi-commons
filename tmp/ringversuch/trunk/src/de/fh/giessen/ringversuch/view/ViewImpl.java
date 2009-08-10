@@ -211,8 +211,8 @@ public class ViewImpl implements View, ViewController {
 	}
 	
 	@Override
-	public boolean detect() {
-		return controller.detect();
+	public void detect() {
+		controller.detect();
 	}
 
 	@Override

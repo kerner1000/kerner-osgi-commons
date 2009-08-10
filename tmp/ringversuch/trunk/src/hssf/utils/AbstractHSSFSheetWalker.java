@@ -30,6 +30,7 @@ public abstract class AbstractHSSFSheetWalker {
 		final Iterator<HSSFRow> i = sheet.rowIterator();
 		while (i.hasNext()) {
 			final HSSFRow r = (HSSFRow) i.next();
+//			System.err.println("NAU RO " + r.getRowNum());
 			final Iterator<HSSFCell> i2 = r.cellIterator();
 			while (i2.hasNext()) {
 				final HSSFCell c = (HSSFCell) i2.next();

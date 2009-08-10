@@ -60,8 +60,7 @@ public interface ControllerIn {
 
 	/**
 	 * In
-	 * @return
 	 */
-	boolean detect();
+	void detect();
 
 }
