@@ -5,6 +5,7 @@ Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes
 Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes.StepGetPredictedGenes
 Import-Package: de.bioutils.gtf,
+ de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.anna.server.data,
  de.mpg.mpiz.koeln.anna.server.dataproxy,
  de.mpg.mpiz.koeln.anna.step,

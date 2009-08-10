@@ -17,6 +17,7 @@ import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	
@@ -64,8 +65,10 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 					.getRepeatMaskerGff().size() != 0);
 			
 			return (repeatGtf && repeatGtfSize);
-		} catch (DataBeanAccessException e) {
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 
@@ -78,8 +81,10 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 					.getInputSequences().size() != 0);
 			
 			return (sequence && sequenceSize);
-		} catch (DataBeanAccessException e) {
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 	
@@ -101,10 +106,10 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		if (success) {
 			upUpdate(data, outFile);
 		}
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.debug(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
 		}
 		return success;
 	}

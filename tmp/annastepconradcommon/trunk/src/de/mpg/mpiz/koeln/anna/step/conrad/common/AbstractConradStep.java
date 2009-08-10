@@ -26,8 +26,8 @@ public abstract class AbstractConradStep extends AbstractStep {
 		exeDir = new File(super.getStepProperties()
 				.getProperty(ConradConstants.CONRAD_DIR_KEY));
 		logger.debug(this, "got exe dir="+exeDir);
-		}catch(Exception e){
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 		}
 	}
 	

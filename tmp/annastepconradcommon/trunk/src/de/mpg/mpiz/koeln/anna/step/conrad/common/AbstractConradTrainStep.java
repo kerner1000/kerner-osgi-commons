@@ -51,8 +51,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "init done: trainingFile="
 					+ trainingFile.getAbsolutePath());
 			logger.debug(this, "init done: process=" + process);
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 		}
 		logger.debug(this, "initialisation done");
 	}
@@ -69,8 +69,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "need to run: trainingFileRead="+ trainingFileRead);
 			
 			return trainingFile && trainingFileRead;
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 			// cannot be reached
 			return false;
 		}
@@ -88,8 +88,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "requirements: gtf=" + gtf);
 			logger.debug(this, "requirements: gtfSize=" + gtfSize);
 			return (fastas && fastasSize && gtf && gtfSize);
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 			// cannot be reached
 			return false;
 		}
@@ -138,8 +138,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 				logger.debug(this, "process sucessfull, updating data bean");
 				update(data);
 			}
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 			// cannot be reached
 			return false;
 		}

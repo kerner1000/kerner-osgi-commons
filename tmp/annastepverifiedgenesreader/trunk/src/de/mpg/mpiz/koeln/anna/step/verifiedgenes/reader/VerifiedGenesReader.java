@@ -20,6 +20,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 public class VerifiedGenesReader extends AbstractStep {
 
@@ -57,7 +58,7 @@ public class VerifiedGenesReader extends AbstractStep {
 		return true;
 	}
 
-	public boolean run(DataProxy data, StepProcessObserver observer) {
+	public boolean run(DataProxy data, StepProcessObserver observer) throws StepExecutionException {
 		observer.setProgress(0, 100);
 		try {
 			observer.setProgress(30, 100);
@@ -65,9 +66,9 @@ public class VerifiedGenesReader extends AbstractStep {
 			observer.setProgress(60, 100);
 			doGtf(data);
 			observer.setProgress(100, 100);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(this, e.getLocalizedMessage(), e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
 			return false;
 		}
 		return true;
@@ -84,15 +85,15 @@ public class VerifiedGenesReader extends AbstractStep {
 	}
 
 	private void doFasta(DataProxy data) throws IOException,
-			DataBeanAccessException {
+			DataBeanAccessException, StepExecutionException {
 		try{
 		logger.info(this, "reading FASTA file " + fasta);
 		final FASTAFile fastaFile = new FASTAFileImpl(fasta, null);
 		final Collection<? extends FASTASequence> sequences = fastaFile.getElements();
 		logger.info(this, "done reading fasta");
 		data.setVerifiedGenesFasta(new ArrayList<FASTASequence>(sequences));
-		}catch(Throwable t){
-			t.printStackTrace();
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 		}
 	}
 
@@ -105,9 +106,10 @@ public class VerifiedGenesReader extends AbstractStep {
 					.getVerifiedGenesGtf();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);
-		} catch (Exception e) {
-			logger.error(this, e.getLocalizedMessage(), e);
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 

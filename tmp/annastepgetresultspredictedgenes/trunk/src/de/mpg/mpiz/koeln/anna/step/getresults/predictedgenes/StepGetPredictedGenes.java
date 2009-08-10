@@ -1,17 +1,15 @@
 package de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
-
-import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 public class StepGetPredictedGenes extends AbstractStep {
 
@@ -25,8 +23,10 @@ public class StepGetPredictedGenes extends AbstractStep {
 					.getPredictedGenesGtf();
 			// TODO predicted genes may be size==0
 			return (elements != null && elements.size() != 0);
-		} catch (DataBeanAccessException e) {
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t);
+			// cannot be reached
+			return false;
 		}
 	}
 
@@ -51,10 +51,10 @@ public class StepGetPredictedGenes extends AbstractStep {
 						.getPredictedGenesGtf());
 				file.write(outFile);
 			}
-		} catch (DataBeanAccessException e) {
-
-		} catch (IOException e) {
-
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t);
+			// cannot be reached
+			return false;
 		}
 		return success;
 	}

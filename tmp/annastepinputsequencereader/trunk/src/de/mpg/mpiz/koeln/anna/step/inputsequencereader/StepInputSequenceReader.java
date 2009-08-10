@@ -9,11 +9,11 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.fasta.FASTASequence;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
-import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 public class StepInputSequenceReader extends AbstractStep {
 
@@ -23,8 +23,12 @@ public class StepInputSequenceReader extends AbstractStep {
 	@Override
 	protected synchronized void init(BundleContext context)
 			throws StepExecutionException {
+		try{
 		super.init(context);
 		logger = new LogDispatcherImpl(context);
+		}catch(Throwable t){
+			StepUtils.handleException(this, t, logger);
+		}
 	}
 
 	public boolean requirementsSatisfied(DataProxy data)
@@ -44,9 +48,10 @@ public class StepInputSequenceReader extends AbstractStep {
 			logger.debug(this, "\tinputSequences=" + inputSequences);
 			logger.debug(this, "\tinputSequencesSize=" + inputSequencesSize);
 			return (inputSequences && inputSequencesSize);
-		} catch (DataBeanAccessException e) {
-			logger.error(this, e.toString(), e);
-			throw new StepExecutionException(e);
+		}catch(Throwable t){
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 
@@ -66,8 +71,9 @@ public class StepInputSequenceReader extends AbstractStep {
 					+ fastas.iterator().next().getHeader() + " [...]");
 			data.setInputSequences(fastas);
 			return true;
-		} catch (Exception e) {
-			logger.error(this, e.toString(), e);
+		}catch(Throwable t){
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
 			return false;
 		}
 	}

@@ -70,8 +70,8 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			logger.debug(this, "need to run: predictedGtfSize="
 					+ predictedGtfSize);
 			return (predictedGtf && predictedGtfSize);
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 			// cannot be reached
 			return false;
 		}
@@ -99,8 +99,8 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 					+ inputSequencesSize);
 
 			return (trainingFile && trainingFileRead && inputSequences && inputSequencesSize);
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 			// cannot be reached
 			return false;
 		}
@@ -115,8 +115,8 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			success = process.createAndStartProcess();
 			if (success)
 				update(resultFile.getAbsoluteFile(), data);
-		} catch (Exception e) {
-			StepUtils.handleException(this, e, logger);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
 			// cannot be reached
 			return false;
 		}

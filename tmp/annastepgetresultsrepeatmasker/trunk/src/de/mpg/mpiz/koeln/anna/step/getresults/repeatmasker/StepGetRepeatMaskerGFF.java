@@ -14,6 +14,7 @@ import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
 import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
+import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 public class StepGetRepeatMaskerGFF extends AbstractStep {
 	
@@ -42,8 +43,10 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 			// TODO predicted genes may be size==0
 			logger.debug(this, "requirements satisfied="+(elements != null && elements.size() != 0));
 			return (elements != null && elements.size() != 0);
-		} catch (DataBeanAccessException e) {
-			throw new StepExecutionException(e);
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
 		}
 	}
 
@@ -63,7 +66,11 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 						.getRepeatMaskerGff());
 				file.write(outFile);
 			}
-		} catch (Throwable t){t.printStackTrace(); System.exit(1);}
+		} catch (Throwable t) {
+			StepUtils.handleException(this, t, logger);
+			// cannot be reached
+			return false;
+		}
 		return success;
 	}
 
