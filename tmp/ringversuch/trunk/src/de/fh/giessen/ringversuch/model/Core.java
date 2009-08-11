@@ -29,14 +29,22 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
+/**
+ * 
+ * not public, so no doc
+ * 
+ * @ThreadSave stateless
+ * @lastVisit 2009-08-11
+ * @author Alexander Kerner
+ * 
+ */
 class Core {
 
-	// TODO output only filenames while writing
 	private Core() {
 	}
 
+	public final static String NEW_LINE = System.getProperty("line.separator");
 	private final static Logger LOGGER = Logger.getLogger(Core.class);
-	public static final String NEW_LINE = System.getProperty("line.separator");
 
 	static Labor readLaborFile(final File file, final ModelSettings settings)
 			throws FileNotFoundException, IOException, InvalidFormatException {
@@ -124,11 +132,11 @@ class Core {
 		final String probeIdent = settings.getProbeIdent();
 		Collection<String> commonKeys = getCommonSubstanceKeys(labors,
 				probeIdent);
-//		final String m = "got " + commonKeys.size() + " common keys";
-//		if(commonKeys.size() == 0){
-//			LOGGER.fatal(m);
-//		}else
-//		LOGGER.debug(m);
+		// final String m = "got " + commonKeys.size() + " common keys";
+		// if(commonKeys.size() == 0){
+		// LOGGER.fatal(m);
+		// }else
+		// LOGGER.debug(m);
 		for (String s : commonKeys) {
 			result.add(new OutSubstanceImpl(s, probeIdent,
 					getOutSubstanceEntrys(s, labors, probeIdent)));
@@ -164,7 +172,7 @@ class Core {
 				}
 			}
 		}
-		if(keys == null || keys.size() == 0)
+		if (keys == null || keys.size() == 0)
 			throw new ParsingException("could not get list of substances");
 		return keys;
 	}
@@ -284,8 +292,10 @@ class Core {
 	public static HSSFCell detectProbeCell(File file)
 			throws FileNotFoundException, IOException, FailedToDetectException {
 		final Collection<HSSFCell> cells = new HashSet<HSSFCell>();
-		final Pattern p = Pattern.compile(".*probe.+nr.*",Pattern.CASE_INSENSITIVE);
-//		final Pattern p = Pattern.compile(".*affe.*",Pattern.CASE_INSENSITIVE);
+		final Pattern p = Pattern.compile(".*probe.+nr.*",
+				Pattern.CASE_INSENSITIVE);
+		// final Pattern p =
+		// Pattern.compile(".*affe.*",Pattern.CASE_INSENSITIVE);
 		LOGGER.debug("detecting cell with probe identifier");
 		final HSSFWorkbook wb = HSSFUtils.getWorkbookFromFile(file);
 		// TODO for now, we only look at sheet 0
@@ -342,7 +352,7 @@ class Core {
 				valueCell.setCellValue(new HSSFRichTextString(value));
 				currentColumn++;
 			}
-//			System.out.println();
+			// System.out.println();
 			currentRow++;
 		}
 

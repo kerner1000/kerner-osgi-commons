@@ -48,7 +48,7 @@ class Worker implements Callable<Void> {
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
 			final OutSubstanceWriter writer = new OutSubstanceWriter(s, outDir);
-			monitor.printMessage("writing " + writer.getOutFile());
+			monitor.printMessage("writing " + writer.getOutFile().getName());
 			writer.write();
 			monitor.setProgress(currentProgress++, maxProgress);
 		}

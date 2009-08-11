@@ -1,7 +1,6 @@
 package de.fh.giessen.ringversuch.model;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 interface Labor {
 	

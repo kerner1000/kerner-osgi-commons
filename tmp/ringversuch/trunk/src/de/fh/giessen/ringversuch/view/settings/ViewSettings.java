@@ -1,5 +1,10 @@
 package de.fh.giessen.ringversuch.view.settings;
 
+/**
+ * 
+ * Program settings, as the view understands them
+ * 
+ */
 public interface ViewSettings {
 
 	void setLaborIdentColumn(String laborIdentColumn);

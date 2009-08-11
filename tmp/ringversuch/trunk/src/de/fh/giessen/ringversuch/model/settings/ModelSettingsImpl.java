@@ -1,20 +1,25 @@
 package de.fh.giessen.ringversuch.model.settings;
 
-import java.util.Properties;
-
+/**
+ * Simple implementation for {@link ModelSettings} 
+ * @ThreadSave volatile fields
+ * @lastVisit 2009-08-11
+ * @author Alexander Kerner
+ * 
+ */
 public class ModelSettingsImpl implements ModelSettings {
 
-	private int laborNoRow = -1;
-	private int laborNoColumn = -1;
-	private int probeNoRow = -1;
-	private int probeNoCOlumn = -1;
-	private String probeValue = null;
-	private int sheetNo = -1;
-	private int substancesColumn = -1;
-	private int valuesStartRow = -1;
-	private int valuesStartColumn = -1;
-	private int valuesEndRow = -1;
-	private int valuesEndColumn = -1;
+	private volatile int laborNoRow = -1;
+	private volatile int laborNoColumn = -1;
+	private volatile int probeNoRow = -1;
+	private volatile int probeNoCOlumn = -1;
+	private volatile String probeValue = "1";
+	private volatile int sheetNo = -1;
+	private volatile int substancesColumn = -1;
+	private volatile int valuesStartRow = -1;
+	private volatile int valuesStartColumn = -1;
+	private volatile int valuesEndRow = -1;
+	private volatile int valuesEndColumn = -1;
 
 	@Override
 	public String toString() {

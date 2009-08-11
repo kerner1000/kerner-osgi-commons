@@ -1,0 +1,858 @@
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 27,6: 0.15 << DEBUG [pool-3-thread-1] 2009-08-11 15:54:46,196 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 29,7: 0.272 << DEBUG [pool-3-thread-1] 2009-08-11 15:54:46,196 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 35,7: 0.114 << DEBUG [pool-3-thread-1] 2009-08-11 15:54:46,196 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> found valuesEndCell=0.114 << INFO [pool-3-thread-1] 2009-08-11 15:54:46,197 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> assuming cell containing last value: 35,7 << INFO [pool-3-thread-1] 2009-08-11 15:54:46,197 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.util.concurrent.ExecutionException: java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:54:46,197 
+java.util.concurrent.ExecutionException: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detectValuesEndCell(ControllerImpl.java:183)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:146)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.model.ModelImpl.detectValuesEndCell(ModelImpl.java:85)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$8.call(ControllerImpl.java:180)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$8.call(ControllerImpl.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.model.ValuesEndCellDetector.detect(ValuesEndCellDetector.java:128)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:1)
+	... 5 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not find values end cell (java.util.concurrent.ExecutionException: java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:54:46,198 
+de.fh.giessen.ringversuch.controller.SettingsConverter >> converting model settings to view settings: modelSettings=null << DEBUG [AWT-EventQueue-0] 2009-08-11 15:54:46,198 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:54:46,199 
+de.fh.giessen.ringversuch.model.InvalidSettingsException: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.controller.SettingsConverter.modelSettingsToViewSettings(SettingsConverter.java:197)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:147)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.controller.SettingsConverter.modelSettingsToViewSettings(SettingsConverter.java:176)
+	... 29 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not auto detect settings (java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:54:46,199 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> starting up << DEBUG [main] 2009-08-11 15:57:20,723 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> setModel=de.fh.giessen.ringversuch.model.ModelImpl@b035079 << DEBUG [main] 2009-08-11 15:57:21,126 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> setView=de.fh.giessen.ringversuch.view.ViewImpl@53ce669e << DEBUG [main] 2009-08-11 15:57:21,129 
+de.fh.giessen.ringversuch.controller.SettingsConverter >> reading properties from file /home/proj/kerner/workspace/ringversuch/settings.ini << INFO [main] 2009-08-11 15:57:21,133 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> /home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory) << ERROR [main] 2009-08-11 15:57:21,134 
+java.io.FileNotFoundException: /home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:106)
+	at de.fh.giessen.ringversuch.controller.SettingsConverter.fileToProperties(SettingsConverter.java:52)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.main(ControllerImpl.java:345)
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=/home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory) << DEBUG [pool-1-thread-1] 2009-08-11 15:57:21,138 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=/home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory), is error=false << DEBUG [pool-1-thread-1] 2009-08-11 15:57:21,138 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=loading default settings << DEBUG [pool-1-thread-2] 2009-08-11 15:57:21,138 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=loading default settings, is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:57:21,138 
+de.fh.giessen.ringversuch.view.ViewImpl >> new settings=labIdentRow=1, labNoCol=A, probeIdent=1, probeRow=1, probeCol=A, sheetNo=1, subCol=A, valuesStartRow=1, valuesStartCol=A, valuesEndRow=1, valuesEndCol=A << DEBUG [main] 2009-08-11 15:57:21,142 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> view created and online << DEBUG [main] 2009-08-11 15:57:21,147 
+de.fh.giessen.ringversuch.view.ViewImplMain >> event received: java.awt.event.ActionEvent[ACTION_PERFORMED,cmd=Select files,when=1249999041995,modifiers=Button1] on javax.swing.JButton[,0,0,101x25,alignmentX=0.0,alignmentY=0.5,border=javax.swing.plaf.BorderUIResource$CompoundBorderUIResource@3fdb484d,flags=296,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,disabledSelectedIcon=,margin=javax.swing.plaf.InsetsUIResource[top=2,left=14,bottom=2,right=14],paintBorder=true,paintFocus=true,pressedIcon=,rolloverEnabled=true,rolloverIcon=,rolloverSelectedIcon=,selectedIcon=,text=Select files,defaultCapable=true] << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:21,996 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> files selected, trying to detect settings << INFO [AWT-EventQueue-0] 2009-08-11 15:57:26,182 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto detecting settings << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,186 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings probe cell << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,186 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> setSelectedFiles=[/home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls] << INFO [pool-2-thread-1] 2009-08-11 15:57:26,182 
+de.fh.giessen.ringversuch.model.ModelImpl >> input files: [/home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls] << INFO [pool-2-thread-1] 2009-08-11 15:57:26,186 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=selected 1 file(s) << DEBUG [pool-1-thread-2] 2009-08-11 15:57:26,188 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=selected 1 file(s), is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:57:26,188 
+de.fh.giessen.ringversuch.model.Core >> detecting cell with probe identifier << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,235 
+de.fh.giessen.ringversuch.model.Core >> found match Probe Nr. << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,393 
+de.fh.giessen.ringversuch.model.ProbeCellDetector >> found cell containing probe ident: 4,2 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,400 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.util.concurrent.ExecutionException: java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:57:26,401 
+java.util.concurrent.ExecutionException: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detectProbeCell(ControllerImpl.java:238)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:142)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.model.ModelImpl.detectProbeCell(ModelImpl.java:64)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$11.call(ControllerImpl.java:235)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$11.call(ControllerImpl.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.model.ProbeCellDetector.detect(ProbeCellDetector.java:30)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:1)
+	... 5 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not find probe cell (java.util.concurrent.ExecutionException: java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,402 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings labor cell << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,402 
+de.fh.giessen.ringversuch.model.Core >> detecting cell with labor identifier << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,406 
+de.fh.giessen.ringversuch.model.Core >> found match Labor-Nr. << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,432 
+de.fh.giessen.ringversuch.model.LaborCellDetector >> found cell containing labor ident: 2,2 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,434 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.util.concurrent.ExecutionException: java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:57:26,435 
+java.util.concurrent.ExecutionException: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detectLaborCell(ControllerImpl.java:220)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:143)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.model.ModelImpl.detectLaborCell(ModelImpl.java:71)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$10.call(ControllerImpl.java:217)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$10.call(ControllerImpl.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.model.LaborCellDetector.detect(LaborCellDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:1)
+	... 5 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not find labor cell (java.util.concurrent.ExecutionException: java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,436 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings column of substances << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,436 
+de.fh.giessen.ringversuch.model.Core >> detecting column with substances << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,440 
+de.fh.giessen.ringversuch.model.Core >> cell 0,0 has 37 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,471 
+de.fh.giessen.ringversuch.model.Core >> cell 2,0 has 36 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,472 
+de.fh.giessen.ringversuch.model.Core >> cell 2,4 has 5 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,473 
+de.fh.giessen.ringversuch.model.Core >> cell 4,0 has 35 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,473 
+de.fh.giessen.ringversuch.model.Core >> cell 4,4 has 4 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,474 
+de.fh.giessen.ringversuch.model.Core >> cell 6,0 has 34 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,475 
+de.fh.giessen.ringversuch.model.Core >> cell 8,0 has 33 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,476 
+de.fh.giessen.ringversuch.model.Core >> cell 8,2 has 2 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,477 
+de.fh.giessen.ringversuch.model.Core >> cell 8,4 has 3 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,478 
+de.fh.giessen.ringversuch.model.Core >> cell 9,4 has 2 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,479 
+de.fh.giessen.ringversuch.model.Core >> cell 10,2 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,480 
+de.fh.giessen.ringversuch.model.Core >> cell 10,4 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,481 
+de.fh.giessen.ringversuch.model.Core >> cell 10,5 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,481 
+de.fh.giessen.ringversuch.model.Core >> cell 10,6 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,482 
+de.fh.giessen.ringversuch.model.Core >> cell 10,7 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,482 
+de.fh.giessen.ringversuch.model.Core >> cell 12,0 has 32 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,483 
+de.fh.giessen.ringversuch.model.Core >> cell 13,0 has 31 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,483 
+de.fh.giessen.ringversuch.model.Core >> cell 14,0 has 30 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,483 
+de.fh.giessen.ringversuch.model.Core >> cell 15,0 has 29 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,484 
+de.fh.giessen.ringversuch.model.Core >> cell 16,0 has 28 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,484 
+de.fh.giessen.ringversuch.model.Core >> cell 17,0 has 27 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,484 
+de.fh.giessen.ringversuch.model.Core >> cell 18,0 has 26 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,484 
+de.fh.giessen.ringversuch.model.Core >> cell 18,4 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,485 
+de.fh.giessen.ringversuch.model.Core >> cell 18,5 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,485 
+de.fh.giessen.ringversuch.model.Core >> cell 18,6 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,485 
+de.fh.giessen.ringversuch.model.Core >> cell 18,7 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,490 
+de.fh.giessen.ringversuch.model.Core >> cell 19,0 has 25 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,490 
+de.fh.giessen.ringversuch.model.Core >> cell 20,0 has 24 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,490 
+de.fh.giessen.ringversuch.model.Core >> cell 21,0 has 23 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,490 
+de.fh.giessen.ringversuch.model.Core >> cell 22,0 has 22 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,491 
+de.fh.giessen.ringversuch.model.Core >> cell 23,0 has 21 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,491 
+de.fh.giessen.ringversuch.model.Core >> cell 24,0 has 20 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,491 
+de.fh.giessen.ringversuch.model.Core >> cell 25,0 has 19 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,491 
+de.fh.giessen.ringversuch.model.Core >> cell 26,0 has 18 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,491 
+de.fh.giessen.ringversuch.model.Core >> cell 27,0 has 17 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,491 
+de.fh.giessen.ringversuch.model.Core >> cell 28,0 has 16 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,492 
+de.fh.giessen.ringversuch.model.Core >> cell 29,0 has 15 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,492 
+de.fh.giessen.ringversuch.model.Core >> cell 30,0 has 14 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,492 
+de.fh.giessen.ringversuch.model.Core >> cell 31,0 has 13 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,492 
+de.fh.giessen.ringversuch.model.Core >> cell 32,0 has 12 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,492 
+de.fh.giessen.ringversuch.model.Core >> cell 33,0 has 11 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,492 
+de.fh.giessen.ringversuch.model.Core >> cell 34,0 has 10 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,493 
+de.fh.giessen.ringversuch.model.Core >> cell 35,0 has 9 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,493 
+de.fh.giessen.ringversuch.model.Core >> cell 37,0 has 8 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,493 
+de.fh.giessen.ringversuch.model.Core >> cell 37,2 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,493 
+de.fh.giessen.ringversuch.model.Core >> cell 40,0 has 7 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,493 
+de.fh.giessen.ringversuch.model.Core >> cell 41,0 has 6 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,493 
+de.fh.giessen.ringversuch.model.Core >> cell 42,0 has 5 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.model.Core >> cell 43,0 has 4 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.model.Core >> cell 44,0 has 3 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.model.Core >> cell 45,0 has 2 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.model.Core >> cell 46,0 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.model.Core >> cell 51,0 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.model.ColumnOfSubstancesDetector >> assuming column of substances: 0 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,494 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.util.concurrent.ExecutionException: java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:57:26,495 
+java.util.concurrent.ExecutionException: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detectColumnOfSubstances(ControllerImpl.java:165)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:144)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.model.ModelImpl.detectColumnOfSubstances(ModelImpl.java:92)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$7.call(ControllerImpl.java:162)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$7.call(ControllerImpl.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.model.ColumnOfSubstancesDetector.detect(ColumnOfSubstancesDetector.java:39)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:1)
+	... 5 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not find column of substances (java.util.concurrent.ExecutionException: java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,495 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings values begin cell << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,495 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> detecting cell containing first value << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,501 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 0,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,530 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 2,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,531 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 2,2 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,531 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 2,4 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,531 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 4,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,531 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 4,2 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,531 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 4,4 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,532 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 6,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,532 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 8,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,532 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 8,2 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,532 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 8,4 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,532 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 9,4 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,533 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 10,2 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,533 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 10,4 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,533 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 10,5 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,533 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 10,6 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,533 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 10,7 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,533 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 12,0 has 23 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,534 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 12,4 has 23 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,534 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 12,5 has 23 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,535 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 12,6 has 23 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,535 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 12,7 has 23 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,535 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 13,0 has 22 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,535 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 13,4 has 22 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 13,5 has 22 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 13,6 has 22 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 13,7 has 22 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 14,0 has 21 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 14,4 has 21 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 14,5 has 21 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 14,6 has 21 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 14,7 has 21 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,536 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 15,0 has 20 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 15,4 has 20 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 15,5 has 20 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 15,6 has 20 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 15,7 has 20 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 16,0 has 19 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 16,4 has 19 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 16,5 has 19 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,537 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 16,6 has 19 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 16,7 has 19 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 17,0 has 18 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 17,4 has 18 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 17,5 has 18 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 17,6 has 18 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 17,7 has 18 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 18,0 has 17 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 18,4 has 17 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,538 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 18,5 has 17 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 18,6 has 17 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 18,7 has 17 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 19,0 has 16 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 19,4 has 16 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 19,5 has 16 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 19,6 has 16 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 19,7 has 16 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 20,0 has 15 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,539 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 20,4 has 15 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 20,5 has 15 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 20,6 has 15 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 20,7 has 15 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 21,0 has 14 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 21,4 has 14 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 21,5 has 14 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 21,6 has 14 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 21,7 has 14 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 22,0 has 13 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,540 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 22,4 has 13 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,541 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 22,5 has 13 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,541 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 22,6 has 13 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,541 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 22,7 has 13 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,541 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 23,0 has 12 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 23,4 has 12 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 23,5 has 12 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 23,6 has 12 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 23,7 has 12 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 24,0 has 11 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 24,4 has 11 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 24,5 has 11 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 24,6 has 11 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 24,7 has 11 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,542 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 25,0 has 10 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 25,4 has 10 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 25,5 has 10 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 25,6 has 10 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 25,7 has 10 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 26,0 has 9 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 26,4 has 9 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 26,5 has 9 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 26,6 has 9 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 26,7 has 9 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,543 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 27,0 has 8 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 27,4 has 8 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 27,5 has 8 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 27,6 has 8 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 27,7 has 8 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 28,0 has 7 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 28,4 has 7 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 28,5 has 7 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 28,6 has 7 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 28,7 has 7 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,544 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 29,0 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 29,4 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 29,5 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 29,6 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 29,7 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 30,0 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 30,4 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 30,5 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 30,6 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 30,7 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 31,0 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,545 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 31,4 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 31,5 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 31,6 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 31,7 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 32,0 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 32,4 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 32,5 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 32,6 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 32,7 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 33,0 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 33,4 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,546 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 33,5 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 33,6 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 33,7 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 34,0 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 34,4 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 34,5 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 34,6 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 34,7 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 35,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 35,4 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,547 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 35,5 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 35,6 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 35,7 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 37,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 37,2 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 40,0 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 40,2 has 7 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 41,0 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,548 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 41,2 has 6 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 42,0 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 42,2 has 5 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 43,0 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 43,2 has 4 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 44,0 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 44,2 has 3 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 45,0 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 45,2 has 2 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 46,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 47,2 has 1 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 48,2 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,551 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> cell 51,0 has 0 cells below (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,552 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> new best candidate: 18,4: # << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,557 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> new best candidate: 13,4: 0.301 << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,560 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> new best candidate: 12,4: 0.114 << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,560 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> found valuesBeginCell=0.114 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,561 
+de.fh.giessen.ringversuch.model.ValuesBeginCellDetector >> assuming cell containing first value: 12,4 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,594 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.util.concurrent.ExecutionException: java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:57:26,594 
+java.util.concurrent.ExecutionException: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detectValuesBeginCell(ControllerImpl.java:201)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:145)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.model.ModelImpl.detectValuesBeginCell(ModelImpl.java:78)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$9.call(ControllerImpl.java:198)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$9.call(ControllerImpl.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.model.ValuesBeginCellDetector.detect(ValuesBeginCellDetector.java:123)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:1)
+	... 5 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not find values begin cell (java.util.concurrent.ExecutionException: java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,595 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings values end cell << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,595 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> detecting cell containing last value << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,599 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 0,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 2,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 2,2 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 2,4 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 4,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 4,2 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 4,4 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,666 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 6,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 8,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 8,2 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 8,4 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 9,4 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 10,2 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 10,4 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 10,5 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 10,6 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 10,7 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 12,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,667 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 12,4 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,673 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 12,5 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,673 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 12,6 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 12,7 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 13,0 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 13,4 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 13,5 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 13,6 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 13,7 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 14,0 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 14,4 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 14,5 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 14,6 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,674 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 14,7 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 15,0 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 15,4 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 15,5 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 15,6 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 15,7 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 16,0 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 16,4 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 16,5 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 16,6 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,675 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 16,7 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 17,0 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 17,4 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 17,5 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 17,6 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 17,7 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 18,0 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 18,4 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 18,5 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 18,6 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 18,7 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,676 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 19,0 has 7 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 19,4 has 7 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 19,5 has 7 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 19,6 has 7 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 19,7 has 7 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 20,0 has 8 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 20,4 has 8 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 20,5 has 8 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,677 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 20,6 has 8 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 20,7 has 8 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 21,0 has 9 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 21,4 has 9 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 21,5 has 9 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 21,6 has 9 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 21,7 has 9 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 22,0 has 10 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 22,4 has 10 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,678 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 22,5 has 10 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 22,6 has 10 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 22,7 has 10 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 23,0 has 11 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 23,4 has 11 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 23,5 has 11 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 23,6 has 11 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 23,7 has 11 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 24,0 has 12 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,679 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 24,4 has 12 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 24,5 has 12 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 24,6 has 12 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 24,7 has 12 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 25,0 has 13 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 25,4 has 13 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 25,5 has 13 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 25,6 has 13 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 25,7 has 13 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 26,0 has 14 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,680 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 26,4 has 14 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 26,5 has 14 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 26,6 has 14 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 26,7 has 14 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 27,0 has 15 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 27,4 has 15 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 27,5 has 15 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 27,6 has 15 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 27,7 has 15 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,681 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 28,0 has 16 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 28,4 has 16 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 28,5 has 16 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 28,6 has 16 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 28,7 has 16 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 29,0 has 17 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 29,4 has 17 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 29,5 has 17 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 29,6 has 17 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 29,7 has 17 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,682 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 30,0 has 18 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 30,4 has 18 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 30,5 has 18 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 30,6 has 18 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 30,7 has 18 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 31,0 has 19 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 31,4 has 19 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 31,5 has 19 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 31,6 has 19 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 31,7 has 19 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,683 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 32,0 has 20 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 32,4 has 20 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 32,5 has 20 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 32,6 has 20 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 32,7 has 20 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 33,0 has 21 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 33,4 has 21 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 33,5 has 21 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 33,6 has 21 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,684 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 33,7 has 21 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 34,0 has 22 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 34,4 has 22 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 34,5 has 22 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 34,6 has 22 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 34,7 has 22 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 35,0 has 23 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 35,4 has 23 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 35,5 has 23 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 35,6 has 23 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,685 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 35,7 has 23 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 37,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 37,2 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 40,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 40,2 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 41,0 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 41,2 has 1 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 42,0 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 42,2 has 2 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,686 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 43,0 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 43,2 has 3 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 44,0 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 44,2 has 4 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 45,0 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 45,2 has 5 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 46,0 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 47,2 has 6 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,687 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 48,2 has 7 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,688 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> cell 51,0 has 0 cells above (numeric) << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,688 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 29,5: 0.252 << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,688 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 31,6: 0.311 << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,688 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 34,7: 0.073 << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,688 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> new best candidate: 35,7: 0.114 << DEBUG [pool-3-thread-1] 2009-08-11 15:57:26,689 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> found valuesEndCell=0.114 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,689 
+de.fh.giessen.ringversuch.model.ValuesEndCellDetector >> assuming cell containing last value: 35,7 << INFO [pool-3-thread-1] 2009-08-11 15:57:26,690 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> java.util.concurrent.ExecutionException: java.lang.NullPointerException << ERROR [AWT-EventQueue-0] 2009-08-11 15:57:26,690 
+java.util.concurrent.ExecutionException: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detectValuesEndCell(ControllerImpl.java:183)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.detect(ControllerImpl.java:146)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.setSelectedFiles(ControllerImpl.java:57)
+	at de.fh.giessen.ringversuch.view.ViewImpl.setSelectedFiles(ViewImpl.java:200)
+	at de.fh.giessen.ringversuch.view.ViewImplMain$MyListener.actionPerformed(ViewImplMain.java:60)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1995)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2318)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:387)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:242)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:236)
+	at java.awt.Component.processMouseEvent(Component.java:6041)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3265)
+	at java.awt.Component.processEvent(Component.java:5806)
+	at java.awt.Container.processEvent(Container.java:2058)
+	at java.awt.Component.dispatchEventImpl(Component.java:4413)
+	at java.awt.Container.dispatchEventImpl(Container.java:2116)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4322)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:3986)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:3916)
+	at java.awt.Container.dispatchEventImpl(Container.java:2102)
+	at java.awt.Window.dispatchEventImpl(Window.java:2440)
+	at java.awt.Component.dispatchEvent(Component.java:4243)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:599)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:273)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:183)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:173)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:168)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:160)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:121)
+Caused by: java.util.concurrent.ExecutionException: java.lang.NullPointerException
+	at java.util.concurrent.FutureTask$Sync.innerGet(FutureTask.java:222)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:83)
+	at de.fh.giessen.ringversuch.model.ModelImpl.detectValuesEndCell(ModelImpl.java:85)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$8.call(ControllerImpl.java:180)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl$8.call(ControllerImpl.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.NullPointerException
+	at de.fh.giessen.ringversuch.model.ValuesEndCellDetector.detect(ValuesEndCellDetector.java:128)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:31)
+	at de.fh.giessen.ringversuch.model.AbstractDetector.call(AbstractDetector.java:1)
+	... 5 more
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=could not find values end cell (java.util.concurrent.ExecutionException: java.lang.NullPointerException), is error=true << DEBUG [AWT-EventQueue-0] 2009-08-11 15:57:26,691 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> starting up << DEBUG [main] 2009-08-11 15:59:17,286 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> setModel=de.fh.giessen.ringversuch.model.ModelImpl@74f30494 << DEBUG [main] 2009-08-11 15:59:17,660 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> setView=de.fh.giessen.ringversuch.view.ViewImpl@5ba8773c << DEBUG [main] 2009-08-11 15:59:17,663 
+de.fh.giessen.ringversuch.controller.SettingsConverter >> reading properties from file /home/proj/kerner/workspace/ringversuch/settings.ini << INFO [main] 2009-08-11 15:59:17,665 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> /home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory) << ERROR [main] 2009-08-11 15:59:17,666 
+java.io.FileNotFoundException: /home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:106)
+	at de.fh.giessen.ringversuch.controller.SettingsConverter.fileToProperties(SettingsConverter.java:52)
+	at de.fh.giessen.ringversuch.controller.ControllerImpl.main(ControllerImpl.java:346)
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=/home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory) << DEBUG [pool-1-thread-1] 2009-08-11 15:59:17,670 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=/home/proj/kerner/workspace/ringversuch/settings.ini (No such file or directory), is error=false << DEBUG [pool-1-thread-1] 2009-08-11 15:59:17,670 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=loading default settings << DEBUG [pool-1-thread-2] 2009-08-11 15:59:17,671 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=loading default settings, is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:59:17,671 
+de.fh.giessen.ringversuch.view.ViewImpl >> new settings=labIdentRow=1, labNoCol=A, probeIdent=1, probeRow=1, probeCol=A, sheetNo=1, subCol=A, valuesStartRow=1, valuesStartCol=A, valuesEndRow=1, valuesEndCol=A << DEBUG [main] 2009-08-11 15:59:17,674 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> view created and online << DEBUG [main] 2009-08-11 15:59:17,679 
+de.fh.giessen.ringversuch.view.ViewImplMain >> event received: java.awt.event.ActionEvent[ACTION_PERFORMED,cmd=Select files,when=1249999158831,modifiers=Button1] on javax.swing.JButton[,0,0,101x25,alignmentX=0.0,alignmentY=0.5,border=javax.swing.plaf.BorderUIResource$CompoundBorderUIResource@1494cb8b,flags=296,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,disabledSelectedIcon=,margin=javax.swing.plaf.InsetsUIResource[top=2,left=14,bottom=2,right=14],paintBorder=true,paintFocus=true,pressedIcon=,rolloverEnabled=true,rolloverIcon=,rolloverSelectedIcon=,selectedIcon=,text=Select files,defaultCapable=true] << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:18,834 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> files selected, trying to detect settings << INFO [AWT-EventQueue-0] 2009-08-11 15:59:22,969 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto detecting settings << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:22,972 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings probe cell << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:22,972 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> setSelectedFiles=[/home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls] << INFO [pool-2-thread-1] 2009-08-11 15:59:22,970 
+de.fh.giessen.ringversuch.model.ModelImpl >> input files: [/home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls] << INFO [pool-2-thread-1] 2009-08-11 15:59:22,973 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=selected 1 file(s) << DEBUG [pool-1-thread-2] 2009-08-11 15:59:22,974 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=selected 1 file(s), is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:59:22,974 
+de.fh.giessen.ringversuch.model.Core >> detecting cell with probe identifier << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,015 
+de.fh.giessen.ringversuch.model.Core >> found match Probe Nr. << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,198 
+de.fh.giessen.ringversuch.model.ProbeCellDetector >> found cell containing probe ident: 4,2 << INFO [pool-3-thread-1] 2009-08-11 15:59:23,207 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=found cell containing probe ident: 4,2 << DEBUG [pool-1-thread-2] 2009-08-11 15:59:23,207 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=found cell containing probe ident: 4,2, is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:59:23,207 
+de.fh.giessen.ringversuch.model.ModelImpl >> new settings: labIdentRow=-1, labNoCol=-1, probeIdent=1, probeRow=4, probeCol=2, sheetNo=-1, subCol=-1, valuesStartRow=-1, valuesStartCol=-1, valuesEndRow=-1, valuesEndCol=-1 << DEBUG [pool-2-thread-2] 2009-08-11 15:59:23,207 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings probe cell successful << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:23,207 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings labor cell << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:23,207 
+de.fh.giessen.ringversuch.model.Core >> detecting cell with labor identifier << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,209 
+de.fh.giessen.ringversuch.model.Core >> found match Labor-Nr. << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,243 
+de.fh.giessen.ringversuch.model.LaborCellDetector >> found cell containing labor ident: 2,2 << INFO [pool-3-thread-1] 2009-08-11 15:59:23,245 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=found cell containing labor ident: 2,2 << DEBUG [pool-1-thread-2] 2009-08-11 15:59:23,245 
+de.fh.giessen.ringversuch.model.ModelImpl >> new settings: labIdentRow=2, labNoCol=2, probeIdent=1, probeRow=4, probeCol=2, sheetNo=-1, subCol=-1, valuesStartRow=-1, valuesStartCol=-1, valuesEndRow=-1, valuesEndCol=-1 << DEBUG [pool-2-thread-2] 2009-08-11 15:59:23,245 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=found cell containing labor ident: 2,2, is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:59:23,245 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings labor cell successful << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:23,245 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> auto-detecting settings column of substances << DEBUG [AWT-EventQueue-0] 2009-08-11 15:59:23,245 
+de.fh.giessen.ringversuch.model.Core >> detecting column with substances << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,248 
+de.fh.giessen.ringversuch.model.Core >> cell 0,0 has 37 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,278 
+de.fh.giessen.ringversuch.model.Core >> cell 2,0 has 36 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,279 
+de.fh.giessen.ringversuch.model.Core >> cell 2,4 has 5 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,279 
+de.fh.giessen.ringversuch.model.Core >> cell 4,0 has 35 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,280 
+de.fh.giessen.ringversuch.model.Core >> cell 4,4 has 4 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,281 
+de.fh.giessen.ringversuch.model.Core >> cell 6,0 has 34 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,282 
+de.fh.giessen.ringversuch.model.Core >> cell 8,0 has 33 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,283 
+de.fh.giessen.ringversuch.model.Core >> cell 8,2 has 2 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,284 
+de.fh.giessen.ringversuch.model.Core >> cell 8,4 has 3 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,286 
+de.fh.giessen.ringversuch.model.Core >> cell 9,4 has 2 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,286 
+de.fh.giessen.ringversuch.model.Core >> cell 10,2 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,287 
+de.fh.giessen.ringversuch.model.Core >> cell 10,4 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,287 
+de.fh.giessen.ringversuch.model.Core >> cell 10,5 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,287 
+de.fh.giessen.ringversuch.model.Core >> cell 10,6 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,288 
+de.fh.giessen.ringversuch.model.Core >> cell 10,7 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,288 
+de.fh.giessen.ringversuch.model.Core >> cell 12,0 has 32 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,289 
+de.fh.giessen.ringversuch.model.Core >> cell 13,0 has 31 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,290 
+de.fh.giessen.ringversuch.model.Core >> cell 14,0 has 30 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,290 
+de.fh.giessen.ringversuch.model.Core >> cell 15,0 has 29 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,293 
+de.fh.giessen.ringversuch.model.Core >> cell 16,0 has 28 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,294 
+de.fh.giessen.ringversuch.model.Core >> cell 17,0 has 27 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,294 
+de.fh.giessen.ringversuch.model.Core >> cell 18,0 has 26 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,294 
+de.fh.giessen.ringversuch.model.Core >> cell 18,4 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,294 
+de.fh.giessen.ringversuch.model.Core >> cell 18,5 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,294 
+de.fh.giessen.ringversuch.model.Core >> cell 18,6 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,294 
+de.fh.giessen.ringversuch.model.Core >> cell 18,7 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,295 
+de.fh.giessen.ringversuch.model.Core >> cell 19,0 has 25 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,295 
+de.fh.giessen.ringversuch.model.Core >> cell 20,0 has 24 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,295 
+de.fh.giessen.ringversuch.model.Core >> cell 21,0 has 23 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,295 
+de.fh.giessen.ringversuch.model.Core >> cell 22,0 has 22 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,295 
+de.fh.giessen.ringversuch.model.Core >> cell 23,0 has 21 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,295 
+de.fh.giessen.ringversuch.model.Core >> cell 24,0 has 20 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,296 
+de.fh.giessen.ringversuch.model.Core >> cell 25,0 has 19 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,296 
+de.fh.giessen.ringversuch.model.Core >> cell 26,0 has 18 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,296 
+de.fh.giessen.ringversuch.model.Core >> cell 27,0 has 17 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,296 
+de.fh.giessen.ringversuch.model.Core >> cell 28,0 has 16 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,296 
+de.fh.giessen.ringversuch.model.Core >> cell 29,0 has 15 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,297 
+de.fh.giessen.ringversuch.model.Core >> cell 30,0 has 14 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,297 
+de.fh.giessen.ringversuch.model.Core >> cell 31,0 has 13 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,297 
+de.fh.giessen.ringversuch.model.Core >> cell 32,0 has 12 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,297 
+de.fh.giessen.ringversuch.model.Core >> cell 33,0 has 11 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,297 
+de.fh.giessen.ringversuch.model.Core >> cell 34,0 has 10 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,298 
+de.fh.giessen.ringversuch.model.Core >> cell 35,0 has 9 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,298 
+de.fh.giessen.ringversuch.model.Core >> cell 37,0 has 8 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,298 
+de.fh.giessen.ringversuch.model.Core >> cell 37,2 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,298 
+de.fh.giessen.ringversuch.model.Core >> cell 40,0 has 7 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,298 
+de.fh.giessen.ringversuch.model.Core >> cell 41,0 has 6 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,298 
+de.fh.giessen.ringversuch.model.Core >> cell 42,0 has 5 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.model.Core >> cell 43,0 has 4 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.model.Core >> cell 44,0 has 3 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.model.Core >> cell 45,0 has 2 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.model.Core >> cell 46,0 has 1 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.model.Core >> cell 51,0 has 0 cells below (string) << DEBUG [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.model.ColumnOfSubstancesDetector >> assuming column of substances: 0 << INFO [pool-3-thread-1] 2009-08-11 15:59:23,299 
+de.fh.giessen.ringversuch.controller.ControllerImpl >> printMessage=assuming column of substances: 0 << DEBUG [pool-1-thread-2] 2009-08-11 15:59:23,300 
+de.fh.giessen.ringversuch.view.ViewImpl >> print message=assuming column of substances: 0, is error=false << DEBUG [pool-1-thread-2] 2009-08-11 15:59:23,300 
+de.fh.giessen.ringversuch.model.ModelImpl >> new settings: labIdentRow=2, labNoCol=2, probeIdent=1, probeRow=4, probeCol=2, sheetNo=-1, subCol=0, valuesStartRow=-1, valuesStartCol=-1, valuesEndRow=-1, valuesEndCol=-1 << DEBUG [pool-2-thread-2] 2009-08-11 15:59:23,300 

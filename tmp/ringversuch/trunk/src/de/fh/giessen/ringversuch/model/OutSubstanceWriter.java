@@ -2,7 +2,6 @@ package de.fh.giessen.ringversuch.model;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +48,7 @@ class OutSubstanceWriter {
 		fs.close();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void format() {
 		OutSubstanceFormatter formatter = new OutSubstanceFormatterImpl(wb, sheet);
 		HSSFRow row = sheet.getRow(PROBE_IDENT_ROW);

@@ -1,19 +1,25 @@
 package de.fh.giessen.ringversuch.view.settings;
 
-
+/**
+ * Simple implementation for {@link ViewSettings} 
+ * @ThreadSave volatile fields
+ * @lastVisit 2009-08-11
+ * @author Alexander Kerner
+ * 
+ */
 public class ViewSettingsImpl implements ViewSettings {
 	
-	private String laborIdentColumn = "A";
-	private String laborIdentRow = "1";
-	private String probeIdent = "1";
-	private String probeIdentColumn = "A";
-	private String probeIdentRow = "1";
-	private String sheetNo = "1";
-	private String substancesColumn = "A";
-	private String valuesStartColumn = "A";
-	private String valuesEndColumn = "A";
-	private String valuesStartRow = "1";
-	private String valuesEndRow = "1";
+	private volatile String laborIdentColumn = "A";
+	private volatile String laborIdentRow = "1";
+	private volatile String probeIdent = "1";
+	private volatile String probeIdentColumn = "A";
+	private volatile String probeIdentRow = "1";
+	private volatile String sheetNo = "1";
+	private volatile String substancesColumn = "A";
+	private volatile String valuesStartColumn = "A";
+	private volatile String valuesEndColumn = "A";
+	private volatile String valuesStartRow = "1";
+	private volatile String valuesEndRow = "1";
 	
 	@Override
 	public String toString(){

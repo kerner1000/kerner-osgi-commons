@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -18,7 +15,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 public class HSSFUtils {
 
-	private final static Logger LOGGER = Logger.getLogger(HSSFUtils.class);
+//	private final static Logger LOGGER = Logger.getLogger(HSSFUtils.class);
 
 	private HSSFUtils() {
 	}

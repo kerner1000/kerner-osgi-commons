@@ -7,9 +7,6 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -21,9 +18,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 
-import de.fh.giessen.ringversuch.common.Preferences;
-import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
 import de.fh.giessen.ringversuch.view.settings.ViewSettings;
+import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
 
 class ViewImplSettings extends JPanel {
 

@@ -1,5 +1,10 @@
 package de.fh.giessen.ringversuch.model.settings;
 
+/**
+ * 
+ * Program settings, as the model understands them.
+ * 
+ */
 public interface ModelSettings {
 
 	void setLaborIdentColumn(int laborIdentColumn);
@@ -23,8 +28,7 @@ public interface ModelSettings {
 	void setValuesStartColumn(int valuesStartColumn);
 
 	void setValuesStartRow(int valuesStartRow);
-	
-	
+
 	int getLaborIdentColumn();
 
 	int getLaborIdentRow();

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.controller.ControllerOut;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
+import de.fh.giessen.ringversuch.model.settings.ModelSettingsImpl;
 
 /**
  * @ThreadSave
@@ -26,7 +27,7 @@ public class ModelImpl implements Model {
 	private final ControllerOut controller;
 	private File outDir;
 	private File[] inputFiles;
-	private ModelSettings settings;
+	private ModelSettings settings = new ModelSettingsImpl();
 	private Future<Void> currentJob;
 	private Future<ModelSettings> currentDetectJob;
 
@@ -58,35 +59,35 @@ public class ModelImpl implements Model {
 	 */
 
 	@Override
-	public void detectProbeCell() throws Exception {
+	public synchronized void detectProbeCell() throws Exception {
 		currentDetectJob = modelThread.submit(new ProbeCellDetector(inputFiles,
 				getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
 
 	@Override
-	public void detectLaborCell() throws Exception {
+	public synchronized void detectLaborCell() throws Exception {
 		currentDetectJob = modelThread.submit(new LaborCellDetector(inputFiles,
 				getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
 
 	@Override
-	public void detectValuesBeginCell() throws Exception {
+	public synchronized void detectValuesBeginCell() throws Exception {
 		currentDetectJob = modelThread.submit(new ValuesBeginCellDetector(
 				inputFiles, getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
 
 	@Override
-	public void detectValuesEndCell() throws Exception {
+	public synchronized void detectValuesEndCell() throws Exception {
 		currentDetectJob = modelThread.submit(new ValuesEndCellDetector(
 				inputFiles, getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
 
 	@Override
-	public void detectColumnOfSubstances() throws Exception {
+	public synchronized void detectColumnOfSubstances() throws Exception {
 		currentDetectJob = modelThread.submit(new ColumnOfSubstancesDetector(
 				inputFiles, getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());

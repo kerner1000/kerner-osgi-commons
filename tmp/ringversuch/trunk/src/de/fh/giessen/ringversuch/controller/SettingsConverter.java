@@ -15,6 +15,14 @@ import de.fh.giessen.ringversuch.model.settings.ModelSettingsImpl;
 import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
 import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
+/**
+ * not public, so no doc
+ * 
+ * @ThreadSave state is final
+ * @lastVisit 2009-08-11
+ * @author Alexander Kerner
+ * 
+ */
 class SettingsConverter {
 
 	private final static String SETTINGS_HEADER = "This is a settings file for \"Ringversuch-v.x.x.jar\"";
@@ -38,12 +46,14 @@ class SettingsConverter {
 
 	static Properties fileToProperties(File file) throws IOException {
 		LOGGER.info("reading properties from file " + file);
-		final FileInputStream in = new FileInputStream(file);
 		final Properties properties = new Properties();
+		FileInputStream in = null;
 		try {
+			in = new FileInputStream(file);
 			properties.load(in);
 		} finally {
-			in.close();
+			if (in != null)
+				in.close();
 		}
 		LOGGER.debug("properties read=" + properties);
 		return properties;
@@ -51,59 +61,72 @@ class SettingsConverter {
 
 	static void propertiesToFile(Properties properties, File file)
 			throws IOException {
+		if (properties == null)
+			throw new NullPointerException("properties=" + properties);
 		LOGGER.debug(new StringBuilder().append("writing properties to file:")
 				.append(Preferences.NEW_LINE).append("properties=").append(
 						properties).append(", ").append("file=").append(file)
 				.toString());
-		String path = file.getAbsolutePath();
-		if (path.endsWith((".ini"))) {
-			path = path.substring(0, path.lastIndexOf('.'));
-		}
-		path = path + ".ini";
-		final FileOutputStream out = new FileOutputStream(path);
+		FileOutputStream out = null;
 		try {
+			String path = file.getAbsolutePath();
+			if (path.endsWith((".ini"))) {
+				path = path.substring(0, path.lastIndexOf('.'));
+			}
+			path = path + ".ini";
+			out = new FileOutputStream(path);
 			properties.store(out, SETTINGS_HEADER);
 		} finally {
-			out.close();
+			if (out != null)
+				out.close();
 		}
 	}
 
-	/**
-	 * In property file, syntax is like in settingsView, therefore we must
-	 * convert it first to settingsView
-	 * 
-	 * @param properties
-	 * @return
-	 * @throws InvalidSettingsException
-	 */
 	static ModelSettings propertiesToModelSettings(Properties properties)
 			throws InvalidSettingsException {
+		if (properties == null)
+			throw new NullPointerException("properties=" + properties);
 		LOGGER.debug("converting properties to model settings");
+		// In property file, syntax is like in settingsView, therefore we must
+		// convert it first to settingsView
 		return viewSettingsToModelSettings(propertiesToViewSettings(properties));
 	}
 
-	static ViewSettings propertiesToViewSettings(Properties properties) {
+	static ViewSettings propertiesToViewSettings(Properties properties)
+			throws InvalidSettingsException {
+		if (properties == null)
+			throw new NullPointerException("properties=" + properties);
 		LOGGER.debug("converting properties to view settings");
 		final ViewSettings sv = new ViewSettingsImpl();
-		sv.setLaborIdentColumn(properties.getProperty(LABOR_NO_COLUMN));
-		sv.setLaborIdentRow(properties.getProperty(LABOR_NO_ROW));
-		sv.setProbeIdent(properties.getProperty(PROBE_VALUE));
-		sv.setProbeIdentColumn(properties.getProperty(PROBE_NO_COLUMN));
-		sv.setProbeIdentRow(properties.getProperty(PROBE_NO_ROW));
-		sv.setSheetNo(properties.getProperty(SHEET_NO));
-		sv.setSubstancesColumn(properties.getProperty(SUBSTANCES_COLUMN));
-		sv.setValuesEndColumn(properties.getProperty(VALUES_END_COLUMN));
-		sv.setValuesEndRow(properties.getProperty(VALUES_END_ROW));
-		sv.setValuesStartColumn(properties.getProperty(VALUES_START_COLUMN));
-		sv.setValuesStartRow(properties.getProperty(VALUES_START_ROW));
-		LOGGER.debug(new StringBuilder().append(
-				"converted proerties to view settings:").append(
-				Preferences.NEW_LINE).append("properties=").append(properties)
-				.append(", ").append("view settings=").append(sv));
+		try {
+			sv.setLaborIdentColumn(properties.getProperty(LABOR_NO_COLUMN));
+			sv.setLaborIdentRow(properties.getProperty(LABOR_NO_ROW));
+			sv.setProbeIdent(properties.getProperty(PROBE_VALUE));
+			sv.setProbeIdentColumn(properties.getProperty(PROBE_NO_COLUMN));
+			sv.setProbeIdentRow(properties.getProperty(PROBE_NO_ROW));
+			sv.setSheetNo(properties.getProperty(SHEET_NO));
+			sv.setSubstancesColumn(properties.getProperty(SUBSTANCES_COLUMN));
+			sv.setValuesEndColumn(properties.getProperty(VALUES_END_COLUMN));
+			sv.setValuesEndRow(properties.getProperty(VALUES_END_ROW));
+			sv
+					.setValuesStartColumn(properties
+							.getProperty(VALUES_START_COLUMN));
+			sv.setValuesStartRow(properties.getProperty(VALUES_START_ROW));
+			LOGGER.debug(new StringBuilder().append(
+					"converted proerties to view settings:").append(
+					Preferences.NEW_LINE).append("properties=").append(
+					properties).append(", ").append("view settings=")
+					.append(sv));
+		} catch (Exception e) {
+			throw new InvalidSettingsException(e);
+		}
 		return sv;
 	}
 
-	static Properties settingsToProperties(ModelSettings settings) {
+	static Properties settingsToProperties(ModelSettings settings)
+			throws InvalidSettingsException {
+		if (settings == null)
+			throw new NullPointerException("ModelSettings=" + settings);
 		LOGGER.debug(new StringBuilder()
 				.append("converting view settings to properties"));
 		final ViewSettings sv = modelSettingsToViewSettings(settings);
@@ -123,60 +146,78 @@ class SettingsConverter {
 	}
 
 	static ModelSettings viewSettingsToModelSettings(ViewSettings settings)
-			throws InvalidSettingsException {
+	throws InvalidSettingsException {
+		if (settings == null)
+			throw new NullPointerException("ViewSettings=" + settings);
 		LOGGER.debug(new StringBuilder().append(
 				"converting view settings to model settings:").append(" ")
 				.append("viewSettings=").append(settings));
 		final ModelSettings sm = new ModelSettingsImpl();
-		sm.setLaborIdentColumn(modelGetLaborIdentColumn(settings
-				.getLaborIdentColumn()));
-		sm.setLaborIdentRow(modelGetLaborIdentRow(settings.getLaborIdentRow()));
-		sm.setProbeIdent(modelGetProbeIdent(settings.getProbeIdent()));
-		sm.setProbeIdentColumn(modelGetProbeIdentColumn(settings
-				.getProbeIdentColumn()));
-		sm.setProbeIdentRow(modelGetProbeIdentRow(settings.getProbeIdentRow()));
-		sm.setSheetNo(modelGetSheetNo(settings.getSheetNo()));
-		sm.setSubstancesColumn(modelGetSubstancesColumn(settings
-				.getSubstancesColumn()));
-		sm.setValuesEndColumn(modelGetValuesEndColumn(settings
-				.getValuesEndColumn()));
-		sm.setValuesEndRow(modelGetValuesEndRow(settings.getValuesEndRow()));
-		sm.setValuesStartColumn(modelGetValuesStartColumn(settings
-				.getValuesStartColumn()));
-		sm.setValuesStartRow(modelGetValuesStartRow(settings
-				.getValuesStartRow()));
-		LOGGER.debug(new StringBuilder().append(
-		"done converting view settings to model settings:").append(" ")
-		.append("modelSettings=").append(sm));
+		try {
+			sm.setLaborIdentColumn(modelGetLaborIdentColumn(settings
+					.getLaborIdentColumn()));
+			sm.setLaborIdentRow(modelGetLaborIdentRow(settings
+					.getLaborIdentRow()));
+			sm.setProbeIdent(modelGetProbeIdent(settings.getProbeIdent()));
+			sm.setProbeIdentColumn(modelGetProbeIdentColumn(settings
+					.getProbeIdentColumn()));
+			sm.setProbeIdentRow(modelGetProbeIdentRow(settings
+					.getProbeIdentRow()));
+			sm.setSheetNo(modelGetSheetNo(settings.getSheetNo()));
+			sm.setSubstancesColumn(modelGetSubstancesColumn(settings
+					.getSubstancesColumn()));
+			sm.setValuesEndColumn(modelGetValuesEndColumn(settings
+					.getValuesEndColumn()));
+			sm
+					.setValuesEndRow(modelGetValuesEndRow(settings
+							.getValuesEndRow()));
+			sm.setValuesStartColumn(modelGetValuesStartColumn(settings
+					.getValuesStartColumn()));
+			sm.setValuesStartRow(modelGetValuesStartRow(settings
+					.getValuesStartRow()));
+			LOGGER.debug(new StringBuilder().append(
+					"done converting view settings to model settings:").append(
+					" ").append("modelSettings=").append(sm));
+		} catch (Exception e) {
+			throw new InvalidSettingsException(e);
+		}
 		return sm;
 	}
 
-	static ViewSettings modelSettingsToViewSettings(ModelSettings settings) {
+	static ViewSettings modelSettingsToViewSettings(ModelSettings settings)
+			throws InvalidSettingsException {
+		if (settings == null)
+			throw new NullPointerException("modelSettings=" + settings);
 		LOGGER.debug(new StringBuilder().append(
-		"converting model settings to view settings:").append(" ")
-		.append("modelSettings=").append(settings));
+				"converting model settings to view settings:").append(" ")
+				.append("modelSettings=").append(settings));
 		final ViewSettings sv = new ViewSettingsImpl();
-		sv.setLaborIdentColumn(viewGetLaborIdentColumn(settings
-				.getLaborIdentColumn()));
-		sv.setLaborIdentRow(viewGetLaborIdentRow(settings.getLaborIdentRow()));
-		sv.setProbeIdent(viewGetProbeIdent(settings.getProbeIdent()));
-		sv.setProbeIdentColumn(viewGetProbeIdentColumn(settings
-				.getProbeIdentColumn()));
-		sv.setProbeIdentRow(viewGetProbeIdentRow(settings.getProbeIdentRow()));
-		sv.setSheetNo(viewGetSheetNo(settings.getSheetNo()));
-		sv.setSubstancesColumn(viewGetSubstancesColumn(settings
-				.getSubstancesColumn()));
-		sv.setValuesEndColumn(viewGetValuesEndColumn(settings
-				.getValuesEndColumn()));
-		sv.setValuesStartColumn(viewGetValuesStartColumn(settings
-				.getValuesStartColumn()));
-		sv
-				.setValuesStartRow(viewGetValuesStartRow(settings
-						.getValuesStartRow()));
-		sv.setValuesEndRow(viewGetValuesEndRow(settings.getValuesEndRow()));
-		LOGGER.debug(new StringBuilder().append(
-		"done converting model settings to view settings:").append(" ")
-		.append("viewSettings=").append(sv));
+		try {
+			sv.setLaborIdentColumn(viewGetLaborIdentColumn(settings
+					.getLaborIdentColumn()));
+			sv.setLaborIdentRow(viewGetLaborIdentRow(settings
+					.getLaborIdentRow()));
+			sv.setProbeIdent(viewGetProbeIdent(settings.getProbeIdent()));
+			sv.setProbeIdentColumn(viewGetProbeIdentColumn(settings
+					.getProbeIdentColumn()));
+			sv.setProbeIdentRow(viewGetProbeIdentRow(settings
+					.getProbeIdentRow()));
+			sv.setSheetNo(viewGetSheetNo(settings.getSheetNo()));
+			sv.setSubstancesColumn(viewGetSubstancesColumn(settings
+					.getSubstancesColumn()));
+			sv.setValuesEndColumn(viewGetValuesEndColumn(settings
+					.getValuesEndColumn()));
+			sv.setValuesStartColumn(viewGetValuesStartColumn(settings
+					.getValuesStartColumn()));
+			sv.setValuesStartRow(viewGetValuesStartRow(settings
+					.getValuesStartRow()));
+			sv.setValuesEndRow(viewGetValuesEndRow(settings.getValuesEndRow()));
+			LOGGER.debug(new StringBuilder().append(
+					"done converting model settings to view settings:").append(
+					" ").append("viewSettings=").append(sv));
+		} catch (Exception e) {
+			throw new InvalidSettingsException(e);
+		}
 		return sv;
 	}
 
@@ -306,7 +347,8 @@ class SettingsConverter {
 		if (string == null || string.length() == 0)
 			throw xx;
 		// convert single numbers like "1" to Double representation like "1.0"
-		LOGGER.debug("adapting string representation for probe identifier: " + string);
+		LOGGER.debug("adapting string representation for probe identifier: "
+				+ string);
 		final String r = new Double(string).toString();
 		LOGGER.debug("adapted representation: " + r);
 		return r;

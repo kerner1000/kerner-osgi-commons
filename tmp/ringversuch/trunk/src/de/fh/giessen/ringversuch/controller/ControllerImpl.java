@@ -1,6 +1,7 @@
 package de.fh.giessen.ringversuch.controller;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutorService;
@@ -10,8 +11,10 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import de.fh.giessen.ringversuch.common.Preferences;
+import de.fh.giessen.ringversuch.model.InvalidSettingsException;
 import de.fh.giessen.ringversuch.model.Model;
 import de.fh.giessen.ringversuch.model.ModelImpl;
+import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 import de.fh.giessen.ringversuch.view.View;
 import de.fh.giessen.ringversuch.view.ViewImpl;
 import de.fh.giessen.ringversuch.view.settings.ViewSettings;
@@ -42,7 +45,7 @@ class ControllerImpl implements Controller {
 		in.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.info("setSelectedFiles=" + inputFiles);
+				LOGGER.info("setSelectedFiles=" + Arrays.asList(inputFiles));
 				if (model != null)
 					model.setSelectedFiles(inputFiles);
 				else
@@ -135,22 +138,20 @@ class ControllerImpl implements Controller {
 
 	@Override
 	public synchronized void detect() {
-		LOGGER.debug("auto-detecting settings");
+		LOGGER.debug("auto detecting settings");
+		try {
 		detectProbeCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
-				.getSettings()));
 		detectLaborCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
-				.getSettings()));
 		detectColumnOfSubstances();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
-				.getSettings()));
 		detectValuesBeginCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
-				.getSettings()));
 		detectValuesEndCell();
-		view.setSettings(SettingsConverter.modelSettingsToViewSettings(model
-				.getSettings()));
+		final ModelSettings ms = model.getSettings();
+			view.setSettings(SettingsConverter.modelSettingsToViewSettings(ms));
+		} catch (InvalidSettingsException e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.printMessage("could not auto detect settings ("
+					+ e.getLocalizedMessage() + ")", true);
+		}
 	}
 
 	private void detectColumnOfSubstances() {
