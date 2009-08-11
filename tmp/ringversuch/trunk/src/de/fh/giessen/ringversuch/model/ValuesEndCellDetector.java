@@ -40,9 +40,9 @@ class ValuesEndCellDetector extends AbstractDetector {
 //				Collections.sort(cellList, new HSSFCellRowComparator());
 				Collections.sort(cellList, Collections.reverseOrder(new HSSFCellRowComparator()));
 				final List<HSSFCell> cellsWithValue = new ArrayList<HSSFCell>();
-				System.out.println(cells);
-				System.out.println(cellList);
-				System.out.println(cellsWithValue);
+//				System.out.println(cells);
+//				System.out.println(cellList);
+//				System.out.println(cellsWithValue);
 				for(HSSFCell c : cellList){
 					if(c.getCellType() == HSSFCell.CELL_TYPE_BLANK){
 						break;

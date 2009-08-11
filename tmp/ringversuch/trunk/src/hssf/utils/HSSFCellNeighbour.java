@@ -50,12 +50,12 @@ public class HSSFCellNeighbour {
 	private HSSFCell getNorth() {
 		final HSSFRow row = sheet.getRow(cell.getRowIndex() - 1);
 		if (row == null){
-			System.err.println("returning null row");
+//			System.err.println("returning null row");
 			return null;
 		}
 		final HSSFCell result = row.getCell(cell.getColumnIndex());
 		if (result == null){
-			System.err.println("returning null cell");
+//			System.err.println("returning null cell");
 			return null;
 		}
 		else

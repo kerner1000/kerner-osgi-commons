@@ -179,7 +179,6 @@ class Core {
 			for (Analyse a : p.getAnalyses()) {
 				values.add(a.getValueForSubstance(substanceIdent));
 			}
-			System.err.println(l);
 			result.add(new OutSubstanceEntryImpl(l, values));
 		}
 		return result;
@@ -343,7 +342,7 @@ class Core {
 				valueCell.setCellValue(new HSSFRichTextString(value));
 				currentColumn++;
 			}
-			System.out.println();
+//			System.out.println();
 			currentRow++;
 		}
 

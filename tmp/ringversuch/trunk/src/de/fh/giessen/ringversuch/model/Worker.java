@@ -52,7 +52,7 @@ class Worker implements Callable<Void> {
 			writer.write();
 			monitor.setProgress(currentProgress++, maxProgress);
 		}
-		monitor.printMessage("done");
+		monitor.printMessage("done!");
 		return null;
 	}
 }
