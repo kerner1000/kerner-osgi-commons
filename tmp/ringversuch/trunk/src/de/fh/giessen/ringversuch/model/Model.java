@@ -28,4 +28,6 @@ public interface Model {
 
 	void detectColumnOfSubstances() throws Exception;
 
+	void checkSettings() throws InvalidSettingsException;
+
 }

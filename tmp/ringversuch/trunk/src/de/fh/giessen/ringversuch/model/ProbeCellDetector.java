@@ -19,6 +19,8 @@ class ProbeCellDetector extends AbstractDetector {
 
 	@Override
 	public ModelSettings detect(ModelSettings settings, File[] files) throws Exception {
+		if(settings == null)
+			throw new NullPointerException("ModelSettings="+settings);
 		int probeCellRow;
 		int probeCellCol;
 		for(File f : files){

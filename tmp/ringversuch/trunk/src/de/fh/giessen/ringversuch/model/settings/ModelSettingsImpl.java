@@ -22,6 +22,22 @@ public class ModelSettingsImpl implements ModelSettings {
 	private volatile int valuesEndColumn = -1;
 
 	@Override
+	public boolean areValid() {
+		return (laborNoRow >= 0
+				&& laborNoColumn >= 0
+				&& probeNoCOlumn >= 0
+				&& probeNoRow >= 0
+				&& probeValue != null
+				&& !probeValue.isEmpty()
+				&& sheetNo >= 0
+				&& substancesColumn >= 0
+				&& valuesStartColumn >= 0
+				&& valuesStartRow >= 0
+				&& valuesEndColumn >= 0
+				&& valuesEndRow >= 0);
+	}
+	
+	@Override
 	public String toString() {
 		return new StringBuilder().append("labIdentRow=").append(laborNoRow)
 				.append(", ").append("labNoCol=").append(laborNoColumn).append(

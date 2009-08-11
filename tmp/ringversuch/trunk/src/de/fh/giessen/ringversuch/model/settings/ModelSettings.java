@@ -51,4 +51,6 @@ public interface ModelSettings {
 
 	int getValuesStartRow();
 
+	boolean areValid();
+
 }

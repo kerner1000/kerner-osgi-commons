@@ -36,6 +36,13 @@ public class ModelImpl implements Model {
 	}
 
 	@Override
+	public synchronized void checkSettings() throws InvalidSettingsException {
+		if(settings.areValid())
+			return;
+		throw new InvalidSettingsException("invalid setttings");
+	}
+	
+	@Override
 	public synchronized void setOutDir(File selectedDir) {
 		this.outDir = selectedDir;
 		LOGGER.info("files will be written to " + outDir);
@@ -100,6 +107,7 @@ public class ModelImpl implements Model {
 		currentJob = modelThread.submit(new Worker(inputFiles, outDir,
 				settings, new WorkMonitor(controller)));
 		currentJob.get();
+		LOGGER.info("done!");
 	}
 
 	@Override

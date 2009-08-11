@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -60,27 +61,51 @@ class ControllerImpl implements Controller {
 
 	@Override
 	public void start() {
-		in.submit(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					view.setWorking();
-					model.start();
-				} catch (CancellationException e) {
-					LOGGER.info("work cancelled", e);
-					view.printMessage("work cancelled", false);
-					return;
-				} catch (Exception e) {
-					LOGGER.error(e.getLocalizedMessage(), e);
-					view.showError("failed! (" + e.getLocalizedMessage() + ")");
-					view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
-				} finally {
-					// setting view to "online" instead of "ready" because of
-					// errors is maybe a good idea
-					view.setReady();
+		// first check validity of settings.
+		// settings may have bypassed any validation if they have been auto detected.
+		try {
+			if(in.submit(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					LOGGER.info("checking validity of settings");
+					try {
+						model.checkSettings();
+						return Boolean.TRUE;
+					} catch (Exception e) {
+						LOGGER.error(e.getLocalizedMessage(), e);
+						view.showError("failed! (" + e.getLocalizedMessage() + ")");
+						view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
+						return Boolean.FALSE;
+					}
 				}
+			}).get()){
+				in.submit(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							view.setWorking();
+							model.start();
+						} catch (CancellationException e) {
+							LOGGER.info("work cancelled", e);
+							view.printMessage("work cancelled", false);
+							return;
+						} catch (Exception e) {
+							LOGGER.error(e.getLocalizedMessage(), e);
+							view.showError("failed! (" + e.getLocalizedMessage() + ")");
+							view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
+						} finally {
+							// setting view to "online" instead of "ready" because of
+							// errors is maybe a good idea
+							view.setReady();
+						}
+					}
+				});
 			}
-		});
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.showError("failed! (" + e.getLocalizedMessage() + ")");
+			view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
+		}
 	}
 
 	@Override
