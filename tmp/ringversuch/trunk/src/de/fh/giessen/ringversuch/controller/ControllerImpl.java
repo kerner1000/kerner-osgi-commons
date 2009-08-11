@@ -70,6 +70,7 @@ class ControllerImpl implements Controller {
 				} catch (Exception e) {
 					LOGGER.error(e.getLocalizedMessage(), e);
 					view.showError("failed! (" + e.getLocalizedMessage() + ")");
+					view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
 				} finally {
 					// setting view to "online" instead of "ready" because of
 					// errors is maybe a good idea

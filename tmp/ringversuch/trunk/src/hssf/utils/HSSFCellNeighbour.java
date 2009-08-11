@@ -156,13 +156,8 @@ public class HSSFCellNeighbour {
 			System.out.println(n.get(HSSFCellNeighbour.Orientation.SOUTH_WEST).getNumericCellValue());
 			System.out.println(n.get(HSSFCellNeighbour.Orientation.WEST).getNumericCellValue());
 			System.out.println(n.get(HSSFCellNeighbour.Orientation.NORH_WEST).getNumericCellValue());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 }

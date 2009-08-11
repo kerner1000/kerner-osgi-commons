@@ -2,13 +2,10 @@ package de.fh.giessen.ringversuch.model;
 
 import hssf.utils.AbstractHSSFSheetWalker;
 import hssf.utils.HSSFCellFilter;
-import hssf.utils.HSSFCellNeighbour;
-import hssf.utils.HSSFCellTypeNumericFilter;
 import hssf.utils.HSSFCellTypeStringFilter;
 import hssf.utils.HSSFUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,11 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +25,6 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
@@ -125,11 +119,16 @@ class Core {
 
 	public static Collection<OutSubstance> getOutSubstancesFromLabors(
 			final Collection<Labor> labors, final ModelSettings settings)
-			throws InvalidFormatException {
+			throws InvalidFormatException, ParsingException {
 		final Collection<OutSubstance> result = new ArrayList<OutSubstance>();
 		final String probeIdent = settings.getProbeIdent();
 		Collection<String> commonKeys = getCommonSubstanceKeys(labors,
 				probeIdent);
+//		final String m = "got " + commonKeys.size() + " common keys";
+//		if(commonKeys.size() == 0){
+//			LOGGER.fatal(m);
+//		}else
+//		LOGGER.debug(m);
 		for (String s : commonKeys) {
 			result.add(new OutSubstanceImpl(s, probeIdent,
 					getOutSubstanceEntrys(s, labors, probeIdent)));
@@ -139,7 +138,7 @@ class Core {
 
 	public static Collection<String> getCommonSubstanceKeys(
 			final Collection<Labor> labors, final String probeIdent)
-			throws InvalidFormatException {
+			throws InvalidFormatException, ParsingException {
 		LOGGER.debug("labors=" + labors + Preferences.NEW_LINE + "probeIdent="
 				+ probeIdent);
 		Collection<String> keys = null;
@@ -165,6 +164,8 @@ class Core {
 				}
 			}
 		}
+		if(keys == null || keys.size() == 0)
+			throw new ParsingException("could not get list of substances");
 		return keys;
 	}
 
@@ -202,24 +203,6 @@ class Core {
 		sb.append("_");
 		sb.append(s.getSubstanceIdent());
 		return sb.toString();
-	}
-
-	public static HSSFCell detectValuesBeginCell(File file) throws Exception {
-		LOGGER.debug("detecting cell containing first value");
-		final HSSFWorkbook wb = HSSFUtils.getWorkbookFromFile(file);
-		// TODO for now, we only look at sheet 0
-		final HSSFSheet sheet = wb.getSheetAt(0);
-		final ValuesBeginDetector walker = new ValuesBeginDetector(sheet);
-		return walker.getValuesBeginCell();
-	}
-
-	public static HSSFCell detectValuesEndCell(File file) throws Exception {
-		LOGGER.debug("detecting cell containing last value");
-		final HSSFWorkbook wb = HSSFUtils.getWorkbookFromFile(file);
-		// TODO for now, we only look at sheet 0
-		final HSSFSheet sheet = wb.getSheetAt(0);
-		final ValuesEndDetector walker = new ValuesEndDetector(sheet);
-		return walker.getValuesEndCell();
 	}
 
 	public static int detectSubstancesCol(File file)

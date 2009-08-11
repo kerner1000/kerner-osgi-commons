@@ -21,7 +21,7 @@ class ColumnOfSubstancesDetector extends AbstractDetector {
 			throws Exception {
 		for(File f : files){
 		final int col = Core.detectSubstancesCol(f);
-		final String s = "got column of substances: " + col;
+		final String s = "assuming column of substances: " + col;
 		LOGGER.info(s);
 		settings.setSubstancesColumn(col);
 		monitor.printMessage(s);

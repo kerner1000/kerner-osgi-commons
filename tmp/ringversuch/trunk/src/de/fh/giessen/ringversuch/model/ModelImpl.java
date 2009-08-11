@@ -16,17 +16,18 @@ import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 /**
  * @ThreadSave
  * @author Alexander Kerner
- *
+ * 
  */
 public class ModelImpl implements Model {
 
-	private final ExecutorService modelThread = Executors.newSingleThreadExecutor();
+	private final ExecutorService modelThread = Executors
+			.newSingleThreadExecutor();
 	private final static Logger LOGGER = Logger.getLogger(ModelImpl.class);
 	private final ControllerOut controller;
 	private File outDir;
 	private File[] inputFiles;
 	private ModelSettings settings;
-	private Future<Boolean> currentJob;
+	private Future<Void> currentJob;
 	private Future<ModelSettings> currentDetectJob;
 
 	public ModelImpl(ControllerOut controller) {
@@ -49,52 +50,55 @@ public class ModelImpl implements Model {
 	}
 
 	/**
-	@Override
-	public synchronized void detect() throws Exception {
-		LOGGER.debug("trying to detect settings");
-		currentDetectJob = modelThread.submit(new DetectorOld(inputFiles, new WorkMonitor(controller), getSettings()));
-		settings = currentDetectJob.get();
-		LOGGER.debug("settings detected");		
-	}
-	*/
-	
+	 * @Override public synchronized void detect() throws Exception {
+	 *           LOGGER.debug("trying to detect settings"); currentDetectJob =
+	 *           modelThread.submit(new DetectorOld(inputFiles, new
+	 *           WorkMonitor(controller), getSettings())); settings =
+	 *           currentDetectJob.get(); LOGGER.debug("settings detected"); }
+	 */
+
 	@Override
 	public void detectProbeCell() throws Exception {
-		currentDetectJob = modelThread.submit(new ProbeCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		currentDetectJob = modelThread.submit(new ProbeCellDetector(inputFiles,
+				getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
-	
+
 	@Override
 	public void detectLaborCell() throws Exception {
-		currentDetectJob = modelThread.submit(new LaborCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		currentDetectJob = modelThread.submit(new LaborCellDetector(inputFiles,
+				getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
-	
+
 	@Override
 	public void detectValuesBeginCell() throws Exception {
-		currentDetectJob = modelThread.submit(new ValuesBeginCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		currentDetectJob = modelThread.submit(new ValuesBeginCellDetector(
+				inputFiles, getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
-	
+
 	@Override
 	public void detectValuesEndCell() throws Exception {
-		currentDetectJob = modelThread.submit(new ValuesEndCellDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		currentDetectJob = modelThread.submit(new ValuesEndCellDetector(
+				inputFiles, getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
-	
+
 	@Override
 	public void detectColumnOfSubstances() throws Exception {
-		currentDetectJob = modelThread.submit(new ColumnOfSubstancesDetector(inputFiles, getSettings(), new WorkMonitor(controller)));
+		currentDetectJob = modelThread.submit(new ColumnOfSubstancesDetector(
+				inputFiles, getSettings(), new WorkMonitor(controller)));
 		setSettings(currentDetectJob.get());
 	}
-	
+
 	@Override
-	public synchronized boolean start() throws CancellationException, InterruptedException, ExecutionException {
+	public synchronized void start() throws CancellationException,
+			InterruptedException, ExecutionException {
 		LOGGER.info("starting...");
-			currentJob = modelThread.submit(new Worker(inputFiles, outDir, settings,
-					new WorkMonitor(controller)));
-				final Boolean success = currentJob.get();
-				return success;
+		currentJob = modelThread.submit(new Worker(inputFiles, outDir,
+				settings, new WorkMonitor(controller)));
+		currentJob.get();
 	}
 
 	@Override
@@ -113,9 +117,9 @@ public class ModelImpl implements Model {
 	 */
 	@Override
 	public void cancel() {
-		if(currentJob != null)
-		currentJob.cancel(true);
-		if(currentDetectJob != null)
+		if (currentJob != null)
+			currentJob.cancel(true);
+		if (currentDetectJob != null)
 			currentDetectJob.cancel(true);
 	}
 }

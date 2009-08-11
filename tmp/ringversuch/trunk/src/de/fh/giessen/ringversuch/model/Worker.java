@@ -8,12 +8,13 @@ import java.util.concurrent.Callable;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 
-class Worker implements Callable<Boolean> {
+class Worker implements Callable<Void> {
 
 	private final File outDir;
 	private final File[] files;
 	private final ModelSettings settings;
 	private final WorkMonitor monitor;
+//	private final static Logger LOGGER = Logger.getLogger(Worker.class);
 
 	Worker(File[] inputFiles, File outDir, ModelSettings settings, WorkMonitor monitor) {
 		this.outDir = outDir;
@@ -23,8 +24,7 @@ class Worker implements Callable<Boolean> {
 	}
 
 	@Override
-	public Boolean call() throws Exception {
-		final boolean success = true;
+	public Void call() throws Exception {
 		final Collection<Labor> labors = new ArrayList<Labor>();
 		int currentProgress = 0;
 		int maxProgress = files.length * 2;
@@ -43,7 +43,7 @@ class Worker implements Callable<Boolean> {
 		monitor.printMessage("calculating... ");
 		final Collection<OutSubstance> outSubstances = Core
 		.getOutSubstancesFromLabors(labors, settings);
-		monitor.printMessage("... done");
+		monitor.printMessage("calculating done");
 		for(OutSubstance s : outSubstances){
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
@@ -52,7 +52,7 @@ class Worker implements Callable<Boolean> {
 			writer.write();
 			monitor.setProgress(currentProgress++, maxProgress);
 		}
-		return success;
+		monitor.printMessage("done");
+		return null;
 	}
-
 }

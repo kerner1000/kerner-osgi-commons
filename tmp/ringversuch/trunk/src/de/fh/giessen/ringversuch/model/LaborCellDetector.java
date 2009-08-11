@@ -26,7 +26,7 @@ class LaborCellDetector extends AbstractDetector {
 			final HSSFCell cell = Core.detectLaborCell(f);
 			cellRow = cell.getRowIndex();
 			cellCol = cell.getColumnIndex();
-			final String s = "got cell containing labor ident: " + cellRow + ","+ cellCol;
+			final String s = "found cell containing labor ident: " + cellRow + ","+ cellCol;
 			LOGGER.info(s);
 			settings.setLaborIdentRow(cellRow);
 			settings.setLaborIdentColumn(cellCol);

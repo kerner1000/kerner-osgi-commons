@@ -25,7 +25,7 @@ class ProbeCellDetector extends AbstractDetector {
 			final HSSFCell probeCell = Core.detectProbeCell(f);
 			probeCellRow = probeCell.getRowIndex();
 			probeCellCol = probeCell.getColumnIndex();
-			final String s = "got cell containing probe ident: " + probeCellRow + ","+ probeCellCol;
+			final String s = "found cell containing probe ident: " + probeCellRow + ","+ probeCellCol;
 			LOGGER.info(s);
 			settings.setProbeIdentRow(probeCellRow);
 			settings.setProbeIdentColumn(probeCellCol);

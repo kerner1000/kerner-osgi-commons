@@ -10,8 +10,7 @@ public interface Model {
 
 	void setSelectedFiles(File[] inputFiles);
 
-	// TODO should be void
-	boolean start() throws Exception;
+	void start() throws Exception;
 
 	ModelSettings getSettings();
 
