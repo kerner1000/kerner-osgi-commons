@@ -13,7 +13,7 @@ import de.mpg.mpiz.koeln.anna.step.conrad.common.ConradConstants;
 /**
  * @cleaned 2009-07-28
  * @author Alexander Kerner
- *
+ * 
  */
 public class PredictLSF extends AbstractConradPredictStep {
 
@@ -35,7 +35,11 @@ public class PredictLSF extends AbstractConradPredictStep {
 			builder.addFlagCommand("predict");
 			builder.addFlagCommand(trainingFile.getAbsolutePath());
 			builder.addFlagCommand(workingDir.getAbsolutePath());
-			builder.addFlagCommand(resultFile.getAbsolutePath());
+
+			// necessary, because "result" parameter will result in a file named
+			// result.gtf. If we here hand over "result.gtf" we later receive
+			// file named "result.gtf.gtf"
+			builder.addFlagCommand(resultFile.getParent() + "result");
 			return builder.getCommandList();
 		}
 	}

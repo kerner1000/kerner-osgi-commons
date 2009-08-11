@@ -48,7 +48,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 						+ workingDir.getAbsolutePath());
 			process = getProcess();
 			trainingFile = new File(workingDir, "trainingFile.bin");
-			resultFile = new File(workingDir, "result");
+			resultFile = new File(workingDir, "result.gtf");
 			logger.debug(this, "init done: workingDir="
 					+ workingDir.getAbsolutePath());
 			logger.debug(this, "init done: trainingFile="
