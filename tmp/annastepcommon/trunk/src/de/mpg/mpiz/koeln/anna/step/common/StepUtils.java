@@ -3,14 +3,15 @@ package de.mpg.mpiz.koeln.anna.step.common;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 
 /**
- * @cleaned 2009-07-28
+ * @lastVisit 2009-08-12
+ * @ThreadSave stateless
  * @author Alexander Kerner
- *
+ * @Exceptions good
+ * 
  */
 public class StepUtils {
 
-	private StepUtils() {
-	};
+	private StepUtils() {}
 
 	public static void handleException(Object cause, Throwable t,
 			LogDispatcher logger) throws StepExecutionException {
