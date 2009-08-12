@@ -67,7 +67,7 @@ public class LogDispatcherImpl implements LogDispatcher {
 				t);
 	}
 
-	private void log(LEVEL level, Object o, Throwable t) {
+	private synchronized void log(LEVEL level, Object o, Throwable t) {
 		final String cannotLogString = "could not deliver log message:\n\t" + o;
 
 		LogService logservice = (LogService) tracker.getService();
@@ -93,11 +93,7 @@ public class LogDispatcherImpl implements LogDispatcher {
 		}
 	}
 
-	private void cannotLog(String message) {
+	private synchronized void cannotLog(String message) {
 		System.err.println(message);
 	}
-
-	
-
-	
 }

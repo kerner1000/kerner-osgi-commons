@@ -44,11 +44,11 @@ public class ConsoleLogger implements LogDispatcher, Serializable {
 		dropToOut(createString("WARN", message, t));
 	}
 	
-	private void dropToOut(String string) {
+	private synchronized void dropToOut(String string) {
 		System.out.println(string);		
 	}
 	
-	private void dropToErr(String string) {
+	private synchronized void dropToErr(String string) {
 		System.err.println(string);	
 	}
 	
