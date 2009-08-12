@@ -5,7 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * 
+ * @author Alexander Kerner
+ * @ThreadSave stateless
+ * @lastVisit 2009-08-12
+ * @Exceptions nothing to do
+ *
+ */
 public class LSF {
 	
 	public final static String BSUB_EXE = "bsub";
@@ -30,5 +37,4 @@ public class LSF {
 		list.add("-K");
 		return list;
 	}
-
 }
