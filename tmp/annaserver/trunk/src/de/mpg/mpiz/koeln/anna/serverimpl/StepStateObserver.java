@@ -1,16 +1,16 @@
 package de.mpg.mpiz.koeln.anna.serverimpl;
 
-import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.Step;
 
 public interface StepStateObserver {
 	
-	void stepRegistered(AbstractStep step);
+	void stepRegistered(Step step);
 
-	void stepStarted(AbstractStep step);
+	void stepStarted(Step step);
 
-	void stepFinished(AbstractStep step, boolean success);
+	void stepFinished(Step step, boolean success);
 
-	void stepChecksNeedToRun(AbstractStep step);
+	void stepChecksNeedToRun(Step step);
 
-	void stepWaitForReq(AbstractStep step);
+	void stepWaitForReq(Step step);
 }

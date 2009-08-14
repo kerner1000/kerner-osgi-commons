@@ -15,6 +15,7 @@ import de.kerner.osgi.commons.utils.AbstractServiceProvider;
 import de.mpg.mpiz.koeln.anna.server.Server;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
+import de.mpg.mpiz.koeln.anna.step.Step;
 
 /**
  * 
@@ -53,7 +54,7 @@ public class ServerImpl implements Server {
 		logger.debug(this, "loaded properties: " + properties);
 	}
 
-	public void registerStep(AbstractStep step) {
+	public void registerStep(Step step) {
 		observer.stepRegistered(step);
 		StepController controller = new StepController(step, this, logger);
 		synchronized (exe) {
@@ -62,7 +63,7 @@ public class ServerImpl implements Server {
 		logger.debug(this, "registered step " + step);
 	}
 
-	public void unregisterStep(AbstractStep step) {
+	public void unregisterStep(Step step) {
 		System.err.println(this + ": unregistering step " + step);
 		// TODO method stub
 
