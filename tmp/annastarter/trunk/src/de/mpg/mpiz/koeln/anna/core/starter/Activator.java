@@ -74,8 +74,8 @@ public class Activator implements BundleActivator {
 			final File[] content = path.listFiles();
 			if (content == null || content.length == 0) {
 				System.err.println("content of dir ="+content);
-				throw new NoPluginsFoundException(
-						"Could not find any plugins in " + path);
+//				throw new NoPluginsFoundException("Could not find any plugins in " + path);
+				return Collections.emptyList();
 			} else {
 				for (File f : content) {
 					if (f.isFile()) {
