@@ -31,7 +31,9 @@ class ViewImplSettings extends JPanel {
 				controller.hideSettingsView();
 				
 			} else if (e.getSource() == buttonSave) {
-				if(controller.saveSettingsOut(getSettings()))controller.hideSettingsView();
+				if(controller.saveSettingsOut(getSettings())){
+//					controller.hideSettingsView();
+				}
 			}
 			
 		else if (e.getSource() == buttonDetect) {
@@ -44,7 +46,7 @@ class ViewImplSettings extends JPanel {
 					File file = fileChooser.getSelectedFile();
 					if(controller.loadSettings(file)){
 						setSettings(controller.getSettings());
-						controller.hideSettingsView();
+//						controller.hideSettingsView();
 					}
 				}
 			} else {

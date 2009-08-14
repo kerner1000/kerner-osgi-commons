@@ -1,10 +1,8 @@
 package de.fh.giessen.ringversuch.controller;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import de.fh.giessen.ringversuch.common.Preferences;
-import de.fh.giessen.ringversuch.model.InvalidSettingsException;
 import de.fh.giessen.ringversuch.model.Model;
 import de.fh.giessen.ringversuch.model.ModelImpl;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
@@ -20,24 +17,48 @@ import de.fh.giessen.ringversuch.view.View;
 import de.fh.giessen.ringversuch.view.ViewImpl;
 import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
+import de.kerner.commons.StringUtils;
 
+/**
+ * 
+ * @author Alexander Kerner
+ * @lastVisit 2009-08-14
+ * @Strings all good
+ * 
+ */
 class ControllerImpl implements Controller {
 
 	private final static Logger LOGGER = Logger.getLogger(ControllerImpl.class);
 	private final ExecutorService out = Executors.newCachedThreadPool();
 	private final ExecutorService in = Executors.newCachedThreadPool();
-	private View view;
-	private Model model;
+
+	private volatile View view;
+	private volatile Model model;
+	
+	private static void debug(Throwable t, Object... message) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug(StringUtils.getString(message), t);
+	}
+
+	private static void debug(Object... message) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug(StringUtils.getString(message));
+	}
+
+	private static void info(Object... message) {
+		if (LOGGER.isInfoEnabled())
+			LOGGER.info(StringUtils.getString(message));
+	}
 
 	@Override
-	public synchronized void setView(View view) {
-		LOGGER.debug("setView=" + view);
+	public void setView(View view) {
+		debug("new view=", view);
 		this.view = view;
 	}
 
 	@Override
-	public synchronized void setModel(Model model) {
-		LOGGER.debug("setModel=" + model);
+	public void setModel(Model model) {
+		debug("new model=", model);
 		this.model = model;
 	}
 
@@ -46,39 +67,42 @@ class ControllerImpl implements Controller {
 		in.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.info("setSelectedFiles=" + Arrays.asList(inputFiles));
 				if (model != null)
 					model.setSelectedFiles(inputFiles);
-				else
-					LOGGER.fatal("model not initialized jet",
-							new NullPointerException(
-									"model not initialized jet"));
+				else {
+					final String m = "model not initialized jet";
+					LOGGER.fatal(m, new NullPointerException(m));
+				}
+
+				info(inputFiles.length, " ",
+						Preferences.Controller.FILES_LOADED_GOOD);
 			}
 		});
-		LOGGER.info("files selected, trying to detect settings");
 		detect();
 	}
 
 	@Override
 	public void start() {
 		// first check validity of settings.
-		// settings may have bypassed any validation if they have been auto detected.
+		// settings may have bypassed any validation if they have been auto
+		// detected.
 		try {
-			if(in.submit(new Callable<Boolean>() {
+			if (in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					LOGGER.info("checking validity of settings");
+					debug("checking validity of settings");
 					try {
 						model.checkSettings();
 						return Boolean.TRUE;
 					} catch (Exception e) {
+						final String m = StringUtils.getString("failed! (", e.getLocalizedMessage(), ")");
 						LOGGER.error(e.getLocalizedMessage(), e);
-						view.showError("failed! (" + e.getLocalizedMessage() + ")");
-						view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
+						view.showError(m);
+						view.printMessage(m, true);
 						return Boolean.FALSE;
 					}
 				}
-			}).get()){
+			}).get()) {
 				in.submit(new Runnable() {
 					@Override
 					public void run() {
@@ -86,15 +110,17 @@ class ControllerImpl implements Controller {
 							view.setWorking();
 							model.start();
 						} catch (CancellationException e) {
-							LOGGER.info("work cancelled", e);
-							view.printMessage("work cancelled", false);
-							return;
+							debug(e, e.getLocalizedMessage());
+							info(Preferences.Controller.CANCELED);
+							view.printMessage(Preferences.Controller.CANCELED, false);
 						} catch (Exception e) {
 							LOGGER.error(e.getLocalizedMessage(), e);
-							view.showError("failed! (" + e.getLocalizedMessage() + ")");
-							view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
+							final String m = StringUtils.getString(Preferences.Controller.FAILED, " (", e.getLocalizedMessage(), ")");
+							view.showError(m);
+							view.printMessage(m, true);
 						} finally {
-							// setting view to "online" instead of "ready" because of
+							// setting view to "online" instead of "ready"
+							// because of
 							// errors is maybe a good idea
 							view.setReady();
 						}
@@ -103,8 +129,9 @@ class ControllerImpl implements Controller {
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError("failed! (" + e.getLocalizedMessage() + ")");
-			view.printMessage("failed! (" + e.getLocalizedMessage() + ")", true);
+			final String m = StringUtils.getString(Preferences.Controller.FAILED, " (", e.getLocalizedMessage(), ")");
+			view.showError(m);
+			view.printMessage(m, true);
 		}
 	}
 
@@ -113,7 +140,7 @@ class ControllerImpl implements Controller {
 		in.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.debug("cancelling");
+				debug("cancelling");
 				model.cancel();
 			}
 		});
@@ -121,10 +148,11 @@ class ControllerImpl implements Controller {
 
 	@Override
 	public void done(boolean b) {
+		// TODO boolean b ??
 		out.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.debug("done. setting view ready.");
+				debug("done. setting view ready.");
 				view.setReady();
 			}
 		});
@@ -135,6 +163,7 @@ class ControllerImpl implements Controller {
 		out.submit(new Runnable() {
 			@Override
 			public void run() {
+				debug("setting progress to ", current, "/", max);
 				view.setProgress(current, max);
 			}
 		});
@@ -150,124 +179,96 @@ class ControllerImpl implements Controller {
 					model.setSettings(SettingsConverter
 							.propertiesToModelSettings(SettingsConverter
 									.fileToProperties(file)));
+					final String m = StringUtils.getString(Preferences.Controller.SETTINGS_LOADED_GOOD, " from ", file);
+					info(m);
+					view.printMessage(m, false);
 					return Boolean.TRUE;
 				}
 			}).get();
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError("could not load settings. ("
-					+ e.getLocalizedMessage() + ")");
+			view.showError(StringUtils.getString(
+					Preferences.Controller.SETTINGS_LOADED_BAD, "(", e
+							.getLocalizedMessage(), ")"));
 			return Boolean.FALSE;
 		}
 	}
 
 	@Override
 	public synchronized void detect() {
-		LOGGER.debug("auto detecting settings");
 		try {
-		detectProbeCell();
-		detectLaborCell();
-		detectColumnOfSubstances();
-		detectValuesBeginCell();
-		detectValuesEndCell();
-		final ModelSettings ms = model.getSettings();
+			detectProbeCell();
+			detectLaborCell();
+			detectColumnOfSubstances();
+			detectValuesBeginCell();
+			detectValuesEndCell();
+			final ModelSettings ms = model.getSettings();
 			view.setSettings(SettingsConverter.modelSettingsToViewSettings(ms));
-		} catch (InvalidSettingsException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not auto detect settings ("
-					+ e.getLocalizedMessage() + ")", true);
+			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD, " (", e.getLocalizedMessage(), ")");
+			view.printMessage(m, true);
 		}
 	}
 
-	private void detectColumnOfSubstances() {
-		LOGGER.debug("auto-detecting settings column of substances");
-		try {
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					model.detectColumnOfSubstances();
-					return null;
-				}
-			}).get();
-			LOGGER.debug("auto-detecting settings column of substances successful");
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find column of substances ("
-					+ e.getLocalizedMessage() + ")", true);
-		}
+	private void detectColumnOfSubstances() throws Exception {
+		debug("auto-detecting settings column of substances");
+		in.submit(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				model.detectColumnOfSubstances();
+				return null;
+			}
+		}).get();
+		debug("auto-detecting settings column of substances successful");
 	}
 
-	private void detectValuesEndCell() {
-		LOGGER.debug("auto-detecting settings values end cell");
-		try {
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					model.detectValuesEndCell();
-					return null;
-				}
-			}).get();
-			LOGGER.debug("auto-detecting settings values end cell successful");
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find values end cell ("
-					+ e.getLocalizedMessage() + ")", true);
-		}
+	private void detectValuesEndCell() throws Exception {
+		debug("auto-detecting settings values end cell");
+		in.submit(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				model.detectValuesEndCell();
+				return null;
+			}
+		}).get();
+		debug("auto-detecting settings values end cell successful");
 	}
 
-	private void detectValuesBeginCell() {
-		LOGGER.debug("auto-detecting settings values begin cell");
-		try {
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					model.detectValuesBeginCell();
-					return null;
-				}
-			}).get();
-			LOGGER
-					.debug("auto-detecting settings values begin cell successful");
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find values begin cell ("
-					+ e.getLocalizedMessage() + ")", true);
-		}
+	private void detectValuesBeginCell() throws Exception {
+		debug("auto-detecting settings values begin cell");
+		in.submit(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				model.detectValuesBeginCell();
+				return null;
+			}
+		}).get();
+		debug("auto-detecting settings values begin cell successful");
 	}
 
-	private void detectLaborCell() {
-		LOGGER.debug("auto-detecting settings labor cell");
-		try {
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					model.detectLaborCell();
-					return null;
-				}
-			}).get();
-			LOGGER.debug("auto-detecting settings labor cell successful");
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find labor cell ("
-					+ e.getLocalizedMessage() + ")", true);
-		}
+	private void detectLaborCell() throws Exception {
+		debug("auto-detecting settings labor cell");
+		in.submit(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				model.detectLaborCell();
+				return null;
+			}
+		}).get();
+		debug("auto-detecting settings labor cell successful");
 	}
 
-	private void detectProbeCell() {
-		LOGGER.debug("auto-detecting settings probe cell");
-		try {
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					model.detectProbeCell();
-					return null;
-				}
-			}).get();
-			LOGGER.debug("auto-detecting settings probe cell successful");
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage("could not find probe cell ("
-					+ e.getLocalizedMessage() + ")", true);
-		}
+	private void detectProbeCell() throws Exception {
+		debug("auto-detecting settings probe cell");
+		in.submit(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				model.detectProbeCell();
+				return null;
+			}
+		}).get();
+		debug("auto-detecting settings probe cell successful");
 	}
 
 	@Override
@@ -282,13 +283,15 @@ class ControllerImpl implements Controller {
 					SettingsConverter.propertiesToFile(SettingsConverter
 							.settingsToProperties(model.getSettings()),
 							new File(Preferences.SETTINGS_FILE));
+					info(Preferences.Controller.SETTINGS_SAVED_GOOD);
+					view.printMessage(Preferences.Controller.SETTINGS_SAVED_GOOD, false);
 					return Boolean.TRUE;
 				}
 			}).get();
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError("could not save settings. ("
-					+ e.getLocalizedMessage() + ")");
+			final String m = StringUtils.getString(Preferences.Controller.SETTINGS_SAVED_BAD, " (", e.getLocalizedMessage(), ")");
+			view.showError(m);
 			return Boolean.FALSE;
 		}
 	}
@@ -299,17 +302,18 @@ class ControllerImpl implements Controller {
 			return in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					LOGGER.debug("setting settings");
+					debug("setting settings");
 					model.setSettings(SettingsConverter
 							.viewSettingsToModelSettings(settings));
-					LOGGER.debug("settings successfull set");
+					info(Preferences.Controller.SETTINGS_SET_GOOD);
+					view.printMessage(Preferences.Controller.SETTINGS_SET_GOOD, false);
 					return Boolean.TRUE;
 				}
 			}).get();
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError("could not set settings. ("
-					+ e.getLocalizedMessage() + ")");
+			final String m = StringUtils.getString(Preferences.Controller.SETTINGS_SET_BAD, " (" , e.getLocalizedMessage(), ")");
+			view.showError(m);
 			return Boolean.FALSE;
 		}
 	}
@@ -319,7 +323,7 @@ class ControllerImpl implements Controller {
 		out.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.debug("printMessage=" + message);
+				debug("printMessage=" + message);
 				if (view != null)
 					view.printMessage(message, isError);
 			}
@@ -331,7 +335,7 @@ class ControllerImpl implements Controller {
 		in.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.debug("setOutDir=" + selectedDir);
+				debug("setOutDir=" + selectedDir);
 				if (model != null)
 					model.setOutDir(selectedDir);
 				else
@@ -347,7 +351,7 @@ class ControllerImpl implements Controller {
 		out.submit(new Runnable() {
 			@Override
 			public void run() {
-				LOGGER.debug("showError=" + message);
+				debug("showError=" + message);
 				if (view != null)
 					view.showError(message);
 			}
@@ -356,7 +360,9 @@ class ControllerImpl implements Controller {
 
 	public static void main(String[] args) {
 		PropertyConfigurator.configure(Preferences.LOG_PROPERTIES);
-		LOGGER.debug("starting up");
+		debug("starting up");
+		final String m = StringUtils.getString("System properties:", Preferences.NEW_LINE, "\t", System.getProperties());
+		debug(m);
 		final Controller controller = new ControllerImpl();
 		final Model model = new ModelImpl(controller);
 		final View view = new ViewImpl(controller);
@@ -371,18 +377,16 @@ class ControllerImpl implements Controller {
 							.fileToProperties(f)));
 			view.setSettings(SettingsConverter
 					.modelSettingsToViewSettings(model.getSettings()));
-			final String message = "successfully loaded settings from " + f;
-			LOGGER.info(message);
-			controller.printMessage(message, false);
+			final String m2 = StringUtils.getString(Preferences.Controller.SETTINGS_LOADED_GOOD, " (from ", f, ")");
+			info(m2);
+			controller.printMessage(m2, false);
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			controller.printMessage(e.getLocalizedMessage(), false);
 			controller.printMessage("loading default settings", false);
 			view.setSettings(new ViewSettingsImpl());
 		}
-
 		view.setOnline();
-		LOGGER.debug("view created and online");
+		debug("view created and online");
 	}
-
 }

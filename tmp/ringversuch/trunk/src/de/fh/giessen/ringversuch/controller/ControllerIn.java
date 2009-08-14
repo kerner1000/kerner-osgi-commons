@@ -6,36 +6,38 @@ import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
 /**
  * 
- * Handle Events from View to Model
+ * <p>Handle Events from View to Model.</p>
  * 
  * @author Alexander Kerner
+ * @lastVisit 2009-08-14
  *
  */
 public interface ControllerIn {
 	
 	/**
 	 * <p>In</p>
-	 * <p>Tell the model to cancel<p> 
-	 * 
+	 * <p>Notifies about an incoming cancel request.</p>
 	 */
 	void cancel();
 	
 	/**
-	 * In
+	 * <p>In</p>
+	 * <p>Sets new incoming settings.</p>
 	 * @param settings
-	 * @return
+	 * @return true, if settings have been accepted by model, false otherwise.
 	 */
 	boolean setSettings(ViewSettings settings);
 	
 	/**
-	 * In
+	 * <p>In</p>
+	 * <p> Tells the model to save current settings.</p>
 	 * @param settings
-	 * @return
+	 * @return true, if successful, false otherwise.
 	 */
 	boolean saveSettings(ViewSettings settings);
 	
 	/**
-	 * In
+	 * <p>In</p>
 	 * @param file
 	 * @return
 	 */
