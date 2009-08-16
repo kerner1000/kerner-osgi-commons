@@ -2,10 +2,10 @@ package de.fh.giessen.ringversuch.controller;
 
 /**
  * 
- * Handle Events from Model to View
+ * Handle Events from Model to View.
  * 
  * @author Alexander Kerner
- * 
+ *  
  */
 public interface ControllerOut {
 

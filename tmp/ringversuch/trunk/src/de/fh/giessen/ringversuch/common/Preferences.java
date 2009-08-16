@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.common;
 
+import de.kerner.commons.file.FileUtils;
+
 /**
  * 
  * <p>Holds application wide constants</p>
@@ -14,7 +16,8 @@ public class Preferences {
 	private Preferences() {
 	};
 
-	public static final String NEW_LINE = System.getProperty("line.separator");
+//	public static final String NEW_LINE = System.getProperty("line.separator");
+	public static final String NEW_LINE = FileUtils.NEW_LINE;
 	public static final String WORKING_DIR = System.getProperty("user.dir");
 	public static final String LOG_PROPERTIES = WORKING_DIR + "/log.properties";
 	public static final String SETTINGS_FILE = WORKING_DIR + "/settings.ini";

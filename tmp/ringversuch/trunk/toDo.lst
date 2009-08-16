@@ -1,0 +1,10 @@
+[..]
+reading file L33_RV_DIN38407-41.xls
+reading file L34_RV_DIN38407-41.xls
+calculating... 
+writing 1_0_Benzol.xls
+calculating done
+writing 1_0_Bromdichlormethan.xls
+writing 1_0_cis-1_2-Dichlorethen.xls
+[..]
+somehow output is not synchronized. This may indicate a problem... (and it looks also not so nice)

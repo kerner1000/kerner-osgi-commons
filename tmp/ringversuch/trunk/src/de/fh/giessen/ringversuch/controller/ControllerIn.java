@@ -38,30 +38,35 @@ public interface ControllerIn {
 	
 	/**
 	 * <p>In</p>
+	 * <p> Tells the model to load settings from a file </p>
 	 * @param file
-	 * @return
+	 * @return true, if successful, false otherwise.
 	 */
 	boolean loadSettings(File file);
 	
 	/**
-	 * In
+	 * <p>In</p>
+	 * <p> Tells the model to start the job </p>
 	 */
 	void start();
 	
 	/**
-	 * In
-	 * @param selectedFile
+	 * <p> In </p>
+	 * <p> Sets the directory to which out files will be written </p>
+	 * @param selectedFile directory to store files in
 	 */
 	void setOutDir(File selectedFile);
 	
 	/**
-	 * In
-	 * @param inputFiles
+	 * <p> In </p>
+	 * <p> Sets input files </p>
+	 * @param inputFiles array of input files
 	 */
 	void setSelectedFiles(File[] inputFiles);
 
 	/**
-	 * In
+	 * <p> In </p>
+	 * <p> Tries to detect the correct settings. </p>
 	 */
 	void detect();
 
