@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Dataproxy Plug-in
+Bundle-Name: Dataproxy
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.server.dataproxy
-Bundle-Version: 0.0.5
+Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.anna.server.dataproxy.impl.DataProxyActivator
 Import-Package: de.bioutils,
  de.bioutils.blast,
