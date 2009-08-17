@@ -16,6 +16,9 @@ public interface Server {
 	void registerStep(Step step);
 
 	void unregisterStep(Step step);
+	
+	
+	// Move to other type ??
 
 	Properties getServerProperties();
 
