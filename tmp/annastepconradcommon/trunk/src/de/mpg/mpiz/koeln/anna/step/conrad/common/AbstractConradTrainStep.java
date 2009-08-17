@@ -12,6 +12,7 @@ import de.bioutils.fasta.FASTAFileImpl;
 import de.bioutils.fasta.FASTASequence;
 import de.bioutils.gtf.GTFElement;
 import de.bioutils.gtf.GTFFile;
+import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
@@ -20,7 +21,10 @@ import de.mpg.mpiz.koeln.anna.step.common.StepProcessObserver;
 import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 /**
- * @cleaned 2009-07-28
+ * @lastVisit 2009-08-12
+ * @Strings
+ * @Excetions
+ * @ThreadSave
  * @author Alexander Kerner
  * 
  */
@@ -41,16 +45,14 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 			logger.debug(this, "doing initialisation");
 			workingDir = new File(super.getStepProperties().getProperty(
 					WORKING_DIR_KEY));
-			logger.debug(this, "got working dir="+workingDir.getAbsolutePath());
+			logger.debug(this, StringUtils.getString("got working dir=",workingDir.getAbsolutePath()));
 			if (!FileUtils.dirCheck(workingDir.getAbsoluteFile(), true))
-				throw new FileNotFoundException("cannot access working dir "
-						+ workingDir.getAbsolutePath());
+				throw new FileNotFoundException(StringUtils.getString("cannot access working dir ", workingDir.getAbsolutePath()));
 			process = getProcess();
 			trainingFile = new File(workingDir, "trainingFile.bin");
-			logger.debug(this, "init done: workingDir=" + workingDir.getAbsolutePath());
-			logger.debug(this, "init done: trainingFile="
-					+ trainingFile.getAbsolutePath());
-			logger.debug(this, "init done: process=" + process);
+			logger.debug(this, StringUtils.getString("init done: workingDir=", workingDir.getAbsolutePath()));
+			logger.debug(this, StringUtils.getString("init done: trainingFile=", trainingFile.getAbsolutePath()));
+			logger.debug(this, StringUtils.getString("init done: process=",process));
 		} catch (Throwable t) {
 			StepUtils.handleException(this, t, logger);
 		}

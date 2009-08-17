@@ -4,31 +4,36 @@ import java.io.File;
 
 import org.osgi.framework.BundleContext;
 
+import de.kerner.commons.StringUtils;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
-import de.mpg.mpiz.koeln.anna.step.common.StepUtils;
 
 /**
- * @cleaned 2009-07-28
+ * @lastVisit 2009-08-12
+ * @ThreadSave custom
  * @author Alexander Kerner
+ * @Exceptions try without
+ * @Strings good
  *
  */
 public abstract class AbstractConradStep extends AbstractStep {
 	
-	protected AbstractStepProcessBuilder process;
+	// assigned in init(), after that only read 
 	protected File exeDir;
+	
+	// TODO dangerous. must be initialized by extending class
+	// TODO not synchronized
+	protected AbstractStepProcessBuilder process;
+	
+	// TODO dangerous. must be initialized by extending class
 	protected File workingDir;
 	
 	protected synchronized void init(BundleContext context) throws StepExecutionException {
-		try{
 			super.init(context);
 		exeDir = new File(super.getStepProperties()
 				.getProperty(ConradConstants.CONRAD_DIR_KEY));
-		logger.debug(this, "got exe dir="+exeDir);
-		} catch (Throwable t) {
-			StepUtils.handleException(this, t, logger);
-		}
+		logger.debug(this, StringUtils.getString("got exe dir=",exeDir));
 	}
 	
 	protected abstract AbstractStepProcessBuilder getProcess();
