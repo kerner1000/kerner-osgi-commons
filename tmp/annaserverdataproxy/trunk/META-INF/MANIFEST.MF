@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Dataproxy Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.server.dataproxy
 Bundle-Version: 0.0.5
-Bundle-Activator: de.mpg.mpiz.koeln.anna.server.dataproxyImpl.DataProxyActivator
+Bundle-Activator: de.mpg.mpiz.koeln.anna.server.dataproxy.impl.DataProxyActivator
 Import-Package: de.bioutils,
  de.bioutils.blast,
  de.bioutils.blast.filter,
@@ -16,9 +16,10 @@ Import-Package: de.bioutils,
  de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,
+ de.mpg.mpiz.koeln.anna.server.data,
+ de.mpg.mpiz.koeln.anna.server.data.impl,
  org.osgi.framework;version="1.3.0",
  org.osgi.util.tracker;version="1.3.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: de.mpg.mpiz.koeln.anna.server.data,
- de.mpg.mpiz.koeln.anna.server.dataproxy
 Bundle-ClassPath: .
+Export-Package: de.mpg.mpiz.koeln.anna.server.dataproxy

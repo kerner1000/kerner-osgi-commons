@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.server.dataproxyImpl;
+package de.mpg.mpiz.koeln.anna.server.dataproxy.impl;
 
 import java.io.EOFException;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.io.StreamCorruptedException;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
-import de.mpg.mpiz.koeln.anna.server.dataImpl.DataBeanImpl;
+import de.mpg.mpiz.koeln.anna.server.data.impl.DataBeanImpl;
 
 /**
  * 

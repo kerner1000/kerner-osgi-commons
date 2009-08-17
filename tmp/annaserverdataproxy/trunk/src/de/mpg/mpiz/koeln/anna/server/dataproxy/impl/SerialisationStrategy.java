@@ -1,4 +1,4 @@
-package de.mpg.mpiz.koeln.anna.server.dataproxyImpl;
+package de.mpg.mpiz.koeln.anna.server.dataproxy.impl;
 
 import java.io.File;
 
