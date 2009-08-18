@@ -49,6 +49,8 @@ class LocalSepExecutor extends AbstractStepExecutor {
 		}
 		success = runStep();
 		stepFinished(success);
+		
+		// catch other Exceptions?
 		}catch(StepExecutionException e){
 			logger.info(this, "executing step " + step + " was erroneous", e);
 			step.setState(AbstractStep.State.ERROR);
