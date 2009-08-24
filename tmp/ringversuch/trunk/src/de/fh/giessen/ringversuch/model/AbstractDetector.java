@@ -7,10 +7,8 @@ import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 /**
  * 
- * not public, so no doc
- * 
  * @ThreadSave state final
- * @lastVisit 2009-08-11
+ * @lastVisit 2009-08-24
  * @author Alexander Kerner
  * 
  */

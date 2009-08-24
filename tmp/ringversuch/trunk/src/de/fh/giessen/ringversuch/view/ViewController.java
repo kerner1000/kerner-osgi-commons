@@ -6,7 +6,7 @@ import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
 interface ViewController {
 
-	void setSelectedFiles(File[] inputFiles);
+	boolean setSelectedFiles(File[] inputFiles);
 
 	void setOutDir(File selectedFile);
 

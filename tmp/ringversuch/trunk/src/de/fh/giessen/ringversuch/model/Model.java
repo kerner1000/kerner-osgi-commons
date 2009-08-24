@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.model;
 
+import hssf.utils.WrongFileTypeException;
+
 import java.io.File;
 
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
@@ -8,7 +10,7 @@ public interface Model {
 
 	void setOutDir(File selectedDir);
 
-	void setSelectedFiles(File[] inputFiles);
+	void setSelectedFiles(File[] inputFiles) throws WrongFileTypeException;
 
 	void start() throws Exception;
 
@@ -28,6 +30,6 @@ public interface Model {
 
 	void detectColumnOfSubstances() throws Exception;
 
-	void checkSettings() throws InvalidSettingsException;
+	void checkSettings() throws Exception;
 
 }

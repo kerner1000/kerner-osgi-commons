@@ -254,12 +254,14 @@ class ViewImplSettings extends JPanel {
 		return vier;
 	}
 
+	/**
 	private LayoutManager getThreeInARowGridLayout() {
 		final GridLayout drei = new GridLayout(0, 3);
 		drei.setHgap(4);
 		drei.setVgap(4);
 		return drei;
 	}
+	*/
 
 	private LayoutManager getTwoColumnsGridLayout() {
 		final GridLayout zweih = new GridLayout(1, 2);

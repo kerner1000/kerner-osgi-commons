@@ -3,8 +3,7 @@ package de.fh.giessen.ringversuch.model;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
- * not public, so no doc
- * 
+ * @lastVisit 2009-08-24
  * @author Alexander Kerner
  * 
  */

@@ -45,19 +45,16 @@ class ViewImplMain extends JPanel {
 					areaFiles.setText("");
 					files.clear();
 					final File[] inputFiles = fileChooserinputFiles.getSelectedFiles();
-					
-					// TODO that should do the controller
-					for (File f : inputFiles) {
-						areaFiles.append(f.getName() + Preferences.NEW_LINE);
-						files.add(f);
+					if(controller.setSelectedFiles(inputFiles)){
+						for (File f : inputFiles) {
+							areaFiles.append(f.getName() + Preferences.NEW_LINE);
+							files.add(f);
+						}
+						inputFilesSelected = true;
+						if (inputFilesSelectedOutputDirSelected()) {
+							setInputFilesSelectedOutputDirSelected();
+						}
 					}
-					
-					// TODO that should do the controller
-					inputFilesSelected = true;
-					if (inputFilesSelectedOutputDirSelected()) {
-						setInputFilesSelectedOutputDirSelected();
-					}
-					controller.setSelectedFiles(inputFiles);
 				}
 			}
 
@@ -237,12 +234,14 @@ class ViewImplMain extends JPanel {
 		return menuBar;
 	}
 
+	/**
 	private LayoutManager getThreeByThreeGridLayout() {
 		final GridLayout sechs = new GridLayout(3, 3);
 		sechs.setHgap(4);
 		sechs.setVgap(4);
 		return sechs;
 	}
+	*/
 
 	private LayoutManager getTwoByTowGridLayout() {
 		final GridLayout vier = new GridLayout(2, 2);
@@ -267,6 +266,7 @@ class ViewImplMain extends JPanel {
 		buttonSave.setEnabled(true);
 		setCursor(null);
 		progressBar.setValue(0);
+		progressBar.setMaximum(100);
 	}
 	
 	void setReady() {
@@ -277,6 +277,7 @@ class ViewImplMain extends JPanel {
 		buttonSave.setEnabled(true);
 		setCursor(null);
 		progressBar.setValue(0);
+		progressBar.setMaximum(100);
 	}
 
 	void setWorking() {

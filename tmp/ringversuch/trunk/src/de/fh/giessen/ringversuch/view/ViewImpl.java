@@ -2,8 +2,6 @@ package de.fh.giessen.ringversuch.view;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -15,6 +13,12 @@ import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.controller.ControllerIn;
 import de.fh.giessen.ringversuch.view.settings.ViewSettings;
 
+/**
+ * @ThreadSave
+ * @lastVisit 2009-08-24
+ * @author Alexander Kerner
+ *
+ */
 public class ViewImpl implements View, ViewController {
 
 	final static String SETTINGS_FRAME_NAME = "Settings";
@@ -29,16 +33,16 @@ public class ViewImpl implements View, ViewController {
 	final static String LOG_TITLE = "Log";
 	final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
 	private final static Logger LOGGER = Logger.getLogger(ViewImpl.class);
-	private final ExecutorService exe = Executors.newSingleThreadExecutor();
+//	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	private final ControllerIn controller;
-	private final ViewImplMain panel;
+	private final ViewImplMain viewMain;
 	private final ViewImplSettings panelSettings;
 	private JFrame settingsFrame;
 
 	public ViewImpl(final ControllerIn controller) {
 		this.controller = controller;
 		// Create and set up the content pane.
-		panel = new ViewImplMain(this);
+		viewMain = new ViewImplMain(this);
 		panelSettings = new ViewImplSettings(this);
 		setLookAndFeel();
 		createMainFrame();
@@ -46,21 +50,21 @@ public class ViewImpl implements View, ViewController {
 	}
 
 	@Override
-	public void printMessage(final String message, final boolean isError) {
+	public synchronized void printMessage(final String message, final boolean isError) {
 		LOGGER.debug("print message="+message+", is error="+isError);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				panel.printMessage(message, isError);
+				viewMain.printMessage(message, isError);
 			}
 		});
 	}
 
 	@Override
-	public void showError(final String message) {
+	public synchronized void showError(final String message) {
 		LOGGER.debug("show error="+message);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(panel, message, "Error",
+				JOptionPane.showMessageDialog(viewMain, message, "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		});
@@ -70,7 +74,7 @@ public class ViewImpl implements View, ViewController {
 	public void setOnline() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				panel.setOnline();
+				viewMain.setOnline();
 			}
 		});
 	}
@@ -80,7 +84,7 @@ public class ViewImpl implements View, ViewController {
 	public void setReady() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				panel.setReady();
+				viewMain.setReady();
 			}
 		});
 	}
@@ -89,20 +93,18 @@ public class ViewImpl implements View, ViewController {
 	public void setWorking() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				panel.setWorking();
+				viewMain.setWorking();
 			}
 		});
 	}
 	
 	@Override
-	public ViewSettings getSettings() {
-		
-		// TODO event thread
+	public synchronized ViewSettings getSettings() {
 			return	panelSettings.getSettings();
 	}
 
 	@Override
-	public void setSettings(final ViewSettings settings) {
+	public synchronized void setSettings(final ViewSettings settings) {
 		LOGGER.debug("new settings="+settings);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -134,7 +136,7 @@ public class ViewImpl implements View, ViewController {
 	public void setProgress(final int current, final int max) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				panel.setProgress(current, max);
+				viewMain.setProgress(current, max);
 			}
 		});
 	}
@@ -163,8 +165,8 @@ public class ViewImpl implements View, ViewController {
 						+ Preferences.VERSION);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				// content panes must be opaque
-				panel.setOpaque(true);
-				frame.setContentPane(panel);
+				viewMain.setOpaque(true);
+				frame.setContentPane(viewMain);
 				// Display the window.
 				frame.pack();
 				frame.setMinimumSize(new Dimension(400, 200));
@@ -191,42 +193,45 @@ public class ViewImpl implements View, ViewController {
 	}
 
 	@Override
-	public void setOutDir(File selectedFile) {
+	public synchronized void setOutDir(File selectedFile) {
 		controller.setOutDir(selectedFile);
 	}
 
 	@Override
-	public void setSelectedFiles(File[] inputFiles) {
-		controller.setSelectedFiles(inputFiles);
+	public synchronized boolean setSelectedFiles(File[] inputFiles) {
+		return controller.setSelectedFiles(inputFiles);
 	}
 
 	@Override
-	public void start() {
+	public synchronized void start() {
 		controller.start();
 	}
 	
+	/**
+	 * Must not be synchronized
+	 */
 	@Override
 	public void cancel() {
 		controller.cancel();
 	}
 	
 	@Override
-	public void detect() {
+	public synchronized void detect() {
 		controller.detect();
 	}
 
 	@Override
-	public boolean loadSettings(File file) {
+	public synchronized boolean loadSettings(File file) {
 		return controller.loadSettings(file);
 	}
 
 	@Override
-	public boolean saveSettingsOut(ViewSettings settings) {
+	public synchronized boolean saveSettingsOut(ViewSettings settings) {
 		return controller.saveSettings(settings);
 	}
 
 	@Override
-	public boolean setSettingsOut(ViewSettings settings) {
+	public synchronized boolean setSettingsOut(ViewSettings settings) {
 		return controller.setSettings(settings);
 	}
 

@@ -1,0 +1,11 @@
+// TODO that should do the controller
+					for (File f : inputFiles) {
+						areaFiles.append(f.getName() + Preferences.NEW_LINE);
+						files.add(f);
+					}
+					
+					// TODO that should do the controller
+					inputFilesSelected = true;
+					if (inputFilesSelectedOutputDirSelected()) {
+						setInputFilesSelectedOutputDirSelected();
+					}

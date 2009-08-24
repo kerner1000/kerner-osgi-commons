@@ -1,5 +1,8 @@
 package de.fh.giessen.ringversuch.controller;
 
+import hssf.utils.HSSFUtils;
+import hssf.utils.WrongFileTypeException;
+
 import java.io.File;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
@@ -21,20 +24,21 @@ import de.kerner.commons.StringUtils;
 
 /**
  * 
+ * @ThreadSave
  * @author Alexander Kerner
- * @lastVisit 2009-08-14
+ * @lastVisit 2009-08-24
  * @Strings all good
  * 
  */
 class ControllerImpl implements Controller {
 
 	private final static Logger LOGGER = Logger.getLogger(ControllerImpl.class);
-	private final ExecutorService out = Executors.newCachedThreadPool();
+	// private final ExecutorService out = Executors.newCachedThreadPool();
 	private final ExecutorService in = Executors.newCachedThreadPool();
 
 	private volatile View view;
 	private volatile Model model;
-	
+
 	private static void debug(Throwable t, Object... message) {
 		if (LOGGER.isDebugEnabled())
 			LOGGER.debug(StringUtils.getString(message), t);
@@ -63,115 +67,153 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void setSelectedFiles(final File[] inputFiles) {
-		in.submit(new Runnable() {
-			@Override
-			public void run() {
-				if (model != null)
-					model.setSelectedFiles(inputFiles);
-				else {
-					final String m = "model not initialized jet";
-					LOGGER.fatal(m, new NullPointerException(m));
-				}
-
-				info(inputFiles.length, " ",
-						Preferences.Controller.FILES_LOADED_GOOD);
-			}
-		});
+	public synchronized boolean setSelectedFiles(final File[] inputFiles) {
+		if (model == null) {
+			final String m = "model not initialized jet";
+			LOGGER.fatal(m);
+			throw new RuntimeException(m);
+		}
+		try{
+		model.setSelectedFiles(inputFiles);
+		info(inputFiles.length, " ", Preferences.Controller.FILES_LOADED_GOOD);
 		detect();
+		}catch(WrongFileTypeException e){
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.printMessage(e.getLocalizedMessage(), true);
+			view.showError(e.getLocalizedMessage());
+			info(inputFiles.length, " ", Preferences.Controller.FILES_LOADED_BAD);
+			return false;
+		}
+		return true;
 	}
 
 	@Override
-	public void start() {
+	public synchronized void detect() {
+		LOGGER.info("detecting settings");
+		// if we do not run this in extra thread, app freezes.
+		in.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					detectProbeCell();
+					detectLaborCell();
+					detectColumnOfSubstances();
+					detectValuesBeginCell();
+					detectValuesEndCell();
+					final ModelSettings ms = model.getSettings();
+					view.setSettings(SettingsConverter
+							.modelSettingsToViewSettings(ms));
+				} catch (Exception e) {
+					LOGGER.error(e.getLocalizedMessage(), e);
+					String m = StringUtils.getString(
+							Preferences.Controller.DETECT_BAD, " (", e
+									.getLocalizedMessage(), ")");
+					view.printMessage(m, true);
+				}
+			}
+		});
+	}
+
+	private void detectColumnOfSubstances() throws Exception {
+		debug("auto-detecting settings column of substances");
+
+		// no need to run this in an extra thread, because model method is
+		// already implemented to work in a separate thread
+		model.detectColumnOfSubstances();
+
+		debug("auto-detecting settings column of substances successful");
+	}
+
+	private void detectValuesEndCell() throws Exception {
+		debug("auto-detecting settings values end cell");
+		model.detectValuesEndCell();
+		debug("auto-detecting settings values end cell successful");
+	}
+
+	private void detectValuesBeginCell() throws Exception {
+		debug("auto-detecting settings values begin cell");
+		model.detectValuesBeginCell();
+		debug("auto-detecting settings values begin cell successful");
+	}
+
+	private void detectLaborCell() throws Exception {
+		debug("auto-detecting settings labor cell");
+		model.detectLaborCell();
+		debug("auto-detecting settings labor cell successful");
+	}
+
+	private void detectProbeCell() throws Exception {
+		debug("auto-detecting settings probe cell");
+		model.detectProbeCell();
+		debug("auto-detecting settings probe cell successful");
+	}
+
+	@Override
+	public synchronized void start() {
 		// first check validity of settings.
 		// settings may have bypassed any validation if they have been auto
 		// detected.
 		try {
-			if (in.submit(new Callable<Boolean>() {
+			// if we do not run this in extra thread, app freezes.
+			in.execute(new Runnable() {
 				@Override
-				public Boolean call() throws Exception {
-					debug("checking validity of settings");
+				public void run() {
 					try {
+						view.setWorking();
 						model.checkSettings();
-						return Boolean.TRUE;
+						model.start();
+					} catch (CancellationException e) {
+//						e.printStackTrace();
+						debug(e, e.getLocalizedMessage());
+						info(Preferences.Controller.CANCELED);
+						view.printMessage(Preferences.Controller.CANCELED,
+								false);
 					} catch (Exception e) {
-						final String m = StringUtils.getString("failed! (", e.getLocalizedMessage(), ")");
-						LOGGER.error(e.getLocalizedMessage(), e);
-						view.showError(m);
-						view.printMessage(m, true);
-						return Boolean.FALSE;
+						LOGGER.info(e.getLocalizedMessage());
+						view.showError(e.getLocalizedMessage());
+						view.printMessage(e.getLocalizedMessage(), true);
+					} finally {
+						// setting view to "online" instead of "ready"
+						// because of
+						// errors is maybe a good idea
+						view.setReady();
 					}
 				}
-			}).get()) {
-				in.submit(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							view.setWorking();
-							model.start();
-						} catch (CancellationException e) {
-							debug(e, e.getLocalizedMessage());
-							info(Preferences.Controller.CANCELED);
-							view.printMessage(Preferences.Controller.CANCELED, false);
-						} catch (Exception e) {
-							LOGGER.error(e.getLocalizedMessage(), e);
-							final String m = StringUtils.getString(Preferences.Controller.FAILED, " (", e.getLocalizedMessage(), ")");
-							view.showError(m);
-							view.printMessage(m, true);
-						} finally {
-							// setting view to "online" instead of "ready"
-							// because of
-							// errors is maybe a good idea
-							view.setReady();
-						}
-					}
-				});
-			}
+			});
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			final String m = StringUtils.getString(Preferences.Controller.FAILED, " (", e.getLocalizedMessage(), ")");
+			final String m = StringUtils.getString(
+					Preferences.Controller.FAILED, " (", e
+							.getLocalizedMessage(), ")");
 			view.showError(m);
 			view.printMessage(m, true);
 		}
 	}
 
 	@Override
-	public void cancel() {
-		in.submit(new Runnable() {
-			@Override
-			public void run() {
-				debug("cancelling");
-				model.cancel();
-			}
-		});
+	public synchronized void cancel() {
+		debug("cancelling");
+		model.cancel();
+		view.setReady();
 	}
 
 	@Override
-	public void done(boolean b) {
+	public synchronized void done(boolean b) {
 		// TODO boolean b ??
-		out.submit(new Runnable() {
-			@Override
-			public void run() {
-				debug("done. setting view ready.");
-				view.setReady();
-			}
-		});
+		debug("done. setting view ready.");
+		view.setReady();
 	}
 
 	@Override
-	public void setProgress(final int current, final int max) {
-		out.submit(new Runnable() {
-			@Override
-			public void run() {
-				debug("setting progress to ", current, "/", max);
-				view.setProgress(current, max);
-			}
-		});
+	public synchronized void setProgress(final int current, final int max) {
+		debug("setting progress to ", current, "/", max);
+		view.setProgress(current, max);
 	}
 
 	@Override
-	public boolean loadSettings(final File file) {
+	public synchronized boolean loadSettings(final File file) {
 		try {
+			// runs in own thread because of static SettingsConverter method.
 			return in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
@@ -179,7 +221,9 @@ class ControllerImpl implements Controller {
 					model.setSettings(SettingsConverter
 							.propertiesToModelSettings(SettingsConverter
 									.fileToProperties(file)));
-					final String m = StringUtils.getString(Preferences.Controller.SETTINGS_LOADED_GOOD, " from ", file);
+					final String m = StringUtils.getString(
+							Preferences.Controller.SETTINGS_LOADED_GOOD,
+							" from ", file);
 					info(m);
 					view.printMessage(m, false);
 					return Boolean.TRUE;
@@ -195,85 +239,9 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized void detect() {
+	public synchronized boolean saveSettings(final ViewSettings settings) {
 		try {
-			detectProbeCell();
-			detectLaborCell();
-			detectColumnOfSubstances();
-			detectValuesBeginCell();
-			detectValuesEndCell();
-			final ModelSettings ms = model.getSettings();
-			view.setSettings(SettingsConverter.modelSettingsToViewSettings(ms));
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD, " (", e.getLocalizedMessage(), ")");
-			view.printMessage(m, true);
-		}
-	}
-
-	private void detectColumnOfSubstances() throws Exception {
-		debug("auto-detecting settings column of substances");
-		in.submit(new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				model.detectColumnOfSubstances();
-				return null;
-			}
-		}).get();
-		debug("auto-detecting settings column of substances successful");
-	}
-
-	private void detectValuesEndCell() throws Exception {
-		debug("auto-detecting settings values end cell");
-		in.submit(new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				model.detectValuesEndCell();
-				return null;
-			}
-		}).get();
-		debug("auto-detecting settings values end cell successful");
-	}
-
-	private void detectValuesBeginCell() throws Exception {
-		debug("auto-detecting settings values begin cell");
-		in.submit(new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				model.detectValuesBeginCell();
-				return null;
-			}
-		}).get();
-		debug("auto-detecting settings values begin cell successful");
-	}
-
-	private void detectLaborCell() throws Exception {
-		debug("auto-detecting settings labor cell");
-		in.submit(new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				model.detectLaborCell();
-				return null;
-			}
-		}).get();
-		debug("auto-detecting settings labor cell successful");
-	}
-
-	private void detectProbeCell() throws Exception {
-		debug("auto-detecting settings probe cell");
-		in.submit(new Callable<Void>() {
-			@Override
-			public Void call() throws Exception {
-				model.detectProbeCell();
-				return null;
-			}
-		}).get();
-		debug("auto-detecting settings probe cell successful");
-	}
-
-	@Override
-	public boolean saveSettings(final ViewSettings settings) {
-		try {
+			// runs in own thread because of static SettingsConverter method.
 			return in.submit(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
@@ -284,84 +252,79 @@ class ControllerImpl implements Controller {
 							.settingsToProperties(model.getSettings()),
 							new File(Preferences.SETTINGS_FILE));
 					info(Preferences.Controller.SETTINGS_SAVED_GOOD);
-					view.printMessage(Preferences.Controller.SETTINGS_SAVED_GOOD, false);
+					view.printMessage(
+							Preferences.Controller.SETTINGS_SAVED_GOOD, false);
 					return Boolean.TRUE;
 				}
 			}).get();
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			final String m = StringUtils.getString(Preferences.Controller.SETTINGS_SAVED_BAD, " (", e.getLocalizedMessage(), ")");
+			final String m = StringUtils.getString(
+					Preferences.Controller.SETTINGS_SAVED_BAD, " (", e
+							.getLocalizedMessage(), ")");
 			view.showError(m);
 			return Boolean.FALSE;
 		}
 	}
 
 	@Override
-	public boolean setSettings(final ViewSettings settings) {
+	public synchronized boolean setSettings(final ViewSettings settings) {
 		try {
-			return in.submit(new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					debug("setting settings");
-					model.setSettings(SettingsConverter
-							.viewSettingsToModelSettings(settings));
-					info(Preferences.Controller.SETTINGS_SET_GOOD);
-					view.printMessage(Preferences.Controller.SETTINGS_SET_GOOD, false);
-					return Boolean.TRUE;
-				}
-			}).get();
+			debug("setting settings");
+			model.setSettings(SettingsConverter
+					.viewSettingsToModelSettings(settings));
+			info(Preferences.Controller.SETTINGS_SET_GOOD);
+			view.printMessage(Preferences.Controller.SETTINGS_SET_GOOD, false);
+			return true;
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			final String m = StringUtils.getString(Preferences.Controller.SETTINGS_SET_BAD, " (" , e.getLocalizedMessage(), ")");
+			final String m = StringUtils.getString(
+					Preferences.Controller.SETTINGS_SET_BAD, " (", e
+							.getLocalizedMessage(), ")");
 			view.showError(m);
-			return Boolean.FALSE;
+			return false;
 		}
 	}
 
 	@Override
-	public void printMessage(final String message, final boolean isError) {
-		out.submit(new Runnable() {
-			@Override
-			public void run() {
-				debug("printMessage=" + message);
-				if (view != null)
-					view.printMessage(message, isError);
-			}
-		});
+	public synchronized void printMessage(final String message,
+			final boolean isError) {
+		if (view == null) {
+			final String m = "view not initialized jet";
+			LOGGER.fatal(m);
+			throw new RuntimeException(m);
+		}
+		debug("printMessage=" + message);
+		view.printMessage(message, isError);
 	}
 
 	@Override
-	public void setOutDir(final File selectedDir) {
-		in.submit(new Runnable() {
-			@Override
-			public void run() {
-				debug("setOutDir=" + selectedDir);
-				if (model != null)
-					model.setOutDir(selectedDir);
-				else
-					LOGGER.fatal("model not initialized jet",
-							new NullPointerException(
-									"model not initialized jet"));
-			}
-		});
+	public synchronized void setOutDir(final File selectedDir) {
+		if (model == null) {
+			final String m = "model not initialized jet";
+			LOGGER.fatal(m);
+			throw new RuntimeException(m);
+		}
+		debug("setOutDir=" + selectedDir);
+		model.setOutDir(selectedDir);
 	}
 
 	@Override
-	public void showError(final String message) {
-		out.submit(new Runnable() {
-			@Override
-			public void run() {
-				debug("showError=" + message);
-				if (view != null)
-					view.showError(message);
-			}
-		});
+	public synchronized void showError(final String message) {
+		if (view == null) {
+			final String m = "view not initialized jet";
+			LOGGER.fatal(m);
+			throw new RuntimeException(m);
+		}
+		debug("showError=" + message);
+		view.showError(message);
 	}
 
 	public static void main(String[] args) {
 		PropertyConfigurator.configure(Preferences.LOG_PROPERTIES);
 		debug("starting up");
-		final String m = StringUtils.getString("System properties:", Preferences.NEW_LINE, "\t", System.getProperties());
+		final String m = StringUtils.getString("System properties:",
+				Preferences.NEW_LINE, "\t", System.getProperties());
 		debug(m);
 		final Controller controller = new ControllerImpl();
 		final Model model = new ModelImpl(controller);
@@ -377,7 +340,9 @@ class ControllerImpl implements Controller {
 							.fileToProperties(f)));
 			view.setSettings(SettingsConverter
 					.modelSettingsToViewSettings(model.getSettings()));
-			final String m2 = StringUtils.getString(Preferences.Controller.SETTINGS_LOADED_GOOD, " (from ", f, ")");
+			final String m2 = StringUtils.getString(
+					Preferences.Controller.SETTINGS_LOADED_GOOD, " (from ", f,
+					")");
 			info(m2);
 			controller.printMessage(m2, false);
 		} catch (Exception e) {

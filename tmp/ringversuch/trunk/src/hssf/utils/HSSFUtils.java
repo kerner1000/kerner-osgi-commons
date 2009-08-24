@@ -146,6 +146,16 @@ public class HSSFUtils {
 		return result;
 
 	}
+	
+	public static boolean isValidFile(File file) {
+		try {
+			new POIFSFileSystem(
+					new FileInputStream(file));
+		}catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
 
 	public static HSSFWorkbook getWorkbookFromFile(File file)
 			throws FileNotFoundException, IOException {

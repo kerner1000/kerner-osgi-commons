@@ -34,9 +34,13 @@ public class Preferences {
 		public static final String SETTINGS_SET_GOOD = "settings successfully set";
 		public static final String SETTINGS_SET_BAD = "could not set settings";
 		public static final String FILES_LOADED_GOOD = "files loaded";
+		public static final String FILES_LOADED_BAD = "could not load files";
 		public static final String DETECT_GOOD = "detecting settings";
 		public static final String DETECT_BAD = "could not detect settings";
 		public static final String CANCELED = "canceled";
 		public static final String FAILED = "failed";
+	}
+	public static class Model {
+		public static final String SETTINGS_INVALID = "settings invalid";
 	}
 }

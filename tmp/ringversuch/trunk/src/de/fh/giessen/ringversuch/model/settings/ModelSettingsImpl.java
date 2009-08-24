@@ -9,17 +9,17 @@ package de.fh.giessen.ringversuch.model.settings;
  */
 public class ModelSettingsImpl implements ModelSettings {
 
-	private volatile int laborNoRow = -1;
-	private volatile int laborNoColumn = -1;
-	private volatile int probeNoRow = -1;
-	private volatile int probeNoCOlumn = -1;
+	private volatile int laborNoRow = 0;
+	private volatile int laborNoColumn = 0;
+	private volatile int probeNoRow = 0;
+	private volatile int probeNoCOlumn = 0;
 	private volatile String probeValue = "1";
-	private volatile int sheetNo = -1;
-	private volatile int substancesColumn = -1;
-	private volatile int valuesStartRow = -1;
-	private volatile int valuesStartColumn = -1;
-	private volatile int valuesEndRow = -1;
-	private volatile int valuesEndColumn = -1;
+	private volatile int sheetNo = 0;
+	private volatile int substancesColumn = 0;
+	private volatile int valuesStartRow = 0;
+	private volatile int valuesStartColumn = 0;
+	private volatile int valuesEndRow = 0;
+	private volatile int valuesEndColumn = 0;
 
 	@Override
 	public boolean areValid() {

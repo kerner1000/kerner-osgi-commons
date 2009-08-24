@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
-
+import de.fh.giessen.ringversuch.exception.InvalidFormatException;
 
 class LaborImpl implements Labor {
 	
@@ -14,6 +14,8 @@ class LaborImpl implements Labor {
 	private final static Logger LOGGER = Logger.getLogger(LaborImpl.class);
 	
 	LaborImpl(String ident, Collection<Probe> probes) throws InvalidFormatException{
+		if(ident == null || ident.length() == 0 || probes == null || probes.size() == 0)
+			throw new NullPointerException();
 		// TODO check if probeIdents are unique
 		verifyLaborIdents(ident, probes);
 		this.ident = ident;

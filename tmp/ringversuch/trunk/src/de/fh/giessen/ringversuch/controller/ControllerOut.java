@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.controller;
 
+import java.io.File;
+
 /**
  * 
  * Handle Events from Model to View.

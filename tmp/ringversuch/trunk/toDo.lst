@@ -1,10 +1,16 @@
+####	detecting of settings	####
 [..]
-reading file L33_RV_DIN38407-41.xls
-reading file L34_RV_DIN38407-41.xls
-calculating... 
-writing 1_0_Benzol.xls
-calculating done
-writing 1_0_Bromdichlormethan.xls
-writing 1_0_cis-1_2-Dichlorethen.xls
+selected 2 file(s)
+found cell containing probe ident: 4,2
+found cell containing labor ident: 2,2
+assuming column of substances: 0
+assuming cell containing first value: 12,4
+assuming cell containing last value: 35,6
+found cell containing probe ident: 4,2
+found cell containing labor ident: 2,2
+assuming column of substances: 0
+assuming cell containing first value: 12,4
+assuming cell containing last value: 35,7
 [..]
-somehow output is not synchronized. This may indicate a problem... (and it looks also not so nice)
+it is still not consistent!
+######################################

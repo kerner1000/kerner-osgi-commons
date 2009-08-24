@@ -9,7 +9,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
-import de.fh.giessen.ringversuch.model.InvalidSettingsException;
+import de.fh.giessen.ringversuch.exception.InvalidSettingsException;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 import de.fh.giessen.ringversuch.model.settings.ModelSettingsImpl;
 import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;

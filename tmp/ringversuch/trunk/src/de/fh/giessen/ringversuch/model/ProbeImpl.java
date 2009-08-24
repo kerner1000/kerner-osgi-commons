@@ -5,6 +5,12 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
+/**
+ * @threadSave state final
+ * @lastVisit 2009-08-24
+ * @author Alexander Kerner
+ *
+ */
 class ProbeImpl implements Probe {
 	
 	private final static Logger LOGGER = Logger.getLogger(ProbeImpl.class);
@@ -13,6 +19,8 @@ class ProbeImpl implements Probe {
 	private final String laborIdent;
 	
 	ProbeImpl(String laborIdent, String ident, Collection<Analyse> analyses){
+		if(laborIdent == null || laborIdent.length() == 0 || ident == null || ident.length() == 0 || analyses == null || analyses.size() == 0)
+			throw new NullPointerException();
 		this.laborIdent = laborIdent;
 		this.ident = ident;
 		this.analyses = analyses;

@@ -62,7 +62,7 @@ public interface ControllerIn {
 	 * <p> Sets input files </p>
 	 * @param inputFiles array of input files
 	 */
-	void setSelectedFiles(File[] inputFiles);
+	boolean setSelectedFiles(File[] inputFiles);
 
 	/**
 	 * <p> In </p>

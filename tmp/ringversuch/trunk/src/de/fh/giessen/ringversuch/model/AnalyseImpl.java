@@ -5,21 +5,20 @@ import java.util.Collection;
 
 /**
  * 
- * not public, so no doc
- * 
  * @ThreadSave state final
- * @lastVisit 2009-08-11
+ * @lastVisit 2009-08-24
  * @author Alexander Kerner
  * 
  */
 class AnalyseImpl implements Analyse {
 
 	private final String identifier;
+	// TODO: substances unique? maybe choose "Set" for collection
 	private final Collection<Substance> substances;
 
 	AnalyseImpl(String identifier, Collection<Substance> substances) {
-		if(substances == null || substances.size() == 0)
-			throw new NullPointerException("substances="+substances);
+		if(identifier == null || identifier.length() == 0 || substances == null || substances.size() == 0)
+			throw new NullPointerException();
 		this.identifier = identifier;
 		this.substances = substances;
 	}

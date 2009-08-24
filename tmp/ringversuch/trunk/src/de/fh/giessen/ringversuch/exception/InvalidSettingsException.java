@@ -1,4 +1,4 @@
-package de.fh.giessen.ringversuch.model;
+package de.fh.giessen.ringversuch.exception;
 
 public class InvalidSettingsException extends Exception {
 

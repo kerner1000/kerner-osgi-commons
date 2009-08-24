@@ -22,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import de.fh.giessen.ringversuch.exception.FailedToDetectException;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 class ValuesBeginCellDetector extends AbstractDetector {
