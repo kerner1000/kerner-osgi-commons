@@ -1,4 +1,4 @@
-####	detecting of settings	####
+####	detecting of settings	######
 [..]
 selected 2 file(s)
 found cell containing probe ident: 4,2
@@ -13,4 +13,27 @@ assuming cell containing first value: 12,4
 assuming cell containing last value: 35,7
 [..]
 it is still not consistent!
-######################################
+########################################
+####	Exceptions and Threadding	####
+dont use "Runnable"
+change every Runnable to Callable<Void>
+That is because Callable throws Exception, Runnable doesnt.
+Exceptions in method cannot get "outside" the Thread when using Runnable
+########################################
+####	synchronization				####
+that really kills me...
+removed all synchronization from controller.
+otherwise app would always run into any deadlock.
+SHOULD be save though, because model and view are threadsave.
+but this is anyhow not the feine englische art...
+
+Maybe it is doch die feine engliche art:
+controller has no need to synchronize anything,
+because on model and view there are no mutable oparations, that must be synchronized.
+the private controller members view and model are volatile.
+Therefore it should be all right.
+######################################## 
+####	cancel						####
+cancellationeception is not handled right.
+it behaves just like exception.
+########################################

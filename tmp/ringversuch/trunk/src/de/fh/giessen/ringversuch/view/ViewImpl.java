@@ -2,6 +2,9 @@ package de.fh.giessen.ringversuch.view;
 
 import java.awt.Dimension;
 import java.io.File;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -33,7 +36,7 @@ public class ViewImpl implements View, ViewController {
 	final static String LOG_TITLE = "Log";
 	final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
 	private final static Logger LOGGER = Logger.getLogger(ViewImpl.class);
-//	private final ExecutorService exe = Executors.newSingleThreadExecutor();
+	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	private final ControllerIn controller;
 	private final ViewImplMain viewMain;
 	private final ViewImplSettings panelSettings;
@@ -49,8 +52,9 @@ public class ViewImpl implements View, ViewController {
 		createSettingsFrame();
 	}
 
+	// swing event thread, no need to sync
 	@Override
-	public synchronized void printMessage(final String message, final boolean isError) {
+	public void printMessage(final String message, final boolean isError) {
 		LOGGER.debug("print message="+message+", is error="+isError);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -59,8 +63,9 @@ public class ViewImpl implements View, ViewController {
 		});
 	}
 
+	// swing event thread, no need to sync
 	@Override
-	public synchronized void showError(final String message) {
+	public void showError(final String message) {
 		LOGGER.debug("show error="+message);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -98,13 +103,15 @@ public class ViewImpl implements View, ViewController {
 		});
 	}
 	
+	// swing event thread, no need to sync
 	@Override
-	public synchronized ViewSettings getSettings() {
+	public ViewSettings getSettings() {
 			return	panelSettings.getSettings();
 	}
 
+	// swing event thread / panelSettings final, no need to sync
 	@Override
-	public synchronized void setSettings(final ViewSettings settings) {
+	public void setSettings(final ViewSettings settings) {
 		LOGGER.debug("new settings="+settings);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -193,10 +200,18 @@ public class ViewImpl implements View, ViewController {
 	}
 
 	@Override
-	public synchronized void setOutDir(File selectedFile) {
-		controller.setOutDir(selectedFile);
+	public void setOutDir(final File selectedFile) {
+		// in oder to get away from swing event thread, we create a new one.
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.setOutDir(selectedFile);
+				return null;
+			}
+		});
 	}
 
+	// synchronization ???
 	@Override
 	public synchronized boolean setSelectedFiles(File[] inputFiles) {
 		return controller.setSelectedFiles(inputFiles);
@@ -204,32 +219,56 @@ public class ViewImpl implements View, ViewController {
 
 	@Override
 	public synchronized void start() {
-		controller.start();
+		// in oder to get away from swing event thread, we create a new one.
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.start();
+				return null;
+			}
+		});
 	}
 	
 	/**
-	 * Must not be synchronized
+	 * Must not be synchronized. if we uncomment running in thread, cancelling does not work.
 	 */
 	@Override
 	public void cancel() {
-		controller.cancel();
+//		// in oder to get away from swing event thread, we create a new one.
+//		exe.submit(new Callable<Void>(){
+//			@Override
+//			public Void call() throws Exception {
+				controller.cancel();
+//				return null;
+//			}
+//		});
 	}
 	
 	@Override
 	public synchronized void detect() {
-		controller.detect();
+		// in oder to get away from swing event thread, we create a new one.
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.detect();
+				return null;
+			}
+		});
 	}
 
+	// synchronization ???
 	@Override
 	public synchronized boolean loadSettings(File file) {
 		return controller.loadSettings(file);
 	}
 
+	// synchronization ???
 	@Override
 	public synchronized boolean saveSettingsOut(ViewSettings settings) {
 		return controller.saveSettings(settings);
 	}
 
+	// synchronization ???
 	@Override
 	public synchronized boolean setSettingsOut(ViewSettings settings) {
 		return controller.setSettings(settings);

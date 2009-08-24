@@ -1,6 +1,5 @@
 package de.fh.giessen.ringversuch.controller;
 
-import hssf.utils.HSSFUtils;
 import hssf.utils.WrongFileTypeException;
 
 import java.io.File;
@@ -24,7 +23,6 @@ import de.kerner.commons.StringUtils;
 
 /**
  * 
- * @ThreadSave
  * @author Alexander Kerner
  * @lastVisit 2009-08-24
  * @Strings all good
@@ -67,34 +65,36 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized boolean setSelectedFiles(final File[] inputFiles) {
+	public boolean setSelectedFiles(final File[] inputFiles) {
 		if (model == null) {
 			final String m = "model not initialized jet";
 			LOGGER.fatal(m);
 			throw new RuntimeException(m);
 		}
-		try{
-		model.setSelectedFiles(inputFiles);
-		info(inputFiles.length, " ", Preferences.Controller.FILES_LOADED_GOOD);
-		detect();
-		}catch(WrongFileTypeException e){
+		try {
+			model.setSelectedFiles(inputFiles);
+			info(inputFiles.length, " ",
+					Preferences.Controller.FILES_LOADED_GOOD);
+			detect();
+		} catch (WrongFileTypeException e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			view.printMessage(e.getLocalizedMessage(), true);
 			view.showError(e.getLocalizedMessage());
-			info(inputFiles.length, " ", Preferences.Controller.FILES_LOADED_BAD);
+			info(inputFiles.length, " ",
+					Preferences.Controller.FILES_LOADED_BAD);
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public synchronized void detect() {
+	public void detect() {
 		LOGGER.info("detecting settings");
 		// if we do not run this in extra thread, app freezes.
-		in.execute(new Runnable() {
-			@Override
-			public void run() {
-				try {
+		try {
+			in.submit(new Callable<Void>() {
+				@Override
+				public Void call() throws Exception {
 					detectProbeCell();
 					detectLaborCell();
 					detectColumnOfSubstances();
@@ -103,15 +103,15 @@ class ControllerImpl implements Controller {
 					final ModelSettings ms = model.getSettings();
 					view.setSettings(SettingsConverter
 							.modelSettingsToViewSettings(ms));
-				} catch (Exception e) {
-					LOGGER.error(e.getLocalizedMessage(), e);
-					String m = StringUtils.getString(
-							Preferences.Controller.DETECT_BAD, " (", e
-									.getLocalizedMessage(), ")");
-					view.printMessage(m, true);
+					return null;
 				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD,
+					" (", e.getLocalizedMessage(), ")");
+			view.printMessage(m, true);
+		}
 	}
 
 	private void detectColumnOfSubstances() throws Exception {
@@ -149,69 +149,64 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized void start() {
+	public void start() {
 		// first check validity of settings.
 		// settings may have bypassed any validation if they have been auto
 		// detected.
 		try {
 			// if we do not run this in extra thread, app freezes.
-			in.execute(new Runnable() {
+			in.submit(new Callable<Void>() {
 				@Override
-				public void run() {
-					try {
-						view.setWorking();
-						model.checkSettings();
-						model.start();
-					} catch (CancellationException e) {
-//						e.printStackTrace();
-						debug(e, e.getLocalizedMessage());
-						info(Preferences.Controller.CANCELED);
-						view.printMessage(Preferences.Controller.CANCELED,
-								false);
-					} catch (Exception e) {
-						LOGGER.info(e.getLocalizedMessage());
-						view.showError(e.getLocalizedMessage());
-						view.printMessage(e.getLocalizedMessage(), true);
-					} finally {
-						// setting view to "online" instead of "ready"
-						// because of
-						// errors is maybe a good idea
-						view.setReady();
-					}
+				public Void call() throws Exception {
+					view.setWorking();
+					model.checkSettings();
+					model.start();
+					return null;
 				}
-			});
+			}).get();
+			// view.setReady();
+		} catch (CancellationException e) {
+			// e.printStackTrace();
+			debug(e, e.getLocalizedMessage());
+			info(Preferences.Controller.CANCELED);
+			view.printMessage(Preferences.Controller.CANCELED, false);
 		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
 			final String m = StringUtils.getString(
 					Preferences.Controller.FAILED, " (", e
 							.getLocalizedMessage(), ")");
+			LOGGER.error(e.getLocalizedMessage(), e);
 			view.showError(m);
 			view.printMessage(m, true);
+		} finally {
+			// setting view to "online" instead of "ready"
+			// because of
+			// errors is maybe a good idea
+			view.setReady();
 		}
 	}
 
 	@Override
-	public synchronized void cancel() {
+	public void cancel() {
 		debug("cancelling");
 		model.cancel();
 		view.setReady();
 	}
 
 	@Override
-	public synchronized void done(boolean b) {
+	public void done(boolean b) {
 		// TODO boolean b ??
 		debug("done. setting view ready.");
 		view.setReady();
 	}
 
 	@Override
-	public synchronized void setProgress(final int current, final int max) {
+	public void setProgress(final int current, final int max) {
 		debug("setting progress to ", current, "/", max);
 		view.setProgress(current, max);
 	}
 
 	@Override
-	public synchronized boolean loadSettings(final File file) {
+	public boolean loadSettings(final File file) {
 		try {
 			// runs in own thread because of static SettingsConverter method.
 			return in.submit(new Callable<Boolean>() {
@@ -232,14 +227,14 @@ class ControllerImpl implements Controller {
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			view.showError(StringUtils.getString(
-					Preferences.Controller.SETTINGS_LOADED_BAD, "(", e
+					Preferences.Controller.SETTINGS_LOADED_BAD, " (", e
 							.getLocalizedMessage(), ")"));
 			return Boolean.FALSE;
 		}
 	}
 
 	@Override
-	public synchronized boolean saveSettings(final ViewSettings settings) {
+	public boolean saveSettings(final ViewSettings settings) {
 		try {
 			// runs in own thread because of static SettingsConverter method.
 			return in.submit(new Callable<Boolean>() {
@@ -268,7 +263,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized boolean setSettings(final ViewSettings settings) {
+	public boolean setSettings(final ViewSettings settings) {
 		try {
 			debug("setting settings");
 			model.setSettings(SettingsConverter
@@ -287,7 +282,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized void printMessage(final String message,
+	public void printMessage(final String message,
 			final boolean isError) {
 		if (view == null) {
 			final String m = "view not initialized jet";
@@ -299,7 +294,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized void setOutDir(final File selectedDir) {
+	public void setOutDir(final File selectedDir) {
 		if (model == null) {
 			final String m = "model not initialized jet";
 			LOGGER.fatal(m);
@@ -310,7 +305,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized void showError(final String message) {
+	public void showError(final String message) {
 		if (view == null) {
 			final String m = "view not initialized jet";
 			LOGGER.fatal(m);

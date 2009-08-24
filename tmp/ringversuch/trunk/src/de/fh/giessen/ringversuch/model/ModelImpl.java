@@ -36,7 +36,7 @@ public class ModelImpl implements Model {
 	private final ControllerOut controller;
 	private File outDir;
 	private File[] inputFiles;
-	private ModelSettings settings = new ModelSettingsImpl();
+	private volatile ModelSettings settings = new ModelSettingsImpl();
 	private Future<Void> currentJob;
 	private Future<ModelSettings> currentDetectJob;
 
@@ -44,46 +44,67 @@ public class ModelImpl implements Model {
 		this.controller = controller;
 	}
 
+	// no need to synchronize
 	@Override
-	public synchronized void checkSettings() throws Exception {
-		final Boolean valid = worker.submit(new Callable<Boolean>(){
+	public void checkSettings() throws Exception {
+		final Boolean valid = worker.submit(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				return settings.areValid();
 			}
 		}).get();
-		if(!valid.booleanValue())
-			throw new InvalidSettingsException(Preferences.Model.SETTINGS_INVALID);
+		if (!valid.booleanValue())
+			throw new InvalidSettingsException(
+					Preferences.Model.SETTINGS_INVALID);
 	}
-	
+
+	// that should be synchronized, because assigning outDir and printing the
+	// message should be atomar
 	@Override
 	public synchronized void setOutDir(File selectedDir) {
 		this.outDir = selectedDir;
-		final String m = StringUtils.getString("files will be written to ", outDir);
+		final String m = StringUtils.getString("files will be written to ",
+				outDir);
 		LOGGER.info(m);
 		controller.printMessage(m, false);
 	}
 
+	// all in Callable. No need to sync
 	@Override
-	public synchronized void setSelectedFiles(File[] inputFiles) throws WrongFileTypeException {
-		checkFiles(inputFiles);
-		this.inputFiles = inputFiles;
-//		LOGGER.info("input files: " + Arrays.asList(inputFiles));
-		final String m = StringUtils.getString("selected ", Arrays.asList(inputFiles).size(), " file(s)");
-		controller.printMessage(m, false);
+	public void setSelectedFiles(final File[] files)
+			throws WrongFileTypeException {
+		try{
+			worker.submit(new Callable<Void>(){
+				@Override
+				public Void call() throws Exception {
+					checkFiles(files);
+					inputFiles = files;
+					// LOGGER.info("input files: " + Arrays.asList(inputFiles));
+					final String m = StringUtils.getString("selected ", Arrays.asList(
+							inputFiles).size(), " file(s)");
+					controller.printMessage(m, false);
+					return null;
+				}
+			});			
+		}catch(Exception e){
+			LOGGER.error(e.getLocalizedMessage(), e);
+			controller.printMessage(e.getLocalizedMessage(), true);
+			controller.showError(e.getLocalizedMessage());
+		}
 	}
 
 	private void checkFiles(File[] files) throws WrongFileTypeException {
-		for(File f : files){
+		for (File f : files) {
 			try {
-				new POIFSFileSystem(
-						new FileInputStream(f));
-			}catch (IOException e) {
+				new POIFSFileSystem(new FileInputStream(f));
+			} catch (IOException e) {
 				LOGGER.error(e.getLocalizedMessage(), e);
-				throw new WrongFileTypeException(f.getName() + " seems not to be a valid xls file");
-			}catch(OfficeXmlFileException e){
+				throw new WrongFileTypeException(f.getName()
+						+ " seems not to be a valid xls file");
+			} catch (OfficeXmlFileException e) {
 				LOGGER.error(e.getLocalizedMessage(), e);
-				throw new WrongFileTypeException(f.getName() + " seems not to be a valid xls file");
+				throw new WrongFileTypeException(f.getName()
+						+ " seems not to be a valid xls file");
 			}
 		}
 	}
@@ -114,8 +135,8 @@ public class ModelImpl implements Model {
 
 	@Override
 	public synchronized void detectValuesEndCell() throws Exception {
-		currentDetectJob = worker.submit(new ValuesEndCellDetector(
-				inputFiles, getSettings(), new WorkMonitor(controller)));
+		currentDetectJob = worker.submit(new ValuesEndCellDetector(inputFiles,
+				getSettings(), new WorkMonitor(controller)));
 		this.settings = currentDetectJob.get();
 		currentDetectJob = null;
 	}
@@ -132,20 +153,22 @@ public class ModelImpl implements Model {
 	public synchronized void start() throws CancellationException,
 			InterruptedException, ExecutionException {
 		LOGGER.info("starting...");
-		currentJob = worker.submit(new Worker(inputFiles, outDir,
-				settings, new WorkMonitor(controller)));
+		currentJob = worker.submit(new Worker(inputFiles, outDir, settings,
+				new WorkMonitor(controller)));
 		currentJob.get();
 		LOGGER.info("done!");
 		currentJob = null;
 	}
 
+	// settings volatile, no need to sync
 	@Override
-	public synchronized ModelSettings getSettings() {
+	public ModelSettings getSettings() {
 		return settings;
 	}
 
+	// settings volatile, no need to sync
 	@Override
-	public synchronized void setSettings(ModelSettings settings) {
+	public void setSettings(ModelSettings settings) {
 		final String m = StringUtils.getString("new settings: ", settings);
 		LOGGER.debug(m);
 		this.settings = settings;
