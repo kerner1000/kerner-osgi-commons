@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 import de.fh.giessen.ringversuch.common.Preferences;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
  * @notThreadSave access this class via AWT event thread.
@@ -29,6 +30,11 @@ public class SettingsView extends AbstractSwingView {
 		frame.setMinimumSize(new Dimension(400, 200));
 		frame.setResizable(false);
 		frame.setVisible(false);
+	}
+	
+	@Override
+	public void setSettings_view(ViewTypeSettings settings) {
+		content.setSettings(settings);
 	}
 
 	@Override

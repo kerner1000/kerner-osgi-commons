@@ -3,6 +3,7 @@ package de.fh.giessen.ringversuch.view;
 import java.awt.Dimension;
 
 import de.fh.giessen.ringversuch.common.Preferences;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
  * @notThreadSave access this class via AWT event thread.
@@ -50,5 +51,10 @@ public class MainView extends AbstractSwingView {
 	@Override
 	public void showError(String message) {
 		content.showError(message);
+	}
+
+	@Override
+	public void setSettings_view(ViewTypeSettings settings) {
+		throw new IllegalStateException();
 	}
 }
