@@ -1,4 +1,4 @@
-package de.fh.giessen.ringversuch.view2;
+package de.fh.giessen.ringversuch.view;
 
 public enum ViewType {
 	

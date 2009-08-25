@@ -1,4 +1,4 @@
-package de.fh.giessen.ringversuch.view2;
+package de.fh.giessen.ringversuch.view;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -20,6 +20,12 @@ import org.apache.log4j.Logger;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
 
+/**
+ * @notThreadSave access this class via AWT event thread.
+ * @author Alexander Kerner
+ * @lastVisit 2009-08-25
+ * 
+ */
 public class SettingsContentImpl implements SettingsContent {
 	
 	private final class MyListener implements ActionListener {
@@ -27,7 +33,7 @@ public class SettingsContentImpl implements SettingsContent {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == buttonUse) {
 				if (settingsView.setSettings_controller(getSettings()))
-					settingsView.getSwingViewManager().switchView(ViewState.NORMAL);
+					settingsView.getViewManager().switchView(ViewState.NORMAL);
 
 			} else if (e.getSource() == buttonSave) {
 				if (settingsView.saveSettings(getSettings())) {

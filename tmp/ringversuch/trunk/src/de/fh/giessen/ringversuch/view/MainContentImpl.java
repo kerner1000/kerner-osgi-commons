@@ -1,4 +1,4 @@
-package de.fh.giessen.ringversuch.view2;
+package de.fh.giessen.ringversuch.view;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -29,6 +29,12 @@ import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
 
+/**
+ * @notThreadSave access this class via AWT event thread.
+ * @author Alexander Kerner
+ * @lastVisit 2009-08-25
+ * 
+ */
 public class MainContentImpl implements MainContent {
 	
 	private final class MyListener implements ActionListener {
@@ -69,7 +75,7 @@ public class MainContentImpl implements MainContent {
 			}
 
 			else if (e.getSource() == menuSettings) {
-				mainView.getSwingViewManager().switchView(ViewState.SETTINGS_ACTIVE);
+				mainView.getViewManager().switchView(ViewState.SETTINGS_ACTIVE);
 			}
 			
 			else if (e.getSource() == menuAbout) {

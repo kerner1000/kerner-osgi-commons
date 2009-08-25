@@ -1,25 +1,44 @@
-package de.fh.giessen.ringversuch.view2;
+package de.fh.giessen.ringversuch.view;
 
 import java.io.File;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
 import de.fh.giessen.ringversuch.common.Preferences;
+import de.fh.giessen.ringversuch.controller.ControllerIn;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
-import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
 
+/**
+ * <p>
+ * Besides implementing {@link SwingViewManager} functionality, this class takes
+ * care of dropping incoming calls to AWT event thread and also escaping
+ * outgoing ones from it. AWT event thread issues are centrally handled here, so
+ * there is no need to take care of these anywhere else.
+ * </p>
+ * 
+ * @threadSave
+ * @author Alexander Kerner
+ * @lastVisit 2009-08-26
+ * 
+ */
 public class SwingViewManagerImpl implements SwingViewManager {
 
 	private final static Logger LOGGER = Logger
 			.getLogger(SwingViewManagerImpl.class);
 	private final Map<ViewType, SwingView> map = new ConcurrentHashMap<ViewType, SwingView>();
 	private volatile ViewTypeSettings settings;
+	private final ExecutorService exe = Executors.newCachedThreadPool();
+	private final ControllerIn controller;
 
-	public SwingViewManagerImpl() {
+	public SwingViewManagerImpl(ControllerIn controller) {
+		this.controller = controller;
 		setLookAndFeel();
 	}
 
@@ -37,7 +56,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	public void showView() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-		map.get(ViewType.MAIN).showView();
+				map.get(ViewType.MAIN).showView();
 			}
 		});
 	}
@@ -103,9 +122,13 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	}
 
 	@Override
-	public void setSettings_view(ViewTypeSettings settings) {
+	public void setSettings_view(final ViewTypeSettings settings) {
 		set(settings);
-		map.get(ViewType.SETTINGS).setSettings_view(settings);
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				map.get(ViewType.SETTINGS).setSettings_view(settings);
+			}
+		});
 	}
 
 	@Override
@@ -128,59 +151,106 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void cancel() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				map.get(ViewType.MAIN).cancel();
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.cancel();
+				return null;
 			}
 		});
 	}
 
 	@Override
 	public void detect() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				map.get(ViewType.MAIN).detect();
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.detect();
+				return null;
 			}
 		});
 	}
 
 	@Override
-	public boolean loadSettings(File file) {
-		// TODO: did not escape from event thread.
-		return map.get(ViewType.MAIN).loadSettings(file);
+	public boolean loadSettings(final File file) {
+		try {
+			return exe.submit(new Callable<Boolean>(){
+				@Override
+				public Boolean call() throws Exception {
+					return controller.loadSettings(file);
+				}
+			}).get();
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			return false;
+		}		
 	}
 
 	@Override
 	public boolean saveSettings(final ViewTypeSettings settings) {
-		// TODO: did not escape from event thread.
-		return map.get(ViewType.MAIN).saveSettings(settings);	
+		try {
+			return exe.submit(new Callable<Boolean>(){
+				@Override
+				public Boolean call() throws Exception {
+					return controller.saveSettings(settings);
+				}
+			}).get();
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			return false;
+		}		
 	}
 
 	@Override
 	public void setOutDir(final File selectedFile) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				map.get(ViewType.MAIN).setOutDir(selectedFile);
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.setOutDir(selectedFile);
+				return null;
 			}
 		});
 	}
 
 	@Override
-	public boolean setSelectedFiles(File[] inputFiles) {
-		// TODO: did not escape from event thread.
-		return map.get(ViewType.MAIN).setSelectedFiles(inputFiles);
+	public boolean setSelectedFiles(final File[] inputFiles) {
+		try {
+			return exe.submit(new Callable<Boolean>(){
+				@Override
+				public Boolean call() throws Exception {
+					return controller.setSelectedFiles(inputFiles);
+				}
+			}).get();
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			return false;
+		}
 	}
 
 	@Override
-	public boolean setSettings_controller(ViewTypeSettings settings) {
-		// TODO: did not escape from event thread.
-		return map.get(ViewType.MAIN).setSettings_controller(settings);
+	public boolean setSettings_controller(final ViewTypeSettings settings) {
+		try {
+			return exe.submit(new Callable<Boolean>(){
+				@Override
+				public Boolean call() throws Exception {
+					return controller.setSettings_controller(settings);
+				}
+			}).get();
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			return false;
+		}
 	}
 
 	@Override
 	public void start() {
-		// TODO: did not escape from event thread.
-		map.get(ViewType.MAIN).start();
+		exe.submit(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.start();
+				return null;
+			}
+		});
 	}
 
 	private static void setLookAndFeel() {

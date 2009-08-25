@@ -12,16 +12,15 @@ import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.model.Model;
 import de.fh.giessen.ringversuch.model.ModelImpl;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
-import de.fh.giessen.ringversuch.view.ViewImpl;
+import de.fh.giessen.ringversuch.view.MainView;
+import de.fh.giessen.ringversuch.view.SettingsView;
+import de.fh.giessen.ringversuch.view.SwingView;
+import de.fh.giessen.ringversuch.view.SwingViewManager;
+import de.fh.giessen.ringversuch.view.SwingViewManagerImpl;
 import de.fh.giessen.ringversuch.view.ViewIn;
+import de.fh.giessen.ringversuch.view.ViewType;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
-import de.fh.giessen.ringversuch.view2.MainView;
-import de.fh.giessen.ringversuch.view2.SettingsView;
-import de.fh.giessen.ringversuch.view2.SwingView;
-import de.fh.giessen.ringversuch.view2.SwingViewManager;
-import de.fh.giessen.ringversuch.view2.SwingViewManagerImpl;
-import de.fh.giessen.ringversuch.view2.ViewType;
 import de.kerner.commons.StringUtils;
 
 /**
@@ -299,10 +298,10 @@ class ControllerImpl implements Controller {
 				final Controller controller = new ControllerImpl();
 				final Model model = new ModelImpl(controller);
 				controller.setModel(model);
-				final SwingViewManager manager = new SwingViewManagerImpl();
+				final SwingViewManager manager = new SwingViewManagerImpl(controller);
 				try {
-					manager.addView(ViewType.MAIN, new MainView(manager, controller));
-					manager.addView(ViewType.SETTINGS, new SettingsView(manager, controller));
+					manager.addView(ViewType.MAIN, new MainView(manager));
+					manager.addView(ViewType.SETTINGS, new SettingsView(manager));
 					controller.setViewIn(manager);
 
 					// must be done here, because model is not set after init of view

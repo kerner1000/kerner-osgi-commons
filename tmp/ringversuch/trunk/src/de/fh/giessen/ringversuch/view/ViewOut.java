@@ -1,15 +1,54 @@
 package de.fh.giessen.ringversuch.view;
 
-import de.fh.giessen.ringversuch.controller.ControllerIn;
+import java.io.File;
+
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
  * <p>Handle outgoing events (from View bzw. User to Model bzw. Controller).</p>
- * <p>Executing thread is always atw event thread.<p>
  * @author Alexander Kerner
  *
  */
-public interface ViewOut extends ControllerIn {
+public interface ViewOut {
 	
-	// extending ControllerIn is only because im lazy. This is NOT how you should do this...
+	/**
+	 * From View to Model
+	 */
+	void cancel();
+	
+	/**
+	 * From View to Model
+	 */
+	boolean setSettings_controller(ViewTypeSettings settings);
+	
+	/**
+	 * From View to Model
+	 */
+	boolean saveSettings(ViewTypeSettings settings);
+	
+	/**
+	 * From View to Model
+	 */
+	boolean loadSettings(File file);
+	
+	/**
+	 * From View to Model
+	 */
+	void start();
+	
+	/**
+	 * From View to Model
+	 */
+	void setOutDir(File selectedFile);
+	
+	/**
+	 * From View to Model
+	 */
+	boolean setSelectedFiles(File[] inputFiles);
+	
+	/**
+	 * From View to Model
+	 */
+	void detect();
 
 }
