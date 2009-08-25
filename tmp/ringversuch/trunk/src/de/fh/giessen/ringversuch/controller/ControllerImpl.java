@@ -31,9 +31,6 @@ import de.kerner.commons.StringUtils;
 class ControllerImpl implements Controller {
 
 	private final static Logger LOGGER = Logger.getLogger(ControllerImpl.class);
-	// private final ExecutorService out = Executors.newCachedThreadPool();
-	private final ExecutorService in = Executors.newCachedThreadPool();
-
 	private volatile View view;
 	private volatile Model model;
 
@@ -90,22 +87,14 @@ class ControllerImpl implements Controller {
 	@Override
 	public void detect() {
 		LOGGER.info("detecting settings");
-		// if we do not run this in extra thread, app freezes.
 		try {
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					detectProbeCell();
-					detectLaborCell();
-					detectColumnOfSubstances();
-					detectValuesBeginCell();
-					detectValuesEndCell();
-					final ModelSettings ms = model.getSettings();
-					view.setSettings(SettingsConverter
-							.modelSettingsToViewSettings(ms));
-					return null;
-				}
-			});
+			detectProbeCell();
+			detectLaborCell();
+			detectColumnOfSubstances();
+			detectValuesBeginCell();
+			detectValuesEndCell();
+			final ModelSettings ms = model.getSettings();
+			view.setSettings(SettingsConverter.modelSettingsToViewSettings(ms));
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD,
@@ -116,11 +105,7 @@ class ControllerImpl implements Controller {
 
 	private void detectColumnOfSubstances() throws Exception {
 		debug("auto-detecting settings column of substances");
-
-		// no need to run this in an extra thread, because model method is
-		// already implemented to work in a separate thread
 		model.detectColumnOfSubstances();
-
 		debug("auto-detecting settings column of substances successful");
 	}
 
@@ -154,17 +139,9 @@ class ControllerImpl implements Controller {
 		// settings may have bypassed any validation if they have been auto
 		// detected.
 		try {
-			// if we do not run this in extra thread, app freezes.
-			in.submit(new Callable<Void>() {
-				@Override
-				public Void call() throws Exception {
-					view.setWorking();
-					model.checkSettings();
-					model.start();
-					return null;
-				}
-			}).get();
-			// view.setReady();
+			view.setWorking();
+			model.checkSettings();
+			model.start();
 		} catch (CancellationException e) {
 			// e.printStackTrace();
 			debug(e, e.getLocalizedMessage());
@@ -208,10 +185,7 @@ class ControllerImpl implements Controller {
 	@Override
 	public boolean loadSettings(final File file) {
 		try {
-			// runs in own thread because of static SettingsConverter method.
-			return in.submit(new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
+			
 					LOGGER.debug("loading settings");
 					model.setSettings(SettingsConverter
 							.propertiesToModelSettings(SettingsConverter
@@ -222,8 +196,7 @@ class ControllerImpl implements Controller {
 					info(m);
 					view.printMessage(m, false);
 					return Boolean.TRUE;
-				}
-			}).get();
+				
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			view.showError(StringUtils.getString(
@@ -236,10 +209,7 @@ class ControllerImpl implements Controller {
 	@Override
 	public boolean saveSettings(final ViewSettings settings) {
 		try {
-			// runs in own thread because of static SettingsConverter method.
-			return in.submit(new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
+			
 					LOGGER.debug("saving settings");
 					model.setSettings(SettingsConverter
 							.viewSettingsToModelSettings(settings));
@@ -249,16 +219,15 @@ class ControllerImpl implements Controller {
 					info(Preferences.Controller.SETTINGS_SAVED_GOOD);
 					view.printMessage(
 							Preferences.Controller.SETTINGS_SAVED_GOOD, false);
-					return Boolean.TRUE;
-				}
-			}).get();
+					return true;
+				
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			final String m = StringUtils.getString(
 					Preferences.Controller.SETTINGS_SAVED_BAD, " (", e
 							.getLocalizedMessage(), ")");
 			view.showError(m);
-			return Boolean.FALSE;
+			return false;
 		}
 	}
 
@@ -282,8 +251,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void printMessage(final String message,
-			final boolean isError) {
+	public void printMessage(final String message, final boolean isError) {
 		if (view == null) {
 			final String m = "view not initialized jet";
 			LOGGER.fatal(m);
