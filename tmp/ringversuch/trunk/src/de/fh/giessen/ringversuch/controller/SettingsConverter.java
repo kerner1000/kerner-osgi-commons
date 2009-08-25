@@ -12,8 +12,8 @@ import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.exception.InvalidSettingsException;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 import de.fh.giessen.ringversuch.model.settings.ModelSettingsImpl;
-import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
-import de.fh.giessen.ringversuch.view.settings.ViewSettings;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
 
 /**
  * not public, so no doc
@@ -92,12 +92,12 @@ class SettingsConverter {
 		return viewSettingsToModelSettings(propertiesToViewSettings(properties));
 	}
 
-	static ViewSettings propertiesToViewSettings(Properties properties)
+	static ViewTypeSettings propertiesToViewSettings(Properties properties)
 			throws InvalidSettingsException {
 		if (properties == null)
 			throw new NullPointerException("properties=" + properties);
 		LOGGER.debug("converting properties to view settings");
-		final ViewSettings sv = new ViewSettingsImpl();
+		final ViewTypeSettings sv = new ViewTypeSettingsImpl();
 		try {
 			sv.setLaborIdentColumn(properties.getProperty(LABOR_NO_COLUMN));
 			sv.setLaborIdentRow(properties.getProperty(LABOR_NO_ROW));
@@ -129,7 +129,7 @@ class SettingsConverter {
 			throw new NullPointerException("ModelSettings=" + settings);
 		LOGGER.debug(new StringBuilder()
 				.append("converting view settings to properties"));
-		final ViewSettings sv = modelSettingsToViewSettings(settings);
+		final ViewTypeSettings sv = modelSettingsToViewSettings(settings);
 		final Properties p = new Properties();
 		p.setProperty(LABOR_NO_COLUMN, sv.getLaborIdentColumn());
 		p.setProperty(LABOR_NO_ROW, sv.getLaborIdentRow());
@@ -145,7 +145,7 @@ class SettingsConverter {
 		return p;
 	}
 
-	static ModelSettings viewSettingsToModelSettings(ViewSettings settings)
+	static ModelSettings viewSettingsToModelSettings(ViewTypeSettings settings)
 	throws InvalidSettingsException {
 		if (settings == null)
 			throw new NullPointerException("ViewSettings=" + settings);
@@ -184,14 +184,14 @@ class SettingsConverter {
 		return sm;
 	}
 
-	static ViewSettings modelSettingsToViewSettings(ModelSettings settings)
+	static ViewTypeSettings modelSettingsToViewSettings(ModelSettings settings)
 			throws InvalidSettingsException {
 		if (settings == null)
 			throw new NullPointerException("modelSettings=" + settings);
 		LOGGER.debug(new StringBuilder().append(
 				"converting model settings to view settings:").append(" ")
 				.append("modelSettings=").append(settings));
-		final ViewSettings sv = new ViewSettingsImpl();
+		final ViewTypeSettings sv = new ViewTypeSettingsImpl();
 		try {
 			sv.setLaborIdentColumn(viewGetLaborIdentColumn(settings
 					.getLaborIdentColumn()));

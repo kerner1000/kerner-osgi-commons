@@ -43,4 +43,17 @@ public class Preferences {
 	public static class Model {
 		public static final String SETTINGS_INVALID = "settings invalid";
 	}
+	public static class View {
+		public final static String SETTINGS_FRAME_NAME = "Settings";
+		public final static String MENU_TITLE = "Menu";
+		public final static String MENU_ABOUT = "About";
+		public final static String MENU_SETTINGS = "Settings";
+		public final static String BUTTON_START = "Start";
+		public final static String BUTTON_SELECT = "Select files";
+		public final static String BUTTON_SAVE = "Save in...";
+		public final static String BUTTON_CANCEL = "Cancel";
+		public final static String FILES_TITLE = "Files";
+		public final static String LOG_TITLE = "Log";
+		public final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
+	}
 }

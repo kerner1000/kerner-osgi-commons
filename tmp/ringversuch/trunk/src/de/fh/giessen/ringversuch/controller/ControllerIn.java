@@ -2,7 +2,7 @@ package de.fh.giessen.ringversuch.controller;
 
 import java.io.File;
 
-import de.fh.giessen.ringversuch.view.settings.ViewSettings;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
  * 
@@ -20,22 +20,25 @@ public interface ControllerIn {
 	 */
 	void cancel();
 	
+	//Must return a boolean value, so that view implementation does know if the current window may be closed.
 	/**
 	 * <p>In</p>
 	 * <p>Sets new incoming settings.</p>
 	 * @param settings
 	 * @return true, if settings have been accepted by model, false otherwise.
 	 */
-	boolean setSettings(ViewSettings settings);
+	boolean setSettings_controller(ViewTypeSettings settings);
 	
+	//Must return a boolean value, so that view implementation does know if the current window may be closed.
 	/**
 	 * <p>In</p>
 	 * <p> Tells the model to save current settings.</p>
 	 * @param settings
 	 * @return true, if successful, false otherwise.
 	 */
-	boolean saveSettings(ViewSettings settings);
+	boolean saveSettings(ViewTypeSettings settings);
 	
+	//Must return a boolean value, so that view implementation does know if the current window may be closed.
 	/**
 	 * <p>In</p>
 	 * <p> Tells the model to load settings from a file </p>
@@ -57,6 +60,7 @@ public interface ControllerIn {
 	 */
 	void setOutDir(File selectedFile);
 	
+	//Must return a boolean value, so that view implementation does know if it must update the file list.
 	/**
 	 * <p> In </p>
 	 * <p> Sets input files </p>

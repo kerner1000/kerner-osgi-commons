@@ -1,0 +1,677 @@
+>> starting up << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [main] 2009-08-25 16:14:06,586 
+>> System properties:
+	{java.runtime.name=Java(TM) SE Runtime Environment, sun.boot.library.path=/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/amd64, java.vm.version=10.0-b23, java.vm.vendor=Sun Microsystems Inc., java.vendor.url=http://java.sun.com/, path.separator=:, java.vm.name=Java HotSpot(TM) 64-Bit Server VM, file.encoding.pkg=sun.io, sun.java.launcher=SUN_STANDARD, user.country=US, sun.os.patch.level=unknown, java.vm.specification.name=Java Virtual Machine Specification, user.dir=/home/proj/kerner/workspace/ringversuch, java.runtime.version=1.6.0_07-b06, java.awt.graphicsenv=sun.awt.X11GraphicsEnvironment, java.endorsed.dirs=/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/endorsed, os.arch=amd64, java.io.tmpdir=/tmp, line.separator=
+, java.vm.specification.vendor=Sun Microsystems Inc., os.name=Linux, sun.jnu.encoding=UTF-8, java.library.path=/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/amd64/server:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/amd64:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/../lib/amd64:/opt/share/local/java/jdk1.5.0_06/jre/lib/amd64/server:/opt/share/local/java/jdk1.5.0_06/jre/lib/amd64:/opt/share/local/java/jdk1.5.0_06/jre/../lib/amd64:/usr/lib64/xulrunner-addons:/usr/java/packages/lib/amd64:/lib:/usr/lib, java.specification.name=Java Platform API Specification, java.class.version=50.0, sun.management.compiler=HotSpot 64-Bit Server Compiler, os.version=2.6.24-24-generic, user.home=/home/pcb/kerner, user.timezone=Europe/Berlin, java.awt.printerjob=sun.print.PSPrinterJob, file.encoding=UTF-8, java.specification.version=1.6, java.class.path=/home/proj/kerner/workspace/ringversuch/bin:/home/proj/kerner/workspace/ringversuch/lib/poi-3.2-FINAL-20081019.jar:/home/proj/kerner/workspace/ringversuch/lib/log4j-1.2.15.jar:/home/proj/kerner/workspace/ringversuch/lib/kerner-commons-0.0.7.jar, user.name=kerner, java.vm.specification.version=1.0, java.home=/usr/lib/jvm/java-6-sun-1.6.0.07/jre, sun.arch.data.model=64, user.language=en, java.specification.vendor=Sun Microsystems Inc., java.vm.info=mixed mode, java.version=1.6.0_07, java.ext.dirs=/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/ext:/usr/java/packages/lib/ext, sun.boot.class.path=/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.07/jre/classes, java.vendor=Sun Microsystems Inc., file.separator=/, java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport.cgi, sun.io.unicode.encoding=UnicodeLittle, sun.cpu.endian=little, sun.desktop=gnome, sun.cpu.isalist=} << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [main] 2009-08-25 16:14:06,588 
+>> new model=de.fh.giessen.ringversuch.model.ModelImpl@7bd63e39 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [main] 2009-08-25 16:14:06,595 
+>> new in view=de.fh.giessen.ringversuch.view2.SwingViewManagerImpl@79a61172 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [main] 2009-08-25 16:14:06,974 
+>> reading properties from file /home/proj/kerner/workspace/ringversuch/settings.ini << de.fh.giessen.ringversuch.controller.SettingsConverter INFO [main] 2009-08-25 16:14:06,976 
+>> properties read={values.start.row=13, labor.no.column=C, substances.column=A, probe.ident=1.0, probe.no.row=5, probe.no.column=C, sheet.no=1, values.end.column=G, values.start.column=E, labor.no.row=3, values.end.row=36} << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> converting properties to model settings << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> converting properties to view settings << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> converted proerties to view settings:
+properties={values.start.row=13, labor.no.column=C, substances.column=A, probe.ident=1.0, probe.no.row=5, probe.no.column=C, sheet.no=1, values.end.column=G, values.start.column=E, labor.no.row=3, values.end.row=36}, view settings=labIdentRow=3, labNoCol=C, probeIdent=1.0, probeRow=5, probeCol=C, sheetNo=1, subCol=A, valuesStartRow=13, valuesStartCol=E, valuesEndRow=36, valuesEndCol=G << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> converting view settings to model settings: viewSettings=labIdentRow=3, labNoCol=C, probeIdent=1.0, probeRow=5, probeCol=C, sheetNo=1, subCol=A, valuesStartRow=13, valuesStartCol=E, valuesEndRow=36, valuesEndCol=G << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> checking char validity for integer 3 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> adapting string representation for probe identifier: 1.0 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> adapted representation: 1.0 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> checking char validity for integer 3 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,979 
+>> checking char validity for integer 1 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> checking char validity for integer 7 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> checking char validity for integer 5 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> done converting view settings to model settings: modelSettings=labIdentRow=2, labNoCol=2, probeIdent=1.0, probeRow=4, probeCol=2, sheetNo=0, subCol=0, valuesStartRow=12, valuesStartCol=4, valuesEndRow=35, valuesEndCol=6 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> new settings: labIdentRow=2, labNoCol=2, probeIdent=1.0, probeRow=4, probeCol=2, sheetNo=0, subCol=0, valuesStartRow=12, valuesStartCol=4, valuesEndRow=35, valuesEndCol=6 << de.fh.giessen.ringversuch.model.ModelImpl DEBUG [main] 2009-08-25 16:14:06,980 
+>> converting model settings to view settings: modelSettings=labIdentRow=2, labNoCol=2, probeIdent=1.0, probeRow=4, probeCol=2, sheetNo=0, subCol=0, valuesStartRow=12, valuesStartCol=4, valuesEndRow=35, valuesEndCol=6 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> converting integer to string:
+integer=3, string=C << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> converting integer to string:
+integer=3, string=C << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> converting integer to string:
+integer=1, string=A << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> converting integer to string:
+integer=7, string=G << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> converting integer to string:
+integer=5, string=E << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> done converting model settings to view settings: viewSettings=labIdentRow=3, labNoCol=C, probeIdent=1.0, probeRow=5, probeCol=C, sheetNo=1, subCol=A, valuesStartRow=13, valuesStartCol=E, valuesEndRow=36, valuesEndCol=G << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [main] 2009-08-25 16:14:06,980 
+>> settings loaded (from /home/proj/kerner/workspace/ringversuch/settings.ini) << de.fh.giessen.ringversuch.controller.ControllerImpl INFO [main] 2009-08-25 16:14:06,981 
+>> printMessage=settings loaded (from /home/proj/kerner/workspace/ringversuch/settings.ini) << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [main] 2009-08-25 16:14:06,981 
+>> view created and online << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [main] 2009-08-25 16:14:06,988 
+>> printMessage=selected 21 file(s) << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:21,991 
+>> 21 files loaded << de.fh.giessen.ringversuch.controller.ControllerImpl INFO [AWT-EventQueue-0] 2009-08-25 16:14:21,993 
+>> detecting settings << de.fh.giessen.ringversuch.controller.ControllerImpl INFO [AWT-EventQueue-0] 2009-08-25 16:14:21,993 
+>> auto-detecting settings probe cell << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:21,993 
+>> detecting cell with probe identifier << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,026 
+>> found match Probe Nr. << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,174 
+>> found cell containing probe ident: 4,2 << de.fh.giessen.ringversuch.model.ProbeCellDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,183 
+>> printMessage=found cell containing probe ident: 4,2 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,183 
+>> auto-detecting settings probe cell successful << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,184 
+>> auto-detecting settings labor cell << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,184 
+>> detecting cell with labor identifier << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,186 
+>> found match Labor-Nr. << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,217 
+>> found cell containing labor ident: 2,2 << de.fh.giessen.ringversuch.model.LaborCellDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,219 
+>> printMessage=found cell containing labor ident: 2,2 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,219 
+>> auto-detecting settings labor cell successful << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,219 
+>> auto-detecting settings column of substances << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,219 
+>> detecting column with substances << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,222 
+>> cell 0,0 has 37 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,253 
+>> cell 2,0 has 36 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,253 
+>> cell 2,4 has 5 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,254 
+>> cell 4,0 has 35 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,255 
+>> cell 4,4 has 4 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,256 
+>> cell 6,0 has 34 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,257 
+>> cell 8,0 has 33 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,258 
+>> cell 8,2 has 2 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,259 
+>> cell 8,4 has 3 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,261 
+>> cell 9,4 has 2 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,261 
+>> cell 10,2 has 1 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,262 
+>> cell 10,4 has 1 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,262 
+>> cell 10,5 has 1 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,262 
+>> cell 10,6 has 1 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,263 
+>> cell 10,7 has 1 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,263 
+>> cell 12,0 has 32 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,264 
+>> cell 13,0 has 31 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,266 
+>> cell 14,0 has 30 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,266 
+>> cell 15,0 has 29 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,269 
+>> cell 16,0 has 28 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,269 
+>> cell 17,0 has 27 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,269 
+>> cell 18,0 has 26 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,270 
+>> cell 18,4 has 0 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,270 
+>> cell 18,5 has 0 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,270 
+>> cell 18,6 has 0 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,270 
+>> cell 18,7 has 0 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,270 
+>> cell 19,0 has 25 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,271 
+>> cell 20,0 has 24 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,271 
+>> cell 21,0 has 23 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,271 
+>> cell 22,0 has 22 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,271 
+>> cell 23,0 has 21 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,271 
+>> cell 24,0 has 20 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,272 
+>> cell 25,0 has 19 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,272 
+>> cell 26,0 has 18 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,272 
+>> cell 27,0 has 17 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,272 
+>> cell 28,0 has 16 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,272 
+>> cell 29,0 has 15 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,273 
+>> cell 30,0 has 14 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,273 
+>> cell 31,0 has 13 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,273 
+>> cell 32,0 has 12 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,273 
+>> cell 33,0 has 11 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,274 
+>> cell 34,0 has 10 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,274 
+>> cell 35,0 has 9 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,274 
+>> cell 37,0 has 8 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,274 
+>> cell 37,2 has 0 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,274 
+>> cell 40,0 has 7 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,275 
+>> cell 41,0 has 6 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,275 
+>> cell 42,0 has 5 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,275 
+>> cell 43,0 has 4 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,275 
+>> cell 44,0 has 3 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,275 
+>> cell 45,0 has 2 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,275 
+>> cell 46,0 has 1 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,276 
+>> cell 51,0 has 0 cells below (string) << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,276 
+>> assuming column of substances: 0 << de.fh.giessen.ringversuch.model.ColumnOfSubstancesDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,276 
+>> printMessage=assuming column of substances: 0 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,276 
+>> auto-detecting settings column of substances successful << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,276 
+>> auto-detecting settings values begin cell << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,276 
+>> detecting cell containing first value << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,279 
+>> cell 0,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,306 
+>> cell 2,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,306 
+>> cell 2,2 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,307 
+>> cell 2,4 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,307 
+>> cell 4,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,307 
+>> cell 4,2 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,307 
+>> cell 4,4 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,308 
+>> cell 6,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,308 
+>> cell 8,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,308 
+>> cell 8,2 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,308 
+>> cell 8,4 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,309 
+>> cell 9,4 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,309 
+>> cell 10,2 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,309 
+>> cell 10,4 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,309 
+>> cell 10,5 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,311 
+>> cell 10,6 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,311 
+>> cell 10,7 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,311 
+>> cell 12,0 has 23 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,311 
+>> cell 12,4 has 23 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,311 
+>> cell 12,5 has 23 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,312 
+>> cell 12,6 has 23 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,312 
+>> cell 12,7 has 23 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,312 
+>> cell 13,0 has 22 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,312 
+>> cell 13,4 has 22 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,312 
+>> cell 13,5 has 22 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,313 
+>> cell 13,6 has 22 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,313 
+>> cell 13,7 has 22 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,313 
+>> cell 14,0 has 21 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,313 
+>> cell 14,4 has 21 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,313 
+>> cell 14,5 has 21 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,318 
+>> cell 14,6 has 21 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,318 
+>> cell 14,7 has 21 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,318 
+>> cell 15,0 has 20 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,318 
+>> cell 15,4 has 20 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 15,5 has 20 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 15,6 has 20 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 15,7 has 20 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 16,0 has 19 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 16,4 has 19 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 16,5 has 19 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,319 
+>> cell 16,6 has 19 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,320 
+>> cell 16,7 has 19 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,320 
+>> cell 17,0 has 18 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,320 
+>> cell 17,4 has 18 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,321 
+>> cell 17,5 has 18 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,321 
+>> cell 17,6 has 18 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,321 
+>> cell 17,7 has 18 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,322 
+>> cell 18,0 has 17 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,322 
+>> cell 18,4 has 17 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,322 
+>> cell 18,5 has 17 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,322 
+>> cell 18,6 has 17 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,322 
+>> cell 18,7 has 17 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,322 
+>> cell 19,0 has 16 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,323 
+>> cell 19,4 has 16 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,323 
+>> cell 19,5 has 16 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,323 
+>> cell 19,6 has 16 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,323 
+>> cell 19,7 has 16 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,323 
+>> cell 20,0 has 15 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,323 
+>> cell 20,4 has 15 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 20,5 has 15 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 20,6 has 15 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 20,7 has 15 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 21,0 has 14 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 21,4 has 14 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 21,5 has 14 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,324 
+>> cell 21,6 has 14 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 21,7 has 14 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 22,0 has 13 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 22,4 has 13 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 22,5 has 13 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 22,6 has 13 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 22,7 has 13 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,325 
+>> cell 23,0 has 12 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,326 
+>> cell 23,4 has 12 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,326 
+>> cell 23,5 has 12 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,326 
+>> cell 23,6 has 12 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,326 
+>> cell 23,7 has 12 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,327 
+>> cell 24,0 has 11 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,327 
+>> cell 24,4 has 11 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,327 
+>> cell 24,5 has 11 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,327 
+>> cell 24,6 has 11 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,328 
+>> cell 24,7 has 11 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,328 
+>> cell 25,0 has 10 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,328 
+>> cell 25,4 has 10 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,328 
+>> cell 25,5 has 10 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,329 
+>> cell 25,6 has 10 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,329 
+>> cell 25,7 has 10 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,329 
+>> cell 26,0 has 9 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,329 
+>> cell 26,4 has 9 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,329 
+>> cell 26,5 has 9 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,329 
+>> cell 26,6 has 9 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,330 
+>> cell 26,7 has 9 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,330 
+>> cell 27,0 has 8 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,330 
+>> cell 27,4 has 8 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,330 
+>> cell 27,5 has 8 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,330 
+>> cell 27,6 has 8 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,331 
+>> cell 27,7 has 8 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,331 
+>> cell 28,0 has 7 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,331 
+>> cell 28,4 has 7 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,331 
+>> cell 28,5 has 7 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,331 
+>> cell 28,6 has 7 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,332 
+>> cell 28,7 has 7 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 29,0 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 29,4 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 29,5 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 29,6 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 29,7 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 30,0 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,333 
+>> cell 30,4 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,334 
+>> cell 30,5 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,334 
+>> cell 30,6 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,334 
+>> cell 30,7 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,334 
+>> cell 31,0 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,334 
+>> cell 31,4 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,334 
+>> cell 31,5 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,335 
+>> cell 31,6 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,335 
+>> cell 31,7 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,335 
+>> cell 32,0 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,340 
+>> cell 32,4 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,341 
+>> cell 32,5 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,341 
+>> cell 32,6 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,342 
+>> cell 32,7 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,342 
+>> cell 33,0 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,342 
+>> cell 33,4 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,342 
+>> cell 33,5 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 33,6 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 33,7 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 34,0 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 34,4 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 34,5 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 34,6 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 34,7 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,343 
+>> cell 35,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 35,4 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 35,5 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 35,6 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 35,7 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 37,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 37,2 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 40,0 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,344 
+>> cell 40,2 has 7 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 41,0 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 41,2 has 6 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 42,0 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 42,2 has 5 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 43,0 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 43,2 has 4 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 44,0 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,345 
+>> cell 44,2 has 3 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> cell 45,0 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> cell 45,2 has 2 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> cell 46,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> cell 47,2 has 1 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> cell 48,2 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> cell 51,0 has 0 cells below (numeric) << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,346 
+>> new best candidate: 15,5: 0.393 << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,353 
+>> new best candidate: 13,5: 0.307 << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,354 
+>> new best candidate: 12,4: 0.114 << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,354 
+>> found valuesBeginCell=0.114 << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,355 
+>> assuming cell containing first value: 12,4 << de.fh.giessen.ringversuch.model.ValuesBeginCellDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,355 
+>> printMessage=assuming cell containing first value: 12,4 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,355 
+>> auto-detecting settings values begin cell successful << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,355 
+>> auto-detecting settings values end cell << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,355 
+>> detecting cell containing last value << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,357 
+>> cell 0,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,458 
+>> cell 2,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,459 
+>> cell 2,2 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,459 
+>> cell 2,4 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,459 
+>> cell 4,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,459 
+>> cell 4,2 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,460 
+>> cell 4,4 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,460 
+>> cell 6,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,460 
+>> cell 8,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,460 
+>> cell 8,2 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,460 
+>> cell 8,4 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,461 
+>> cell 9,4 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,461 
+>> cell 10,2 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,461 
+>> cell 10,4 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,461 
+>> cell 10,5 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,461 
+>> cell 10,6 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,462 
+>> cell 10,7 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,462 
+>> cell 12,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,462 
+>> cell 12,4 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,466 
+>> cell 12,5 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,466 
+>> cell 12,6 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,467 
+>> cell 12,7 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,467 
+>> cell 13,0 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,467 
+>> cell 13,4 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,467 
+>> cell 13,5 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,467 
+>> cell 13,6 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,468 
+>> cell 13,7 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,468 
+>> cell 14,0 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,468 
+>> cell 14,4 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,468 
+>> cell 14,5 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,468 
+>> cell 14,6 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,469 
+>> cell 14,7 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,469 
+>> cell 15,0 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,469 
+>> cell 15,4 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,469 
+>> cell 15,5 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,469 
+>> cell 15,6 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,470 
+>> cell 15,7 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,474 
+>> cell 16,0 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,474 
+>> cell 16,4 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,474 
+>> cell 16,5 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,475 
+>> cell 16,6 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,475 
+>> cell 16,7 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,475 
+>> cell 17,0 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,476 
+>> cell 17,4 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,476 
+>> cell 17,5 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,476 
+>> cell 17,6 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,476 
+>> cell 17,7 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,476 
+>> cell 18,0 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,476 
+>> cell 18,4 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,477 
+>> cell 18,5 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,477 
+>> cell 18,6 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,477 
+>> cell 18,7 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,477 
+>> cell 19,0 has 7 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,477 
+>> cell 19,4 has 7 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,478 
+>> cell 19,5 has 7 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,478 
+>> cell 19,6 has 7 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,478 
+>> cell 19,7 has 7 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,478 
+>> cell 20,0 has 8 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,479 
+>> cell 20,4 has 8 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,479 
+>> cell 20,5 has 8 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,479 
+>> cell 20,6 has 8 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,479 
+>> cell 20,7 has 8 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,479 
+>> cell 21,0 has 9 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,480 
+>> cell 21,4 has 9 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,480 
+>> cell 21,5 has 9 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,480 
+>> cell 21,6 has 9 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,482 
+>> cell 21,7 has 9 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,482 
+>> cell 22,0 has 10 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,483 
+>> cell 22,4 has 10 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,483 
+>> cell 22,5 has 10 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,483 
+>> cell 22,6 has 10 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,483 
+>> cell 22,7 has 10 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,484 
+>> cell 23,0 has 11 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,484 
+>> cell 23,4 has 11 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,484 
+>> cell 23,5 has 11 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,484 
+>> cell 23,6 has 11 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,485 
+>> cell 23,7 has 11 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,485 
+>> cell 24,0 has 12 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,485 
+>> cell 24,4 has 12 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,485 
+>> cell 24,5 has 12 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,485 
+>> cell 24,6 has 12 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,486 
+>> cell 24,7 has 12 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,486 
+>> cell 25,0 has 13 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,486 
+>> cell 25,4 has 13 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,486 
+>> cell 25,5 has 13 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,486 
+>> cell 25,6 has 13 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,487 
+>> cell 25,7 has 13 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,487 
+>> cell 26,0 has 14 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,487 
+>> cell 26,4 has 14 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,487 
+>> cell 26,5 has 14 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,487 
+>> cell 26,6 has 14 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,488 
+>> cell 26,7 has 14 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,488 
+>> cell 27,0 has 15 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,488 
+>> cell 27,4 has 15 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,503 
+>> cell 27,5 has 15 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,503 
+>> cell 27,6 has 15 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,503 
+>> cell 27,7 has 15 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,504 
+>> cell 28,0 has 16 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,504 
+>> cell 28,4 has 16 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,504 
+>> cell 28,5 has 16 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,504 
+>> cell 28,6 has 16 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,504 
+>> cell 28,7 has 16 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,505 
+>> cell 29,0 has 17 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,505 
+>> cell 29,4 has 17 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,505 
+>> cell 29,5 has 17 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,505 
+>> cell 29,6 has 17 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,505 
+>> cell 29,7 has 17 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,506 
+>> cell 30,0 has 18 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,507 
+>> cell 30,4 has 18 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,507 
+>> cell 30,5 has 18 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,507 
+>> cell 30,6 has 18 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,507 
+>> cell 30,7 has 18 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,507 
+>> cell 31,0 has 19 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,508 
+>> cell 31,4 has 19 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,508 
+>> cell 31,5 has 19 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,508 
+>> cell 31,6 has 19 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,508 
+>> cell 31,7 has 19 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,508 
+>> cell 32,0 has 20 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,509 
+>> cell 32,4 has 20 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,509 
+>> cell 32,5 has 20 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,509 
+>> cell 32,6 has 20 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,510 
+>> cell 32,7 has 20 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,510 
+>> cell 33,0 has 21 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,512 
+>> cell 33,4 has 21 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,512 
+>> cell 33,5 has 21 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,512 
+>> cell 33,6 has 21 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,512 
+>> cell 33,7 has 21 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,512 
+>> cell 34,0 has 22 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 34,4 has 22 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 34,5 has 22 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 34,6 has 22 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 34,7 has 22 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 35,0 has 23 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 35,4 has 23 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,513 
+>> cell 35,5 has 23 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 35,6 has 23 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 35,7 has 23 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 37,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 37,2 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 40,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 40,2 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,514 
+>> cell 41,0 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,515 
+>> cell 41,2 has 1 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,515 
+>> cell 42,0 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,515 
+>> cell 42,2 has 2 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,515 
+>> cell 43,0 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,515 
+>> cell 43,2 has 3 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,516 
+>> cell 44,0 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,516 
+>> cell 44,2 has 4 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,516 
+>> cell 45,0 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,517 
+>> cell 45,2 has 5 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,517 
+>> cell 46,0 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,517 
+>> cell 47,2 has 6 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,517 
+>> cell 48,2 has 7 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,517 
+>> cell 51,0 has 0 cells above (numeric) << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,517 
+>> new best candidate: 32,5: 0.196 << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,518 
+>> new best candidate: 35,5: 0.1 << de.fh.giessen.ringversuch.model.ValuesEndCellDetector DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,518 
+>> found valuesEndCell=0.1 << de.fh.giessen.ringversuch.model.ValuesEndCellDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,519 
+>> assuming cell containing last value: 35,5 << de.fh.giessen.ringversuch.model.ValuesEndCellDetector INFO [pool-1-thread-1] 2009-08-25 16:14:22,519 
+>> printMessage=assuming cell containing last value: 35,5 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:22,519 
+>> auto-detecting settings values end cell successful << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> converting model settings to view settings: modelSettings=labIdentRow=2, labNoCol=2, probeIdent=1.0, probeRow=4, probeCol=2, sheetNo=0, subCol=0, valuesStartRow=12, valuesStartCol=4, valuesEndRow=35, valuesEndCol=5 << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> converting integer to string:
+integer=3, string=C << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> converting integer to string:
+integer=3, string=C << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> converting integer to string:
+integer=1, string=A << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> converting integer to string:
+integer=6, string=F << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> converting integer to string:
+integer=5, string=E << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> done converting model settings to view settings: viewSettings=labIdentRow=3, labNoCol=C, probeIdent=1.0, probeRow=5, probeCol=C, sheetNo=1, subCol=A, valuesStartRow=13, valuesStartCol=E, valuesEndRow=36, valuesEndCol=F << de.fh.giessen.ringversuch.controller.SettingsConverter DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:22,519 
+>> setOutDir=/home/pcb/kerner/Dropbox/4 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:27,792 
+>> files will be written to /home/pcb/kerner/Dropbox/4 << de.fh.giessen.ringversuch.model.ModelImpl INFO [AWT-EventQueue-0] 2009-08-25 16:14:27,796 
+>> printMessage=files will be written to /home/pcb/kerner/Dropbox/4 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [AWT-EventQueue-0] 2009-08-25 16:14:27,797 
+>> starting... << de.fh.giessen.ringversuch.model.ModelImpl INFO [AWT-EventQueue-0] 2009-08-25 16:14:29,946 
+>> setting progress to 0/42 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,949 
+>> printMessage=reading file L01_RV_DIN38407-41.xls << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,949 
+>> reading file /home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,949 
+>> no of sheets: 3 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,973 
+>> laborIdent=1.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,976 
+>> probe indices: 4,2 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,976 
+>> probe ident: 1.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,977 
+>> labor ident: 1.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,977 
+>> got values start indices: 12 4 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,977 
+>> got values end indices: 35 5 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,977 
+>> substances at column: 0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,977 
+>> cell 12 4 analyse 1, substance Benzol:0.114 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,983 
+>> cell 13 4 analyse 1, substance Bromdichlormethan:0.301 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,983 
+>> cell 14 4 analyse 1, substance cis-1,2-Dichlorethen:0.358 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,983 
+>> cell 15 4 analyse 1, substance Dibromchlormethan:0.378 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,984 
+>> cell 16 4 analyse 1, substance 1,2-Dichlorethan:0.336 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,984 
+>> cell 17 4 analyse 1, substance 1,1-Dichlorethen:0.113 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,984 
+>> cell 18 4 analyse 1, substance Dichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,984 
+>> cell 19 4 analyse 1, substance ETBE:0.077 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,985 
+>> cell 20 4 analyse 1, substance Ethylbenzol:0.056 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,985 
+>> cell 21 4 analyse 1, substance Geosmin:0.033 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,985 
+>> cell 22 4 analyse 1, substance 2-Methylisoborneol:0.03 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,986 
+>> cell 23 4 analyse 1, substance MTBE:0.063 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,986 
+>> cell 24 4 analyse 1, substance TAME:0.095 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,986 
+>> cell 25 4 analyse 1, substance Tetrachlorethen:0.185 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,987 
+>> cell 26 4 analyse 1, substance Tetrachlormethan:0.22 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,987 
+>> cell 27 4 analyse 1, substance Toluol:0.176 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,987 
+>> cell 28 4 analyse 1, substance trans-1,2-Dichlorethen:0.189 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,987 
+>> cell 29 4 analyse 1, substance Tribrommethan:0.251 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,988 
+>> cell 30 4 analyse 1, substance 1,1,1-Trichlorethan:0.313 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,988 
+>> cell 31 4 analyse 1, substance Trichlorethen:0.277 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,990 
+>> cell 32 4 analyse 1, substance Trichlormethan:0.19 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,990 
+>> cell 33 4 analyse 1, substance Vinylchlorid:0.118 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,991 
+>> cell 34 4 analyse 1, substance o-Xylol:0.063 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,991 
+>> cell 35 4 analyse 1, substance p-Xylol / m-Xylol (Summe):0.086 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,991 
+>> cell 12 5 analyse 2, substance Benzol:0.083 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,997 
+>> cell 13 5 analyse 2, substance Bromdichlormethan:0.307 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,997 
+>> cell 14 5 analyse 2, substance cis-1,2-Dichlorethen:0.356 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,998 
+>> cell 15 5 analyse 2, substance Dibromchlormethan:0.393 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,998 
+>> cell 16 5 analyse 2, substance 1,2-Dichlorethan:0.335 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,998 
+>> cell 17 5 analyse 2, substance 1,1-Dichlorethen:0.105 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,998 
+>> cell 18 5 analyse 2, substance Dichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,999 
+>> cell 19 5 analyse 2, substance ETBE:0.082 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,999 
+>> cell 20 5 analyse 2, substance Ethylbenzol:0.052 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,999 
+>> cell 21 5 analyse 2, substance Geosmin:0.031 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:29,999 
+>> cell 22 5 analyse 2, substance 2-Methylisoborneol:0.03 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,000 
+>> cell 23 5 analyse 2, substance MTBE:0.07 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,000 
+>> cell 24 5 analyse 2, substance TAME:0.1 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,000 
+>> cell 25 5 analyse 2, substance Tetrachlorethen:0.206 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,001 
+>> cell 26 5 analyse 2, substance Tetrachlormethan:0.208 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,001 
+>> cell 27 5 analyse 2, substance Toluol:0.124 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,001 
+>> cell 28 5 analyse 2, substance trans-1,2-Dichlorethen:0.183 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,002 
+>> cell 29 5 analyse 2, substance Tribrommethan:0.252 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,002 
+>> cell 30 5 analyse 2, substance 1,1,1-Trichlorethan:0.293 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,002 
+>> cell 31 5 analyse 2, substance Trichlorethen:0.283 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,002 
+>> cell 32 5 analyse 2, substance Trichlormethan:0.196 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,003 
+>> cell 33 5 analyse 2, substance Vinylchlorid:0.114 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,003 
+>> cell 34 5 analyse 2, substance o-Xylol:0.067 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,003 
+>> cell 35 5 analyse 2, substance p-Xylol / m-Xylol (Summe):0.1 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,003 
+>> got probe from sheet 1: probeIdent:1.0,laborIdent:1.0,substances:[1:[Benzol:0.114, Bromdichlormethan:0.301, cis-1,2-Dichlorethen:0.358, Dibromchlormethan:0.378, 1,2-Dichlorethan:0.336, 1,1-Dichlorethen:0.113, Dichlormethan:#, ETBE:0.077, Ethylbenzol:0.056, Geosmin:0.033, 2-Methylisoborneol:0.03, MTBE:0.063, TAME:0.095, Tetrachlorethen:0.185, Tetrachlormethan:0.22, Toluol:0.176, trans-1,2-Dichlorethen:0.189, Tribrommethan:0.251, 1,1,1-Trichlorethan:0.313, Trichlorethen:0.277, Trichlormethan:0.19, Vinylchlorid:0.118, o-Xylol:0.063, p-Xylol / m-Xylol (Summe):0.086], 2:[Benzol:0.083, Bromdichlormethan:0.307, cis-1,2-Dichlorethen:0.356, Dibromchlormethan:0.393, 1,2-Dichlorethan:0.335, 1,1-Dichlorethen:0.105, Dichlormethan:#, ETBE:0.082, Ethylbenzol:0.052, Geosmin:0.031, 2-Methylisoborneol:0.03, MTBE:0.07, TAME:0.1, Tetrachlorethen:0.206, Tetrachlormethan:0.208, Toluol:0.124, trans-1,2-Dichlorethen:0.183, Tribrommethan:0.252, 1,1,1-Trichlorethan:0.293, Trichlorethen:0.283, Trichlormethan:0.196, Vinylchlorid:0.114, o-Xylol:0.067, p-Xylol / m-Xylol (Summe):0.1]] << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,006 
+>> probe indices: 4,2 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,006 
+>> probe ident: 2.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,006 
+>> labor ident: 1.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,006 
+>> got values start indices: 12 4 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> got values end indices: 35 5 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> substances at column: 0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> cell 12 4 analyse 1, substance Benzol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> cell 13 4 analyse 1, substance Bromdichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> cell 14 4 analyse 1, substance cis-1,2-Dichlorethen:0.716 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> cell 15 4 analyse 1, substance Dibromchlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> cell 16 4 analyse 1, substance 1,2-Dichlorethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,007 
+>> cell 17 4 analyse 1, substance 1,1-Dichlorethen:0.105 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 18 4 analyse 1, substance Dichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 19 4 analyse 1, substance ETBE:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 20 4 analyse 1, substance Ethylbenzol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 21 4 analyse 1, substance Geosmin:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 22 4 analyse 1, substance 2-Methylisoborneol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 23 4 analyse 1, substance MTBE:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 24 4 analyse 1, substance TAME:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,008 
+>> cell 25 4 analyse 1, substance Tetrachlorethen:0.591 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,009 
+>> cell 26 4 analyse 1, substance Tetrachlormethan:0.084 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,009 
+>> cell 27 4 analyse 1, substance Toluol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,009 
+>> cell 28 4 analyse 1, substance trans-1,2-Dichlorethen:0.291 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,009 
+>> cell 29 4 analyse 1, substance Tribrommethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,009 
+>> cell 30 4 analyse 1, substance 1,1,1-Trichlorethan:0.312 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,009 
+>> cell 31 4 analyse 1, substance Trichlorethen:0.606 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 32 4 analyse 1, substance Trichlormethan:0.57 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 33 4 analyse 1, substance Vinylchlorid:0.152 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 34 4 analyse 1, substance o-Xylol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 35 4 analyse 1, substance p-Xylol / m-Xylol (Summe):# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 12 5 analyse 2, substance Benzol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 13 5 analyse 2, substance Bromdichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 14 5 analyse 2, substance cis-1,2-Dichlorethen:0.623 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 15 5 analyse 2, substance Dibromchlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,010 
+>> cell 16 5 analyse 2, substance 1,2-Dichlorethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 17 5 analyse 2, substance 1,1-Dichlorethen:0.088 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 18 5 analyse 2, substance Dichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 19 5 analyse 2, substance ETBE:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 20 5 analyse 2, substance Ethylbenzol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 21 5 analyse 2, substance Geosmin:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 22 5 analyse 2, substance 2-Methylisoborneol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 23 5 analyse 2, substance MTBE:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 24 5 analyse 2, substance TAME:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 25 5 analyse 2, substance Tetrachlorethen:0.521 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,011 
+>> cell 26 5 analyse 2, substance Tetrachlormethan:0.066 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 27 5 analyse 2, substance Toluol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 28 5 analyse 2, substance trans-1,2-Dichlorethen:0.236 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 29 5 analyse 2, substance Tribrommethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 30 5 analyse 2, substance 1,1,1-Trichlorethan:0.253 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 31 5 analyse 2, substance Trichlorethen:0.574 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 32 5 analyse 2, substance Trichlormethan:0.525 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,012 
+>> cell 33 5 analyse 2, substance Vinylchlorid:0.129 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> cell 34 5 analyse 2, substance o-Xylol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> cell 35 5 analyse 2, substance p-Xylol / m-Xylol (Summe):# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> got probe from sheet 2: probeIdent:2.0,laborIdent:1.0,substances:[1:[Benzol:#, Bromdichlormethan:#, cis-1,2-Dichlorethen:0.716, Dibromchlormethan:#, 1,2-Dichlorethan:#, 1,1-Dichlorethen:0.105, Dichlormethan:#, ETBE:#, Ethylbenzol:#, Geosmin:#, 2-Methylisoborneol:#, MTBE:#, TAME:#, Tetrachlorethen:0.591, Tetrachlormethan:0.084, Toluol:#, trans-1,2-Dichlorethen:0.291, Tribrommethan:#, 1,1,1-Trichlorethan:0.312, Trichlorethen:0.606, Trichlormethan:0.57, Vinylchlorid:0.152, o-Xylol:#, p-Xylol / m-Xylol (Summe):#], 2:[Benzol:#, Bromdichlormethan:#, cis-1,2-Dichlorethen:0.623, Dibromchlormethan:#, 1,2-Dichlorethan:#, 1,1-Dichlorethen:0.088, Dichlormethan:#, ETBE:#, Ethylbenzol:#, Geosmin:#, 2-Methylisoborneol:#, MTBE:#, TAME:#, Tetrachlorethen:0.521, Tetrachlormethan:0.066, Toluol:#, trans-1,2-Dichlorethen:0.236, Tribrommethan:#, 1,1,1-Trichlorethan:0.253, Trichlorethen:0.574, Trichlormethan:0.525, Vinylchlorid:0.129, o-Xylol:#, p-Xylol / m-Xylol (Summe):#]] << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> probe indices: 4,2 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> probe ident: 3.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> labor ident: 1.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,013 
+>> got values start indices: 12 4 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> got values end indices: 35 5 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> substances at column: 0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 12 4 analyse 1, substance Benzol:1.109 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 13 4 analyse 1, substance Bromdichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 14 4 analyse 1, substance cis-1,2-Dichlorethen:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 15 4 analyse 1, substance Dibromchlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 16 4 analyse 1, substance 1,2-Dichlorethan:1.927 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 17 4 analyse 1, substance 1,1-Dichlorethen:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 18 4 analyse 1, substance Dichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,014 
+>> cell 19 4 analyse 1, substance ETBE:0.563 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,015 
+>> cell 20 4 analyse 1, substance Ethylbenzol:0.879 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,015 
+>> cell 21 4 analyse 1, substance Geosmin:0.051 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,015 
+>> cell 22 4 analyse 1, substance 2-Methylisoborneol:0.044 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,015 
+>> cell 23 4 analyse 1, substance MTBE:1.447 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,015 
+>> cell 24 4 analyse 1, substance TAME:0.689 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 25 4 analyse 1, substance Tetrachlorethen:1.717 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 26 4 analyse 1, substance Tetrachlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 27 4 analyse 1, substance Toluol:0.912 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 28 4 analyse 1, substance trans-1,2-Dichlorethen:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 29 4 analyse 1, substance Tribrommethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 30 4 analyse 1, substance 1,1,1-Trichlorethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 31 4 analyse 1, substance Trichlorethen:1.898 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 32 4 analyse 1, substance Trichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,016 
+>> cell 33 4 analyse 1, substance Vinylchlorid:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 34 4 analyse 1, substance o-Xylol:0.709 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 35 4 analyse 1, substance p-Xylol / m-Xylol (Summe):0.877 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 12 5 analyse 2, substance Benzol:1.056 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 13 5 analyse 2, substance Bromdichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 14 5 analyse 2, substance cis-1,2-Dichlorethen:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 15 5 analyse 2, substance Dibromchlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,017 
+>> cell 16 5 analyse 2, substance 1,2-Dichlorethan:1.908 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 17 5 analyse 2, substance 1,1-Dichlorethen:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 18 5 analyse 2, substance Dichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 19 5 analyse 2, substance ETBE:0.548 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 20 5 analyse 2, substance Ethylbenzol:0.785 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 21 5 analyse 2, substance Geosmin:0.047 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 22 5 analyse 2, substance 2-Methylisoborneol:0.043 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,018 
+>> cell 23 5 analyse 2, substance MTBE:1.43 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 24 5 analyse 2, substance TAME:0.682 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 25 5 analyse 2, substance Tetrachlorethen:1.589 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 26 5 analyse 2, substance Tetrachlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 27 5 analyse 2, substance Toluol:0.832 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 28 5 analyse 2, substance trans-1,2-Dichlorethen:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 29 5 analyse 2, substance Tribrommethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 30 5 analyse 2, substance 1,1,1-Trichlorethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,019 
+>> cell 31 5 analyse 2, substance Trichlorethen:1.777 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,020 
+>> cell 32 5 analyse 2, substance Trichlormethan:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,020 
+>> cell 33 5 analyse 2, substance Vinylchlorid:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,020 
+>> cell 34 5 analyse 2, substance o-Xylol:0.624 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,020 
+>> cell 35 5 analyse 2, substance p-Xylol / m-Xylol (Summe):0.788 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,020 
+>> got probe from sheet 3: probeIdent:3.0,laborIdent:1.0,substances:[1:[Benzol:1.109, Bromdichlormethan:#, cis-1,2-Dichlorethen:#, Dibromchlormethan:#, 1,2-Dichlorethan:1.927, 1,1-Dichlorethen:#, Dichlormethan:#, ETBE:0.563, Ethylbenzol:0.879, Geosmin:0.051, 2-Methylisoborneol:0.044, MTBE:1.447, TAME:0.689, Tetrachlorethen:1.717, Tetrachlormethan:#, Toluol:0.912, trans-1,2-Dichlorethen:#, Tribrommethan:#, 1,1,1-Trichlorethan:#, Trichlorethen:1.898, Trichlormethan:#, Vinylchlorid:#, o-Xylol:0.709, p-Xylol / m-Xylol (Summe):0.877], 2:[Benzol:1.056, Bromdichlormethan:#, cis-1,2-Dichlorethen:#, Dibromchlormethan:#, 1,2-Dichlorethan:1.908, 1,1-Dichlorethen:#, Dichlormethan:#, ETBE:0.548, Ethylbenzol:0.785, Geosmin:0.047, 2-Methylisoborneol:0.043, MTBE:1.43, TAME:0.682, Tetrachlorethen:1.589, Tetrachlormethan:#, Toluol:0.832, trans-1,2-Dichlorethen:#, Tribrommethan:#, 1,1,1-Trichlorethan:#, Trichlorethen:1.777, Trichlormethan:#, Vinylchlorid:#, o-Xylol:0.624, p-Xylol / m-Xylol (Summe):0.788]] << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,020 
+>> done for file /home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L01_RV_DIN38407-41.xls << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,023 
+>> setting progress to 0/42 << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,023 
+>> printMessage=reading file L05_RV_DIN38407-41.xls << de.fh.giessen.ringversuch.controller.ControllerImpl DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,023 
+>> reading file /home/pcb/kerner/Dropbox/Ergebnisse_RV_DIN38407-41/L05_RV_DIN38407-41.xls << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,023 
+>> no of sheets: 3 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,062 
+>> laborIdent=5.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,062 
+>> probe indices: 4,2 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,066 
+>> probe ident: 1.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,066 
+>> labor ident: 5.0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,066 
+>> got values start indices: 12 4 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,066 
+>> got values end indices: 35 5 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,066 
+>> substances at column: 0 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,066 
+>> cell 12 4 analyse 1, substance Benzol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,067 
+>> cell 13 4 analyse 1, substance Bromdichlormethan:0.288 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,067 
+>> cell 14 4 analyse 1, substance cis-1,2-Dichlorethen:0.334 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,067 
+>> cell 15 4 analyse 1, substance Dibromchlormethan:0.342 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,067 
+>> cell 16 4 analyse 1, substance 1,2-Dichlorethan:0.289 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,067 
+>> cell 17 4 analyse 1, substance 1,1-Dichlorethen:0.102 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,068 
+>> cell 18 4 analyse 1, substance Dichlormethan:0.2 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,068 
+>> cell 19 4 analyse 1, substance ETBE:0.078 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,068 
+>> cell 20 4 analyse 1, substance Ethylbenzol:0.035 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,068 
+>> cell 21 4 analyse 1, substance Geosmin:0.026 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,068 
+>> cell 22 4 analyse 1, substance 2-Methylisoborneol:0.021 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,069 
+>> cell 23 4 analyse 1, substance MTBE:0.059 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,069 
+>> cell 24 4 analyse 1, substance TAME:0.085 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,069 
+>> cell 25 4 analyse 1, substance Tetrachlorethen:0.227 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,069 
+>> cell 26 4 analyse 1, substance Tetrachlormethan:0.194 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,069 
+>> cell 27 4 analyse 1, substance Toluol:0.094 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,070 
+>> cell 28 4 analyse 1, substance trans-1,2-Dichlorethen:0.174 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,070 
+>> cell 29 4 analyse 1, substance Tribrommethan:0.19 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,074 
+>> cell 30 4 analyse 1, substance 1,1,1-Trichlorethan:0.258 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,074 
+>> cell 31 4 analyse 1, substance Trichlorethen:0.285 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,075 
+>> cell 32 4 analyse 1, substance Trichlormethan:0.107 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,075 
+>> cell 33 4 analyse 1, substance Vinylchlorid:0.117 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,075 
+>> cell 34 4 analyse 1, substance o-Xylol:0.048 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,075 
+>> cell 35 4 analyse 1, substance p-Xylol / m-Xylol (Summe):0.064 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,075 
+>> cell 12 5 analyse 2, substance Benzol:# << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,075 
+>> cell 13 5 analyse 2, substance Bromdichlormethan:0.262 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,076 
+>> cell 14 5 analyse 2, substance cis-1,2-Dichlorethen:0.296 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,076 
+>> cell 15 5 analyse 2, substance Dibromchlormethan:0.325 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,076 
+>> cell 16 5 analyse 2, substance 1,2-Dichlorethan:0.275 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,076 
+>> cell 17 5 analyse 2, substance 1,1-Dichlorethen:0.085 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,076 
+>> cell 18 5 analyse 2, substance Dichlormethan:0.179 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,077 
+>> cell 19 5 analyse 2, substance ETBE:0.067 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,077 
+>> cell 20 5 analyse 2, substance Ethylbenzol:0.029 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,077 
+>> cell 21 5 analyse 2, substance Geosmin:0.022 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,078 
+>> cell 22 5 analyse 2, substance 2-Methylisoborneol:0.022 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,078 
+>> cell 23 5 analyse 2, substance MTBE:0.053 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,078 
+>> cell 24 5 analyse 2, substance TAME:0.075 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,079 
+>> cell 25 5 analyse 2, substance Tetrachlorethen:0.192 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,079 
+>> cell 26 5 analyse 2, substance Tetrachlormethan:0.154 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,079 
+>> cell 27 5 analyse 2, substance Toluol:0.07 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,082 
+>> cell 28 5 analyse 2, substance trans-1,2-Dichlorethen:0.15 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,082 
+>> cell 29 5 analyse 2, substance Tribrommethan:0.186 << de.fh.giessen.ringversuch.model.Core DEBUG [pool-1-thread-1] 2009-08-25 16:14:30,082 

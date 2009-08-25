@@ -73,20 +73,22 @@ public class ModelImpl implements Model {
 	@Override
 	public void setSelectedFiles(final File[] files)
 			throws WrongFileTypeException {
-		try{
-			worker.submit(new Callable<Void>(){
+		try {
+			worker.submit(new Callable<Void>() {
 				@Override
 				public Void call() throws Exception {
 					checkFiles(files);
 					inputFiles = files;
 					// LOGGER.info("input files: " + Arrays.asList(inputFiles));
-					final String m = StringUtils.getString("selected ", Arrays.asList(
-							inputFiles).size(), " file(s)");
+					final String m = StringUtils.getString("selected ", Arrays
+							.asList(inputFiles).size(), " file(s)");
 					controller.printMessage(m, false);
 					return null;
 				}
-			});			
-		}catch(Exception e){
+			}).get();
+			// call "get() / wait for thread to complete" in order to be sure,
+			// that files are set bevore doing something with it.
+		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			controller.printMessage(e.getLocalizedMessage(), true);
 			controller.showError(e.getLocalizedMessage());

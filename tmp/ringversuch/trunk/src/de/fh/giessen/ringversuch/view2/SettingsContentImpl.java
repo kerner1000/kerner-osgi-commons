@@ -1,7 +1,6 @@
-package de.fh.giessen.ringversuch.view;
+package de.fh.giessen.ringversuch.view2;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -18,35 +17,39 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 
-import de.fh.giessen.ringversuch.view.settings.ViewSettings;
-import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
 
-class ViewImplSettings extends JPanel {
-
+public class SettingsContentImpl implements SettingsContent {
+	
 	private final class MyListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == buttonUse) {
-				if(controller.setSettingsOut(getSettings()))
-				controller.hideSettingsView();
-				
+				if (settingsView.setSettings_controller(getSettings()))
+					settingsView.getSwingViewManager().switchView(ViewState.NORMAL);
+
 			} else if (e.getSource() == buttonSave) {
-				if(controller.saveSettingsOut(getSettings())){
-//					controller.hideSettingsView();
+				if (settingsView.saveSettings(getSettings())) {
+					// its a question of taste if we close the window after
+					// saving or not
+					// controller.hideSettingsView();
 				}
 			}
-			
-		else if (e.getSource() == buttonDetect) {
-			controller.detect();
-		}
-			
+
+			else if (e.getSource() == buttonDetect) {
+				settingsView.detect();
+			}
+
 			else if (e.getSource() == buttonLoad) {
-				final int returnVal = fileChooser.showOpenDialog(component);
+				final int returnVal = fileChooser.showOpenDialog(settingsView.getContainer());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
-					if(controller.loadSettings(file)){
-						setSettings(controller.getSettings());
-//						controller.hideSettingsView();
+					if (settingsView.loadSettings(file)) {
+						setSettings(settingsView.getSettings());
+						// its a question of taste if we close the window after
+						// setting or not
+						// controller.hideSettingsView();
 					}
 				}
 			} else {
@@ -54,12 +57,7 @@ class ViewImplSettings extends JPanel {
 			}
 		}
 	}
-
-	private static final long serialVersionUID = -1252068391141111780L;
-	private final static Logger LOGGER = Logger
-			.getLogger(ViewImplSettings.class);
-	private final ViewController controller;
-
+	
 	// TODO to Prefs
 	private final static String SHEET_NO_TITLE = "Sheet No";
 	private final static String COLUMN_OF_SUBSTANCE_TITLE = "Column of Subst.";
@@ -69,7 +67,7 @@ class ViewImplSettings extends JPanel {
 	private final JButton buttonSave = new JButton("Save");
 	private final JButton buttonUse = new JButton("Use");
 	private final JButton buttonDetect = new JButton("Detect");
-	
+
 	private final ActionListener listener = new MyListener();
 	private final JFileChooser fileChooser = new JFileChooser();
 	private final FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -86,11 +84,12 @@ class ViewImplSettings extends JPanel {
 	private final JTextField fieldValuesEndRow;
 	private final JTextField fieldValuesEndColumn;
 	
-	private final Component component = this;
+	private final SettingsView settingsView;
+	private final static Logger LOGGER = Logger.getLogger(SettingsContentImpl.class);
 
-	ViewImplSettings(ViewController controller) {
-		this.controller = controller;
-
+	public SettingsContentImpl(SettingsView settingsView) {
+		this.settingsView = settingsView;
+		
 		// TODO identifier
 		fieldColumnSubstance = new JTextField();
 		fieldSheetNo = new JTextField();
@@ -103,7 +102,7 @@ class ViewImplSettings extends JPanel {
 		fieldValuesBeginColumn = new JTextField();
 		fieldValuesEndRow = new JTextField();
 		fieldValuesEndColumn = new JTextField();
-
+		
 		initButtons();
 		final JPanel panelSheetNo = initSheetNoPanel(getSheetNoPanelLayout());
 		final JPanel panelColumnOfSubstance = initColumnOfSubstancePanel(getColumnOfSubstancePanelLayout());
@@ -117,7 +116,7 @@ class ViewImplSettings extends JPanel {
 				.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		fileChooser.addChoosableFileFilter(filter);
 	}
-
+	
 	private void initPanels(JPanel panelSheetNo, JPanel panelColumnOfSubstance,
 			JPanel panelProbeNo, JPanel panelValuesBegin,
 			JPanel panelValuesEnd, JPanel panelLaborID) {
@@ -136,10 +135,10 @@ class ViewImplSettings extends JPanel {
 		south.add(buttonSave);
 		south.add(buttonUse);
 		south.add(buttonLoad);
-		setLayout(new BorderLayout());
-		add(center, BorderLayout.CENTER);
-		add(north, BorderLayout.NORTH);
-		add(south, BorderLayout.SOUTH);
+		settingsView.getContainer().setLayout(new BorderLayout());
+		settingsView.getContainer().add(center, BorderLayout.CENTER);
+		settingsView.getContainer().add(north, BorderLayout.NORTH);
+		settingsView.getContainer().add(south, BorderLayout.SOUTH);
 	}
 
 	private JPanel initLaborIDPanel(LayoutManager layout) {
@@ -255,13 +254,9 @@ class ViewImplSettings extends JPanel {
 	}
 
 	/**
-	private LayoutManager getThreeInARowGridLayout() {
-		final GridLayout drei = new GridLayout(0, 3);
-		drei.setHgap(4);
-		drei.setVgap(4);
-		return drei;
-	}
-	*/
+	 * private LayoutManager getThreeInARowGridLayout() { final GridLayout drei
+	 * = new GridLayout(0, 3); drei.setHgap(4); drei.setVgap(4); return drei; }
+	 */
 
 	private LayoutManager getTwoColumnsGridLayout() {
 		final GridLayout zweih = new GridLayout(1, 2);
@@ -277,7 +272,7 @@ class ViewImplSettings extends JPanel {
 		buttonDetect.addActionListener(listener);
 	}
 
-	void setSettings(ViewSettings settings) {
+	public void setSettings(ViewTypeSettings settings) {
 		fieldLaborRow.setText(settings.getLaborIdentRow());
 		fieldLaborColumn.setText(settings.getLaborIdentColumn());
 		fieldProbeRow.setText(settings.getProbeIdentRow());
@@ -291,8 +286,8 @@ class ViewImplSettings extends JPanel {
 		fieldValuesBeginColumn.setText(settings.getValuesStartColumn());
 	}
 
-	ViewSettings getSettings() {
-		final ViewSettings settings = new ViewSettingsImpl();
+	public ViewTypeSettings getSettings() {
+		final ViewTypeSettings settings = new ViewTypeSettingsImpl();
 		settings.setLaborIdentColumn(fieldLaborColumn.getText());
 		settings.setLaborIdentRow(fieldLaborRow.getText());
 		settings.setProbeIdent(fieldProbeNo.getText());
@@ -306,4 +301,5 @@ class ViewImplSettings extends JPanel {
 		settings.setValuesStartRow(fieldValuesBeginRow.getText());
 		return settings;
 	}
+
 }

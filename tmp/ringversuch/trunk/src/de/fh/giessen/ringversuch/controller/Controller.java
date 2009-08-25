@@ -1,7 +1,9 @@
 package de.fh.giessen.ringversuch.controller;
 
 import de.fh.giessen.ringversuch.model.Model;
-import de.fh.giessen.ringversuch.view.View;
+import de.fh.giessen.ringversuch.view.ViewIn;
+import de.fh.giessen.ringversuch.view.ViewOut;
+import de.fh.giessen.ringversuch.view2.SwingView;
 
 /**
  * <p>Application Controller.</p>
@@ -12,7 +14,9 @@ import de.fh.giessen.ringversuch.view.View;
  */
 interface Controller extends ControllerIn, ControllerOut {
 
- 	void setView(View view);
+	// TODO: dont know why i cannot cast from SwingView to ViewIn
+// 	void setViewIn(ViewIn view);
+	void setViewIn(SwingView view);
  	
 	void setModel(Model model);
 

@@ -3,10 +3,7 @@ package de.fh.giessen.ringversuch.controller;
 import hssf.utils.WrongFileTypeException;
 
 import java.io.File;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -15,23 +12,30 @@ import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.model.Model;
 import de.fh.giessen.ringversuch.model.ModelImpl;
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
-import de.fh.giessen.ringversuch.view.View;
 import de.fh.giessen.ringversuch.view.ViewImpl;
-import de.fh.giessen.ringversuch.view.settings.ViewSettings;
-import de.fh.giessen.ringversuch.view.settings.ViewSettingsImpl;
+import de.fh.giessen.ringversuch.view.ViewIn;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
+import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
+import de.fh.giessen.ringversuch.view2.MainView;
+import de.fh.giessen.ringversuch.view2.SettingsView;
+import de.fh.giessen.ringversuch.view2.SwingView;
+import de.fh.giessen.ringversuch.view2.SwingViewManager;
+import de.fh.giessen.ringversuch.view2.SwingViewManagerImpl;
+import de.fh.giessen.ringversuch.view2.ViewType;
 import de.kerner.commons.StringUtils;
 
 /**
  * 
+ * @ThreadSave members are volatile. No atomic operations, that affect both members at one time.
  * @author Alexander Kerner
- * @lastVisit 2009-08-24
+ * @lastVisit 2009-08-25
  * @Strings all good
  * 
  */
 class ControllerImpl implements Controller {
 
 	private final static Logger LOGGER = Logger.getLogger(ControllerImpl.class);
-	private volatile View view;
+	private volatile SwingView viewIn;
 	private volatile Model model;
 
 	private static void debug(Throwable t, Object... message) {
@@ -48,11 +52,11 @@ class ControllerImpl implements Controller {
 		if (LOGGER.isInfoEnabled())
 			LOGGER.info(StringUtils.getString(message));
 	}
-
+	
 	@Override
-	public void setView(View view) {
-		debug("new view=", view);
-		this.view = view;
+	public void setViewIn(SwingView viewIn) {
+		debug("new in view=", viewIn);
+		this.viewIn = viewIn;
 	}
 
 	@Override
@@ -75,8 +79,8 @@ class ControllerImpl implements Controller {
 			detect();
 		} catch (WrongFileTypeException e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.printMessage(e.getLocalizedMessage(), true);
-			view.showError(e.getLocalizedMessage());
+			viewIn.printMessage(e.getLocalizedMessage(), true);
+			viewIn.showError(e.getLocalizedMessage());
 			info(inputFiles.length, " ",
 					Preferences.Controller.FILES_LOADED_BAD);
 			return false;
@@ -94,12 +98,12 @@ class ControllerImpl implements Controller {
 			detectValuesBeginCell();
 			detectValuesEndCell();
 			final ModelSettings ms = model.getSettings();
-			view.setSettings(SettingsConverter.modelSettingsToViewSettings(ms));
+			viewIn.setSettings_view(SettingsConverter.modelSettingsToViewSettings(ms));
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD,
 					" (", e.getLocalizedMessage(), ")");
-			view.printMessage(m, true);
+			viewIn.printMessage(m, true);
 		}
 	}
 
@@ -139,26 +143,26 @@ class ControllerImpl implements Controller {
 		// settings may have bypassed any validation if they have been auto
 		// detected.
 		try {
-			view.setWorking();
+			viewIn.setWorking();
 			model.checkSettings();
 			model.start();
 		} catch (CancellationException e) {
 			// e.printStackTrace();
 			debug(e, e.getLocalizedMessage());
 			info(Preferences.Controller.CANCELED);
-			view.printMessage(Preferences.Controller.CANCELED, false);
+			viewIn.printMessage(Preferences.Controller.CANCELED, false);
 		} catch (Exception e) {
 			final String m = StringUtils.getString(
 					Preferences.Controller.FAILED, " (", e
 							.getLocalizedMessage(), ")");
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError(m);
-			view.printMessage(m, true);
+			viewIn.showError(m);
+			viewIn.printMessage(m, true);
 		} finally {
 			// setting view to "online" instead of "ready"
 			// because of
 			// errors is maybe a good idea
-			view.setReady();
+			viewIn.setReady();
 		}
 	}
 
@@ -166,20 +170,20 @@ class ControllerImpl implements Controller {
 	public void cancel() {
 		debug("cancelling");
 		model.cancel();
-		view.setReady();
+		viewIn.setReady();
 	}
 
 	@Override
 	public void done(boolean b) {
 		// TODO boolean b ??
 		debug("done. setting view ready.");
-		view.setReady();
+		viewIn.setReady();
 	}
 
 	@Override
 	public void setProgress(final int current, final int max) {
 		debug("setting progress to ", current, "/", max);
-		view.setProgress(current, max);
+		viewIn.setProgress(current, max);
 	}
 
 	@Override
@@ -194,12 +198,12 @@ class ControllerImpl implements Controller {
 							Preferences.Controller.SETTINGS_LOADED_GOOD,
 							" from ", file);
 					info(m);
-					view.printMessage(m, false);
+					viewIn.printMessage(m, false);
 					return Boolean.TRUE;
 				
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.showError(StringUtils.getString(
+			viewIn.showError(StringUtils.getString(
 					Preferences.Controller.SETTINGS_LOADED_BAD, " (", e
 							.getLocalizedMessage(), ")"));
 			return Boolean.FALSE;
@@ -207,7 +211,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public boolean saveSettings(final ViewSettings settings) {
+	public boolean saveSettings(final ViewTypeSettings settings) {
 		try {
 			
 					LOGGER.debug("saving settings");
@@ -217,7 +221,7 @@ class ControllerImpl implements Controller {
 							.settingsToProperties(model.getSettings()),
 							new File(Preferences.SETTINGS_FILE));
 					info(Preferences.Controller.SETTINGS_SAVED_GOOD);
-					view.printMessage(
+					viewIn.printMessage(
 							Preferences.Controller.SETTINGS_SAVED_GOOD, false);
 					return true;
 				
@@ -226,39 +230,39 @@ class ControllerImpl implements Controller {
 			final String m = StringUtils.getString(
 					Preferences.Controller.SETTINGS_SAVED_BAD, " (", e
 							.getLocalizedMessage(), ")");
-			view.showError(m);
+			viewIn.showError(m);
 			return false;
 		}
 	}
 
 	@Override
-	public boolean setSettings(final ViewSettings settings) {
+	public boolean setSettings_controller(final ViewTypeSettings settings) {
 		try {
 			debug("setting settings");
 			model.setSettings(SettingsConverter
 					.viewSettingsToModelSettings(settings));
 			info(Preferences.Controller.SETTINGS_SET_GOOD);
-			view.printMessage(Preferences.Controller.SETTINGS_SET_GOOD, false);
+			viewIn.printMessage(Preferences.Controller.SETTINGS_SET_GOOD, false);
 			return true;
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			final String m = StringUtils.getString(
 					Preferences.Controller.SETTINGS_SET_BAD, " (", e
 							.getLocalizedMessage(), ")");
-			view.showError(m);
+			viewIn.showError(m);
 			return false;
 		}
 	}
 
 	@Override
 	public void printMessage(final String message, final boolean isError) {
-		if (view == null) {
+		if (viewIn == null) {
 			final String m = "view not initialized jet";
 			LOGGER.fatal(m);
 			throw new RuntimeException(m);
 		}
 		debug("printMessage=" + message);
-		view.printMessage(message, isError);
+		viewIn.printMessage(message, isError);
 	}
 
 	@Override
@@ -274,13 +278,13 @@ class ControllerImpl implements Controller {
 
 	@Override
 	public void showError(final String message) {
-		if (view == null) {
+		if (viewIn == null) {
 			final String m = "view not initialized jet";
 			LOGGER.fatal(m);
 			throw new RuntimeException(m);
 		}
 		debug("showError=" + message);
-		view.showError(message);
+		viewIn.showError(message);
 	}
 
 	public static void main(String[] args) {
@@ -289,32 +293,41 @@ class ControllerImpl implements Controller {
 		final String m = StringUtils.getString("System properties:",
 				Preferences.NEW_LINE, "\t", System.getProperties());
 		debug(m);
-		final Controller controller = new ControllerImpl();
-		final Model model = new ModelImpl(controller);
-		final View view = new ViewImpl(controller);
-		controller.setModel(model);
-		controller.setView(view);
+	
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				final Controller controller = new ControllerImpl();
+				final Model model = new ModelImpl(controller);
+				controller.setModel(model);
+				final SwingViewManager manager = new SwingViewManagerImpl();
+				try {
+					manager.addView(ViewType.MAIN, new MainView(manager, controller));
+					manager.addView(ViewType.SETTINGS, new SettingsView(manager, controller));
+					controller.setViewIn(manager);
 
-		// must be done here, because model is not set after init of view
-		try {
-			final File f = new File(Preferences.SETTINGS_FILE);
-			model.setSettings(SettingsConverter
-					.propertiesToModelSettings(SettingsConverter
-							.fileToProperties(f)));
-			view.setSettings(SettingsConverter
-					.modelSettingsToViewSettings(model.getSettings()));
-			final String m2 = StringUtils.getString(
-					Preferences.Controller.SETTINGS_LOADED_GOOD, " (from ", f,
-					")");
-			info(m2);
-			controller.printMessage(m2, false);
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			controller.printMessage(e.getLocalizedMessage(), false);
-			controller.printMessage("loading default settings", false);
-			view.setSettings(new ViewSettingsImpl());
-		}
-		view.setOnline();
-		debug("view created and online");
+					// must be done here, because model is not set after init of view
+					
+						final File f = new File(Preferences.SETTINGS_FILE);
+						model.setSettings(SettingsConverter
+								.propertiesToModelSettings(SettingsConverter
+										.fileToProperties(f)));
+						manager.setSettings_view(SettingsConverter
+								.modelSettingsToViewSettings(model.getSettings()));
+						final String m2 = StringUtils.getString(
+								Preferences.Controller.SETTINGS_LOADED_GOOD, " (from ", f,
+								")");
+						info(m2);
+						controller.printMessage(m2, false);
+					} catch (Exception e) {
+						LOGGER.error(e.getLocalizedMessage(), e);
+						controller.printMessage(e.getLocalizedMessage(), false);
+						controller.printMessage("loading default settings", false);
+						manager.setSettings_view(new ViewTypeSettingsImpl());
+					}
+					manager.showView();
+					manager.setOnline();
+					debug("view created and online");
+			}
+		});
 	}
 }
