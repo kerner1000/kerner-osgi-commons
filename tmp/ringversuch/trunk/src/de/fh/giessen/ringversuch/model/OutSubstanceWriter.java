@@ -128,7 +128,7 @@ class OutSubstanceWriter {
 		final Pattern p = Pattern.compile("[a-zA-Z0-9_-]");
 		Matcher m;
 		for (char c : chars) {
-			m = p.matcher(new String(Character.toString(c)));
+			m = p.matcher(Character.toString(c));
 			if (m.matches()) {
 				sb.append(c);
 			} else {

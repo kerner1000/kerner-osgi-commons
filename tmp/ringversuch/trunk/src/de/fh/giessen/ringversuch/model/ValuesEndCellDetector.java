@@ -27,7 +27,7 @@ import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 class ValuesEndCellDetector extends AbstractDetector {
 	
-	private class ValuesEndDetector {
+	private static class ValuesEndDetector {
 		
 		private final class Walker extends AbstractHSSFSheetWalker {
 			Walker(HSSFSheet sheet) {
