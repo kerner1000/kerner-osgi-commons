@@ -72,8 +72,7 @@ public class ModelImpl implements Model {
 	// all in Callable. No need to sync
 	@Override
 	public void setSelectedFiles(final File[] files)
-			throws WrongFileTypeException {
-		try {
+			throws Exception {
 			worker.submit(new Callable<Void>() {
 				@Override
 				public Void call() throws Exception {
@@ -88,11 +87,6 @@ public class ModelImpl implements Model {
 			}).get();
 			// call "get() / wait for thread to complete" in order to be sure,
 			// that files are set bevore doing something with it.
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			controller.outgoingPrintMessage(e.getLocalizedMessage(), true);
-			controller.outgoingShowError(e.getLocalizedMessage());
-		}
 	}
 
 	private void checkFiles(File[] files) throws WrongFileTypeException {
@@ -102,11 +96,11 @@ public class ModelImpl implements Model {
 			} catch (IOException e) {
 				LOGGER.error(e.getLocalizedMessage(), e);
 				throw new WrongFileTypeException(f.getName()
-						+ " seems not to be a valid xls file");
+						+ " seems not to be a valid xls file ", e);
 			} catch (OfficeXmlFileException e) {
 				LOGGER.error(e.getLocalizedMessage(), e);
 				throw new WrongFileTypeException(f.getName()
-						+ " seems not to be a valid xls file");
+						+ " seems not to be a valid xls file ", e);
 			}
 		}
 	}

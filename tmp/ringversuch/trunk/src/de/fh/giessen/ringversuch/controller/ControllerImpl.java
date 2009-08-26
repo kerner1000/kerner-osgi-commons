@@ -17,7 +17,6 @@ import de.fh.giessen.ringversuch.view.SettingsView;
 import de.fh.giessen.ringversuch.view.SwingView;
 import de.fh.giessen.ringversuch.view.SwingViewManager;
 import de.fh.giessen.ringversuch.view.SwingViewManagerImpl;
-import de.fh.giessen.ringversuch.view.ViewOut;
 import de.fh.giessen.ringversuch.view.ViewType;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettingsImpl;
@@ -25,11 +24,10 @@ import de.kerner.commons.StringUtils;
 
 /**
  * 
- * @ThreadSave members are volatile. No atomic operations, that affect both
- *             members at one time.
+ * @ThreadSave members are volatile. No atomic operations, that affect more than one
+ *             members at a time.
  * @author Alexander Kerner
- * @lastVisit 2009-08-25
- * @Strings all good
+ * @lastVisit 2009-08-26
  * 
  */
 class ControllerImpl implements Controller {
@@ -82,12 +80,16 @@ class ControllerImpl implements Controller {
 			incomingDetect();
 		} catch (WrongFileTypeException e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.outgoingPrintMessage(e.getLocalizedMessage(), true);
-			view.outgoingShowError(e.getLocalizedMessage());
-			info(inputFiles.length, " ",
-					Preferences.Controller.FILES_LOADED_BAD);
+			view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD + " (" + e.getCause().getLocalizedMessage() + ")", true);
+			view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
 			return false;
-		}
+		
+	} catch (Exception e) {
+		LOGGER.error(e.getLocalizedMessage(), e);
+		view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD + " (" + e.getCause().getLocalizedMessage() + ")", true);
+		view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
+		return false;
+	}
 		return true;
 	}
 
@@ -108,6 +110,7 @@ class ControllerImpl implements Controller {
 			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD,
 					" (", e.getLocalizedMessage(), ")");
 			view.outgoingPrintMessage(m, true);
+			view.outgoingShowError(Preferences.Controller.DETECT_BAD);
 		}
 	}
 
@@ -160,7 +163,7 @@ class ControllerImpl implements Controller {
 					Preferences.Controller.FAILED, " (", e
 							.getLocalizedMessage(), ")");
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.outgoingShowError(m);
+			view.outgoingShowError(Preferences.Controller.FAILED);
 			view.outgoingPrintMessage(m, true);
 		} finally {
 			// setting view to "online" instead of "ready"
@@ -206,9 +209,10 @@ class ControllerImpl implements Controller {
 
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.outgoingShowError(StringUtils.getString(
+			view.outgoingPrintMessage(StringUtils.getString(
 					Preferences.Controller.SETTINGS_LOADED_BAD, " (", e
-							.getLocalizedMessage(), ")"));
+							.getLocalizedMessage(), ")"),true);
+			view.outgoingShowError(Preferences.Controller.SETTINGS_LOADED_BAD);
 			return Boolean.FALSE;
 		}
 	}
@@ -234,7 +238,8 @@ class ControllerImpl implements Controller {
 			final String m = StringUtils.getString(
 					Preferences.Controller.SETTINGS_SAVED_BAD, " (", e
 							.getLocalizedMessage(), ")");
-			view.outgoingShowError(m);
+			view.outgoingPrintMessage(m, true);
+			view.outgoingShowError(Preferences.Controller.SETTINGS_SAVED_BAD);
 			return false;
 		}
 	}
@@ -253,7 +258,8 @@ class ControllerImpl implements Controller {
 			final String m = StringUtils.getString(
 					Preferences.Controller.SETTINGS_SET_BAD, " (", e
 							.getLocalizedMessage(), ")");
-			view.outgoingShowError(m);
+			view.outgoingPrintMessage(m, true);
+			view.outgoingShowError(Preferences.Controller.SETTINGS_SET_BAD);
 			return false;
 		}
 	}

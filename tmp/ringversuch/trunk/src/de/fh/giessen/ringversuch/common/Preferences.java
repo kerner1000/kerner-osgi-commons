@@ -4,8 +4,12 @@ import de.kerner.commons.file.FileUtils;
 
 /**
  * 
- * <p>Holds application wide constants</p>
- * <p>Message strings are all info or error messages. No debugging strings.</p>
+ * <p>
+ * Holds application wide constants
+ * </p>
+ * <p>
+ * Message strings are all info or error messages. No debugging strings.
+ * </p>
  * 
  * @author Alexander Kerner
  * @lastVisist 2009-08-14
@@ -16,7 +20,8 @@ public class Preferences {
 	private Preferences() {
 	};
 
-//	public static final String NEW_LINE = System.getProperty("line.separator");
+	// public static final String NEW_LINE =
+	// System.getProperty("line.separator");
 	public static final String NEW_LINE = FileUtils.NEW_LINE;
 	public static final String WORKING_DIR = System.getProperty("user.dir");
 	public static final String LOG_PROPERTIES = WORKING_DIR + "/log.properties";
@@ -25,10 +30,11 @@ public class Preferences {
 	public static final boolean NATIVE_LAF = true;
 	public static final String NAME = "Ringversuch";
 	public static final String VERSION = "v.4.0.0";
-	
+
 	public static class Controller {
 		public static final String SETTINGS_LOADED_GOOD = "settings loaded";
-		public static final String SETTINGS_LOADED_BAD = "could not load settings";
+		public static final String SETTINGS_LOADED_BAD = "could not load settings. Did you select a valid settings file? ("
+				+ VERSION + ")";
 		public static final String SETTINGS_SAVED_GOOD = "settings successfully saved";
 		public static final String SETTINGS_SAVED_BAD = "could not save settings";
 		public static final String SETTINGS_SET_GOOD = "settings successfully set";
@@ -40,9 +46,11 @@ public class Preferences {
 		public static final String CANCELED = "canceled";
 		public static final String FAILED = "failed";
 	}
+
 	public static class Model {
 		public static final String SETTINGS_INVALID = "settings invalid";
 	}
+
 	public static class View {
 		public final static String SETTINGS_FRAME_NAME = "Settings";
 		public final static String MENU_TITLE = "Menu";

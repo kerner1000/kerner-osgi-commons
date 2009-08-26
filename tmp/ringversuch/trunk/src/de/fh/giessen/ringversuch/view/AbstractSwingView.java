@@ -1,14 +1,11 @@
 package de.fh.giessen.ringversuch.view;
 
 import java.awt.Container;
-import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import de.fh.giessen.ringversuch.common.Preferences;
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
@@ -26,35 +23,16 @@ import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
  * 
  */
 public abstract class AbstractSwingView implements SwingView {
-	
-	protected class F extends JFrame {
-	
-		private static final long serialVersionUID = -11222207085365360L;
-
-		protected void processWindowEvent(WindowEvent e) {
-			if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-				ViewUtils.dropToEventThread(new Runnable() {
-					public void run() {
-						int exit = JOptionPane.showConfirmDialog(frame,
-								Preferences.View.CONFIRM_QUIT_TEXT,
-								Preferences.View.CONFIRM_QUIT_TITLE,
-								JOptionPane.OK_OPTION);
-						if (exit == JOptionPane.YES_OPTION) {
-							incomingShutdown();
-						}
-					}
-				});
-			}
-		}
-	}
 
 	protected final SwingViewManager manager;
-	protected final F frame;
+	// must not be final, because MainView overrides it to implement custom
+	// closing behavior
+	protected JFrame frame;
 	protected final JPanel panel;
 
 	public AbstractSwingView(SwingViewManager manager) {
 		this.manager = manager;
-		frame = new F();
+		frame = new JFrame();
 		panel = new JPanel();
 		frame.setContentPane(panel);
 	}
@@ -80,7 +58,7 @@ public abstract class AbstractSwingView implements SwingView {
 	public void showView() {
 		frame.setVisible(true);
 	}
-	
+
 	@Override
 	public void destroyView() {
 		frame.dispose();
@@ -132,12 +110,12 @@ public abstract class AbstractSwingView implements SwingView {
 	public void incomingStart() {
 		manager.incomingStart();
 	}
-	
+
 	@Override
 	public void incomingShutdown() {
 		manager.incomingShutdown();
 	}
-	
+
 	@Override
 	public void outgoingShutdown() {
 		// At this point, ViewManager should already have shut down the gui.

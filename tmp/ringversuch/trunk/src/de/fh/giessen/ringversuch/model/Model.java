@@ -1,7 +1,5 @@
 package de.fh.giessen.ringversuch.model;
 
-import hssf.utils.WrongFileTypeException;
-
 import java.io.File;
 
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
@@ -10,7 +8,7 @@ public interface Model {
 
 	void setOutDir(File selectedDir);
 
-	void setSelectedFiles(File[] inputFiles) throws WrongFileTypeException;
+	void setSelectedFiles(File[] inputFiles) throws Exception;
 
 	void start() throws Exception;
 	
