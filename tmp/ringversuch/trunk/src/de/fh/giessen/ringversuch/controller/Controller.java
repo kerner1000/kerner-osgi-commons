@@ -2,8 +2,8 @@ package de.fh.giessen.ringversuch.controller;
 
 import de.fh.giessen.ringversuch.model.Model;
 import de.fh.giessen.ringversuch.view.SwingView;
-import de.fh.giessen.ringversuch.view.ViewIn;
 import de.fh.giessen.ringversuch.view.ViewOut;
+import de.fh.giessen.ringversuch.view.ViewIn;
 
 /**
  * <p>Application Controller.</p>

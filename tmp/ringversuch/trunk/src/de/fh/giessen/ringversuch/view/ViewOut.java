@@ -1,54 +1,57 @@
 package de.fh.giessen.ringversuch.view;
 
-import java.io.File;
-
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
- * <p>Handle outgoing events (from View bzw. User to Model bzw. Controller).</p>
+ * <p>Handle outgoing events (from Model bzw. Controller to View).</p>
  * @author Alexander Kerner
  *
  */
 public interface ViewOut {
-	
-	/**
-	 * From View to Model
-	 */
-	void cancel();
-	
-	/**
-	 * From View to Model
-	 */
-	boolean setSettings_controller(ViewTypeSettings settings);
-	
-	/**
-	 * From View to Model
-	 */
-	boolean saveSettings(ViewTypeSettings settings);
-	
-	/**
-	 * From View to Model
-	 */
-	boolean loadSettings(File file);
-	
-	/**
-	 * From View to Model
-	 */
-	void start();
-	
-	/**
-	 * From View to Model
-	 */
-	void setOutDir(File selectedFile);
-	
-	/**
-	 * From View to Model
-	 */
-	boolean setSelectedFiles(File[] inputFiles);
-	
-	/**
-	 * From View to Model
-	 */
-	void detect();
 
+	/**
+	 * from Model to View
+	 */
+	void outgoingPrintMessage(String message, boolean isError);
+
+	/**
+	 * from Model to View
+	 */
+	void outgoingSetOnline();
+	
+	/**
+	 * from Model to View
+	 */
+	void outgoingShutdown();
+
+	/**
+	 * from Model to View
+	 */
+	void outgoingSetWorking();
+	
+	/**
+	 * from Model to View
+	 */
+	void outgoingSetReady();
+
+	/**
+	 * from Model to View
+	 */
+	void outgoingShowError(String message);
+
+	/**
+	 * from Model to View
+	 */
+	ViewTypeSettings outgoingSetSettings();
+	
+	/**
+	 * from Model to View
+	 */
+	void outgoingSetSettings(ViewTypeSettings settings);
+
+	/**
+	 * from Model to View
+	 */
+	void outgoingSetProgress(int current, int max);
+	
 }

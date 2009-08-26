@@ -32,11 +32,11 @@ public class SettingsContentImpl implements SettingsContent {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == buttonUse) {
-				if (settingsView.setSettings_controller(getSettings()))
+				if (settingsView.incomingSetSettings(getSettings()))
 					settingsView.getViewManager().switchView(ViewState.NORMAL);
 
 			} else if (e.getSource() == buttonSave) {
-				if (settingsView.saveSettings(getSettings())) {
+				if (settingsView.incomingSaveSettings(getSettings())) {
 					// its a question of taste if we close the window after
 					// saving or not
 					// controller.hideSettingsView();
@@ -44,15 +44,15 @@ public class SettingsContentImpl implements SettingsContent {
 			}
 
 			else if (e.getSource() == buttonDetect) {
-				settingsView.detect();
+				settingsView.incomingDetect();
 			}
 
 			else if (e.getSource() == buttonLoad) {
 				final int returnVal = fileChooser.showOpenDialog(settingsView.getContainer());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
-					if (settingsView.loadSettings(file)) {
-						setSettings(settingsView.getSettings());
+					if (settingsView.incomingLoadSettings(file)) {
+						setSettings(settingsView.outgoingSetSettings());
 						// its a question of taste if we close the window after
 						// setting or not
 						// controller.hideSettingsView();

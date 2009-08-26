@@ -33,37 +33,37 @@ public class SettingsView extends AbstractSwingView {
 	}
 	
 	@Override
-	public void setSettings_view(ViewTypeSettings settings) {
+	public void outgoingSetSettings(ViewTypeSettings settings) {
 		content.setSettings(settings);
 	}
 
 	@Override
-	public void printMessage(String message, boolean isError) {
+	public void outgoingPrintMessage(String message, boolean isError) {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void setOnline() {
+	public void outgoingSetOnline() {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void setProgress(int current, int max) {
+	public void outgoingSetProgress(int current, int max) {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void setReady() {
+	public void outgoingSetReady() {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void setWorking() {
+	public void outgoingSetWorking() {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void showError(String message) {
+	public void outgoingShowError(String message) {
 		throw new IllegalStateException();
 	}
 }

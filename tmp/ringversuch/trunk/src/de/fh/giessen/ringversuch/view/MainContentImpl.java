@@ -47,7 +47,7 @@ public class MainContentImpl implements MainContent {
 					areaFiles.setText("");
 					files.clear();
 					final File[] inputFiles = fileChooserinputFiles.getSelectedFiles();
-					if(mainView.setSelectedFiles(inputFiles)){
+					if(mainView.incomingSetSelectedFiles(inputFiles)){
 						for (File f : inputFiles) {
 							areaFiles.append(f.getName() + Preferences.NEW_LINE);
 							files.add(f);
@@ -65,7 +65,7 @@ public class MainContentImpl implements MainContent {
 			else if (e.getSource() == buttonSave) {
 				final int returnVal = fileChooseroutDir.showSaveDialog(mainView.getContainer());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					mainView.setOutDir(fileChooseroutDir.getSelectedFile());
+					mainView.incomingSetOutDir(fileChooseroutDir.getSelectedFile());
 					
 					// TODO that should do the model / controller
 					outputDirSelected = true;
@@ -83,11 +83,11 @@ public class MainContentImpl implements MainContent {
 			}
 			
 			else if (e.getSource() == buttonCancel) {
-				mainView.cancel();
+				mainView.incomingCancel();
 			}
 
 			else if (e.getSource() == buttonStart) {
-				mainView.start();
+				mainView.incomingStart();
 			}
 			
 			else {

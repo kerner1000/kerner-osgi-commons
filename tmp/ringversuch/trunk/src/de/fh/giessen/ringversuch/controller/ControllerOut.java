@@ -2,41 +2,49 @@ package de.fh.giessen.ringversuch.controller;
 
 /**
  * 
+ * <p>
  * Handle Events from Model to View.
+ * </p>
  * 
+ * @lastVisit 2009-08-26
  * @author Alexander Kerner
- *  
+ * 
  */
 public interface ControllerOut {
 
 	/**
-	 * Out
-	 * 
-	 * @param message
-	 * @param isError
+	 * <p>
+	 * from Model to View
+	 * </p>
 	 */
-	void printMessage(String message, boolean isError);
+	void outgoingPrintMessage(String message, boolean isError);
 
 	/**
-	 * Out
-	 * 
-	 * @param message
+	 * <p>
+	 * from Model to View
+	 * </p>
 	 */
-	void showError(String message);
+	void outgoingShowError(String message);
 
 	/**
-	 * Out
-	 * 
-	 * @param current
-	 * @param max
+	 * <p>
+	 * from Model to View
+	 * </p>
 	 */
-	void setProgress(int current, int max);
+	void outgoingSetProgress(int current, int max);
 
 	/**
-	 * Out
-	 * 
-	 * @param b
+	 * <p>
+	 * from Model to View
+	 * </p>
 	 */
-	void done(boolean b);
+	void outgoingDone(boolean b);
+
+	/**
+	 * <p>
+	 * from Model to View
+	 * </p>
+	 */
+	void outgoingShutdown();
 
 }

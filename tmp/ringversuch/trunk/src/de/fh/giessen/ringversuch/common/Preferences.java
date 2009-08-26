@@ -55,5 +55,7 @@ public class Preferences {
 		public final static String FILES_TITLE = "Files";
 		public final static String LOG_TITLE = "Log";
 		public final static String PROGRESS_AND_BUTTONS_TITLE = "Progress";
+		public final static String CONFIRM_QUIT_TEXT = "Wirklich beenden?";
+		public final static String CONFIRM_QUIT_TITLE = "Beenden";
 	}
 }

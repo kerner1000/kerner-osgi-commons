@@ -11,8 +11,8 @@ package de.fh.giessen.ringversuch.view;
  * </p>
  * 
  * @see ViewType
- * @see ViewIn
  * @see ViewOut
+ * @see ViewIn
  * @see ViewState
  * @see SwingView
  * @author Alexander Kerner

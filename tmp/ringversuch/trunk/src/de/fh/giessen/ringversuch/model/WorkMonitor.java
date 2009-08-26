@@ -11,11 +11,11 @@ class WorkMonitor {
 	}
 	
 	void printMessage(String message){
-		controller.printMessage(message, false);
+		controller.outgoingPrintMessage(message, false);
 	}
 	
 	void setProgress(int current, int max){
-		controller.setProgress(current, max);
+		controller.outgoingSetProgress(current, max);
 	}
 
 }

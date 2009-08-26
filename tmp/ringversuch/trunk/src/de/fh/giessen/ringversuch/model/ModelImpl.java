@@ -66,7 +66,7 @@ public class ModelImpl implements Model {
 		final String m = StringUtils.getString("files will be written to ",
 				outDir);
 		LOGGER.info(m);
-		controller.printMessage(m, false);
+		controller.outgoingPrintMessage(m, false);
 	}
 
 	// all in Callable. No need to sync
@@ -82,7 +82,7 @@ public class ModelImpl implements Model {
 					// LOGGER.info("input files: " + Arrays.asList(inputFiles));
 					final String m = StringUtils.getString("selected ", Arrays
 							.asList(inputFiles).size(), " file(s)");
-					controller.printMessage(m, false);
+					controller.outgoingPrintMessage(m, false);
 					return null;
 				}
 			}).get();
@@ -90,8 +90,8 @@ public class ModelImpl implements Model {
 			// that files are set bevore doing something with it.
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			controller.printMessage(e.getLocalizedMessage(), true);
-			controller.showError(e.getLocalizedMessage());
+			controller.outgoingPrintMessage(e.getLocalizedMessage(), true);
+			controller.outgoingShowError(e.getLocalizedMessage());
 		}
 	}
 
@@ -185,5 +185,11 @@ public class ModelImpl implements Model {
 			currentJob.cancel(true);
 		if (currentDetectJob != null)
 			currentDetectJob.cancel(true);
+	}
+
+	@Override
+	public void shutdown() {
+		worker.shutdown();
+		
 	}
 }

@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.UIManager;
 
@@ -34,7 +32,6 @@ public class SwingViewManagerImpl implements SwingViewManager {
 			.getLogger(SwingViewManagerImpl.class);
 	private final Map<ViewType, SwingView> map = new ConcurrentHashMap<ViewType, SwingView>();
 	private volatile ViewTypeSettings settings;
-	private final ExecutorService exe = Executors.newCachedThreadPool();
 	private final ControllerIn controller;
 
 	public SwingViewManagerImpl(ControllerIn controller) {
@@ -60,6 +57,13 @@ public class SwingViewManagerImpl implements SwingViewManager {
 			}
 		});
 	}
+	
+	@Override
+	public void destroyView() {
+		for(SwingView v : map.values()){
+			v.destroyView();
+		}
+	}
 
 	@Override
 	public void switchView(final ViewState state) {
@@ -81,105 +85,105 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	}
 
 	@Override
-	public ViewTypeSettings getSettings() {
+	public ViewTypeSettings outgoingSetSettings() {
 		return get();
 	}
 
 	@Override
-	public void printMessage(final String message, final boolean isError) {
+	public void outgoingPrintMessage(final String message, final boolean isError) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.MAIN).printMessage(message, isError);
+				map.get(ViewType.MAIN).outgoingPrintMessage(message, isError);
 			}
 		});
 	}
 
 	@Override
-	public void setOnline() {
+	public void outgoingSetOnline() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.MAIN).setOnline();
+				map.get(ViewType.MAIN).outgoingSetOnline();
 			}
 		});
 	}
 
 	@Override
-	public void setProgress(final int current, final int max) {
+	public void outgoingSetProgress(final int current, final int max) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.MAIN).setProgress(current, max);
+				map.get(ViewType.MAIN).outgoingSetProgress(current, max);
 			}
 		});
 	}
 
 	@Override
-	public void setReady() {
+	public void outgoingSetReady() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.MAIN).setReady();
+				map.get(ViewType.MAIN).outgoingSetReady();
 			}
 		});
 	}
 
 	@Override
-	public void setSettings_view(final ViewTypeSettings settings) {
+	public void outgoingSetSettings(final ViewTypeSettings settings) {
 		set(settings);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.SETTINGS).setSettings_view(settings);
+				map.get(ViewType.SETTINGS).outgoingSetSettings(settings);
 			}
 		});
 	}
 
 	@Override
-	public void setWorking() {
+	public void outgoingSetWorking() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.MAIN).setWorking();
+				map.get(ViewType.MAIN).outgoingSetWorking();
 			}
 		});
 	}
 
 	@Override
-	public void showError(final String message) {
+	public void outgoingShowError(final String message) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				map.get(ViewType.MAIN).showError(message);
+				map.get(ViewType.MAIN).outgoingShowError(message);
 			}
 		});
 	}
 
 	@Override
-	public void cancel() {
-		exe.submit(new Callable<Void>(){
+	public void incomingCancel() {
+		ViewUtils.escapeFromEventThread(new Callable<Void>(){
 			@Override
 			public Void call() throws Exception {
-				controller.cancel();
+				controller.incomingCancel();
 				return null;
 			}
 		});
 	}
 
 	@Override
-	public void detect() {
-		exe.submit(new Callable<Void>(){
+	public void incomingDetect() {
+		ViewUtils.escapeFromEventThread(new Callable<Void>(){
 			@Override
 			public Void call() throws Exception {
-				controller.detect();
+				controller.incomingDetect();
 				return null;
 			}
 		});
 	}
 
 	@Override
-	public boolean loadSettings(final File file) {
+	public boolean incomingLoadSettings(final File file) {
 		try {
-			return exe.submit(new Callable<Boolean>(){
+			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
 				@Override
 				public Boolean call() throws Exception {
-					return controller.loadSettings(file);
+					return controller.incomingLoadSettings(file);
 				}
-			}).get();
+			});
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			return false;
@@ -187,14 +191,14 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	}
 
 	@Override
-	public boolean saveSettings(final ViewTypeSettings settings) {
+	public boolean incomingSaveSettings(final ViewTypeSettings settings) {
 		try {
-			return exe.submit(new Callable<Boolean>(){
+			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
 				@Override
 				public Boolean call() throws Exception {
-					return controller.saveSettings(settings);
+					return controller.incomingSaveSettings(settings);
 				}
-			}).get();
+			});
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			return false;
@@ -202,25 +206,25 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	}
 
 	@Override
-	public void setOutDir(final File selectedFile) {
-		exe.submit(new Callable<Void>(){
+	public void incomingSetOutDir(final File selectedFile) {
+		ViewUtils.escapeFromEventThread(new Callable<Void>(){
 			@Override
 			public Void call() throws Exception {
-				controller.setOutDir(selectedFile);
+				controller.incomingSetOutDir(selectedFile);
 				return null;
 			}
 		});
 	}
 
 	@Override
-	public boolean setSelectedFiles(final File[] inputFiles) {
+	public boolean incomingSetSelectedFiles(final File[] inputFiles) {
 		try {
-			return exe.submit(new Callable<Boolean>(){
+			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
 				@Override
 				public Boolean call() throws Exception {
-					return controller.setSelectedFiles(inputFiles);
+					return controller.incomingSetSelectedFiles(inputFiles);
 				}
-			}).get();
+			});
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			return false;
@@ -228,14 +232,14 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	}
 
 	@Override
-	public boolean setSettings_controller(final ViewTypeSettings settings) {
+	public boolean incomingSetSettings(final ViewTypeSettings settings) {
 		try {
-			return exe.submit(new Callable<Boolean>(){
+			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
 				@Override
 				public Boolean call() throws Exception {
-					return controller.setSettings_controller(settings);
+					return controller.incomingSetSettings(settings);
 				}
-			}).get();
+			});
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			return false;
@@ -243,11 +247,11 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	}
 
 	@Override
-	public void start() {
-		exe.submit(new Callable<Void>(){
+	public void incomingStart() {
+		ViewUtils.escapeFromEventThread(new Callable<Void>(){
 			@Override
 			public Void call() throws Exception {
-				controller.start();
+				controller.incomingStart();
 				return null;
 			}
 		});
@@ -277,4 +281,34 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	public void set(ViewTypeSettings settings) {
 		this.settings = settings;
 	}
+
+	@Override
+	public void incomingShutdown() {		
+		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				controller.incomingShutdown();
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void outgoingShutdown() {
+		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+			@Override
+			public Void call() throws Exception {
+				LOGGER.info("shutting down Application GUI");
+				for(SwingView v : map.values()){
+					v.hideView();
+				}
+				destroyView();
+				ViewUtils.shutdown();
+				LOGGER.info("Application GUI dead");
+				return null;
+			}
+		});		
+	}
+
+	
 }

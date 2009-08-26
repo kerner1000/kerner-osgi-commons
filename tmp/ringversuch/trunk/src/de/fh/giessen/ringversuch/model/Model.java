@@ -13,6 +13,8 @@ public interface Model {
 	void setSelectedFiles(File[] inputFiles) throws WrongFileTypeException;
 
 	void start() throws Exception;
+	
+	void shutdown();
 
 	ModelSettings getSettings();
 

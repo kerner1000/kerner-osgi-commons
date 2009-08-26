@@ -24,37 +24,37 @@ public class MainView extends AbstractSwingView {
 	}
 
 	@Override
-	public void printMessage(String message, boolean isError) {
+	public void outgoingPrintMessage(String message, boolean isError) {
 		content.printMessage(message, isError);
 	}
 
 	@Override
-	public void setOnline() {
+	public void outgoingSetOnline() {
 		content.setOnline();
 	}
 
 	@Override
-	public void setProgress(int current, int max) {
+	public void outgoingSetProgress(int current, int max) {
 		content.setProgress(current, max);
 	}
 
 	@Override
-	public void setReady() {
+	public void outgoingSetReady() {
 		content.setReady();
 	}
 
 	@Override
-	public void setWorking() {
+	public void outgoingSetWorking() {
 		content.setWorking();
 	}
 
 	@Override
-	public void showError(String message) {
+	public void outgoingShowError(String message) {
 		content.showError(message);
 	}
 
 	@Override
-	public void setSettings_view(ViewTypeSettings settings) {
+	public void outgoingSetSettings(ViewTypeSettings settings) {
 		throw new IllegalStateException();
 	}
 }
