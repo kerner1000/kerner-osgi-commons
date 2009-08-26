@@ -5,12 +5,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.swing.UIManager;
-
-import org.apache.log4j.Logger;
-
-import de.fh.giessen.ringversuch.common.Preferences;
-
 public class ViewUtils {
 	
 	private final static ExecutorService exe = Executors.newCachedThreadPool();
@@ -22,10 +16,24 @@ public class ViewUtils {
 		javax.swing.SwingUtilities.invokeLater(runnable);
 	}
 	
+	/**
+	 * Will not block
+	 * 
+	 * @param callable
+	 */
 	public static void escapeFromEventThread(Callable<Void> callable){
 		exe.submit(callable);
 	}
 	
+	/**
+	 * Will block
+	 * 
+	 * @param <T>
+	 * @param callable
+	 * @return
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	public static <T> T escapeFromEventThread(Callable<T> callable) throws InterruptedException, ExecutionException{
 		return exe.submit(callable).get();
 	}

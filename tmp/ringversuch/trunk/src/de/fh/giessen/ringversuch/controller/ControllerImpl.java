@@ -24,8 +24,8 @@ import de.kerner.commons.StringUtils;
 
 /**
  * 
- * @ThreadSave members are volatile. No atomic operations, that affect more than one
- *             members at a time.
+ * @ThreadSave members are volatile. No atomic operations, that affect more than
+ *             one members at a time.
  * @author Alexander Kerner
  * @lastVisit 2009-08-26
  * 
@@ -67,36 +67,43 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public boolean incomingSetSelectedFiles(final File[] inputFiles) {
+	public synchronized boolean incomingSetSelectedFiles(final File[] inputFiles) {
 		if (model == null) {
 			final String m = "model not initialized jet";
 			LOGGER.fatal(m);
 			throw new RuntimeException(m);
 		}
 		try {
+			view.outgoingSetWorking();
 			model.setSelectedFiles(inputFiles);
 			info(inputFiles.length, " ",
 					Preferences.Controller.FILES_LOADED_GOOD);
 			incomingDetect();
+			view.outgoingSetReady();
+			return true;
 		} catch (WrongFileTypeException e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
-			view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD + " (" + e.getCause().getLocalizedMessage() + ")", true);
+			view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD
+					+ " (" + e.getCause().getLocalizedMessage() + ")", true);
 			view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
 			return false;
-		
-	} catch (Exception e) {
-		LOGGER.error(e.getLocalizedMessage(), e);
-		view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD + " (" + e.getCause().getLocalizedMessage() + ")", true);
-		view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
-		return false;
-	}
-		return true;
+
+		} catch (Exception e) {
+			LOGGER.error(e.getLocalizedMessage(), e);
+			view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD
+					+ " (" + e.getCause().getLocalizedMessage() + ")", true);
+			view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
+			return false;
+		} finally {
+			view.outgoingSetReady();
+		}
 	}
 
 	@Override
-	public void incomingDetect() {
+	public synchronized void incomingDetect() {
 		LOGGER.info("detecting settings");
 		try {
+			view.outgoingSetWorking();
 			detectProbeCell();
 			detectLaborCell();
 			detectColumnOfSubstances();
@@ -105,12 +112,15 @@ class ControllerImpl implements Controller {
 			final ModelSettings ms = model.getSettings();
 			view.outgoingSetSettings(SettingsConverter
 					.modelSettingsToViewSettings(ms));
+			view.outgoingSetReady();
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD,
 					" (", e.getLocalizedMessage(), ")");
 			view.outgoingPrintMessage(m, true);
 			view.outgoingShowError(Preferences.Controller.DETECT_BAD);
+		}finally{
+			view.outgoingSetReady();
 		}
 	}
 
@@ -211,7 +221,7 @@ class ControllerImpl implements Controller {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			view.outgoingPrintMessage(StringUtils.getString(
 					Preferences.Controller.SETTINGS_LOADED_BAD, " (", e
-							.getLocalizedMessage(), ")"),true);
+							.getLocalizedMessage(), ")"), true);
 			view.outgoingShowError(Preferences.Controller.SETTINGS_LOADED_BAD);
 			return Boolean.FALSE;
 		}
@@ -228,9 +238,8 @@ class ControllerImpl implements Controller {
 					.settingsToProperties(model.getSettings()), new File(
 					Preferences.SETTINGS_FILE));
 			info(Preferences.Controller.SETTINGS_SAVED_GOOD);
-			view
-					.outgoingPrintMessage(Preferences.Controller.SETTINGS_SAVED_GOOD,
-							false);
+			view.outgoingPrintMessage(
+					Preferences.Controller.SETTINGS_SAVED_GOOD, false);
 			return true;
 
 		} catch (Exception e) {
@@ -251,7 +260,8 @@ class ControllerImpl implements Controller {
 			model.setSettings(SettingsConverter
 					.viewSettingsToModelSettings(settings));
 			info(Preferences.Controller.SETTINGS_SET_GOOD);
-			view.outgoingPrintMessage(Preferences.Controller.SETTINGS_SET_GOOD, false);
+			view.outgoingPrintMessage(Preferences.Controller.SETTINGS_SET_GOOD,
+					false);
 			return true;
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);

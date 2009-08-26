@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
+
 import de.fh.giessen.ringversuch.model.settings.ModelSettings;
 
 
@@ -14,7 +16,7 @@ class Worker implements Callable<Void> {
 	private final File[] files;
 	private final ModelSettings settings;
 	private final WorkMonitor monitor;
-//	private final static Logger LOGGER = Logger.getLogger(Worker.class);
+	private final static Logger LOGGER = Logger.getLogger(Worker.class);
 
 	Worker(File[] inputFiles, File outDir, ModelSettings settings, WorkMonitor monitor) {
 		this.outDir = outDir;
@@ -35,20 +37,24 @@ class Worker implements Callable<Void> {
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
 			monitor.printMessage("reading file " + f.getName());
+			LOGGER.info("reading file " + f.getName());
 			labors.add(Core.readLaborFile(f, settings));
 			monitor.setProgress(currentProgress++, maxProgress);
 		}
 		if(Thread.currentThread().isInterrupted())
 			throw new InterruptedException();
 		monitor.printMessage("calculating... ");
+		LOGGER.info("calculating... ");
 		final Collection<OutSubstance> outSubstances = Core
 		.getOutSubstancesFromLabors(labors, settings);
 		monitor.printMessage("calculating done");
+		LOGGER.info("calculating done");
 		for(OutSubstance s : outSubstances){
 			if(Thread.currentThread().isInterrupted())
 				throw new InterruptedException();
 			final OutSubstanceWriter writer = new OutSubstanceWriter(s, outDir);
 			monitor.printMessage("writing " + writer.getOutFile().getName());
+			LOGGER.info("writing " + writer.getOutFile().getName());
 			writer.write();
 			monitor.setProgress(currentProgress++, maxProgress);
 		}

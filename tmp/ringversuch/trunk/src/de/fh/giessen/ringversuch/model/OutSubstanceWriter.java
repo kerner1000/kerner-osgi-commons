@@ -37,6 +37,7 @@ class OutSubstanceWriter {
 	void write() throws Exception {
 		final String fileName = getFileName();
 		LOGGER.debug("generating file " + fileName);
+//		monitor.printMessage("generating file " + fileName);
 		writeProbeNr();
 		writeHeaderRow();
 		writeValues();
@@ -112,7 +113,7 @@ class OutSubstanceWriter {
 					final double d = Double.parseDouble(value);
 					valueCell.setCellValue(d);
 				}catch(NumberFormatException e){
-					LOGGER.error(e.getLocalizedMessage() + ", using string representation");
+					LOGGER.debug(e + ", using string representation");
 					valueCell.setCellValue(new HSSFRichTextString(value));
 				}
 				currentColumn++;

@@ -125,7 +125,6 @@ public class MainContentImpl implements MainContent {
 	private final JTextArea areaLog = new JTextArea();
 	private boolean inputFilesSelected = false;
 	private boolean outputDirSelected = false;
-	private int progress = 0;
 	final static Logger LOGGER = Logger.getLogger(MainContentImpl.class);
 	private final ActionListener myListener = new MyListener();
 
@@ -279,8 +278,7 @@ public class MainContentImpl implements MainContent {
 		buttonSave.setEnabled(false);
 		mainView.getContainer().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		progressBar.setMaximum(files.size());
-		progress = 0;
-		progressBar.setValue(progress);
+		progressBar.setValue(0);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class ModelSettingsImpl implements ModelSettings {
 	private volatile int laborNoColumn = 0;
 	private volatile int probeNoRow = 0;
 	private volatile int probeNoCOlumn = 0;
-	private volatile String probeValue = "1";
+	private volatile String probeValue = "1.0";
 	private volatile int sheetNo = 0;
 	private volatile int substancesColumn = 0;
 	private volatile int valuesStartRow = 0;
