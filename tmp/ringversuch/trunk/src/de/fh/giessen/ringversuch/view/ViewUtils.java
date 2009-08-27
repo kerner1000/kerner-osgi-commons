@@ -1,7 +1,5 @@
 package de.fh.giessen.ringversuch.view;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,26 +14,8 @@ public class ViewUtils {
 		javax.swing.SwingUtilities.invokeLater(runnable);
 	}
 	
-	/**
-	 * Will not block
-	 * 
-	 * @param callable
-	 */
-	public static void escapeFromEventThread(Callable<Void> callable){
-		exe.submit(callable);
-	}
-	
-	/**
-	 * Will block
-	 * 
-	 * @param <T>
-	 * @param callable
-	 * @return
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 */
-	public static <T> T escapeFromEventThread(Callable<T> callable) throws InterruptedException, ExecutionException{
-		return exe.submit(callable).get();
+	public static void escapeFromEventThread(Runnable runnable){
+		exe.submit(runnable);
 	}
 	
 	public static void shutdown(){

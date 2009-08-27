@@ -42,35 +42,19 @@ public class MainContentImpl implements MainContent {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == buttonSelect) {
-				final int returnVal = fileChooserinputFiles.showOpenDialog(mainView.getContainer());
+				final int returnVal = fileChooserinputFiles.showOpenDialog(mainView.getContent());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					areaFiles.setText("");
 					files.clear();
 					final File[] inputFiles = fileChooserinputFiles.getSelectedFiles();
-					if(mainView.incomingSetSelectedFiles(inputFiles)){
-						for (File f : inputFiles) {
-							areaFiles.append(f.getName() + Preferences.NEW_LINE);
-							files.add(f);
-						}
-						
-						// TODO that should do the model / controller
-						inputFilesSelected = true;
-						if (inputFilesSelectedOutputDirSelected()) {
-							setInputFilesSelectedOutputDirSelected();
-						}
-					}
+					mainView.incomingSetSelectedFiles(inputFiles);
 				}
 			}
 
 			else if (e.getSource() == buttonSave) {
-				final int returnVal = fileChooseroutDir.showSaveDialog(mainView.getContainer());
+				final int returnVal = fileChooseroutDir.showSaveDialog(mainView.getContent());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					mainView.incomingSetOutDir(fileChooseroutDir.getSelectedFile());
-					
-					// TODO that should do the model / controller
-					outputDirSelected = true;
-					if (inputFilesSelectedOutputDirSelected())
-						setInputFilesSelectedOutputDirSelected();
 				}
 			}
 
@@ -100,7 +84,7 @@ public class MainContentImpl implements MainContent {
 			// take shortcut and directly show about, without notifying controller or model
 			javax.swing.SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					JOptionPane.showMessageDialog(mainView.getContainer(), Preferences.NAME + " Version " + Preferences.VERSION+"\n"
+					JOptionPane.showMessageDialog(mainView.getContent(), Preferences.NAME + " Version " + Preferences.VERSION+"\n"
 							+ "Markus Westphal: \tmarkus.c.westphal@tg.fh-giessen.de\n"
 							+ "Alexander Kerner: \tphilip.a.kerner@tg.fh-giessen.de",
 							"About", JOptionPane.INFORMATION_MESSAGE);	
@@ -123,8 +107,6 @@ public class MainContentImpl implements MainContent {
 	private final JButton buttonSave = new JButton(Preferences.View.BUTTON_SAVE);
 	private final JButton buttonCancel = new JButton(Preferences.View.BUTTON_CANCEL);
 	private final JTextArea areaLog = new JTextArea();
-	private boolean inputFilesSelected = false;
-	private boolean outputDirSelected = false;
 	final static Logger LOGGER = Logger.getLogger(MainContentImpl.class);
 	private final ActionListener myListener = new MyListener();
 
@@ -139,11 +121,11 @@ public class MainContentImpl implements MainContent {
 		initButtons(myListener);
 		initInputFilesChooser();
 		initOutputDirFileChooser();
-		mainView.getContainer().setLayout(new BorderLayout());
-		mainView.getContainer().add(initMenubar(myListener), BorderLayout.BEFORE_FIRST_LINE);
-		mainView.getContainer().add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, initFilesPanel(),
+		mainView.getContent().setLayout(new BorderLayout());
+		mainView.getContent().add(initMenubar(myListener), BorderLayout.BEFORE_FIRST_LINE);
+		mainView.getContent().add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, initFilesPanel(),
 				initLogPanel()), BorderLayout.CENTER);
-		mainView.getContainer().add(initProgressAndButtonsPanel(), BorderLayout.AFTER_LAST_LINE);
+		mainView.getContent().add(initProgressAndButtonsPanel(), BorderLayout.AFTER_LAST_LINE);
 	}
 	
 	private void initButtons(ActionListener listener) {
@@ -238,6 +220,14 @@ public class MainContentImpl implements MainContent {
 		vier.setVgap(4);
 		return vier;
 	}
+	
+	@Override
+	public void outgoingSetSelectedFiles(File[] files){
+		for (File f : files) {
+			areaFiles.append(f.getName() + Preferences.NEW_LINE);
+			this.files.add(f);
+		}
+	}
 
 	@Override
 	public
@@ -252,7 +242,7 @@ public class MainContentImpl implements MainContent {
 		buttonStart.setEnabled(false);
 		buttonSelect.setEnabled(true);
 		buttonSave.setEnabled(true);
-		mainView.getContainer().setCursor(null);
+		mainView.getContent().setCursor(null);
 		progressBar.setValue(0);
 		progressBar.setMaximum(100);
 	}
@@ -264,7 +254,7 @@ public class MainContentImpl implements MainContent {
 		buttonStart.setEnabled(true);
 		buttonSelect.setEnabled(true);
 		buttonSave.setEnabled(true);
-		mainView.getContainer().setCursor(null);
+		mainView.getContent().setCursor(null);
 		progressBar.setValue(0);
 		progressBar.setMaximum(100);
 	}
@@ -276,7 +266,7 @@ public class MainContentImpl implements MainContent {
 		buttonStart.setEnabled(false);
 		buttonSelect.setEnabled(false);
 		buttonSave.setEnabled(false);
-		mainView.getContainer().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		mainView.getContent().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		progressBar.setMaximum(files.size());
 		progressBar.setValue(0);
 	}
@@ -286,29 +276,13 @@ public class MainContentImpl implements MainContent {
 		progressBar.setMaximum(max);
 		progressBar.setValue(current);
 	}
-	
-	boolean inputFilesSelectedOutputDirSelected() {
-		if (inputFilesSelected == true && outputDirSelected == true)
-			return true;
-		else
-			return false;
-	}
-	
-	void setInputFilesSelectedOutputDirSelected() {
-		menu.setEnabled(true);
-		buttonCancel.setEnabled(false);
-		buttonStart.setEnabled(true);
-		buttonSelect.setEnabled(true);
-		buttonSave.setEnabled(true);
-		mainView.getContainer().setCursor(null);
-	}
 
 	@Override
 	public void showError(final String message) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				LOGGER.debug("show error=" + message);
-				JOptionPane.showMessageDialog(mainView.getContainer(), message,
+				JOptionPane.showMessageDialog(mainView.getContent(), message,
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});

@@ -51,7 +51,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void showView() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).showView();
 			}
@@ -60,14 +60,18 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	
 	@Override
 	public void destroyView() {
+		ViewUtils.dropToEventThread(new Runnable() {
+			public void run() {
 		for(SwingView v : map.values()){
 			v.destroyView();
 		}
+			}
+		});
 	}
 
 	@Override
 	public void switchView(final ViewState state) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				switch (state) {
 				case NORMAL:
@@ -91,7 +95,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void outgoingPrintMessage(final String message, final boolean isError) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).outgoingPrintMessage(message, isError);
 			}
@@ -100,7 +104,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void outgoingSetOnline() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).outgoingSetOnline();
 			}
@@ -109,7 +113,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void outgoingSetProgress(final int current, final int max) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).outgoingSetProgress(current, max);
 			}
@@ -118,7 +122,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void outgoingSetReady() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).outgoingSetReady();
 			}
@@ -128,16 +132,25 @@ public class SwingViewManagerImpl implements SwingViewManager {
 	@Override
 	public void outgoingSetSettings(final ViewTypeSettings settings) {
 		set(settings);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.SETTINGS).outgoingSetSettings(settings);
+			}
+		});
+	}
+	
+	@Override
+	public void outgoingSetSelectedFiles(final File[] files) {
+		ViewUtils.dropToEventThread(new Runnable() {
+			public void run() {
+				map.get(ViewType.MAIN).outgoingSetSelectedFiles(files);
 			}
 		});
 	}
 
 	@Override
 	public void outgoingSetWorking() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).outgoingSetWorking();
 			}
@@ -146,7 +159,7 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void outgoingShowError(final String message) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		ViewUtils.dropToEventThread(new Runnable() {
 			public void run() {
 				map.get(ViewType.MAIN).outgoingShowError(message);
 			}
@@ -155,104 +168,84 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void incomingCancel() {
-		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+		ViewUtils.escapeFromEventThread(new Runnable(){
 			@Override
-			public Void call() throws Exception {
+			public void run() {
 				controller.incomingCancel();
-				return null;
 			}
 		});
 	}
 
 	@Override
 	public void incomingDetect() {
-		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+		ViewUtils.escapeFromEventThread(new Runnable(){
 			@Override
-			public Void call() throws Exception {
+			public void run() {
 				controller.incomingDetect();
-				return null;
+				
 			}
 		});
 	}
 
 	@Override
-	public boolean incomingLoadSettings(final File file) {
-		try {
-			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
+	public void incomingLoadSettings(final File file) {
+		ViewUtils.escapeFromEventThread(new Runnable(){
 				@Override
-				public Boolean call() throws Exception {
-					return controller.incomingLoadSettings(file);
+				public void run() {
+					controller.incomingLoadSettings(file);
 				}
 			});
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			return false;
-		}		
+			
 	}
 
 	@Override
-	public boolean incomingSaveSettings(final ViewTypeSettings settings) {
-		try {
-			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
+	public void incomingSaveSettings(final ViewTypeSettings settings) {
+		ViewUtils.escapeFromEventThread(new Runnable(){
 				@Override
-				public Boolean call() throws Exception {
-					return controller.incomingSaveSettings(settings);
+				public void run() {
+					controller.incomingSaveSettings(settings);
 				}
-			});
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			return false;
-		}		
+			});	
 	}
 
 	@Override
 	public void incomingSetOutDir(final File selectedFile) {
-		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+		ViewUtils.escapeFromEventThread(new Runnable(){
 			@Override
-			public Void call() throws Exception {
+			public void run() {
 				controller.incomingSetOutDir(selectedFile);
-				return null;
 			}
 		});
 	}
 
 	@Override
-	public boolean incomingSetSelectedFiles(final File[] inputFiles) {
-		try {
-			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
+	public void incomingSetSelectedFiles(final File[] inputFiles) {
+		ViewUtils.escapeFromEventThread(new Runnable(){
 				@Override
-				public Boolean call() throws Exception {
-					return controller.incomingSetSelectedFiles(inputFiles);
+				public void run() {
+					controller.incomingSetSelectedFiles(inputFiles);
 				}
 			});
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			return false;
-		}
 	}
 
 	@Override
-	public boolean incomingSetSettings(final ViewTypeSettings settings) {
-		try {
-			return ViewUtils.escapeFromEventThread(new Callable<Boolean>(){
+	public void incomingSetSettings(final ViewTypeSettings settings) {
+		
+			ViewUtils.escapeFromEventThread(new Runnable(){
 				@Override
-				public Boolean call() throws Exception {
-					return controller.incomingSetSettings(settings);
+				public void run() {
+					controller.incomingSetSettings(settings);
 				}
 			});
-		} catch (Exception e) {
-			LOGGER.error(e.getLocalizedMessage(), e);
-			return false;
-		}
+		
 	}
 
 	@Override
 	public void incomingStart() {
-		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+		ViewUtils.escapeFromEventThread(new Runnable(){
 			@Override
-			public Void call() throws Exception {
+			public void run() {
 				controller.incomingStart();
-				return null;
 			}
 		});
 	}
@@ -284,20 +277,19 @@ public class SwingViewManagerImpl implements SwingViewManager {
 
 	@Override
 	public void incomingShutdown() {		
-		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+		ViewUtils.escapeFromEventThread(new Runnable(){
 			@Override
-			public Void call() throws Exception {
+			public void run() {
 				controller.incomingShutdown();
-				return null;
 			}
 		});
 	}
 
 	@Override
 	public void outgoingShutdown() {
-		ViewUtils.escapeFromEventThread(new Callable<Void>(){
+		ViewUtils.escapeFromEventThread(new Runnable(){
 			@Override
-			public Void call() throws Exception {
+			public void run() {
 				LOGGER.info("shutting down Application GUI");
 				for(SwingView v : map.values()){
 					v.hideView();
@@ -305,7 +297,6 @@ public class SwingViewManagerImpl implements SwingViewManager {
 				destroyView();
 				ViewUtils.shutdown();
 				LOGGER.info("Application GUI dead");
-				return null;
 			}
 		});		
 	}

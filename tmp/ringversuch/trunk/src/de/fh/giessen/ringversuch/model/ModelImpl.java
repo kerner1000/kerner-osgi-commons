@@ -37,8 +37,8 @@ public class ModelImpl implements Model {
 	private File outDir;
 	private File[] inputFiles;
 	private volatile ModelSettings settings = new ModelSettingsImpl();
-	private Future<Void> currentJob;
-	private Future<ModelSettings> currentDetectJob;
+	private volatile Future<Void> currentJob;
+	private volatile Future<ModelSettings> currentDetectJob;
 
 	public ModelImpl(ControllerOut controller) {
 		this.controller = controller;
@@ -185,5 +185,10 @@ public class ModelImpl implements Model {
 	public void shutdown() {
 		worker.shutdown();
 		
+	}
+
+	@Override
+	public synchronized File[] getSelectedFiles() {
+		return inputFiles;
 	}
 }

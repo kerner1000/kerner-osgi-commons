@@ -1,6 +1,6 @@
 package de.fh.giessen.ringversuch.view;
 
-import java.awt.Container;
+import java.awt.Component;
 import java.io.File;
 
 import javax.swing.JFrame;
@@ -34,15 +34,12 @@ public abstract class AbstractSwingView implements SwingView {
 		this.manager = manager;
 		frame = new JFrame();
 		panel = new JPanel();
+		panel.setOpaque(true);
 		frame.setContentPane(panel);
 	}
 
 	public SwingViewManager getViewManager() {
 		return manager;
-	}
-
-	public Container getContainer() {
-		return frame;
 	}
 
 	public JPanel getContent() {
@@ -82,13 +79,13 @@ public abstract class AbstractSwingView implements SwingView {
 	}
 
 	@Override
-	public boolean incomingLoadSettings(File file) {
-		return manager.incomingLoadSettings(file);
+	public void incomingLoadSettings(File file) {
+		manager.incomingLoadSettings(file);
 	}
 
 	@Override
-	public boolean incomingSaveSettings(ViewTypeSettings settings) {
-		return manager.incomingSaveSettings(settings);
+	public void incomingSaveSettings(ViewTypeSettings settings) {
+		manager.incomingSaveSettings(settings);
 	}
 
 	@Override
@@ -97,13 +94,13 @@ public abstract class AbstractSwingView implements SwingView {
 	}
 
 	@Override
-	public boolean incomingSetSelectedFiles(File[] inputFiles) {
-		return manager.incomingSetSelectedFiles(inputFiles);
+	public void incomingSetSelectedFiles(File[] inputFiles) {
+		manager.incomingSetSelectedFiles(inputFiles);
 	}
 
 	@Override
-	public boolean incomingSetSettings(ViewTypeSettings settings) {
-		return manager.incomingSetSettings(settings);
+	public void incomingSetSettings(ViewTypeSettings settings) {
+		manager.incomingSetSettings(settings);
 	}
 
 	@Override

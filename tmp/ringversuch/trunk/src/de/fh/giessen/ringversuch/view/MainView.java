@@ -2,6 +2,7 @@ package de.fh.giessen.ringversuch.view;
 
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -46,7 +47,7 @@ public class MainView extends AbstractSwingView {
 		frame = new F();
 		content = new MainContentImpl(this);
 		frame.setTitle(Preferences.NAME + " " + Preferences.VERSION);
-		panel.setOpaque(true);
+		frame.setContentPane(panel);
 		frame.pack();
 		frame.setMinimumSize(new Dimension(400, 200));
 	}
@@ -84,5 +85,10 @@ public class MainView extends AbstractSwingView {
 	@Override
 	public void outgoingSetSettings(ViewTypeSettings settings) {
 		throw new IllegalStateException();
+	}
+
+	@Override
+	public void outgoingSetSelectedFiles(File[] files) {
+		content.outgoingSetSelectedFiles(files);
 	}
 }

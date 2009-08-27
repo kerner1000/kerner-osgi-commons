@@ -9,6 +9,8 @@ public interface Model {
 	void setOutDir(File selectedDir);
 
 	void setSelectedFiles(File[] inputFiles) throws Exception;
+	
+	File[] getSelectedFiles();
 
 	void start() throws Exception;
 	

@@ -20,17 +20,17 @@ public interface ViewIn {
 	/**
 	 * From View to Model
 	 */
-	boolean incomingSetSettings(ViewTypeSettings settings);
+	void incomingSetSettings(ViewTypeSettings settings);
 	
 	/**
 	 * From View to Model
 	 */
-	boolean incomingSaveSettings(ViewTypeSettings settings);
+	void incomingSaveSettings(ViewTypeSettings settings);
 	
 	/**
 	 * From View to Model
 	 */
-	boolean incomingLoadSettings(File file);
+	void incomingLoadSettings(File file);
 	
 	/**
 	 * From View to Model
@@ -50,7 +50,7 @@ public interface ViewIn {
 	/**
 	 * From View to Model
 	 */
-	boolean incomingSetSelectedFiles(File[] inputFiles);
+	void incomingSetSelectedFiles(File[] inputFiles);
 	
 	/**
 	 * From View to Model

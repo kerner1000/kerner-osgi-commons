@@ -32,15 +32,9 @@ public class SettingsContentImpl implements SettingsContent {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == buttonUse) {
-				if (settingsView.incomingSetSettings(getSettings()))
-					settingsView.getViewManager().switchView(ViewState.NORMAL);
-
+				settingsView.incomingSetSettings(getSettings());
 			} else if (e.getSource() == buttonSave) {
-				if (settingsView.incomingSaveSettings(getSettings())) {
-					// its a question of taste if we close the window after
-					// saving or not
-					// controller.hideSettingsView();
-				}
+				settingsView.incomingSaveSettings(getSettings());
 			}
 
 			else if (e.getSource() == buttonDetect) {
@@ -48,15 +42,10 @@ public class SettingsContentImpl implements SettingsContent {
 			}
 
 			else if (e.getSource() == buttonLoad) {
-				final int returnVal = fileChooser.showOpenDialog(settingsView.getContainer());
+				final int returnVal = fileChooser.showOpenDialog(settingsView.getContent());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
-					if (settingsView.incomingLoadSettings(file)) {
-						setSettings(settingsView.outgoingSetSettings());
-						// its a question of taste if we close the window after
-						// setting or not
-						// controller.hideSettingsView();
-					}
+					settingsView.incomingLoadSettings(file);
 				}
 			} else {
 				LOGGER.error("unrecognized action performed: " + e.getSource());
@@ -141,10 +130,11 @@ public class SettingsContentImpl implements SettingsContent {
 		south.add(buttonSave);
 		south.add(buttonUse);
 		south.add(buttonLoad);
-		settingsView.getContainer().setLayout(new BorderLayout());
-		settingsView.getContainer().add(center, BorderLayout.CENTER);
-		settingsView.getContainer().add(north, BorderLayout.NORTH);
-		settingsView.getContainer().add(south, BorderLayout.SOUTH);
+		settingsView.getContent().setLayout(new BorderLayout());
+		settingsView.getContent().add(center, BorderLayout.CENTER);
+		settingsView.getContent().add(north, BorderLayout.NORTH);
+		settingsView.getContent().add(south, BorderLayout.SOUTH);
+		
 	}
 
 	private JPanel initLaborIDPanel(LayoutManager layout) {

@@ -1,6 +1,7 @@
 package de.fh.giessen.ringversuch.view;
 
 import java.awt.Dimension;
+import java.io.File;
 
 import javax.swing.JFrame;
 
@@ -64,6 +65,11 @@ public class SettingsView extends AbstractSwingView {
 
 	@Override
 	public void outgoingShowError(String message) {
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public void outgoingSetSelectedFiles(File[] files) {
 		throw new IllegalStateException();
 	}
 }

@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.view;
 
+import java.io.File;
+
 /**
  * <p>
  * {@code MainContent} provides all functionality, that is typical for
@@ -23,5 +25,7 @@ public interface MainContent extends Content {
 	void setProgress(int current, int max);
 
 	void showError(String message);
+
+	void outgoingSetSelectedFiles(File[] files);
 
 }

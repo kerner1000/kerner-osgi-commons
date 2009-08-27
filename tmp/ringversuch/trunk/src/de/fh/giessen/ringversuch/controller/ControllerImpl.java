@@ -24,8 +24,8 @@ import de.kerner.commons.StringUtils;
 
 /**
  * 
- * @ThreadSave members are volatile. No atomic operations, that affect more than
- *             one members at a time.
+ * @ThreadSave I THINK!! that making view and model volatile is sufficient. But
+ *             im not sure.
  * @author Alexander Kerner
  * @lastVisit 2009-08-26
  * 
@@ -67,60 +67,64 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public synchronized boolean incomingSetSelectedFiles(final File[] inputFiles) {
+	public void incomingSetSelectedFiles(final File[] inputFiles) {
 		if (model == null) {
 			final String m = "model not initialized jet";
 			LOGGER.fatal(m);
 			throw new RuntimeException(m);
 		}
 		try {
+
 			view.outgoingSetWorking();
+
 			model.setSelectedFiles(inputFiles);
+
 			info(inputFiles.length, " ",
 					Preferences.Controller.FILES_LOADED_GOOD);
 			incomingDetect();
+
+			view.outgoingSetSelectedFiles(model.getSelectedFiles());
 			view.outgoingSetReady();
-			return true;
+
 		} catch (WrongFileTypeException e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
+
 			view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD
 					+ " (" + e.getCause().getLocalizedMessage() + ")", true);
 			view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
-			return false;
+			view.outgoingSetOnline();
 
 		} catch (Exception e) {
+
 			LOGGER.error(e.getLocalizedMessage(), e);
 			view.outgoingPrintMessage(Preferences.Controller.FILES_LOADED_BAD
 					+ " (" + e.getCause().getLocalizedMessage() + ")", true);
 			view.outgoingShowError(Preferences.Controller.FILES_LOADED_BAD);
-			return false;
-		} finally {
-			view.outgoingSetReady();
+			view.outgoingSetOnline();
+
 		}
 	}
 
 	@Override
-	public synchronized void incomingDetect() {
+	public void incomingDetect() {
 		LOGGER.info("detecting settings");
 		try {
-			view.outgoingSetWorking();
-			detectProbeCell();
-			detectLaborCell();
-			detectColumnOfSubstances();
-			detectValuesBeginCell();
-			detectValuesEndCell();
-			final ModelSettings ms = model.getSettings();
-			view.outgoingSetSettings(SettingsConverter
-					.modelSettingsToViewSettings(ms));
-			view.outgoingSetReady();
+			synchronized (model) {
+				detectProbeCell();
+				detectLaborCell();
+				detectColumnOfSubstances();
+				detectValuesBeginCell();
+				detectValuesEndCell();
+				final ModelSettings ms = model.getSettings();
+				view.outgoingSetSettings(SettingsConverter
+						.modelSettingsToViewSettings(ms));
+			}
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			String m = StringUtils.getString(Preferences.Controller.DETECT_BAD,
 					" (", e.getLocalizedMessage(), ")");
 			view.outgoingPrintMessage(m, true);
 			view.outgoingShowError(Preferences.Controller.DETECT_BAD);
-		}finally{
-			view.outgoingSetReady();
 		}
 	}
 
@@ -204,7 +208,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public boolean incomingLoadSettings(final File file) {
+	public void incomingLoadSettings(final File file) {
 		try {
 			LOGGER.debug("loading settings");
 			model.setSettings(SettingsConverter
@@ -215,20 +219,17 @@ class ControllerImpl implements Controller {
 							" from ", file);
 			info(m);
 			view.outgoingPrintMessage(m, false);
-			return Boolean.TRUE;
-
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			view.outgoingPrintMessage(StringUtils.getString(
 					Preferences.Controller.SETTINGS_LOADED_BAD, " (", e
 							.getLocalizedMessage(), ")"), true);
 			view.outgoingShowError(Preferences.Controller.SETTINGS_LOADED_BAD);
-			return Boolean.FALSE;
 		}
 	}
 
 	@Override
-	public boolean incomingSaveSettings(final ViewTypeSettings settings) {
+	public void incomingSaveSettings(final ViewTypeSettings settings) {
 		try {
 
 			LOGGER.debug("saving settings");
@@ -240,8 +241,6 @@ class ControllerImpl implements Controller {
 			info(Preferences.Controller.SETTINGS_SAVED_GOOD);
 			view.outgoingPrintMessage(
 					Preferences.Controller.SETTINGS_SAVED_GOOD, false);
-			return true;
-
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			final String m = StringUtils.getString(
@@ -249,12 +248,11 @@ class ControllerImpl implements Controller {
 							.getLocalizedMessage(), ")");
 			view.outgoingPrintMessage(m, true);
 			view.outgoingShowError(Preferences.Controller.SETTINGS_SAVED_BAD);
-			return false;
 		}
 	}
 
 	@Override
-	public boolean incomingSetSettings(final ViewTypeSettings settings) {
+	public void incomingSetSettings(final ViewTypeSettings settings) {
 		try {
 			debug("setting settings");
 			model.setSettings(SettingsConverter
@@ -262,7 +260,6 @@ class ControllerImpl implements Controller {
 			info(Preferences.Controller.SETTINGS_SET_GOOD);
 			view.outgoingPrintMessage(Preferences.Controller.SETTINGS_SET_GOOD,
 					false);
-			return true;
 		} catch (Exception e) {
 			LOGGER.error(e.getLocalizedMessage(), e);
 			final String m = StringUtils.getString(
@@ -270,7 +267,6 @@ class ControllerImpl implements Controller {
 							.getLocalizedMessage(), ")");
 			view.outgoingPrintMessage(m, true);
 			view.outgoingShowError(Preferences.Controller.SETTINGS_SET_BAD);
-			return false;
 		}
 	}
 
@@ -357,7 +353,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void incomingShutdown() {
+	public synchronized void incomingShutdown() {
 		LOGGER.info("shutting down Application");
 		model.shutdown();
 		LOGGER.info("Application dead");
@@ -365,7 +361,7 @@ class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void outgoingShutdown() {
+	public synchronized void outgoingShutdown() {
 		// Model will never shutdown the app.
 		// überflüssgige methode ??
 	}

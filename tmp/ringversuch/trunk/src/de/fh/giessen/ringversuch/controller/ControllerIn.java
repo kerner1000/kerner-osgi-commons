@@ -30,10 +30,8 @@ public interface ControllerIn {
 	 * from View to Model
 	 * </p>
 	 * 
-	 * 
-	 * @return true, if settings have been accepted by model, false otherwise.
 	 */
-	boolean incomingSetSettings(ViewTypeSettings settings);
+	void incomingSetSettings(ViewTypeSettings settings);
 
 	// Must return a boolean value, so that view implementation does know if the
 	// current window may be closed.
@@ -42,9 +40,8 @@ public interface ControllerIn {
 	 * from View to Model
 	 * </p>
 	 * 
-	 * @return true, if successful, false otherwise.
 	 */
-	boolean incomingSaveSettings(ViewTypeSettings settings);
+	void incomingSaveSettings(ViewTypeSettings settings);
 
 	// Must return a boolean value, so that view implementation does know if the
 	// current window may be closed.
@@ -54,10 +51,8 @@ public interface ControllerIn {
 	 * from View to Model
 	 * </p>
 	 * 
-	 * 
-	 * @return true, if successful, false otherwise.
 	 */
-	boolean incomingLoadSettings(File file);
+	void incomingLoadSettings(File file);
 
 	/**
 	 * <p>
@@ -92,11 +87,8 @@ public interface ControllerIn {
 	 * from View to Model
 	 * </p>
 	 * 
-	 * 
-	 * @param inputFiles
-	 *            array of input files
 	 */
-	boolean incomingSetSelectedFiles(File[] inputFiles);
+	void incomingSetSelectedFiles(File[] inputFiles);
 
 	/**
 	 * <p>

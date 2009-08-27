@@ -1,5 +1,7 @@
 package de.fh.giessen.ringversuch.view;
 
+import java.io.File;
+
 import de.fh.giessen.ringversuch.view.typesettings.ViewTypeSettings;
 
 /**
@@ -53,5 +55,10 @@ public interface ViewOut {
 	 * from Model to View
 	 */
 	void outgoingSetProgress(int current, int max);
+	
+	/**
+	 * from Model to View
+	 */
+	void outgoingSetSelectedFiles(File[] files);
 	
 }
