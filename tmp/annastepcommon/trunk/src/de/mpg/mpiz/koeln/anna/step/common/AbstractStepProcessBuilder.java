@@ -114,6 +114,4 @@ public abstract class AbstractStepProcessBuilder {
 	
 	protected abstract List<String> getCommandList();
 
-	
-
 }
