@@ -4,7 +4,8 @@ Bundle-Name: Databean
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.server.data
 Bundle-Version: 0.0.1
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Import-Package: de.bioutils.fasta,
+Import-Package: de.bioutils,
+ de.bioutils.fasta,
  de.bioutils.gff,
  de.bioutils.gtf,
  de.kerner.osgi.commons.logger.dispatcher

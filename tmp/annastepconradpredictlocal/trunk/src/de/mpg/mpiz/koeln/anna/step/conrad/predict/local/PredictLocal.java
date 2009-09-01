@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import de.kerner.commons.CommandStringBuilder;
+import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.step.common.AbstractStepProcessBuilder;
 import de.mpg.mpiz.koeln.anna.step.conrad.common.AbstractConradPredictStep;
@@ -30,7 +31,7 @@ public class PredictLocal extends AbstractConradPredictStep {
 			builder.addFlagCommand("predict");
 			builder.addFlagCommand(trainingFile.getAbsolutePath());
 			builder.addFlagCommand(workingDir.getAbsolutePath());
-			builder.addFlagCommand(resultFile.getParent() + "result");
+			builder.addFlagCommand(resultFile.getParent() + FileUtils.NEW_LINE + "result");
 			return builder.getCommandList();
 		}
 
