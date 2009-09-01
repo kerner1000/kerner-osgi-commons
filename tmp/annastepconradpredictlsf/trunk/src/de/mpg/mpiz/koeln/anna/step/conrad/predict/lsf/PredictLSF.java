@@ -40,7 +40,7 @@ public class PredictLSF extends AbstractConradPredictStep {
 			// necessary, because "result" parameter will result in a file named
 			// result.gtf. If we here hand over "result.gtf" we later receive
 			// file named "result.gtf.gtf"
-			builder.addFlagCommand(resultFile.getParent() + FileUtils.NEW_LINE + "result");
+			builder.addFlagCommand(resultFile.getParentFile().getAbsolutePath() + File.separator + "result");
 			return builder.getCommandList();
 		}
 	}

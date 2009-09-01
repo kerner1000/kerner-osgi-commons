@@ -31,7 +31,7 @@ public class PredictLocal extends AbstractConradPredictStep {
 			builder.addFlagCommand("predict");
 			builder.addFlagCommand(trainingFile.getAbsolutePath());
 			builder.addFlagCommand(workingDir.getAbsolutePath());
-			builder.addFlagCommand(resultFile.getParent() + FileUtils.NEW_LINE + "result");
+			builder.addFlagCommand(resultFile.getParentFile().getAbsolutePath() + File.separator + "result");
 			return builder.getCommandList();
 		}
 
