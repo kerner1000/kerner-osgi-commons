@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Kerner-Commons Plug-in
+Bundle-Name: Kerner-Commons
 Bundle-SymbolicName: de.kerner.commons
-Bundle-Version: 0.0.7
+Bundle-Version: 0.0.8
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
- lib/kerner-commons-0.0.7.jar
+ lib/kerner-commons-0.0.8.jar
 Export-Package: de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.commons.xml,
