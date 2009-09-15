@@ -3,12 +3,10 @@ package de.mpg.mpiz.koeln.anna.step;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
-
+import de.kerner.commons.file.FileUtils;
+import de.kerner.commons.StringUtils;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-
-import de.kerner.commons.StringUtils;
-import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
@@ -66,7 +64,7 @@ public abstract class AbstractStep implements BundleActivator, Step {
 	 * should only be called by the OSGi framework
 	 */
 	public void start(final BundleContext context) throws Exception {
-		logger.debug(this, StringUtils.getString("starting step ", this));
+		logger.debug(this, "starting step " + this);
 		try {
 			new GetServiceAndRun<Server>(Server.class, context) {
 				@Override
