@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gtf.element.GTFElement;
 import de.bioutils.fasta.FASTAElement;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
@@ -22,8 +21,8 @@ public class DataBeanImpl implements DataBean {
 	private static final long serialVersionUID = 2776955959983685805L;
 	private ArrayList<FASTAElement> verifiedGenesFastas = new ArrayList<FASTAElement>();
 	private ArrayList<FASTAElement> inputSequences = new ArrayList<FASTAElement>();
-	private ArrayList<GTFElement> verifiedGenesGFFs = new ArrayList<GTFElement>();
-	private ArrayList<GTFElement> predictedGenesGFFs = new ArrayList<GTFElement>();
+	private ArrayList<NewGFFElement> verifiedGenesGFFs = new ArrayList<NewGFFElement>();
+	private ArrayList<NewGFFElement> predictedGenesGFFs = new ArrayList<NewGFFElement>();
 	private ArrayList<NewGFFElement> repeatMaskerGFF = new ArrayList<NewGFFElement>();
 	private File conradTrainingFile = null;
 //	private final LogDispatcher logger;
@@ -103,8 +102,8 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized void setVerifiedGenesGtf(
-			ArrayList<? extends GTFElement> el) throws DataBeanAccessException {
+	public synchronized void setVerifiedGenesGff(
+			ArrayList<? extends NewGFFElement> el) throws DataBeanAccessException {
 		if (el == null)
 			throw new NullPointerException();
 		if (el.size() == 0) {
@@ -133,10 +132,10 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf()
+	public synchronized ArrayList<? extends NewGFFElement> getVerifiedGenesGff()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+			return new ArrayList<NewGFFElement>(deepCopy(ArrayList.class,
 					verifiedGenesGFFs));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -160,10 +159,10 @@ public class DataBeanImpl implements DataBean {
 		this.conradTrainingFile = new File(file.getAbsolutePath());
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getPredictedGenesGtf()
+	public synchronized ArrayList<? extends NewGFFElement> getPredictedGenesGff()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<GTFElement>(deepCopy(ArrayList.class,
+			return new ArrayList<NewGFFElement>(deepCopy(ArrayList.class,
 					predictedGenesGFFs));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -173,7 +172,7 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized void setPredictedGenesGtf(
-			ArrayList<? extends GTFElement> elements)
+			ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException {
 		if (elements == null)
 			throw new NullPointerException();

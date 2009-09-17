@@ -10,9 +10,9 @@ import org.osgi.framework.BundleContext;
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
-import de.bioutils.gtf.element.GTFElement;
-import de.bioutils.gtf.file.GTFFile;
-import de.bioutils.gtf.file.GTFFileImpl;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gff.file.NewGFFFile;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -84,8 +84,8 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		try {
 			final boolean fastas = (data.getVerifiedGenesFasta() != null);
 			final boolean fastasSize = (data.getVerifiedGenesFasta().size() != 0);
-			final boolean gtf = (data.getVerifiedGenesGtf() != null);
-			final boolean gtfSize = (data.getVerifiedGenesGtf().size() != 0);
+			final boolean gtf = (data.getVerifiedGenesGff() != null);
+			final boolean gtfSize = (data.getVerifiedGenesGff().size() != 0);
 			logger.debug(this, "requirements: fastas=" + fastas);
 			logger.debug(this, "requirements: fastasSize=" + fastasSize);
 			logger.debug(this, "requirements: gtf=" + gtf);
@@ -116,9 +116,9 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		logger.debug(this, "ref.gtf=" + inGff);
 		
 		logger.debug(this, "getting gtfs for veryfied genes");
-		final ArrayList<? extends GTFElement> gtfs = data.getVerifiedGenesGtf();
+		final ArrayList<? extends NewGFFElement> gtfs = data.getVerifiedGenesGff();
 		
-		final GTFFile gtfFile = new GTFFileImpl(gtfs);
+		final NewGFFFile gtfFile = new NewGFFFileImpl(gtfs);
 		
 		logger.debug(this, "writing gtfs to " + inGff);
 		gtfFile.write(inGff);

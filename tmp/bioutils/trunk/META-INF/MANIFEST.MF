@@ -25,9 +25,5 @@ Export-Package: de.bioutils;uses:="org.apache.log4j",
  de.bioutils.gff3.element,
  de.bioutils.gff3.file,
  de.bioutils.gff3.filter,
- de.bioutils.gff3.parser,
- de.bioutils.gtf;uses:="de.bioutils,de.bioutils.gtf.element",
- de.bioutils.gtf.element,
- de.bioutils.gtf.file,
- de.bioutils.gtf.parser
+ de.bioutils.gff3.parser
 Import-Package: de.kerner.commons.file

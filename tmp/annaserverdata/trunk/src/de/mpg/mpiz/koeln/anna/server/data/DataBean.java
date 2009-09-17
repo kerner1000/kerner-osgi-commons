@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gtf.element.GTFElement;
 import de.bioutils.fasta.FASTAElement;
 
 public interface DataBean extends Serializable {
@@ -17,20 +16,20 @@ public interface DataBean extends Serializable {
 	public ArrayList<? extends FASTAElement> getVerifiedGenesFasta()
 			throws DataBeanAccessException;
 
-	public ArrayList<? extends GTFElement> getVerifiedGenesGtf()
+	public ArrayList<? extends NewGFFElement> getVerifiedGenesGff()
 			throws DataBeanAccessException;
 
-	public void setVerifiedGenesGtf(ArrayList<? extends GTFElement> elements)
+	public void setVerifiedGenesGff(ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException;
 
 	public File getConradTrainingFile() throws DataBeanAccessException;
 
 	public void setConradTrainingFile(File file) throws DataBeanAccessException;
 
-	public ArrayList<? extends GTFElement> getPredictedGenesGtf()
+	public ArrayList<? extends NewGFFElement> getPredictedGenesGff()
 			throws DataBeanAccessException;
 
-	public void setPredictedGenesGtf(ArrayList<? extends GTFElement> elements)
+	public void setPredictedGenesGtf(ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException;
 
 	public void setInputSequences(ArrayList<? extends FASTAElement> sequences)

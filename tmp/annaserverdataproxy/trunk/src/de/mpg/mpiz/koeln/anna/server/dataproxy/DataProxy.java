@@ -5,12 +5,11 @@ import java.util.ArrayList;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gtf.element.GTFElement;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 
 public interface DataProxy {
 
-	void setVerifiedGenesGtf(ArrayList<? extends GTFElement> elements)
+	void setVerifiedGenesGff(ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException;
 
 	void setVerifiedGenesFasta(ArrayList<? extends FASTAElement> sequences)
@@ -19,7 +18,7 @@ public interface DataProxy {
 	ArrayList<? extends FASTAElement> getVerifiedGenesFasta()
 			throws DataBeanAccessException;
 
-	ArrayList<? extends GTFElement> getVerifiedGenesGtf()
+	ArrayList<? extends NewGFFElement> getVerifiedGenesGff()
 			throws DataBeanAccessException;
 
 	ArrayList<? extends FASTAElement> getInputSequences()
@@ -33,10 +32,10 @@ public interface DataProxy {
 	void setConradTrainingFile(File trainingFile)
 			throws DataBeanAccessException;
 
-	ArrayList<? extends GTFElement> getPredictedGenesGtf()
+	ArrayList<? extends NewGFFElement> getPredictedGenesGtf()
 			throws DataBeanAccessException;
 
-	void setPredictedGenesGtf(ArrayList<? extends GTFElement> result)
+	void setPredictedGenesGff(ArrayList<? extends NewGFFElement> result)
 			throws DataBeanAccessException;
 
 	ArrayList<? extends NewGFFElement> getRepeatMaskerGff()

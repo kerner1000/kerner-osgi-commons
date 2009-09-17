@@ -11,9 +11,9 @@ import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gtf.element.GTFElement;
-import de.bioutils.gtf.file.GTFFile;
-import de.bioutils.gtf.file.GTFFileImpl;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gff.file.NewGFFFile;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -78,11 +78,11 @@ public class VerifiedGenesReader extends AbstractStep {
 	private void doGtf(DataProxy data) throws IOException,
 			GFFFormatErrorException, DataBeanAccessException {
 		logger.info(this, "reading GTF file " + gtf);
-		final GTFFile gtfFile = new GTFFileImpl(gtf, null);
-		final Collection<? extends GTFElement> elements = gtfFile
+		final NewGFFFile gtfFile = NewGFFFileImpl.parseFile(gtf);
+		final Collection<? extends NewGFFElement> elements = gtfFile
 				.getElements();
 		logger.info(this, "done reading gtf");
-		data.setVerifiedGenesGtf(new ArrayList<GTFElement>(elements));
+		data.setVerifiedGenesGff(new ArrayList<NewGFFElement>(elements));
 	}
 
 	private void doFasta(DataProxy data) throws IOException,
@@ -103,8 +103,8 @@ public class VerifiedGenesReader extends AbstractStep {
 			// TODO size == 0 sub-optimal indicator
 			final Collection<? extends FASTAElement> list1 = data
 					.getVerifiedGenesFasta();
-			final Collection<? extends GTFElement> list2 = data
-					.getVerifiedGenesGtf();
+			final Collection<? extends NewGFFElement> list2 = data
+					.getVerifiedGenesGff();
 			return (list1 != null && list1.size() != 0 && list2 != null && list2
 					.size() != 0);
 		} catch (Throwable t) {

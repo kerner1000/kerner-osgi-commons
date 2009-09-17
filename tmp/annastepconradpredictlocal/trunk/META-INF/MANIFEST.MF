@@ -7,7 +7,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: de.bioutils,
  de.bioutils.fasta,
  de.bioutils.gff,
- de.bioutils.gtf,
  de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.commons.xml,

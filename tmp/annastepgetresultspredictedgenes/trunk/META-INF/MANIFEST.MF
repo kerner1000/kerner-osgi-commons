@@ -6,10 +6,9 @@ Bundle-Version: 0.1.2
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.getresults.predictedgenes.StepGetPredictedGenes
 Import-Package: de.bioutils,
  de.bioutils.gff,
+ de.bioutils.gff.element,
+ de.bioutils.gff.file,
  de.bioutils.gff.generic,
- de.bioutils.gtf,
- de.bioutils.gtf.element,
- de.bioutils.gtf.file,
  de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.anna.server.data,
  de.mpg.mpiz.koeln.anna.server.dataproxy,

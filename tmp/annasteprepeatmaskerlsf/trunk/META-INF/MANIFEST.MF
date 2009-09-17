@@ -6,7 +6,6 @@ Bundle-Version: 0.2.1
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.repeatmasker.lsf.StepRepeatMaskerLSF
 Import-Package: de.bioutils.fasta,
  de.bioutils.gff,
- de.bioutils.gtf,
  de.kerner.commons,
  de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.anna.server,

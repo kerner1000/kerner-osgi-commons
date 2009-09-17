@@ -5,7 +5,6 @@ Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.conrad.train.local
 Bundle-Version: 0.2.1
 Import-Package: de.bioutils.fasta,
  de.bioutils.gff,
- de.bioutils.gtf,
  de.kerner.commons,
  de.kerner.commons.file,
  de.kerner.osgi.commons.logger.dispatcher,

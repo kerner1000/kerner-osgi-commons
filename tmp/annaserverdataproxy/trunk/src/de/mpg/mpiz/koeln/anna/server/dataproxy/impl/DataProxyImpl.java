@@ -9,7 +9,6 @@ import java.util.Properties;
 
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.gff.element.NewGFFElement;
-import de.bioutils.gtf.element.GTFElement;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
@@ -70,10 +69,10 @@ public class DataProxyImpl implements DataProxy {
 		return data.getVerifiedGenesFasta();
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getVerifiedGenesGtf()
+	public synchronized ArrayList<? extends NewGFFElement> getVerifiedGenesGff()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
-		return data.getVerifiedGenesGtf();
+		return data.getVerifiedGenesGff();
 	}
 
 	public synchronized void setVerifiedGenesFasta(
@@ -84,11 +83,11 @@ public class DataProxyImpl implements DataProxy {
 		strategy.writeDataBean(data, file);
 	}
 
-	public synchronized void setVerifiedGenesGtf(
-			ArrayList<? extends GTFElement> elements)
+	public synchronized void setVerifiedGenesGff(
+			ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
-		data.setVerifiedGenesGtf(elements);
+		data.setVerifiedGenesGff(elements);
 		strategy.writeDataBean(data, file);
 	}
 
@@ -119,14 +118,14 @@ public class DataProxyImpl implements DataProxy {
 		strategy.writeDataBean(data, file);
 	}
 
-	public synchronized ArrayList<? extends GTFElement> getPredictedGenesGtf()
+	public synchronized ArrayList<? extends NewGFFElement> getPredictedGenesGtf()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
-		return data.getPredictedGenesGtf();
+		return data.getPredictedGenesGff();
 	}
 
-	public synchronized void setPredictedGenesGtf(
-			ArrayList<? extends GTFElement> result)
+	public synchronized void setPredictedGenesGff(
+			ArrayList<? extends NewGFFElement> result)
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		data.setPredictedGenesGtf(result);

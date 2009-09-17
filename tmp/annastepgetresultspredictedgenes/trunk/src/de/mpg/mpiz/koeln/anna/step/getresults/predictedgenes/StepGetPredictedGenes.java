@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.bioutils.gtf.element.GTFElement;
-import de.bioutils.gtf.file.GTFFile;
-import de.bioutils.gtf.file.GTFFileImpl;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gff.file.NewGFFFile;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
@@ -26,7 +26,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends GTFElement> elements = data
+			final ArrayList<? extends NewGFFElement> elements = data
 					.getPredictedGenesGtf();
 			// TODO predicted genes may be size==0
 			return (elements != null && elements.size() != 0);
@@ -62,10 +62,10 @@ public class StepGetPredictedGenes extends AbstractStep {
 	}
 
 	private void writeAllToSeparateFile(File outDir, DataProxy data) throws DataBeanAccessException, IOException {
-		ArrayList<? extends GTFElement> ele = data.getPredictedGenesGtf();
-		final GTFFile file = new GTFFileImpl(ele);
-		Map<String, List<GTFElement>> set = splitToSeqNames(file);
-		for(Entry<String, List<GTFElement>> e : set.entrySet()){
+		ArrayList<? extends NewGFFElement> ele = data.getPredictedGenesGtf();
+		final NewGFFFile file = new NewGFFFileImpl(ele);
+		Map<String, List<NewGFFElement>> set = splitToSeqNames(file);
+		for(Entry<String, List<NewGFFElement>> e : set.entrySet()){
 			String fileName = super.getStepProperties()
 			.getProperty(OUT_FILE_NAME_KEY);
 			final int dot = fileName.lastIndexOf(".");
@@ -75,20 +75,20 @@ public class StepGetPredictedGenes extends AbstractStep {
 			final File outFile = new File(outDir, fileName);
 			logger.info(this, ": writing predicted genes to "
 					+ outFile);
-			final GTFFile file2 = new GTFFileImpl(e.getValue());
+			final NewGFFFile file2 = new NewGFFFileImpl(e.getValue());
 			file2.write(outFile);
 		}
 		
 	}
 
-	private static Map<String, List<GTFElement>> splitToSeqNames(GTFFile file) {
-		final Map<String, List<GTFElement>> map = new HashMap<String, List<GTFElement>>();
-		for(GTFElement e : file.getElements()){
+	private static Map<String, List<NewGFFElement>> splitToSeqNames(NewGFFFile file) {
+		final Map<String, List<NewGFFElement>> map = new HashMap<String, List<NewGFFElement>>();
+		for(NewGFFElement e : file.getElements()){
 			final String id = e.getSeqName();
 			if(map.containsKey(id)){
 				map.get(id).add(e);
 			} else {
-				final List<GTFElement> l = new ArrayList<GTFElement>();
+				final List<NewGFFElement> l = new ArrayList<NewGFFElement>();
 				l.add(e);
 				map.put(id, l);
 			}
@@ -101,7 +101,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 				.getProperty(OUT_FILE_NAME_KEY));
 		logger.info(this, ": writing predicted genes to "
 				+ outFile);
-		final GTFFile file = new GTFFileImpl(data
+		final NewGFFFile file = new NewGFFFileImpl(data
 				.getPredictedGenesGtf());
 		file.write(outFile);	
 	}

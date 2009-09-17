@@ -9,8 +9,8 @@ import java.util.Collection;
 import org.osgi.framework.BundleContext;
 import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gtf.element.GTFElement;
-import de.bioutils.gtf.file.*;
+import de.bioutils.gff.element.*;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -119,9 +119,9 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 
 	private void update(File resultFile, DataProxy data) throws IOException,
 			GFFFormatErrorException, DataBeanAccessException {
-		final Collection<? extends GTFElement> c = new GTFFileImpl(resultFile, null)
+		final Collection<? extends NewGFFElement> c = NewGFFFileImpl.parseFile(resultFile)
 				.getElements();
-		data.setPredictedGenesGtf(new ArrayList<GTFElement>(c));
+		data.setPredictedGenesGff(new ArrayList<NewGFFElement>(c));
 	}
 
 	private void createFiles(DataProxy data) throws DataBeanAccessException,
