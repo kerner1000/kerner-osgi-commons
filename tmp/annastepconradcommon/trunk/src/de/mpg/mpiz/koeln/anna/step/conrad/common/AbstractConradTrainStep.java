@@ -100,6 +100,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 
 	private void createFiles(DataProxy data) throws DataBeanAccessException,
 			IOException {
+		try{
 		inFasta = new File(workingDir, "ref.fasta");
 		logger.debug(this, "ref.fasta=" + inFasta);
 		
@@ -123,8 +124,12 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		logger.debug(this, "writing gtfs to " + inGff);
 		gtfFile.write(inGff);
 		
-		inFasta.deleteOnExit();
-		inGff.deleteOnExit();
+//		inFasta.deleteOnExit();
+//		inGff.deleteOnExit();
+		}catch(Throwable t){
+			t.printStackTrace();
+			System.exit(15);
+		}
 	}
 	
 	public boolean run(DataProxy data, StepProcessObserver listener)
