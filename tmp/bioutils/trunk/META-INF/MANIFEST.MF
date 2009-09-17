@@ -2,12 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bioutils
 Bundle-SymbolicName: de.bioutils
-Bundle-Version: 0.0.4
+Bundle-Version: 0.0.5
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
- lib/commons-lang-2.4.jar,
  lib/nanoxml-2.2.3.jar,
- lib/bioutils-0.0.4.jar
+ lib/bioutils-0.0.5.jar
 Export-Package: de.bioutils,
  de.bioutils.blast,
  de.bioutils.blast.filter,
