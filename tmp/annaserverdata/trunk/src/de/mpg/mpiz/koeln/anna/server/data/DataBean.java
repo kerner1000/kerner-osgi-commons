@@ -4,17 +4,17 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import de.bioutils.fasta.FASTASequence;
-import de.bioutils.gff.GFFElement;
-import de.bioutils.gtf.GTFElement;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gtf.element.GTFElement;
+import de.bioutils.fasta.FASTAElement;
 
 public interface DataBean extends Serializable {
 
 	public void setVerifiedGenesFasta(
-			ArrayList<? extends FASTASequence> sequences)
+			ArrayList<? extends FASTAElement> sequences)
 			throws DataBeanAccessException;
 
-	public ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
+	public ArrayList<? extends FASTAElement> getVerifiedGenesFasta()
 			throws DataBeanAccessException;
 
 	public ArrayList<? extends GTFElement> getVerifiedGenesGtf()
@@ -33,16 +33,16 @@ public interface DataBean extends Serializable {
 	public void setPredictedGenesGtf(ArrayList<? extends GTFElement> elements)
 			throws DataBeanAccessException;
 
-	public void setInputSequences(ArrayList<? extends FASTASequence> sequences)
+	public void setInputSequences(ArrayList<? extends FASTAElement> sequences)
 			throws DataBeanAccessException;
 
-	public ArrayList<? extends FASTASequence> getInputSequences()
+	public ArrayList<? extends FASTAElement> getInputSequences()
 			throws DataBeanAccessException;
 
-	public ArrayList<? extends GFFElement> getRepeatMaskerGff()
+	public ArrayList<? extends NewGFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException;
 
-	public void setRepeatMaskerGff(ArrayList<? extends GFFElement> elements)
+	public void setRepeatMaskerGff(ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException;
 
 }

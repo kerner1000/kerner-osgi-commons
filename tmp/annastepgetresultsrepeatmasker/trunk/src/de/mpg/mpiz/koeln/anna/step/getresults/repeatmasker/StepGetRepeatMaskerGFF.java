@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import org.osgi.framework.BundleContext;
 
-import de.bioutils.gff.GFFElement;
-import de.bioutils.gff.GFFFile;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gff.file.NewGFFFile;
+import de.bioutils.gff.file.NewGFFFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
@@ -37,7 +38,7 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 	public boolean requirementsSatisfied(DataProxy data)
 			throws StepExecutionException {
 		try {
-			final ArrayList<? extends GFFElement> elements = data
+			final ArrayList<? extends NewGFFElement> elements = data
 					.getRepeatMaskerGff();
 			// TODO predicted genes may be size==0
 			logger.debug(this, "requirements satisfied="+(elements != null && elements.size() != 0));
@@ -61,7 +62,7 @@ public class StepGetRepeatMaskerGFF extends AbstractStep {
 			if (success) {
 				System.out.println(this + ": writing repeatmasker gff to "
 						+ outFile);
-				final GFFFile file = new GFFFile(data
+				final NewGFFFile file = new NewGFFFileImpl(data
 						.getRepeatMaskerGff());
 				file.write(outFile);
 			}

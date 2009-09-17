@@ -7,12 +7,13 @@ import java.util.Collection;
 
 import org.osgi.framework.BundleContext;
 
-import de.bioutils.fasta.FASTAFile;
-import de.bioutils.fasta.FASTAFileImpl;
-import de.bioutils.fasta.FASTASequence;
+import de.bioutils.fasta.FASTAElement;
+import de.bioutils.fasta.NewFASTAFile;
+import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gtf.GTFElement;
-import de.bioutils.gtf.GTFFile;
+import de.bioutils.gtf.element.GTFElement;
+import de.bioutils.gtf.file.GTFFile;
+import de.bioutils.gtf.file.GTFFileImpl;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcherImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -77,7 +78,7 @@ public class VerifiedGenesReader extends AbstractStep {
 	private void doGtf(DataProxy data) throws IOException,
 			GFFFormatErrorException, DataBeanAccessException {
 		logger.info(this, "reading GTF file " + gtf);
-		final GTFFile gtfFile = new GTFFile(gtf, null);
+		final GTFFile gtfFile = new GTFFileImpl(gtf, null);
 		final Collection<? extends GTFElement> elements = gtfFile
 				.getElements();
 		logger.info(this, "done reading gtf");
@@ -88,10 +89,10 @@ public class VerifiedGenesReader extends AbstractStep {
 			DataBeanAccessException, StepExecutionException {
 		try{
 		logger.info(this, "reading FASTA file " + fasta);
-		final FASTAFile fastaFile = new FASTAFileImpl(fasta, null);
-		final Collection<? extends FASTASequence> sequences = fastaFile.getElements();
+		final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(fasta);
+		final Collection<? extends FASTAElement> sequences = fastaFile.getElements();
 		logger.info(this, "done reading fasta");
-		data.setVerifiedGenesFasta(new ArrayList<FASTASequence>(sequences));
+		data.setVerifiedGenesFasta(new ArrayList<FASTAElement>(sequences));
 		} catch (Throwable t) {
 			StepUtils.handleException(this, t, logger);
 		}
@@ -100,7 +101,7 @@ public class VerifiedGenesReader extends AbstractStep {
 	public boolean canBeSkipped(DataProxy data) throws StepExecutionException {
 		try {
 			// TODO size == 0 sub-optimal indicator
-			final Collection<? extends FASTASequence> list1 = data
+			final Collection<? extends FASTAElement> list1 = data
 					.getVerifiedGenesFasta();
 			final Collection<? extends GTFElement> list2 = data
 					.getVerifiedGenesGtf();

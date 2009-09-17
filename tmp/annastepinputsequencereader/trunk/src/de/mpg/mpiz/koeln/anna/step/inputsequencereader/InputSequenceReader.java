@@ -2,9 +2,10 @@ package de.mpg.mpiz.koeln.anna.step.inputsequencereader;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 
-import de.bioutils.fasta.FASTAFileImpl;
-import de.bioutils.fasta.FASTASequence;
+import de.bioutils.fasta.FASTAElement;
+import de.bioutils.fasta.NewFASTAFileImpl;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
 import de.mpg.mpiz.koeln.anna.step.common.StepExecutionException;
@@ -42,15 +43,14 @@ public class InputSequenceReader extends AbstractStep {
 			final File inFile = new File(getStepProperties().getProperty(
 					INFILE_KEY));
 			logger.debug(this, "reading file " + inFile);
-			final ArrayList<? extends FASTASequence> fastas = new FASTAFileImpl(
-					inFile, null).getElements();
+			final Collection<? extends FASTAElement> fastas = NewFASTAFileImpl.parse(inFile).getElements();
 			if (fastas == null || fastas.size() == 0) {
 				logger.warn(this, "file " + inFile + " is invalid");
 				return false;
 			}
 			logger.debug(this, "got input sequences:"
 					+ fastas.iterator().next().getHeader() + " [...]");
-			data.setInputSequences(fastas);
+			data.setInputSequences(new ArrayList<FASTAElement>(fastas));
 			return true;
 		} catch (Exception e) {
 			StepUtils.handleException(this, e, logger);

@@ -4,7 +4,10 @@ Bundle-Name: Get-results-RepeatMasker Plug-in
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.getresults.repeatmasker
 Bundle-Version: 0.0.1
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.getresults.repeatmasker.StepGetRepeatMaskerGFF
-Import-Package: de.bioutils.gff,
+Import-Package: de.bioutils,
+ de.bioutils.gff,
+ de.bioutils.gff.element,
+ de.bioutils.gff.file,
  de.bioutils.gtf,
  de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.anna.server,

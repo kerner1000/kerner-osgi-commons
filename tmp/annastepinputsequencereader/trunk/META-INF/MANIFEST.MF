@@ -4,7 +4,8 @@ Bundle-Name: InputSequenceReader
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.inputsequencereader
 Bundle-Version: 0.1.0
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.inputsequencereader.InputSequenceReader
-Import-Package: de.bioutils.fasta,
+Import-Package: de.bioutils,
+ de.bioutils.fasta,
  de.kerner.osgi.commons.logger.dispatcher,
  de.mpg.mpiz.koeln.anna.server,
  de.mpg.mpiz.koeln.anna.server.data,

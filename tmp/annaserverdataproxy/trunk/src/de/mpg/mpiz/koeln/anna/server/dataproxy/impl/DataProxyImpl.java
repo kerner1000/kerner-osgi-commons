@@ -7,16 +7,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import de.bioutils.fasta.FASTASequence;
-import de.bioutils.gff.GFFElement;
-import de.bioutils.gtf.GTFElement;
-
+import de.bioutils.fasta.FASTAElement;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gtf.element.GTFElement;
 import de.kerner.commons.file.FileUtils;
 import de.kerner.osgi.commons.logger.dispatcher.ConsoleLogger;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
-import de.mpg.mpiz.koeln.anna.server.data.impl.DataBeanImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
+import de.mpg.mpiz.koeln.anna.server.data.impl.DataBeanImpl;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 
 /**
@@ -65,7 +64,7 @@ public class DataProxyImpl implements DataProxy {
 		printProperties();
 	}
 
-	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
+	public synchronized ArrayList<? extends FASTAElement> getVerifiedGenesFasta()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		return data.getVerifiedGenesFasta();
@@ -78,7 +77,7 @@ public class DataProxyImpl implements DataProxy {
 	}
 
 	public synchronized void setVerifiedGenesFasta(
-			ArrayList<? extends FASTASequence> sequences)
+			ArrayList<? extends FASTAElement> sequences)
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		data.setVerifiedGenesFasta(sequences);
@@ -93,14 +92,14 @@ public class DataProxyImpl implements DataProxy {
 		strategy.writeDataBean(data, file);
 	}
 
-	public synchronized ArrayList<? extends FASTASequence> getInputSequences()
+	public synchronized ArrayList<? extends FASTAElement> getInputSequences()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		return data.getInputSequences();
 	}
 
 	public synchronized void setInputSequences(
-			ArrayList<? extends FASTASequence> fastas)
+			ArrayList<? extends FASTAElement> fastas)
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		data.setInputSequences(fastas);
@@ -134,14 +133,14 @@ public class DataProxyImpl implements DataProxy {
 		strategy.writeDataBean(data, file);
 	}
 
-	public synchronized ArrayList<? extends GFFElement> getRepeatMaskerGff()
+	public synchronized ArrayList<? extends NewGFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		return data.getRepeatMaskerGff();
 	}
 
 	public synchronized void setRepeatMaskerGff(
-			ArrayList<? extends GFFElement> elements)
+			ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException {
 		final DataBean data = getDataBean();
 		data.setRepeatMaskerGff(elements);

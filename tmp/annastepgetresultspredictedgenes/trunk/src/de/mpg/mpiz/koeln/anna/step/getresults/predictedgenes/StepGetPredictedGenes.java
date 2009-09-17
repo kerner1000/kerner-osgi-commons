@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
 
-import de.bioutils.gtf.GTFElement;
-import de.bioutils.gtf.GTFFile;
+import de.bioutils.gtf.element.GTFElement;
+import de.bioutils.gtf.file.GTFFile;
+import de.bioutils.gtf.file.GTFFileImpl;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
 import de.mpg.mpiz.koeln.anna.step.AbstractStep;
@@ -64,7 +63,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 
 	private void writeAllToSeparateFile(File outDir, DataProxy data) throws DataBeanAccessException, IOException {
 		ArrayList<? extends GTFElement> ele = data.getPredictedGenesGtf();
-		final GTFFile file = new GTFFile(ele);
+		final GTFFile file = new GTFFileImpl(ele);
 		Map<String, List<GTFElement>> set = splitToSeqNames(file);
 		for(Entry<String, List<GTFElement>> e : set.entrySet()){
 			String fileName = super.getStepProperties()
@@ -76,7 +75,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 			final File outFile = new File(outDir, fileName);
 			logger.info(this, ": writing predicted genes to "
 					+ outFile);
-			final GTFFile file2 = new GTFFile(e.getValue());
+			final GTFFile file2 = new GTFFileImpl(e.getValue());
 			file2.write(outFile);
 		}
 		
@@ -102,7 +101,7 @@ public class StepGetPredictedGenes extends AbstractStep {
 				.getProperty(OUT_FILE_NAME_KEY));
 		logger.info(this, ": writing predicted genes to "
 				+ outFile);
-		final GTFFile file = new GTFFile(data
+		final GTFFile file = new GTFFileImpl(data
 				.getPredictedGenesGtf());
 		file.write(outFile);	
 	}

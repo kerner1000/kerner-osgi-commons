@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.osgi.framework.BundleContext;
-
-import de.bioutils.fasta.FASTAFileImpl;
+import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
-import de.bioutils.gtf.GTFElement;
-import de.bioutils.gtf.GTFFile;
+import de.bioutils.gtf.element.GTFElement;
+import de.bioutils.gtf.file.*;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -120,7 +119,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 
 	private void update(File resultFile, DataProxy data) throws IOException,
 			GFFFormatErrorException, DataBeanAccessException {
-		final Collection<? extends GTFElement> c = new GTFFile(resultFile, null)
+		final Collection<? extends GTFElement> c = new GTFFileImpl(resultFile, null)
 				.getElements();
 		data.setPredictedGenesGtf(new ArrayList<GTFElement>(c));
 	}
@@ -129,7 +128,7 @@ public abstract class AbstractConradPredictStep extends AbstractConradStep {
 			IOException {
 
 		final File file = new File(workingDir, "ref.fasta");
-		new FASTAFileImpl(data.getInputSequences()).write(file);
+		new NewFASTAFileImpl(data.getInputSequences()).write(file);
 
 		final File file2 = data.getConradTrainingFile();
 		logger.debug(this, StringUtils.getString("got ", file2, " as training file from data proxy (size=", file2.length(), ")"));

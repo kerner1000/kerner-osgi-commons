@@ -7,7 +7,9 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: de.bioutils,
  de.bioutils.fasta,
  de.bioutils.gff,
+ de.bioutils.gff.element,
  de.bioutils.gtf,
+ de.bioutils.gtf.element,
  de.kerner.osgi.commons.logger.dispatcher
 Export-Package: de.mpg.mpiz.koeln.anna.server.data,
  de.mpg.mpiz.koeln.anna.server.data.impl

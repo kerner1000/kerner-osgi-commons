@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import org.osgi.framework.BundleContext;
 
-import de.bioutils.fasta.FASTAFileImpl;
-import de.bioutils.gff.GFFElement;
-import de.bioutils.gff.GFFFile;
+import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff.GFFFormatErrorException;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gff.file.*;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 import de.mpg.mpiz.koeln.anna.server.dataproxy.DataProxy;
@@ -99,7 +99,7 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 		final AbstractStepProcessBuilder worker = getProcess(inFile);
 		boolean success = true;
 		try{
-			new FASTAFileImpl(data.getInputSequences())
+			new NewFASTAFileImpl(data.getInputSequences())
 			.write(inFile);
 			worker.addResultFile(true, outFile);
 		success = worker.createAndStartProcess();
@@ -117,7 +117,7 @@ public abstract class AbstractStepRepeatMasker extends AbstractStep {
 	private void upUpdate(DataProxy data, File outFile) throws DataBeanAccessException, IOException, GFFFormatErrorException{
 		logger.debug(this, "updating data");
 		data.setRepeatMaskerGff(
-				(ArrayList<? extends GFFElement>) new GFFFile(outFile, null).getElements());
+				(ArrayList<? extends NewGFFElement>) NewGFFFileImpl.parseFile(outFile).getElements());
 	}
 	
 	protected abstract AbstractStepProcessBuilder getProcess(File inFile);

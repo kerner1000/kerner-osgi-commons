@@ -9,9 +9,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import de.bioutils.fasta.FASTASequence;
-import de.bioutils.gff.GFFElement;
-import de.bioutils.gtf.GTFElement;
+import de.bioutils.gff.element.NewGFFElement;
+import de.bioutils.gtf.element.GTFElement;
+import de.bioutils.fasta.FASTAElement;
 import de.kerner.osgi.commons.logger.dispatcher.LogDispatcher;
 import de.mpg.mpiz.koeln.anna.server.data.DataBean;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -20,11 +20,11 @@ import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
 public class DataBeanImpl implements DataBean {
 
 	private static final long serialVersionUID = 2776955959983685805L;
-	private ArrayList<FASTASequence> verifiedGenesFastas = new ArrayList<FASTASequence>();
-	private ArrayList<FASTASequence> inputSequences = new ArrayList<FASTASequence>();
+	private ArrayList<FASTAElement> verifiedGenesFastas = new ArrayList<FASTAElement>();
+	private ArrayList<FASTAElement> inputSequences = new ArrayList<FASTAElement>();
 	private ArrayList<GTFElement> verifiedGenesGFFs = new ArrayList<GTFElement>();
 	private ArrayList<GTFElement> predictedGenesGFFs = new ArrayList<GTFElement>();
-	private ArrayList<GFFElement> repeatMaskerGFF = new ArrayList<GFFElement>();
+	private ArrayList<NewGFFElement> repeatMaskerGFF = new ArrayList<NewGFFElement>();
 	private File conradTrainingFile = null;
 //	private final LogDispatcher logger;
 
@@ -53,7 +53,7 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized void setInputSequences(
-			ArrayList<? extends FASTASequence> sequences)
+			ArrayList<? extends FASTAElement> sequences)
 			throws DataBeanAccessException {
 		if (sequences == null)
 			throw new NullPointerException();
@@ -71,10 +71,10 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 	
-	public synchronized ArrayList<? extends FASTASequence> getInputSequences()
+	public synchronized ArrayList<? extends FASTAElement> getInputSequences()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<FASTASequence>(deepCopy(ArrayList.class,
+			return new ArrayList<FASTAElement>(deepCopy(ArrayList.class,
 					inputSequences));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -84,7 +84,7 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized void setVerifiedGenesFasta(
-			ArrayList<? extends FASTASequence> sequences)
+			ArrayList<? extends FASTAElement> sequences)
 			throws DataBeanAccessException {
 		if (sequences == null)
 			throw new NullPointerException();
@@ -121,10 +121,10 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized ArrayList<? extends FASTASequence> getVerifiedGenesFasta()
+	public synchronized ArrayList<? extends FASTAElement> getVerifiedGenesFasta()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<FASTASequence>(deepCopy(ArrayList.class,
+			return new ArrayList<FASTAElement>(deepCopy(ArrayList.class,
 					verifiedGenesFastas));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -191,10 +191,10 @@ public class DataBeanImpl implements DataBean {
 		}
 	}
 
-	public synchronized ArrayList<? extends GFFElement> getRepeatMaskerGff()
+	public synchronized ArrayList<? extends NewGFFElement> getRepeatMaskerGff()
 			throws DataBeanAccessException {
 		try {
-			return new ArrayList<GFFElement>(deepCopy(ArrayList.class,
+			return new ArrayList<NewGFFElement>(deepCopy(ArrayList.class,
 					repeatMaskerGFF));
 		} catch (IOException e) {
 			throw new DataBeanAccessException(e);
@@ -204,7 +204,7 @@ public class DataBeanImpl implements DataBean {
 	}
 
 	public synchronized void setRepeatMaskerGff(
-			ArrayList<? extends GFFElement> elements)
+			ArrayList<? extends NewGFFElement> elements)
 			throws DataBeanAccessException {
 		if (elements == null)
 			throw new NullPointerException();

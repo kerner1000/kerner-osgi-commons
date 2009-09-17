@@ -7,11 +7,12 @@ import java.util.ArrayList;
 
 import org.osgi.framework.BundleContext;
 
-import de.bioutils.fasta.FASTAFile;
-import de.bioutils.fasta.FASTAFileImpl;
-import de.bioutils.fasta.FASTASequence;
-import de.bioutils.gtf.GTFElement;
-import de.bioutils.gtf.GTFFile;
+import de.bioutils.fasta.FASTAElement;
+import de.bioutils.fasta.NewFASTAFile;
+import de.bioutils.fasta.NewFASTAFileImpl;
+import de.bioutils.gtf.element.GTFElement;
+import de.bioutils.gtf.file.GTFFile;
+import de.bioutils.gtf.file.GTFFileImpl;
 import de.kerner.commons.StringUtils;
 import de.kerner.commons.file.FileUtils;
 import de.mpg.mpiz.koeln.anna.server.data.DataBeanAccessException;
@@ -103,10 +104,10 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		logger.debug(this, "ref.fasta=" + inFasta);
 		
 		logger.debug(this, "getting fastas for veryfied genes");
-		final ArrayList<? extends FASTASequence> fastas = data
+		final ArrayList<? extends FASTAElement> fastas = data
 				.getVerifiedGenesFasta();
 		
-		final FASTAFile fastaFile = new FASTAFileImpl(fastas);
+		final NewFASTAFile fastaFile = new NewFASTAFileImpl(fastas);
 		
 		logger.debug(this, "writing fastas to " + inFasta);
 		fastaFile.write(inFasta);
@@ -117,7 +118,7 @@ public abstract class AbstractConradTrainStep extends AbstractConradStep {
 		logger.debug(this, "getting gtfs for veryfied genes");
 		final ArrayList<? extends GTFElement> gtfs = data.getVerifiedGenesGtf();
 		
-		final GTFFile gtfFile = new GTFFile(gtfs);
+		final GTFFile gtfFile = new GTFFileImpl(gtfs);
 		
 		logger.debug(this, "writing gtfs to " + inGff);
 		gtfFile.write(inGff);
