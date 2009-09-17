@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Get-results-RepeatMasker Plug-in
+Bundle-Name: GetResultsRepeatMasker
 Bundle-SymbolicName: de.mpg.mpiz.koeln.anna.step.getresults.repeatmasker
-Bundle-Version: 0.0.1
+Bundle-Version: 0.0.2
 Bundle-Activator: de.mpg.mpiz.koeln.anna.step.getresults.repeatmasker.StepGetRepeatMaskerGFF
 Import-Package: de.bioutils,
  de.bioutils.gff,
