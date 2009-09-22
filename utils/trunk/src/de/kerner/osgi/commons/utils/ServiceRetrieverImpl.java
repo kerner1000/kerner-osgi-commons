@@ -18,8 +18,12 @@ public class ServiceRetrieverImpl<C> implements ServiceRetriever<C>{
 		this.delay = delay;
 		}
 		public C call() throws Exception {
-			Thread.sleep(delay);
-			return parent.getService();
+			C result = null;
+			while(result == null){
+				Thread.sleep(delay);
+				result = parent.getService();
+			}
+			return result;
 		}
 	}
 	
