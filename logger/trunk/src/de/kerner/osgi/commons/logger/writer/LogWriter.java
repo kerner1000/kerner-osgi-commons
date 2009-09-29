@@ -1,26 +1,18 @@
 package de.kerner.osgi.commons.logger.writer;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 import org.osgi.service.log.LogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class LogWriter implements LogListener {
 
 	private final static String WORKING_DIR = System.getProperty("user.dir");
 	private static final String LOG_PROPERTIES = WORKING_DIR
 			+ "/configuration/log.properties";
-	private static Logger LOGGER = Logger.getLogger(LogWriter.class);
-
-	LogWriter() {
-		try {
-			PropertyConfigurator.configure(LOG_PROPERTIES);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private static Logger LOGGER = LoggerFactory.getLogger(LogWriter.class);
 
 	public void logged(LogEntry entry) {
 		String message = entry.getMessage();
