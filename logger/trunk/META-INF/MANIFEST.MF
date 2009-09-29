@@ -7,8 +7,11 @@ Bundle-Activator: de.kerner.osgi.commons.logger.writer.LogWriterActivator
 Import-Package: de.kerner.osgi.commons.utils,
  org.osgi.framework;version="1.3.0",
  org.osgi.service.log;version="1.3.0",
- org.osgi.util.tracker
+ org.osgi.util.tracker,
+ org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.impl,
+ org.slf4j.spi
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ClassPath: .,
- lib/slf4j-api-1.5.8.jar
+Bundle-ClassPath: .
 Export-Package: de.kerner.osgi.commons.logger.dispatcher
