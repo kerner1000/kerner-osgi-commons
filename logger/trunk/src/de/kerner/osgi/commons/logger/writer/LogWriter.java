@@ -31,13 +31,13 @@ class LogWriter implements LogListener {
 			break;
 		case LogService.LOG_INFO:
 			if (LOGGER.isInfoEnabled())
-				LOGGER.debug(identifier + message, t);
+				LOGGER.info(identifier + message, t);
 			break;
 		case LogService.LOG_WARNING:
-			LOGGER.debug(identifier + message, t);
+			LOGGER.warn(identifier + message, t);
 			break;
 		case LogService.LOG_ERROR:
-			LOGGER.debug(identifier + message, t);
+			LOGGER.error(identifier + message, t);
 			break;
 		default:
 			System.err.println(new StringBuilder()
