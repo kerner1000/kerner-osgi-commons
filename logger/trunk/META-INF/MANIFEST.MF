@@ -14,4 +14,4 @@ Import-Package: de.kerner.osgi.commons.utils,
  org.slf4j.spi
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .
-Export-Package: de.kerner.osgi.commons.logger.dispatcher
+Export-Package: de.kerner.osgi.commons.logger.dispatcher;uses:="org.osgi.framework"

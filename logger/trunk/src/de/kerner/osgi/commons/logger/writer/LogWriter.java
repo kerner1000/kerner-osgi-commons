@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory;
 
 class LogWriter implements LogListener {
 
-	private final static String WORKING_DIR = System.getProperty("user.dir");
-	private static final String LOG_PROPERTIES = WORKING_DIR
-			+ "/configuration/log.properties";
 	private static Logger LOGGER = LoggerFactory.getLogger(LogWriter.class);
 
 	public void logged(LogEntry entry) {
