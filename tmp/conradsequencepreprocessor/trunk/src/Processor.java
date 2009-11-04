@@ -13,6 +13,7 @@ import de.bioutils.Range;
 import de.bioutils.Utils;
 import de.bioutils.fasta.FASTAElement;
 import de.bioutils.fasta.FASTAElementImpl;
+import de.bioutils.fasta.FASTAFileBuilder;
 import de.bioutils.fasta.FastaUtils;
 import de.bioutils.fasta.NewFASTAFile;
 import de.bioutils.fasta.NewFASTAFileImpl;
@@ -21,6 +22,7 @@ import de.bioutils.gff3.GFF3Utils;
 import de.bioutils.gff3.Type;
 import de.bioutils.gff3.element.GFF3Element;
 import de.bioutils.gff3.file.GFF3File;
+import de.bioutils.gff3.file.GFF3FileBuilder;
 import de.bioutils.gff3.file.GFF3FileImpl;
 
 public class Processor {
@@ -54,10 +56,10 @@ public class Processor {
 	public static void main(String[] args) {
 		try {
 			final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(f1);
-			final GFF3File gff3File = GFF3FileImpl.convertFromGFF(f3);
+			final GFF3File gff3File = GFF3Utils.convertFromGFFFile(f3, true);
 			final FASTAFileBuilder fastaBuilder = new FASTAFileBuilder();
 			fastaBuilder.setLineLength(10);
-			final GFF3FileBuilder gffBuilder = new GFF3FileBuilder();
+			final GFF3FileBuilder gffBuilder = new GFF3FileBuilder(true);
 			gffBuilder.setSorted(gff3File.isSorted());
 
 			Map<? extends GFF3Element, Collection<? extends GFF3Element>> genes = GFF3Utils
