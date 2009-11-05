@@ -57,17 +57,18 @@ public class Processor {
 	// private final static File f3 = new
 	// File("/home/proj/kerner/diplom/a.thaliana/TAIR9_GFF3_genes.gff");
 	private final static File f3 = new File(
-			"/home/pcb/kerner/Desktop/test2.gff");
-	private final static File f4 = new File("/home/pcb/kerner/Desktop/new.gff");
+			"/home/alex/Dropbox/mpiz/thal/TAIR9_GFF3_chr1.gff");
+	private final static File f4 = new File(
+			"/home/alex/Dropbox/mpiz/thal/new.gff");
 
 	private final static int OFFSET = 4;
 	private final static int LENGTH_THRESH = 100;
 
 	public static void main(String[] args) {
 		try {
-			info("reading fasta file");
-			final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(f1);
-			info("done reading fasta file");
+			// info("reading fasta file");
+			// final NewFASTAFile fastaFile = NewFASTAFileImpl.parse(f1);
+			// info("done reading fasta file");
 			info("reading gff file");
 			final GFF3File gff3File = GFF3Utils.convertFromGFFFile(f3, true);
 			info("done reading gff file (elements:"
@@ -79,18 +80,25 @@ public class Processor {
 
 			info("get mapped genes");
 			Map<GFF3Element, GFF3ElementGroup> map = gff3File.getElements()
-					.getAllChildsForType(Type.mRNA);
+					.getAllChildsForType(Type.gene);
 			info("done get mapped genes");
+			info("total genes found: " + map.size());
 			for (Entry<GFF3Element, GFF3ElementGroup> entry : map.entrySet()) {
-				System.out.println("---------------------------");
-				System.out.println(entry.getKey());
+				debug("---------------------------");
+				debug(entry.getKey());
 				for (GFF3Element e : entry.getValue()) {
-					System.out.println("\t" + e);
+					debug("\t" + e);
 				}
-				info("range=" + entry.getKey().getRange());
-				info("childs by index="
+				debug("range=" + entry.getKey().getRange());
+				debug("childs by index="
 						+ GFF3Utils.elementsAreChildByIndex(entry.getKey(),
 								entry.getValue()));
+				if (!GFF3Utils.elementsAreChildByIndex(entry.getKey(), entry
+						.getValue())) {
+					System.err.println("parent-child indices check failed!" + Utils.NEW_LINE
+							+ "\tparent=" + entry.getKey() + Utils.NEW_LINE
+							+ "\t" + entry.getValue());
+				}
 			}
 
 			// gffBuilder.build().write(f4);
