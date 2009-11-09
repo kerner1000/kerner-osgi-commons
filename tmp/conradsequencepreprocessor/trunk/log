@@ -1,0 +1,25 @@
+[main]	0	- reading fasta file
+[main]	8582	- done reading fasta file
+[main]	8582	- reading gff file
+[main]	14176	- done reading gff file (elements:4000)
+[main]	14176	- creating Union
+[main]	14260	- running union integrity test
+[main]	14264	- running union integrity test successful
+[main]	14264	- trimming fasta element length (Offset:4)
+[main]	209602	- trimming fastas done
+[main]	209681	- running union integrity test
+[main]	209693	- comparing sequence references with those from parent
+[main]	617505	- running union integrity test successful
+
+[main]	0	- reading fasta file
+[main]	3490	- done reading fasta file
+[main]	3490	- reading gff file
+[main]	18567	- done reading gff file (elements:144299)
+[main]	18567	- creating Union
+[main]	18571	- running union integrity test
+[main]	18703	- running union integrity test successful
+[main]	18704	- trimming fasta element length (Offset:4)
+[main]	9613585	- trimming fastas done
+[main]	9613586	- running union integrity test
+[main]	9757217	- comparing sequence references with those from parent
+[main]	26310563	- running union integrity test successful
