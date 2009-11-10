@@ -72,6 +72,7 @@ public class Processor2 {
 			union.checkIntegrity();
 			info("running union integrity test successful");
 			info("trimming fasta element length (Offset:" + OFFSET + ")");
+			if(union.)
 			final GFF3FASTAUnion unionTrimmed = union.trimmFastas(OFFSET);
 			info("trimming fastas done");
 			// debug("gff3 after trimming:" + Utils.NEW_LINE +
