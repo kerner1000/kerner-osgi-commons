@@ -36,16 +36,16 @@ public class Processor2 {
 	}
 
 	private final static File f1 = new File(
-			"/home/proj/kerner/diplom/a.thaliana/TAIR9_chr1.fas");
+			"/home/proj/kerner/diplom/f.graminearum/fusarium_graminearum_3_supercontigs.fasta");
 
 	private final static File f2 = new File(
-			"/home/proj/kerner/diplom/a.thaliana/TAIR9_chr1_new.fas");
+			"/home/proj/kerner/diplom/f.graminearum/fusarium_graminearum_3_supercontigs_new.fasta");
 
 	private final static File f3 = new File(
-			"/home/proj/kerner/diplom/a.thaliana/TAIR9_GFF3_genes_chr1.gff");
+			"/home/proj/kerner/diplom/f.graminearum/fusarium_graminearum_3_transcripts.gtf");
 
 	private final static File f4 = new File(
-			"/home/proj/kerner/diplom/a.thaliana/TAIR9_GFF3_genes_chr1_new.gff");
+			"/home/proj/kerner/diplom/f.graminearum/fusarium_graminearum_3_transcripts_new.gtf");
 
 	private final static int OFFSET = 100;
 	private final static int LENGTH_THRESH = 100;
