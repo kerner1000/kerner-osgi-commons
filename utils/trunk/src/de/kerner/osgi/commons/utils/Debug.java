@@ -1,5 +1,6 @@
 package de.kerner.osgi.commons.utils;
 
+@Deprecated
 class Debug {
 	
 	static String MESSAGE_PREFIX = " ";
