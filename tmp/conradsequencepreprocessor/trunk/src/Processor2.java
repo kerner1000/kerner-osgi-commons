@@ -10,6 +10,7 @@ import de.bioutils.fasta.NewFASTAFileImpl;
 import de.bioutils.gff3.GFF3FASTAUnion;
 import de.bioutils.gff3.GFF3FASTAUnionImpl;
 import de.bioutils.gff3.GFF3Utils;
+import de.bioutils.gff3.Type;
 import de.bioutils.gff3.file.GFF3File;
 
 public class Processor2 {
@@ -47,8 +48,8 @@ public class Processor2 {
 	private final static File f4 = new File(
 			"/home/proj/kerner/diplom/f.graminearum/fusarium_graminearum_3_transcripts_new.gtf");
 
-	private final static int OFFSET = 100;
-	private final static int LENGTH_THRESH = 100;
+	private final static int OFFSET = 200;
+	private final static int NUM_TRESH = 5000;
 
 	public static void main(String[] args) {
 		try {
@@ -72,17 +73,28 @@ public class Processor2 {
 			union.checkIntegrity();
 			info("running union integrity test successful");
 			info("trimming fasta element length (Offset:" + OFFSET + ")");
-			if(union.)
-			final GFF3FASTAUnion unionTrimmed = union.trimmFastas(OFFSET);
+			GFF3FASTAUnion unionTrimmed = null;
+			if(union.containsElementOfType(Type.gene)){
+				debug("trimming by type \"" + Type.gene + "\"");
+				unionTrimmed = union.trimmFastasByType(OFFSET, Type.gene);
+			} else {
+				debug("trimming by attribute");
+				unionTrimmed = union.trimmFastasByAttribute(OFFSET);
+			}
+			
 			info("trimming fastas done");
 			// debug("gff3 after trimming:" + Utils.NEW_LINE +
 			// unionTrimmed.getGFF3ElementGroup());
 			info("running union integrity test");
 			unionTrimmed.checkIntegrity();
 			info("running union integrity test successful");
-
+			
+			info("reducing size to " + NUM_TRESH);
+			GFF3FASTAUnion unionReducedSize = unionTrimmed.reduceSize(NUM_TRESH);
+			unionReducedSize.checkIntegrity();
+			
 			info("writing files \"" + f4.getName() + "\", \"" + f2.getName() + "\"");
-			unionTrimmed.write(f4, f2);
+			unionReducedSize.write(f4, f2);
 			info("all done successfully!!");
 		} catch (Exception ex) {
 			ex.printStackTrace();
