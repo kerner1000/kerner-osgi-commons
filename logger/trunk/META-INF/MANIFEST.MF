@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Logger
+Bundle-Name: osgi-logger
 Bundle-SymbolicName: de.kerner.osgi.commons.logger
 Bundle-Version: 0.1.0
 Bundle-Activator: de.kerner.osgi.commons.logger.writer.LogWriterActivator
