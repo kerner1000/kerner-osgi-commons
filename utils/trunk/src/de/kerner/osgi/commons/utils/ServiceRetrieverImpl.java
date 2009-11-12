@@ -33,7 +33,7 @@ public class ServiceRetrieverImpl<C> implements ServiceRetriever<C>{
 	
 	public ServiceRetrieverImpl(BundleContext context, Class<C> c) {
 		this.c = c;
-		System.err.println(c.getName());
+		//System.err.println(c.getName());
 		this.tracker = new ServiceTracker(context, c.getName(), null);
 		tracker.open();
 	}
