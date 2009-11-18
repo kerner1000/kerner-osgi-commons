@@ -50,6 +50,7 @@ public class Processor2 {
 
 	private final static int OFFSET = 200;
 	private final static int NUM_TRESH = 5000;
+	private final static int LENGTH_TRESH = 5000;
 
 	public static void main(String[] args) {
 		try {
@@ -89,9 +90,18 @@ public class Processor2 {
 			unionTrimmed.checkIntegrity();
 			info("running union integrity test successful");
 			
+			info("discarding all elements with range >  " + LENGTH_TRESH);
+			GFF3FASTAUnion unionReducedLength = unionTrimmed.trimmMaxElementLength(LENGTH_TRESH);
+			unionReducedLength.checkIntegrity();
+			info("discarded " + (unionTrimmed.getSize() - unionReducedLength.getSize()) + " elements");
+			
 			info("reducing size to " + NUM_TRESH);
-			GFF3FASTAUnion unionReducedSize = unionTrimmed.reduceSize(NUM_TRESH);
+			GFF3FASTAUnion unionReducedSize = unionReducedLength.reduceSize(NUM_TRESH);
 			unionReducedSize.checkIntegrity();
+			info("discarded " + (unionReducedLength.getSize() - unionReducedSize.getSize()) + " elements");
+			
+			info("length of longest FASTA: " + unionReducedSize.getFASTAElements().getLargestElement().getSequence().getLength());
+			info("length of longest GFF3: " + unionReducedSize.getGFF3ElementGroup().getLargestElement().getRange());
 			
 			info("writing files \"" + f4.getName() + "\", \"" + f2.getName() + "\"");
 			unionReducedSize.write(f4, f2);
