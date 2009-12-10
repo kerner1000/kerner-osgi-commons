@@ -29,7 +29,7 @@ public class ServiceRetrieverImpl<C> implements ServiceRetriever<C>{
 	
 	private final ServiceTracker tracker;
 	private final Class<C> c;
-	private final ExecutorService e = Executors.newSingleThreadExecutor();
+	private final ExecutorService exe = Executors.newSingleThreadExecutor();
 	
 	public ServiceRetrieverImpl(BundleContext context, Class<C> c) {
 		this.c = c;
@@ -47,13 +47,14 @@ public class ServiceRetrieverImpl<C> implements ServiceRetriever<C>{
 	
 	@Override
 	protected void finalize() throws Throwable {
+		exe.shutdown();
 		tracker.close();
 		super.finalize();
 	}
 
 	public Future<C> getServiceDelayed(long delay) throws ServiceNotAvailabeException {
 		try {
-			return e.submit(new MyCallable(this, delay));
+			return exe.submit(new MyCallable(this, delay));
 		} catch (Exception e) {
 		throw new ServiceNotAvailabeException(e);	
 		}
