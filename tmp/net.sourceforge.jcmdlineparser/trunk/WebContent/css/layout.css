@@ -1,10 +1,79 @@
+table {
+	border-width: 1px 1px 1px 1px;
+	border-spacing: 2px;
+	border-style: outset outset outset outset;
+	border-color: gray gray gray gray;
+	border-collapse: separate;
+	background-color: white;
+	width: 100%;
+	table-layout: fixed;
+}
+
+table th {
+	border-width: 1px 1px 1px 1px;
+	padding: 1px 1px 1px 1px;
+	border-style: inset inset inset inset;
+	border-color: gray gray gray gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+
+table td {
+	border-width: 1px 1px 1px 1px;
+	padding: 1px 1px 1px 1px;
+	border-style: inset inset inset inset;
+	border-color: gray gray gray gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+
+table.noBoarders {
+	border-width: 0px;
+	border-spacing: 4px;
+}
+
+table.noBoarders th {
+	border-width: 0px;
+	padding: 4px;
+	border-style: none;
+}
+
+table.noBoarders td {
+	border-width: 0px;
+	padding: 4px;
+	border-style: none;
+}
+
+table.noFixed {
+	table-layout: auto;
+}
+
 .welcome {
 	background-color: blue;
-	font-size: 200%;
+	font-size: 120%;
 	text-align: center;
+	padding: 20px;
 }
 
 .quickIntro {
 	background-color: gray;
-		
+	padding: 10px;
+}
+
+.quickIntroExample {
+	overflow:auto;
+	height: 300px;
+	padding: 10px;
+}
+
+.nav {
+	width: 20%;
+	background-color: silver;
+	float: left;
+}
+
+.content {
+	width: 80%;
+	float: left;
+	background-color: fuchsia;
 }
