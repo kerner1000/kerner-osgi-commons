@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Anna documentation</title>
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="quickstart" class="qs-heading">Documentation</div>
+
+<div id="nav" class="nav">
+<table class="noBoarders">
+	<tr>
+		<td><a href="index.html">Home </a></td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+	<tr>
+		<td><a href="qs.html">Quickstart</a></td>
+	</tr>
+	<tr>
+		<td><a href="docu.html">Documentation</a></td>
+	</tr>
+	<tr>
+		<td><a href="examples.html">Examples</a></td>
+	</tr>
+</table>
+</div>
+
+<div id="qs-content" class="content">
+<p>This framework builds upon <a href="http://www.osgi.org">OSGi</a>,
+more precisely on <a href="http://www.eclipse.org/equinox"> Eclipse
+Equinox</a>. It ships special <span class="name">OSGi-Bundles</span> that
+will help to set up an ordinary pipeline system easily and quickly.
+Anyone how is already familiar with <span class="name">OSGi</span>-applications
+will get into this system really quickly.</p>
+<p>It consists of mainly three components, which are all represented
+by one or more <span class="name">OSGi-Bundles</span>:</p>
+<img src="pics/komponents2.png" alt="komponents" align="right"
+	vspace="10" hspace="20" width="300">
+<ol>
+	<li><span class="name">Execution Server</span></li>
+	<li><span class="name">Data Server</span></li>
+	<li><span class="name">Step(s)</span></li>
+</ol>
+<p>Combination of these components, that can be exchanged
+independently, will result into a specific pipeline system.</p>
+<p><span class="name">Data Server</span> is generic, therefore
+implementations for <span class="name">Step</span> usually refer to
+corresponding <span class="name">Data Server</span> implementation.</p>
+<p>For beginning, it is perfectly fine to not build a specific <span
+	class="name">Data Server</span>. Instead you can use <span class="name">de.mpg.mpiz.koeln.anna.server.data.simple</span>,
+which is included within this project.</p>
+<p>In order to build your own pipleline system, just create your own
+<span class="name">Step</span>s and place resultung jar-files into <span
+	class="code"> 07-anna-steps</span> folder.</p>
+<p>See <a href="examples.html"> Examples</a> for an introduction on
+how to set up your <span class="name">Eclipse</span> working environment
+and how you build your own <span class="name">Step</span>s.</p>
+</div>
+</body>
+</html>

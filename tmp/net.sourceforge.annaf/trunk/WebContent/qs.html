@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Anna quickstart</title>
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="quickstart" class="qs-heading">Quickstart</div>
+
+<div id="nav" class="nav">
+<table class="noBoarders">
+	<tr>
+		<td><a href="index.html">Home </a></td>
+	</tr>
+	<tr>
+		<td> </td>
+	</tr>
+	<tr>
+		<td><a href="qs.html">Quickstart</a></td>
+	</tr>
+	<tr>
+		<td><a href="docu.html">Documentation</a></td>
+	</tr>
+	<tr>
+		<td><a href="examples.html">Examples</a></td>
+	</tr>
+</table>
+</div>
+
+<div id="qs-content" class="content"><span class="heading2">To
+get the framework running, do the following:</span>
+<ol>
+	<li>
+	<p><a
+		href="https://sourceforge.net/projects/annaf/files/anna-0.0.1.zip/download">download</a></p>
+	</li>
+	<li>
+	<p>extract to location of your choice</p>
+	<img src="pics/anna-folder.png" alt="anna-folder" align="middle"
+		vspace="10" hspace="20" width="600"></li>
+	<li>
+	<p>execute <span class="code"> start.sh</span> or <span
+		class="code"> startDebug.sh</span></p>
+	If everything went OK, you will see following output on your terminal:
+	<span class="code"> <br>
+	<br>
+	let's get things rolling<br>
+	MONITOR
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	TestStep state=REGISTERED (changed)<br>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	MONITOR
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	TestStep state=CHECK_NEED_TO_RUN (changed)<br>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	executing method "canBeSkipped"<br>
+	MONITOR
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	TestStep state=WAIT_FOR_REQ (changed)<br>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	executing method "requirementsSatisfied"<br>
+	MONITOR
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	TestStep state=RUNNING (changed)<br>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	executing method "run"<br>
+	!!!!!!!!!!!!!!!!!!!!!!<br>
+	pipeline finished!<br>
+	!!!!!!!!!!!!!!!!!!!!!!<br>
+	MONITOR
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	TestStep state=DONE (changed)<br>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	RUNTIMES
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	TestStep <br>
+	state CHECK_NEED_TO_RUN time[sec] 0 running false<br>
+	state DONE time[sec] 0 running false<br>
+	state WAIT_FOR_REQ time[sec] 0 running false<br>
+	state RUNNING time[sec] 0 running false<br>
+	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>
+	</span></li>
+	<li>
+	<p>In order to include any other Step into the system, just put
+	according jar files into <span class="code"> 07-anna-steps</span>
+	folder</p>
+	</li>
+</ol>
+<p>For further information, including how to build your own steps,
+please take a look at the <a href="docu.html"> documentation</a> and <a
+	href="examples.html"> Examples</a>!</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Examples</title>
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="welcome" class="welcome">Examples</div>
+
+<div id="nav" class="nav">
+<table class="noBoarders">
+	<tr>
+		<td><a href="index.html">Home </a></td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+	<tr>
+		<td><a href="qs.html">Quickstart</a></td>
+	</tr>
+	<tr>
+		<td><a href="docu.html">Documentation</a></td>
+	</tr>
+	<tr>
+		<td><a href="examples.html">Examples</a></td>
+	</tr>
+</table>
+</div>
+
+<div id="qs-content" class="content"><span class="heading1">Setting
+up Eclipse:</span>
+<p>To be able to develop new <span class="name">Step</span>s, you
+should have an <span class="name">OSGi</span> framework installed and
+set up within <span class="name">Eclipse</span>.<br>
+In general, it is possible to use any <span class="name">OSGi</span>
+implementation, but for convenience, this guide will show you how to
+install <span class="name">Eclipse Equinox</span> as the <span
+	class="name">OSGi</span> framework.</p>
+<ul>
+	<li><span class="heading2">Download Eclipse Equinox:</span>
+	<p>Go to <a href="http://download.eclipse.org/eclipse/equinox/">http://download.eclipse.org/eclipse/equinox/</a>
+	and download the <span class="name">Equinox</span> Software
+	Developement Kit:</p>
+	<p>For these examples, version 3.4 is used.</p>
+	<p><span class="code">eclipse-equinox-SDK-3.4.zip</span></p>
+	<p>Extract it to any location.</p>
+	</li>
+	<li><span class="heading2">Setting up Eclipse Equinox:</span>
+	<p>In Eclipse, go to <span class="fett">Window</span> &rarr; <span
+		class="fett">Preferences</span>.</p>
+	<p>Select <span class="fett">Plug-in Development</span> &rarr; <span
+		class="fett">Target Platform</span>.</p>
+	<p>Click <span class="fett">Add...</span></p>
+	<p><span class="fett">Initialize the target definition with:
+	Nothing</span></p>
+	<p>Give any name for the target and create a new target location.</p>
+	<p>Click <span class="fett">Add...</span> and select the directory
+	where you extracted the Equinox SDK.</p>
+	<img src="pics/new-target.jpg" alt="new-target" align="middle"
+		vspace="10" hspace="20"></img>
+	<p>For Example</p>
+	<p><span class="code">eclipse-equinox-SDK-3.4/eclipse</span></p>
+	<img src="pics/target-directory.jpg" alt="target-directory"
+		align="middle" vspace="10" hspace="20"></img>
+	<p>Select your new target and click <span class="fett">OK</span></p>
+	<img src="pics/target-done.jpg" alt="target-done" align="middle"
+		vspace="10" hspace="20"></img></li>
+		<li><span class="heading2">Done!</span></li>
+</ul>
+<p>You are now ready to develop new <span class="name">OSGi-Bundles</span> with Eclipse.</p>
+</div>
+
+</body>
+</html>

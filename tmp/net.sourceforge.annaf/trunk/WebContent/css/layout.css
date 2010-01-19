@@ -1,0 +1,61 @@
+table.noBoarders {
+	border-width: 0px;
+	border-spacing: 4px;
+}
+
+table.noBoarders th {
+	border-width: 0px;
+	padding: 4px;
+	border-style: none;
+}
+
+table.noBoarders td {
+	border-width: 0px;
+	padding: 4px;
+	border-style: none;
+}
+
+.welcome,.qs-heading {
+	font-size: 200%;
+	text-align: center;
+	padding: 20px;
+}
+
+.heading1 {
+	font-size: 160%;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+.heading2 {
+	font-size: 130%;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.nav {
+	width: 20%;
+	float: left;
+}
+
+.content {
+	width: 80%;
+	float: left;
+}
+
+.code {
+	font-family: monospace;
+}
+
+.name {
+	font-style: italic;
+}
+
+.fett {
+	font-size: 100%;
+	font-weight: bold;
+}
+
+.komponents {
+	width: 200px;
+}
