@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Examples - Creating new Plug-in-project</title>
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="welcome" class="welcome">Examples - Creating new
+Plug-in-project</div>
+
+<div id="nav" class="nav">
+<table class="noBoarders">
+	<tr>
+		<td><a href="index.html">Home </a></td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+	<tr>
+		<td><a href="qs.html">Quickstart</a></td>
+	</tr>
+	<tr>
+		<td><a href="docu.html">Documentation</a></td>
+	</tr>
+	<tr>
+		<td>
+		<p>Examples</p>
+		<ul>
+			<li>
+			<p><a href="setup-e.html">Setting up Eclipse</a></p>
+			</li>
+			<li>
+			<p><a href="prepare-e.html">Importing Anna-Plug-ins</a></p>
+			</li>
+			<li>
+			<p><a href="new-proj.html">Creating new Plug-in-project</a></p>
+			</li>
+			<li>
+			<p><a href="ex1.html">Example one</a></p>
+			</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+</div>
+
+<div id="qs-content" class="content">
+<p>In Eclipse, choose <span class="fett">File &rarr;
+Project... &rarr; Plug-in-Project</span>.</p>
+<p><img src="pics/new-plugin-project.jpg" alt="new-plugin-project"
+	align="middle" vspace="10" hspace="20"></img></p>
+<p><img src="pics/new-plugin-project2.jpg" alt="new-plugin-project2"
+	align="middle" vspace="10" hspace="20"></img></p>
+<p>Choose any name.</p>
+<p>For terms of compatibility, the runtime environment for the new
+Plug-in shall be any OSGi implementation. Therefore, we choose <span
+	class="fett">standard</span> for the OSGi framework.</p>
+<p>Click <span class="fett">Next.</span></p>
+<p>The settings of the next page provide some meta information for
+the Plug-In, which also contain the runtime specification. Make sure you
+choose <span class="fett">J2SE-1.5</span></p>
+<p>The generation of an Activator class is not necessary, because we
+will provide a custom activator later on.</p>
+<p><img src="pics/new-plugin-project3.jpg" alt="new-plugin-project3"
+	align="middle" vspace="10" hspace="20"></img></p>
+<p>Click <span class="fett">Finish</span>.</p>
+<p>In order to have access to the framework classes, we must at last
+declare some import statements:</p>
+<p>Double click the <span class="fett">MANIFEST.MF</span> file to
+open the Plug-In's Manifest editor.</p>
+<p><img src="pics/manifest.mf.png" alt="manifest.mf" align="right"
+	vspace="10" hspace="20"></img></p>
+<p>Click on <span class="fett">Dependencies &rarr; Imported
+Packages &rarr; Add...</span></p>
+<p>Select</p>
+<p><span class="fett">de.kerner.commons</span></p>
+<p><span class="fett">de.kerner.commons.logging</span></p>
+<p><span class="fett">de.kerner.commons.osgi.utils</span></p>
+<p><span class="fett">de.mpg.mpiz.koeln.anna.abstractstep</span></p>
+<p><span class="fett">de.mpg.mpiz.koeln.anna.core</span></p>
+<p><span class="fett">de.mpg.mpiz.koeln.anna.data</span></p>
+<p><span class="fett">de.mpg.mpiz.koeln.anna.server</span></p>
+<p><span class="fett">de.mpg.mpiz.koeln.anna.server.data</span></p>
+<p><span class="fett">de.mpg.mpiz.koeln.anna.step</span></p>
+<p><span class="fett">org.osgi.framework</span></p>
+<p><span class="fett">org.slf4j</span></p>
+<p><span class="fett">org.slf4j.helpers</span></p>
+<p><span class="fett">org.slf4j.impl</span></p>
+<p><span class="fett">org.slf4j.spi</span></p>
+<p><span class="fett">org.apache.log4j*</span></p>
+</div>
+</body>
+</html>
