@@ -53,9 +53,30 @@ Anna-Plug-ins</div>
 		href="https://sourceforge.net/projects/annaf/files/anna-0.0.1-dev.zip/download">download</a></p>
 	<p>Extract to any location.</p>
 	</li>
+	<li><span class="heading2">Update your OSGi installation</span>
+	<p>Move extracted <span class="code">plugins</span>-folder to your
+	<span class="name">OSGi</span>-installation directory. E.g. <span
+		class="code">/home/alex/Dropbox/java/equinox-3.4.0/eclipse</span></p>
+	<p>This directory should already contain a <span class="code">plugins</span>-folder.
+	Merge it with the extracted one.</p>
+	<img src="pics/osgi-install-folder.png" alt="osgi-install-folder"
+		align="middle" vspace="10" hspace="20"></img>
+	<p>Alternatively you can also just grep all jar-files out of the
+	framework folders (<span class="code">01*</span> - <span class="code">07*</span>)
+	and copy them into the <span class="code">plugins</span>-folder.</p>
+	</li>
+	<li>
+	<span class="heading2">Reload Target Platform</span>
+	<img src="pics/reload-target.png" alt="reload-target"
+		align="middle" vspace="10" hspace="20"></img>
+		<p>In Eclipse, go to <span class="fett">Window</span> &rarr; <span
+		class="fett">Preferences</span>.</p>
+	<p>Select <span class="fett">Plug-in Development</span> &rarr; <span
+		class="fett">Target Platform</span>.</p>
+		<p>Click <span class="fett">Reload...</span> in order to make changes take effect.</p>
+	</li>
 </ul>
-<p>Alternatively you can also just grep all jar-files out of the
-framework folders. (folders 01* - 07*)</p>
+
 </div>
 
 </body>
