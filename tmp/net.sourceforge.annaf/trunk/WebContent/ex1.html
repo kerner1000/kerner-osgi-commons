@@ -38,18 +38,128 @@
 			<li>
 			<p><a href="ex1.html">Example one</a></p>
 			</li>
+			<li>
+			<p><a href="ex2.html">Example two</a></p>
+			</li>
 		</ul>
 		</td>
 	</tr>
 	<tr>
-		<td><a href="https://sourceforge.net/projects/annaf/">Sourceforge page</a></td>
+		<td><a href="https://sourceforge.net/projects/annaf/">Sourceforge
+		page</a></td>
 	</tr>
 </table>
 </div>
 
+
 <div id="qs-content" class="content">
 <p>For this example we will create a very simple <span class="name">Step</span>,
-that will generate a random integer number.</p>
+that will generate a random integer number and then will store this
+number to the <span class="name">Data Server</span>.</p>
+<ol>
+	<li>
+	<p>Create a new class that extends <span class="code">AbstractAnnaStep&lt;DataBean&gt;</span>.</p>
+	<iframe src="resources/template.htm" width="600" height="400">
+	</iframe>
+	<p>As you can see you need to implement some call-back-methods
+	which will be called by the execution server:</p>
+	<ol>
+		<li>
+		<p><span class="code">canBeSkipped(DataProxy&lt;DataBean&gt;
+		proxy)</span> tells the server if execution is necessary or if this <span
+			class="name">Step</span> can be skipped because results are already
+		there.</p>
+		</li>
+		<li>
+		<p><span class="code">DataProxy&lt;DataBean&gt;
+		getDataProxy()</span> is an <span class="name">OSGi</span>-related
+		implementation: This method will return the <span class="code">DataProxy</span>
+		implementation, that acts as the <span class="name">Data Server</span>
+		for this Step.</p>
+		</li>
+		<li>
+		<p><span class="code">requirementsSatisfied(DataProxy&lt;DataBean&gt;
+		proxy)</span> will tell the server if all preconditions for execution of this
+		<span class="name">Step</span> are fulfilled. If this method returns
+		true, server will execute this <span class="name">Step</span>.</p>
+		</li>
+		<li>
+		<p><span class="code">run(DataProxy&lt;DataBean&gt; proxy)</span>
+		should implement what the <span class="name">Step</span> actually does
+		when it is executed.</p>
+		</li>
+		<li>
+		<p><span class="code">isCyclic()</span> tells the server if this <span
+			class="name">Step</span> will execute more than once.</p>
+		</li>
+	</ol>
+	</li>
+	<li>
+	<p>Implement <span class="code">DataProxy&lt;DataBean&gt;getDataProxy()</span>:</p>
+	<p>This brings some programming overhead since we need to override
+	two more methods to do so. We also need a <span class="code">ServiceTracker</span>
+	reference.</p>
+	<p>Your class should look like this:</p>
+	<iframe src="resources/getdataproxyimpl.htm" width="600" height="400">
+	</iframe>
+	<p>Notice that we have overwritten <span class="code">AbstractAnnaStep.init(BundleContext
+	context)</span> and <span class="code">Object.finalize()</span></p>
+	<p>The way to implement <span class="code">DataProxy&lt;DataBean&gt;getDataProxy()</span>
+	is always the same and your implementation should always look like
+	this. The only thing that needs to be adapted is the actual
+	implementation type of <span class="code">DataProxy&lt;DataBean&gt;</span>
+	when retrieving the data server reference.</p>
+	<p><span class="code">SimpleDataServer server =
+	(SimpleDataServer) tracker.getService();</span></p>
+	<p>This is actually only one line of code that can be different at
+	this point. That is not very elegant object-oriented design and will be
+	simplified in a later version of the framework.</p>
+	</li>
+	<li>
+	<p>Implement <span class="code">run(DataProxy&lt;DataBean&gt;
+	proxy)</span>:</p>
+	<iframe src="resources/runmethod.htm" width="600" height="220">
+	</iframe>
+	<p>We first generate a new random number and then store it to the <span
+		class="name">Data Bean</span> that is provided by the <span
+		class="name">Data Server</span>.</p>
+	</li>
+	<li>
+	<p>Leave <span class="code">canBeSkipped(DataProxy&lt;DataBean&gt;
+	proxy)</span> and <span class="code">isCyclic()</span> as they are (return <span
+		class="code">false</span>).</p>
+	</li>
+	<li>
+	<p>Make <span class="code">requirementsSatisfied(DataProxy&lt;DataBean&gt;
+	proxy)</span> return <span class="code">true</span>.</p>
+	</li>
+	<li>
+	<p>Set the bundle activator: Open the manifest file and set the
+	bundle activator to your newly created class.</p>
+	<img src="pics/activator.png" alt="komponents" align="middle"
+		vspace="10" hspace="20"></li>
+	<li>
+	<p>Done! Your Step implementation is now ready to run!</p>
+	<p>One last thing:</p>
+	<p>To be able to verify the storage of the randomly generated
+	number we change <span class="code">run(DataProxy&lt;DataBean&gt;
+	proxy)</span> method to also read the value and print it to our logger.</p>
+	<p>So our final class looks like this:</p>
+	<iframe src="resources/finalclass.htm" width="600" height="400">
+	</iframe></li>
+
+	<li>
+	<p>Export your Plug-in:</p>
+	<p>Right-click your project &rarr; <span class="fett">Export...</span>
+	&rarr; <span class="fett">Plug-in Development</span> &rarr; <span
+		class="fett">Deployable Plug-ins and fragments</span> &rarr; <span
+		class="fett">Next</span>&rarr; <span class="fett">Finish</span>.</p>
+	<p>Your Plug-in has been exported to your home directory (a
+	<span class="code">plugins</span>-folder has been created).</p>
+	</li>
+	<li><p>Move the <span class="code">jar</span>-file to <span class="code">anna/07-anna-steps</span>-directory</p></li>
+	<li><p>Start the framework! You will see the random number printed in the terminal.</p></li>
+</ol>
 </div>
 </body>
 </html>
