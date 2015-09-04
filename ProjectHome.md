@@ -1,0 +1,1 @@
+This project holds osgi-plugins for frequently used functionality within the framework
